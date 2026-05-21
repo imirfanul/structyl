@@ -11,6 +11,8 @@ export interface ThemeTokens {
   'popover-fg': string;
   primary: string;
   'primary-fg': string;
+  'primary-hover': string;
+  'primary-active': string;
   secondary: string;
   'secondary-fg': string;
   muted: string;
@@ -19,9 +21,18 @@ export interface ThemeTokens {
   'accent-fg': string;
   destructive: string;
   'destructive-fg': string;
+  success: string;
+  'success-fg': string;
+  warning: string;
+  'warning-fg': string;
+  info: string;
+  'info-fg': string;
   border: string;
+  'border-strong': string;
   input: string;
   ring: string;
+  overlay: string;
+  shadow: string;
   [key: string]: string;
 }
 

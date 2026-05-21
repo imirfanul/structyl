@@ -7,11 +7,14 @@ import { tv, type VariantProps } from 'tailwind-variants';
 
 export const switchVariants = tv({
   base: [
-    'peer inline-flex shrink-0 cursor-pointer items-center rounded-full',
-    'border-2 border-transparent transition-colors',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-bg',
+    'peer group/switch inline-flex shrink-0 cursor-pointer items-center rounded-full p-0.5',
+    'border border-transparent',
+    'transition-[background-color,box-shadow] duration-smooth ease-spring',
+    'shadow-inner',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg',
     'disabled:cursor-not-allowed disabled:opacity-50',
-    'data-[state=checked]:bg-primary data-[state=unchecked]:bg-input',
+    'data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted',
+    'active:scale-[0.97] active:transition-transform active:duration-instant',
   ],
   variants: {
     size: {
@@ -25,9 +28,10 @@ export const switchVariants = tv({
 
 const thumbVariants = tv({
   base: [
-    'pointer-events-none block rounded-full bg-bg shadow-lg ring-0',
-    'transition-transform',
-    'data-[state=unchecked]:translate-x-0',
+    'pointer-events-none block rounded-full bg-bg',
+    'shadow-[0_1px_2px_rgba(0,0,0,0.12),0_2px_4px_rgba(0,0,0,0.08)]',
+    'transition-transform duration-smooth ease-spring',
+    'group-active/switch:scale-110',
   ],
   variants: {
     size: {

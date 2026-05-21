@@ -2,14 +2,14 @@
 const nextConfig = {
   reactStrictMode: true,
   transpilePackages: [
-    '@your-lib/core',
-    '@your-lib/hooks',
-    '@your-lib/utils',
-    '@your-lib/themes',
-    '@your-lib/primitives',
-    '@your-lib/styled',
-    '@your-lib/data-table',
-    '@your-lib/icons',
+    '@aura-ui/core',
+    '@aura-ui/hooks',
+    '@aura-ui/utils',
+    '@aura-ui/themes',
+    '@aura-ui/primitives',
+    '@aura-ui/styled',
+    '@aura-ui/data-table',
+    '@aura-ui/icons',
   ],
 };
 
