@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Collapsible } from '@your-lib/styled';
+import { Collapsible } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Disclosure/Collapsible', tags: ['autodocs'] };
 export default meta;

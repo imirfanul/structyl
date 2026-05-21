@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Calendar } from '@your-lib/styled';
+import { Calendar } from '@aura-ui/styled';
 
 const meta: Meta<typeof Calendar> = { title: 'Specialty/Calendar', component: Calendar, tags: ['autodocs'] };
 export default meta;

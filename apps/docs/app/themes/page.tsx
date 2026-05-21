@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useMemo, useState } from 'react';
-import { Button, Card, Input, Label, Badge, Alert } from '@your-lib/styled';
+import { Button, Card, Input, Label, Badge, Alert } from '@aura-ui/styled';
 
 interface Tokens {
   bg: string;

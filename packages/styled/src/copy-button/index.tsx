@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy } from '@your-lib/icons';
-import { cn } from '@your-lib/utils';
+import { Check, Copy } from '@aura-ui/icons';
+import { cn } from '@aura-ui/utils';
 import { buttonVariants, type ButtonProps } from '../button';
 
 interface CopyButtonProps extends Omit<ButtonProps, 'value'> {

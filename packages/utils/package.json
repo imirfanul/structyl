@@ -1,5 +1,5 @@
 {
-  "name": "@your-lib/utils",
+  "name": "@aura-ui/utils",
   "version": "0.0.1",
   "description": "Pure utility functions: cn, type guards, array/object/string/number/date utilities",
   "license": "MIT",

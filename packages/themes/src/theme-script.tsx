@@ -17,7 +17,7 @@ interface ThemeScriptProps {
 export function ThemeScript({
   defaultTheme = 'slate',
   defaultMode = 'system',
-  storageKey = 'your-lib-theme',
+  storageKey = 'aura-ui-theme',
   attribute = 'data-theme',
 }: ThemeScriptProps): React.JSX.Element {
   const script = `

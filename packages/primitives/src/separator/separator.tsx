@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@your-lib/core';
+import { Primitive } from '@aura-ui/core';
 
 type Orientation = 'horizontal' | 'vertical';
 

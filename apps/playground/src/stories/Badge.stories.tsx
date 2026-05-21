@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Badge } from '@your-lib/styled';
+import { Badge } from '@aura-ui/styled';
 
 const meta: Meta<typeof Badge> = { title: 'Atoms/Badge', component: Badge, tags: ['autodocs'] };
 export default meta;

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Tooltip as TooltipPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Tooltip as TooltipPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Provider = TooltipPrimitive.Provider;
 const Root = TooltipPrimitive.Root;

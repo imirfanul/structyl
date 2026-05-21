@@ -1,5 +1,5 @@
 /**
- * @your-lib/primitives
+ * @aura-ui/primitives
  *
  * Headless, accessible React primitives. Behavior without styling.
  */

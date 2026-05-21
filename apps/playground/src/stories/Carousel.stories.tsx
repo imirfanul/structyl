@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Carousel } from '@your-lib/styled';
+import { Carousel } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Feedback/Carousel', tags: ['autodocs'] };
 export default meta;

@@ -17,7 +17,7 @@ export interface RegistryEntry {
   registryDependencies?: string[];
 }
 
-const PRIMITIVES = ['@your-lib/primitives', '@your-lib/core', '@your-lib/hooks', '@your-lib/utils', '@your-lib/icons'];
+const PRIMITIVES = ['@aura-ui/primitives', '@aura-ui/core', '@aura-ui/hooks', '@aura-ui/utils', '@aura-ui/icons'];
 
 export const REGISTRY: Record<string, RegistryEntry> = {
   // Atoms
@@ -118,10 +118,10 @@ export const REGISTRY: Record<string, RegistryEntry> = {
   // Feedback & misc
   'circular-progress': {
     name: 'circular-progress',
-    dependencies: ['@your-lib/utils'],
+    dependencies: ['@aura-ui/utils'],
     sourcePath: 'circular-progress/index.tsx',
   },
-  meter: { name: 'meter', dependencies: ['@your-lib/utils'], sourcePath: 'meter/index.tsx' },
+  meter: { name: 'meter', dependencies: ['@aura-ui/utils'], sourcePath: 'meter/index.tsx' },
   'scroll-area': { name: 'scroll-area', dependencies: PRIMITIVES, sourcePath: 'scroll-area/index.tsx' },
   toolbar: { name: 'toolbar', dependencies: PRIMITIVES, sourcePath: 'toolbar/index.tsx' },
   resizable: { name: 'resizable', dependencies: PRIMITIVES, sourcePath: 'resizable/index.tsx' },
@@ -132,7 +132,7 @@ export const REGISTRY: Record<string, RegistryEntry> = {
   mentions: { name: 'mentions', dependencies: PRIMITIVES, sourcePath: 'mentions/index.tsx' },
   'copy-button': {
     name: 'copy-button',
-    dependencies: ['@your-lib/utils', '@your-lib/icons'],
+    dependencies: ['@aura-ui/utils', '@aura-ui/icons'],
     sourcePath: 'copy-button/index.tsx',
     registryDependencies: ['button'],
   },
@@ -140,7 +140,7 @@ export const REGISTRY: Record<string, RegistryEntry> = {
   // Data
   'data-table': {
     name: 'data-table',
-    dependencies: ['@your-lib/utils', '@your-lib/icons', '@tanstack/react-table', '@tanstack/react-virtual'],
+    dependencies: ['@aura-ui/utils', '@aura-ui/icons', '@tanstack/react-table', '@tanstack/react-virtual'],
     npmDependencies: ['@tanstack/react-table', '@tanstack/react-virtual'],
     sourcePath: '',
   },

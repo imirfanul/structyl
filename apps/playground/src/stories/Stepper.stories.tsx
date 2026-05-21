@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Stepper } from '@your-lib/styled';
+import { Stepper } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Disclosure/Stepper', tags: ['autodocs'] };
 export default meta;

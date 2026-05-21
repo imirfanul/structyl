@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Moon, Sun, Bell, Mail, Settings, Star, Search } from '@your-lib/icons';
+import { Moon, Sun, Bell, Mail, Settings, Star, Search } from '@aura-ui/icons';
 import {
   Button,
   Checkbox,
@@ -69,8 +69,8 @@ import {
   TagsInput,
   Mentions,
   CopyButton,
-} from '@your-lib/styled';
-import { useTheme } from '@your-lib/themes';
+} from '@aura-ui/styled';
+import { useTheme } from '@aura-ui/themes';
 import {
   DataTable,
   DataTableToolbar,
@@ -78,7 +78,7 @@ import {
   exportToCSV,
   type DataTableColumn,
   type Table,
-} from '@your-lib/data-table';
+} from '@aura-ui/data-table';
 
 type User = { id: number; name: string; email: string; role: string };
 const sampleData: User[] = [
@@ -117,7 +117,7 @@ export default function App() {
         <div className="min-h-screen">
           <header className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-bg/80 px-6 py-3 backdrop-blur">
             <div>
-              <h1 className="text-lg font-semibold">your-lib playground</h1>
+              <h1 className="text-lg font-semibold">aura-ui playground</h1>
               <p className="text-xs text-muted-foreground">All ~70 components, themed.</p>
             </div>
             <div className="flex items-center gap-2">
@@ -724,8 +724,8 @@ function FeedbackMisc() {
       </Section>
       <Section title="CopyButton">
         <div className="flex items-center gap-2">
-          <code className="rounded bg-muted px-2 py-1 text-sm">npm install your-lib</code>
-          <CopyButton value="npm install your-lib" />
+          <code className="rounded bg-muted px-2 py-1 text-sm">npm install aura-ui</code>
+          <CopyButton value="npm install aura-ui" />
         </div>
       </Section>
     </>

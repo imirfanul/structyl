@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Progress as ProgressPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Progress as ProgressPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 interface ProgressProps
   extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@your-lib/styled';
+import { Button } from '@aura-ui/styled';
 
 const meta: Meta<typeof Button> = {
   title: 'Atoms/Button',

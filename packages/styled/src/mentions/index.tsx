@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Mentions as MentionsPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Mentions as MentionsPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = MentionsPrimitive.Root;
 

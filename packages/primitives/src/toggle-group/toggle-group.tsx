@@ -6,9 +6,9 @@ import {
   Primitive,
   RovingFocusGroup,
   RovingFocusItem,
-} from '@your-lib/core';
-import { useControllableState } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+} from '@aura-ui/core';
+import { useControllableState } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 import { Toggle as TogglePrimitive } from '../toggle';
 import type {
   ToggleGroupRootProps,

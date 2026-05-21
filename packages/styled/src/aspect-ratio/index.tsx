@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { AspectRatio as AspectRatioPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { AspectRatio as AspectRatioPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 type AspectRatioProps = React.ComponentPropsWithoutRef<typeof AspectRatioPrimitive>;
 

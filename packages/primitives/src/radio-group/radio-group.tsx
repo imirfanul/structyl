@@ -7,9 +7,9 @@ import {
   RovingFocusGroup,
   RovingFocusItem,
   Presence,
-} from '@your-lib/core';
-import { useControllableState, useComposedRefs } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+} from '@aura-ui/core';
+import { useControllableState, useComposedRefs } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 import type {
   RadioGroupRootProps,
   RadioGroupItemProps,

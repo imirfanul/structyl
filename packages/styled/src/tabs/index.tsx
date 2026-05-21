@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Tabs as TabsPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Tabs as TabsPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = TabsPrimitive.Root;
 

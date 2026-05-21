@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Tabs } from '@your-lib/styled';
+import { Tabs } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Disclosure/Tabs', tags: ['autodocs'] };
 export default meta;

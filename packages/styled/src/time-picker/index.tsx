@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { TimePicker as TimePickerPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { TimePicker as TimePickerPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof TimePickerPrimitive.Root>,

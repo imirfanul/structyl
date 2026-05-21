@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight, MoreHorizontal } from '@your-lib/icons';
-import { cn } from '@your-lib/utils';
+import { ChevronLeft, ChevronRight, MoreHorizontal } from '@aura-ui/icons';
+import { cn } from '@aura-ui/utils';
 import { buttonVariants, type ButtonProps } from '../button';
 
 const Root: React.FC<React.ComponentProps<'nav'>> = ({ className, ...props }) => (

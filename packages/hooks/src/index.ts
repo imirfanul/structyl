@@ -1,5 +1,5 @@
 /**
- * @your-lib/hooks
+ * @aura-ui/hooks
  *
  * Reusable React hooks. SSR-safe, tree-shakeable.
  */

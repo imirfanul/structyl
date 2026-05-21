@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Check } from '@your-lib/icons';
-import { cn } from '@your-lib/utils';
+import { Check } from '@aura-ui/icons';
+import { cn } from '@aura-ui/utils';
 
 type StepStatus = 'complete' | 'current' | 'upcoming';
 

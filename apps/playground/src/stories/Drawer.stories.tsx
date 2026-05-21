@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Drawer } from '@your-lib/styled';
+import { Drawer } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Overlays/Drawer', tags: ['autodocs'] };
 export default meta;

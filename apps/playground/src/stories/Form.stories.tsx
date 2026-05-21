@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Form, Input, Label, Switch } from '@your-lib/styled';
+import { Button, Form, Input, Label, Switch } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Form/Form', tags: ['autodocs'] };
 export default meta;

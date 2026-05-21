@@ -1,5 +1,5 @@
 import type * as React from 'react';
-import type { PointerDownOutsideEvent, FocusOutsideEvent } from '@your-lib/core';
+import type { PointerDownOutsideEvent, FocusOutsideEvent } from '@aura-ui/core';
 
 export interface MenuRootProps {
   children?: React.ReactNode;

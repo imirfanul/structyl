@@ -1,5 +1,5 @@
 {
-  "name": "@your-lib/themes",
+  "name": "@aura-ui/themes",
   "version": "0.0.1",
   "description": "Runtime theme system with CSS variables, ThemeProvider, and built-in themes",
   "license": "MIT",

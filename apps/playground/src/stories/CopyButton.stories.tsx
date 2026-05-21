@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { CopyButton } from '@your-lib/styled';
+import { CopyButton } from '@aura-ui/styled';
 
 const meta: Meta<typeof CopyButton> = { title: 'Feedback/CopyButton', component: CopyButton, tags: ['autodocs'] };
 export default meta;

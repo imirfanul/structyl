@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Popover } from '@your-lib/styled';
+import { Popover } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Overlays/Popover', tags: ['autodocs'] };
 export default meta;

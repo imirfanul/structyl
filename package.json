@@ -1,5 +1,5 @@
 {
-  "name": "your-lib",
+  "name": "aura-ui",
   "version": "0.0.1",
   "private": true,
   "description": "A world-class React component library with headless primitives, Tailwind styling, and a first-class DataTable",

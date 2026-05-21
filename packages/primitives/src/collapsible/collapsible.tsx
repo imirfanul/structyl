@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive, Presence } from '@your-lib/core';
-import { useControllableState, useId, useComposedRefs } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+import { createContext, Primitive, Presence } from '@aura-ui/core';
+import { useControllableState, useId, useComposedRefs } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 import type {
   CollapsibleRootProps,
   CollapsibleTriggerProps,
@@ -147,10 +147,10 @@ const ContentImpl = React.forwardRef<HTMLDivElement, CollapsibleContentProps>(
         {...rest}
         ref={composedRef}
         style={{
-          ['--your-lib-collapsible-content-height' as string]: heightRef.current
+          ['--aura-ui-collapsible-content-height' as string]: heightRef.current
             ? `${heightRef.current}px`
             : undefined,
-          ['--your-lib-collapsible-content-width' as string]: widthRef.current
+          ['--aura-ui-collapsible-content-width' as string]: widthRef.current
             ? `${widthRef.current}px`
             : undefined,
           ...style,

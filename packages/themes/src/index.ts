@@ -1,5 +1,5 @@
 /**
- * @your-lib/themes
+ * @aura-ui/themes
  *
  * Runtime theming system: ThemeProvider, useTheme, ThemeScript, built-in themes.
  */

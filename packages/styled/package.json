@@ -1,5 +1,5 @@
 {
-  "name": "@your-lib/styled",
+  "name": "@aura-ui/styled",
   "version": "0.0.1",
   "description": "Tailwind-styled React components, batteries included",
   "license": "MIT",
@@ -31,11 +31,11 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@your-lib/core": "workspace:*",
-    "@your-lib/primitives": "workspace:*",
-    "@your-lib/themes": "workspace:*",
-    "@your-lib/utils": "workspace:*",
-    "@your-lib/icons": "workspace:*",
+    "@aura-ui/core": "workspace:*",
+    "@aura-ui/primitives": "workspace:*",
+    "@aura-ui/themes": "workspace:*",
+    "@aura-ui/utils": "workspace:*",
+    "@aura-ui/icons": "workspace:*",
     "tailwind-variants": "^0.3.0"
   },
   "peerDependencies": {

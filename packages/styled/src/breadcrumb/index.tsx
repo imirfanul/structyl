@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronRight, MoreHorizontal } from '@your-lib/icons';
-import { Slot } from '@your-lib/core';
-import { cn } from '@your-lib/utils';
+import { ChevronRight, MoreHorizontal } from '@aura-ui/icons';
+import { Slot } from '@aura-ui/core';
+import { cn } from '@aura-ui/utils';
 
 const Root = React.forwardRef<
   HTMLElement,

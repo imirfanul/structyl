@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { CalendarIcon } from '@your-lib/icons';
-import { DatePicker as DatePickerPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { CalendarIcon } from '@aura-ui/icons';
+import { DatePicker as DatePickerPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 import { buttonVariants } from '../button';
 import { Calendar as StyledCalendar } from '../calendar';
 

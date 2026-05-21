@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Editable } from '@your-lib/styled';
+import { Editable } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Feedback/Editable', tags: ['autodocs'] };
 export default meta;

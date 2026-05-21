@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { ThemeProvider } from '@your-lib/themes';
+import { ThemeProvider } from '@aura-ui/themes';
 import App from './App';
 import './index.css';
 

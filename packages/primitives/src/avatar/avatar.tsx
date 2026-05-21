@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive } from '@your-lib/core';
+import { createContext, Primitive } from '@aura-ui/core';
 import type {
   AvatarRootProps,
   AvatarImageProps,

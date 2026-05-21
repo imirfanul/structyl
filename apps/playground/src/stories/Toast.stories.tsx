@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Toast } from '@your-lib/styled';
+import { Toast } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Overlays/Toast', tags: ['autodocs'] };
 export default meta;

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { HoverCard as HoverCardPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { HoverCard as HoverCardPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = HoverCardPrimitive.Root;
 const Trigger = HoverCardPrimitive.Trigger;

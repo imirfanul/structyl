@@ -11,9 +11,9 @@ import {
   Popper,
   useScrollLock,
   useDirection,
-} from '@your-lib/core';
-import { useControllableState, useId, useComposedRefs } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+} from '@aura-ui/core';
+import { useControllableState, useId, useComposedRefs } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 
 const OPEN_KEYS = ['ArrowUp', 'ArrowDown', 'Enter', ' '];
 const SELECTION_KEYS = ['Enter', ' '];
@@ -394,7 +394,7 @@ const Viewport = React.forwardRef<
 >((props, forwardedRef) => {
   return (
     <Primitive.div
-      data-your-lib-select-viewport
+      data-aura-ui-select-viewport
       role="presentation"
       {...props}
       ref={forwardedRef}

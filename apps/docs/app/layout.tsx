@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { ThemeProvider, ThemeScript } from '@your-lib/themes';
+import { ThemeProvider, ThemeScript } from '@aura-ui/themes';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'your-lib — A React Component Library',
+  title: 'aura-ui — A React Component Library',
   description:
     'Accessible headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable.',
 };

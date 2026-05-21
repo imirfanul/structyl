@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { ArrowUpRight, Component, Layers, Palette, Table2 } from '@your-lib/icons';
-import { Button } from '@your-lib/styled';
+import { ArrowUpRight, Component, Layers, Palette, Table2 } from '@aura-ui/icons';
+import { Button } from '@aura-ui/styled';
 
 export default function Page() {
   return (
@@ -21,7 +21,7 @@ export default function Page() {
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2 font-mono text-sm tracking-tight">
             <span className="size-2 rounded-full bg-primary" />
-            <span className="font-semibold">your-lib</span>
+            <span className="font-semibold">aura-ui</span>
             <span className="text-muted-foreground">/ v0.0.1</span>
           </div>
           <nav className="flex items-center gap-6 text-sm">
@@ -70,7 +70,7 @@ export default function Page() {
           </div>
 
           <div className="rounded-lg border border-border bg-muted/30 p-4 font-mono text-sm text-muted-foreground">
-            <span className="text-fg">$</span> pnpm add @your-lib/styled @your-lib/themes
+            <span className="text-fg">$</span> pnpm add @aura-ui/styled @aura-ui/themes
           </div>
         </div>
       </section>
@@ -112,7 +112,7 @@ export default function Page() {
       {/* Footer */}
       <footer className="border-t border-border">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-8 text-sm text-muted-foreground">
-          <span>MIT © your-lib contributors</span>
+          <span>MIT © aura-ui contributors</span>
           <span className="font-mono">v0.0.1</span>
         </div>
       </footer>

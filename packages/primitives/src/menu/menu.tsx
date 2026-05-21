@@ -14,9 +14,9 @@ import {
   useScrollLock,
   Popper,
   useDirection,
-} from '@your-lib/core';
-import { useId, useComposedRefs, useControllableState } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+} from '@aura-ui/core';
+import { useId, useComposedRefs, useControllableState } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 import type {
   MenuRootProps,
   MenuAnchorProps,

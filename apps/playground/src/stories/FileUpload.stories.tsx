@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { FileUpload } from '@your-lib/styled';
+import { FileUpload } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Specialty/FileUpload', tags: ['autodocs'] };
 export default meta;

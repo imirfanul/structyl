@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button, Dialog } from '@your-lib/styled';
+import { Button, Dialog } from '@aura-ui/styled';
 
 const meta: Meta = {
   title: 'Overlays/Dialog',

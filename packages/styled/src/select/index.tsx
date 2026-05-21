@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronDown } from '@your-lib/icons';
-import { Select as SelectPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Check, ChevronDown } from '@aura-ui/icons';
+import { Select as SelectPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = SelectPrimitive.Root;
 const Group = SelectPrimitive.Group;
@@ -54,7 +54,7 @@ const Content = React.forwardRef<
         className={cn(
           'p-1',
           position === 'popper' &&
-            'h-[var(--your-lib-popper-anchor-height)] w-full min-w-[var(--your-lib-popper-anchor-width)]',
+            'h-[var(--aura-ui-popper-anchor-height)] w-full min-w-[var(--aura-ui-popper-anchor-width)]',
         )}
       >
         {children}

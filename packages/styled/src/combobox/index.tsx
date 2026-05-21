@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Check } from '@your-lib/icons';
-import { Combobox as ComboboxPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Check } from '@aura-ui/icons';
+import { Combobox as ComboboxPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = ComboboxPrimitive.Root;
 const Group = ComboboxPrimitive.Group;

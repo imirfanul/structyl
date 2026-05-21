@@ -1,5 +1,5 @@
 {
-  "name": "@your-lib/data-table",
+  "name": "@aura-ui/data-table",
   "version": "0.0.1",
   "description": "A full-featured DataTable with sorting, filtering, virtualization, and server-side data",
   "license": "MIT",
@@ -28,11 +28,11 @@
   "dependencies": {
     "@tanstack/react-table": "^8.20.5",
     "@tanstack/react-virtual": "^3.10.8",
-    "@your-lib/primitives": "workspace:*",
-    "@your-lib/styled": "workspace:*",
-    "@your-lib/hooks": "workspace:*",
-    "@your-lib/utils": "workspace:*",
-    "@your-lib/icons": "workspace:*"
+    "@aura-ui/primitives": "workspace:*",
+    "@aura-ui/styled": "workspace:*",
+    "@aura-ui/hooks": "workspace:*",
+    "@aura-ui/utils": "workspace:*",
+    "@aura-ui/icons": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

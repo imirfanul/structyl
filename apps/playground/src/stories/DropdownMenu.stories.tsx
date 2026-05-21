@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DropdownMenu } from '@your-lib/styled';
+import { DropdownMenu } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Compound/DropdownMenu', tags: ['autodocs'] };
 export default meta;

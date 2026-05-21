@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Select } from '@your-lib/styled';
+import { Select } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Compound/Select', tags: ['autodocs'] };
 export default meta;

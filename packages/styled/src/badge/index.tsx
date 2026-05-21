@@ -2,8 +2,8 @@
 
 import * as React from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
-import { Slot } from '@your-lib/core';
-import { cn } from '@your-lib/utils';
+import { Slot } from '@aura-ui/core';
+import { cn } from '@aura-ui/utils';
 
 const badgeVariants = tv({
   base: [

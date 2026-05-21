@@ -1,5 +1,5 @@
 /**
- * @your-lib/core
+ * @aura-ui/core
  *
  * Internal primitives powering the library: Slot, Primitive, contexts,
  * focus management, presence, popper, etc.

@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive, Portal as PortalPrimitive, Presence } from '@your-lib/core';
-import { useControllableState, useComposedRefs } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+import { createContext, Primitive, Portal as PortalPrimitive, Presence } from '@aura-ui/core';
+import { useControllableState, useComposedRefs } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 
 export interface MentionSuggestion {
   id: string;

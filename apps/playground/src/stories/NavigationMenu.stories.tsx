@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { NavigationMenu } from '@your-lib/styled';
+import { NavigationMenu } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Compound/NavigationMenu', tags: ['autodocs'] };
 export default meta;

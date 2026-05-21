@@ -156,10 +156,10 @@ const PopperContent = React.forwardRef<HTMLDivElement, PopperContentProps>(
         apply: ({ elements, rects, availableWidth, availableHeight }) => {
           const { width: anchorWidth, height: anchorHeight } = rects.reference;
           const contentStyle = elements.floating.style;
-          contentStyle.setProperty('--your-lib-popper-available-width', `${availableWidth}px`);
-          contentStyle.setProperty('--your-lib-popper-available-height', `${availableHeight}px`);
-          contentStyle.setProperty('--your-lib-popper-anchor-width', `${anchorWidth}px`);
-          contentStyle.setProperty('--your-lib-popper-anchor-height', `${anchorHeight}px`);
+          contentStyle.setProperty('--aura-ui-popper-available-width', `${availableWidth}px`);
+          contentStyle.setProperty('--aura-ui-popper-available-height', `${availableHeight}px`);
+          contentStyle.setProperty('--aura-ui-popper-anchor-width', `${anchorWidth}px`);
+          contentStyle.setProperty('--aura-ui-popper-anchor-height', `${anchorHeight}px`);
         },
       }),
       arrow && arrowMiddleware({ element: arrow, padding: arrowPadding }),
@@ -196,13 +196,13 @@ const PopperContent = React.forwardRef<HTMLDivElement, PopperContentProps>(
     return (
       <div
         ref={refs.setFloating}
-        data-your-lib-popper-content-wrapper=""
+        data-aura-ui-popper-content-wrapper=""
         style={{
           ...floatingStyles,
           transform: isPositioned ? floatingStyles.transform : 'translate(0, -200%)',
           minWidth: 'max-content',
           zIndex: contentZIndex,
-          ['--your-lib-popper-transform-origin' as string]:
+          ['--aura-ui-popper-transform-origin' as string]:
             [
               middlewareData.transformOrigin?.x,
               middlewareData.transformOrigin?.y,

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ContextMenu } from '@your-lib/styled';
+import { ContextMenu } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Compound/ContextMenu', tags: ['autodocs'] };
 export default meta;

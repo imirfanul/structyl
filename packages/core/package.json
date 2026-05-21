@@ -1,7 +1,7 @@
 {
-  "name": "@your-lib/core",
+  "name": "@aura-ui/core",
   "version": "0.0.1",
-  "description": "Internal primitives powering @your-lib (Slot, Primitive, contexts, focus management)",
+  "description": "Internal primitives powering @aura-ui (Slot, Primitive, contexts, focus management)",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

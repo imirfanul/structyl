@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Combobox } from '@your-lib/styled';
+import { Combobox } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Compound/Combobox', tags: ['autodocs'] };
 export default meta;

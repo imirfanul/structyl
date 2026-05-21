@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive } from '@your-lib/core';
-import { useComposedRefs } from '@your-lib/hooks';
+import { createContext, Primitive } from '@aura-ui/core';
+import { useComposedRefs } from '@aura-ui/hooks';
 
 interface ScrollAreaContextValue {
   type: 'auto' | 'always' | 'scroll' | 'hover';
@@ -48,7 +48,7 @@ const Viewport = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef
     const composedRef = useComposedRefs(forwardedRef, ctx.onViewportChange);
     return (
       <Primitive.div
-        data-your-lib-scroll-area-viewport=""
+        data-aura-ui-scroll-area-viewport=""
         {...props}
         ref={composedRef}
         style={{

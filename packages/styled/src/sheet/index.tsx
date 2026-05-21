@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { X } from '@your-lib/icons';
-import { Dialog as SheetPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { X } from '@aura-ui/icons';
+import { Dialog as SheetPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const Root = SheetPrimitive.Root;

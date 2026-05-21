@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@your-lib/core';
-import { useControllableState } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+import { Primitive } from '@aura-ui/core';
+import { useControllableState } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 
 export interface ToggleProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'value'> {
   pressed?: boolean;

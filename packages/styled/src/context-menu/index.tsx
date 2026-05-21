@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronRight, Circle } from '@your-lib/icons';
-import { ContextMenu as ContextMenuPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Check, ChevronRight, Circle } from '@aura-ui/icons';
+import { ContextMenu as ContextMenuPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = ContextMenuPrimitive.Root;
 const Trigger = ContextMenuPrimitive.Trigger;

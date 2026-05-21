@@ -1,20 +1,20 @@
 ---
 title: Migrating from Chakra UI
-description: How to move from Chakra UI to your-lib.
+description: How to move from Chakra UI to aura-ui.
 ---
 
 # Migrating from Chakra UI
 
-Chakra is style-props + theme tokens. `your-lib` is Tailwind utility classes + theme tokens via CSS variables.
+Chakra is style-props + theme tokens. `aura-ui` is Tailwind utility classes + theme tokens via CSS variables.
 
 ## Theming
 
 - **Chakra:** `extendTheme({...})` with `tokens` object.
-- **your-lib:** CSS variables in a Tailwind preset (`@your-lib/themes`). Override by writing your own `--primary`, `--bg`, `--fg`, etc.
+- **aura-ui:** CSS variables in a Tailwind preset (`@aura-ui/themes`). Override by writing your own `--primary`, `--bg`, `--fg`, etc.
 
 ## Component map
 
-| Chakra                       | your-lib                                              |
+| Chakra                       | aura-ui                                              |
 | ---------------------------- | ----------------------------------------------------- |
 | `Button`                     | `Button`                                              |
 | `Input`                      | `Input`                                               |

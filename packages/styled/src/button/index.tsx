@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@your-lib/core';
-import { cn } from '@your-lib/utils';
+import { Primitive } from '@aura-ui/core';
+import { cn } from '@aura-ui/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 export const buttonVariants = tv({

@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronRight, Circle } from '@your-lib/icons';
-import { Menubar as MenubarPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Check, ChevronRight, Circle } from '@aura-ui/icons';
+import { Menubar as MenubarPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Menu = MenubarPrimitive.Menu;
 const Group = MenubarPrimitive.Group;

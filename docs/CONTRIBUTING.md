@@ -1,4 +1,4 @@
-# Contributing to your-lib
+# Contributing to aura-ui
 
 Thank you for considering contributing! This document explains the workflow.
 
@@ -19,8 +19,8 @@ By participating, you agree to abide by our [Code of Conduct](../CODE_OF_CONDUCT
 
 ### Setup
 ```bash
-git clone https://github.com/your-org/your-lib.git
-cd your-lib
+git clone https://github.com/your-org/aura-ui.git
+cd aura-ui
 pnpm install
 pnpm build
 ```
@@ -195,7 +195,7 @@ Releases are automated via Changesets.
 ## Getting help
 
 - 💬 Discord: [link]
-- 🐦 Twitter: [@your-lib]
-- 📧 Email: maintainers@your-lib.dev
+- 🐦 Twitter: [@aura-ui]
+- 📧 Email: maintainers@aura-ui.dev
 
 We're a friendly community. Don't be shy.

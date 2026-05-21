@@ -1,5 +1,5 @@
 /**
- * @your-lib/utils
+ * @aura-ui/utils
  *
  * Pure utility functions. No React imports. Tree-shakeable.
  */

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { cn } from '@your-lib/utils';
+import { cn } from '@aura-ui/utils';
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {}
 

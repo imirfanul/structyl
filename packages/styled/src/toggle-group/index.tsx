@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { ToggleGroup as ToggleGroupPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { ToggleGroup as ToggleGroupPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 import { type VariantProps } from 'tailwind-variants';
 import { toggleVariants } from '../toggle';
 

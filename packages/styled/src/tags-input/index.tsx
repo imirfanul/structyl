@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { X } from '@your-lib/icons';
-import { TagsInput as TagsInputPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { X } from '@aura-ui/icons';
+import { TagsInput as TagsInputPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof TagsInputPrimitive.Root>,

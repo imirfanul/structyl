@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Tooltip } from '@your-lib/styled';
+import { Tooltip } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Overlays/Tooltip', tags: ['autodocs'] };
 export default meta;

@@ -1,20 +1,20 @@
 ---
 title: Migrating from MUI
-description: How to move from Material UI to your-lib.
+description: How to move from Material UI to aura-ui.
 ---
 
 # Migrating from MUI
 
-`your-lib` is Tailwind-styled and headless — quite different from MUI's emotion-based theming. The migration is mostly a styling rewrite.
+`aura-ui` is Tailwind-styled and headless — quite different from MUI's emotion-based theming. The migration is mostly a styling rewrite.
 
 ## Theming
 
 - **MUI:** `<ThemeProvider theme={createTheme(...)}>` with emotion in the background.
-- **your-lib:** `<ThemeProvider theme="slate">` (or your custom theme) consumed via CSS variables. No CSS-in-JS at runtime.
+- **aura-ui:** `<ThemeProvider theme="slate">` (or your custom theme) consumed via CSS variables. No CSS-in-JS at runtime.
 
 ## Component map
 
-| MUI                          | your-lib                                              |
+| MUI                          | aura-ui                                              |
 | ---------------------------- | ----------------------------------------------------- |
 | `Button`                     | `Button`                                              |
 | `TextField`                  | `Input` (+ `Label` + `Form` for validation)           |

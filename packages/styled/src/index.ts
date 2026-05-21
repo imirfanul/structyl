@@ -1,5 +1,5 @@
 /**
- * @your-lib/styled
+ * @aura-ui/styled
  *
  * Tailwind-styled React components, batteries included.
  */

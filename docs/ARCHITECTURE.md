@@ -10,8 +10,8 @@ This document explains **why** the codebase is shaped the way it is. Read this b
 
 The biggest architectural decision in this library is the strict separation between:
 
-- **Behavior** (`@your-lib/primitives`) — focus management, ARIA, keyboard, state
-- **Presentation** (`@your-lib/styled`) — visual styling, animations, theming
+- **Behavior** (`@aura-ui/primitives`) — focus management, ARIA, keyboard, state
+- **Presentation** (`@aura-ui/styled`) — visual styling, animations, theming
 
 This separation enables:
 - Users who want full styling control can use primitives directly
@@ -101,15 +101,15 @@ Why: No JavaScript-driven styles, no className spaghetti, CSS-only animations.
 ┌─────────────────────────────────────────┐
 │  Apps (docs, playground)                │
 ├─────────────────────────────────────────┤
-│  @your-lib/styled                       │
-│  @your-lib/data-table                   │
+│  @aura-ui/styled                       │
+│  @aura-ui/data-table                   │
 ├─────────────────────────────────────────┤
-│  @your-lib/primitives                   │
+│  @aura-ui/primitives                   │
 ├─────────────────────────────────────────┤
-│  @your-lib/core                         │
-│  @your-lib/hooks                        │
-│  @your-lib/utils                        │
-│  @your-lib/themes                       │
+│  @aura-ui/core                         │
+│  @aura-ui/hooks                        │
+│  @aura-ui/utils                        │
+│  @aura-ui/themes                       │
 └─────────────────────────────────────────┘
 ```
 
@@ -119,7 +119,7 @@ Why: No JavaScript-driven styles, no className spaghetti, CSS-only animations.
 
 ## Package responsibilities
 
-### `@your-lib/core`
+### `@aura-ui/core`
 Internal primitives that power other packages. Not meant for end-user import (though it's published).
 
 - `Primitive` — Polymorphic base
@@ -127,29 +127,29 @@ Internal primitives that power other packages. Not meant for end-user import (th
 - `createContextScope` — Scoped React contexts
 - `Portal`, `Presence`, `FocusScope`, `DismissableLayer`, `RovingFocusGroup`
 
-### `@your-lib/hooks`
+### `@aura-ui/hooks`
 50+ reusable React hooks. Each hook in its own folder with tests.
 
-### `@your-lib/utils`
+### `@aura-ui/utils`
 Pure utility functions. Tree-shakeable. No React imports.
 
-### `@your-lib/themes`
+### `@aura-ui/themes`
 The theme system. Exports `ThemeProvider`, `useTheme`, the CSS variable contracts, and built-in themes.
 
-### `@your-lib/primitives`
+### `@aura-ui/primitives`
 The headless behavior layer. Every component from the catalog has a headless implementation here.
 
-### `@your-lib/styled`
+### `@aura-ui/styled`
 Tailwind-styled wrappers over primitives. Uses `tailwind-variants` for variant API.
 
-### `@your-lib/data-table`
+### `@aura-ui/data-table`
 The DataTable component. Built on `@tanstack/table-core` for the engine + custom UI + virtualization + accessibility on top.
 
-### `@your-lib/icons`
+### `@aura-ui/icons`
 Icon set. Either custom SVGs or a thin re-export of `lucide-react`.
 
-### `@your-lib/cli`
-Optional shadcn-style CLI: `npx your-lib add button` copies source into the user's project.
+### `@aura-ui/cli`
+Optional shadcn-style CLI: `npx aura-ui add button` copies source into the user's project.
 
 ---
 

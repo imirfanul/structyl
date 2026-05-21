@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TimePicker } from '@your-lib/styled';
+import { TimePicker } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Specialty/TimePicker', tags: ['autodocs'] };
 export default meta;

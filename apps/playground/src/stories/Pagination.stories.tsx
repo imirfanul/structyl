@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Pagination } from '@your-lib/styled';
+import { Pagination } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Disclosure/Pagination', tags: ['autodocs'] };
 export default meta;

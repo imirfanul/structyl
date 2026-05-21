@@ -1,22 +1,22 @@
 ---
 title: Migrating from Radix UI
-description: How to move from Radix UI primitives to your-lib.
+description: How to move from Radix UI primitives to aura-ui.
 ---
 
 # Migrating from Radix UI
 
-`your-lib` mirrors Radix UI's primitive APIs almost 1-to-1, with three differences:
+`aura-ui` mirrors Radix UI's primitive APIs almost 1-to-1, with three differences:
 
 1. **Theme tokens.** Where Radix is unstyled, our styled package consumes CSS variables
-   from `@your-lib/themes`. Use `<ThemeProvider>` at the root of your app.
+   from `@aura-ui/themes`. Use `<ThemeProvider>` at the root of your app.
 2. **`asChild` semantics.** Identical to Radix.
 3. **Compound naming.** We re-export as `Dialog`, `Dialog.Root`, etc. — the same dot-notation.
 
 ## Component name map
 
-| Radix package                  | your-lib import                  |
+| Radix package                  | aura-ui import                  |
 | ------------------------------ | -------------------------------- |
-| `@radix-ui/react-dialog`       | `@your-lib/primitives` (`Dialog`)|
+| `@radix-ui/react-dialog`       | `@aura-ui/primitives` (`Dialog`)|
 | `@radix-ui/react-popover`      | `Popover`                        |
 | `@radix-ui/react-tooltip`      | `Tooltip`                        |
 | `@radix-ui/react-dropdown-menu`| `DropdownMenu`                   |
@@ -34,4 +34,4 @@ description: How to move from Radix UI primitives to your-lib.
 
 - We expose the same `data-state`, `data-side`, `data-align` attributes for CSS hooks.
 - Our `Form` primitive is closer to `@radix-ui/react-form` but minimal — bring `react-hook-form` if you need full validation.
-- DataTable is built-in (`@your-lib/data-table`) — Radix has no equivalent.
+- DataTable is built-in (`@aura-ui/data-table`) — Radix has no equivalent.

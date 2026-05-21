@@ -1,7 +1,7 @@
 {
-  "name": "@your-lib/icons",
+  "name": "@aura-ui/icons",
   "version": "0.0.1",
-  "description": "Icon set for @your-lib (re-exports lucide-react)",
+  "description": "Icon set for @aura-ui (re-exports lucide-react)",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

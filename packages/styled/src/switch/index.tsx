@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Switch as SwitchPrimitive, type SwitchProps as SwitchPrimitiveProps } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Switch as SwitchPrimitive, type SwitchProps as SwitchPrimitiveProps } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 export const switchVariants = tv({

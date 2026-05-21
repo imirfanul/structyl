@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DateRangePicker } from '@your-lib/styled';
+import { DateRangePicker } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Specialty/DateRangePicker', tags: ['autodocs'] };
 export default meta;

@@ -66,9 +66,9 @@ export type SwitchProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'value'
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@your-lib/core';
-import { useControllableState } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+import { Primitive } from '@aura-ui/core';
+import { useControllableState } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 import type { SwitchProps } from './switch.types';
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, forwardedRef) => {
@@ -209,8 +209,8 @@ export const Controlled: Story = {
 'use client';
 
 import * as React from 'react';
-import { Switch as SwitchPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Switch as SwitchPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 import { switchVariants } from './switch.variants';
 
 type SwitchPrimitiveProps = React.ComponentPropsWithoutRef<typeof SwitchPrimitive>;
@@ -278,7 +278,7 @@ A switch is a control for toggling a single setting on or off.
 ## Anatomy
 
 ```tsx
-import { Switch } from '@your-lib/styled';
+import { Switch } from '@aura-ui/styled';
 
 <Switch />
 ```
@@ -323,7 +323,7 @@ Follows the [WAI-ARIA Switch pattern](https://www.w3.org/WAI/ARIA/apg/patterns/s
 pnpm changeset
 ```
 
-Pick the `@your-lib/primitives` and `@your-lib/styled` packages. Select minor (new feature). Write:
+Pick the `@aura-ui/primitives` and `@aura-ui/styled` packages. Select minor (new feature). Write:
 
 ```
 Add Switch component to primitives and styled packages with size variants.

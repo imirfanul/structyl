@@ -1,4 +1,4 @@
-# your-lib
+# aura-ui
 
 > A world-class React component library — accessible headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable.
 
@@ -9,7 +9,7 @@
 
 ## ✨ What is this?
 
-**your-lib** is a complete React component system built on three layers:
+**aura-ui** is a complete React component system built on three layers:
 
 1. **Headless primitives** — Accessible, unstyled behavior (like Radix UI)
 2. **Styled components** — Tailwind-styled wrappers with variant API
@@ -26,7 +26,7 @@ Plus a **first-class DataTable** with sorting, filtering, virtualization, server
 | Radix Primitives | Headless behavior, accessibility | No styling, no DataTable |
 | shadcn/ui | Tailwind styling | Copy-paste only, no DataTable, limited theming |
 | MUI / Chakra | Full system | Heavy bundle, opinionated styling |
-| **your-lib** | **Headless + Tailwind + theming + DataTable** | — |
+| **aura-ui** | **Headless + Tailwind + theming + DataTable** | — |
 
 ---
 
@@ -34,26 +34,26 @@ Plus a **first-class DataTable** with sorting, filtering, virtualization, server
 
 | Package | Description |
 |---|---|
-| `@your-lib/primitives` | Headless accessible primitives |
-| `@your-lib/styled` | Tailwind-styled components |
-| `@your-lib/themes` | Theme provider + token system |
-| `@your-lib/hooks` | Reusable React hooks |
-| `@your-lib/utils` | Utility functions (cn, type guards, etc.) |
-| `@your-lib/data-table` | The DataTable component |
-| `@your-lib/icons` | Icon set |
-| `@your-lib/cli` | Optional shadcn-style installer |
+| `@aura-ui/primitives` | Headless accessible primitives |
+| `@aura-ui/styled` | Tailwind-styled components |
+| `@aura-ui/themes` | Theme provider + token system |
+| `@aura-ui/hooks` | Reusable React hooks |
+| `@aura-ui/utils` | Utility functions (cn, type guards, etc.) |
+| `@aura-ui/data-table` | The DataTable component |
+| `@aura-ui/icons` | Icon set |
+| `@aura-ui/cli` | Optional shadcn-style installer |
 
 ---
 
 ## 🚀 Quick start
 
 ```bash
-pnpm add @your-lib/styled @your-lib/themes
+pnpm add @aura-ui/styled @aura-ui/themes
 ```
 
 ```tsx
-import { ThemeProvider } from '@your-lib/themes';
-import { Button, Dialog } from '@your-lib/styled';
+import { ThemeProvider } from '@aura-ui/themes';
+import { Button, Dialog } from '@aura-ui/styled';
 
 function App() {
   return (
@@ -80,7 +80,7 @@ function App() {
 ## 🏗️ Repository structure
 
 ```
-your-lib/
+aura-ui/
 ├── apps/
 │   ├── docs/              # Documentation site (Next.js)
 │   └── playground/        # Storybook + dev playground
@@ -143,7 +143,7 @@ If you are an AI agent: read [AGENTS.md](./AGENTS.md) and [CLAUDE.md](./CLAUDE.m
 
 ## 📜 License
 
-MIT © your-lib contributors
+MIT © aura-ui contributors
 
 ---
 

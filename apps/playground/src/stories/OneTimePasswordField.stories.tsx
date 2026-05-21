@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { OneTimePasswordField } from '@your-lib/styled';
+import { OneTimePasswordField } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Specialty/OneTimePasswordField', tags: ['autodocs'] };
 export default meta;

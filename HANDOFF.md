@@ -1,12 +1,12 @@
 # HANDOFF.md — Continuation Brief for AI Coding Agents
 
-> **Read this entire file before doing anything.** This is the master plan to take `your-lib` from scaffold (10% complete) to v1.0 launch.
+> **Read this entire file before doing anything.** This is the master plan to take `aura-ui` from scaffold (10% complete) to v1.0 launch.
 
 ---
 
 ## 0. How to use this document
 
-You are an AI coding agent (Claude Code, Cursor, etc.) tasked with continuing the implementation of the `your-lib` React component library. This document is your north star.
+You are an AI coding agent (Claude Code, Cursor, etc.) tasked with continuing the implementation of the `aura-ui` React component library. This document is your north star.
 
 **Mandatory reading order before your first action:**
 1. This file (`HANDOFF.md`) — the plan
@@ -25,7 +25,7 @@ You are an AI coding agent (Claude Code, Cursor, etc.) tasked with continuing th
 
 ## 1. Project identity (one paragraph)
 
-`your-lib` is an open-source React component library competing in the same space as Radix UI + shadcn/ui + MUI. It has three layers: **headless behavior primitives** (like Radix), **Tailwind-styled wrappers** (like shadcn/ui), and a **runtime theme system** with CSS variables. The headline differentiator is a **first-class DataTable** that Radix deliberately omits. Target: 75 components total. Monorepo: pnpm + Turborepo. TypeScript strict. React 18+/19. Tailwind v4. WCAG 2.2 AA accessibility is non-negotiable.
+`aura-ui` is an open-source React component library competing in the same space as Radix UI + shadcn/ui + MUI. It has three layers: **headless behavior primitives** (like Radix), **Tailwind-styled wrappers** (like shadcn/ui), and a **runtime theme system** with CSS variables. The headline differentiator is a **first-class DataTable** that Radix deliberately omits. Target: 75 components total. Monorepo: pnpm + Turborepo. TypeScript strict. React 18+/19. Tailwind v4. WCAG 2.2 AA accessibility is non-negotiable.
 
 ---
 
@@ -51,15 +51,15 @@ You are an AI coding agent (Claude Code, Cursor, etc.) tasked with continuing th
 
 | Package | Status | Notes |
 |---|---|---|
-| `@your-lib/utils` | ✅ Complete | `cn`, compose, type guards, array/object/string/number/DOM utilities |
-| `@your-lib/hooks` | ✅ 24 hooks done | Core ones (useControllableState, useComposedRefs, useDebounce, etc.) |
-| `@your-lib/core` | 🟡 Partial | Slot, Primitive, createContext, Portal, VisuallyHidden, DirectionProvider done. **Missing: Presence, FocusScope, FocusGuards, DismissableLayer, RovingFocusGroup, Collection, Popper, Arrow, AccessibleIcon, ScrollLock** |
-| `@your-lib/themes` | ✅ Complete | ThemeProvider, useTheme, ThemeScript, 3 themes (slate/zinc/rose) |
-| `@your-lib/primitives` | 🟡 6 of 75 done | Switch, Toggle, Checkbox, Label, Separator, Dialog (Dialog uses a stub focus trap — needs FocusScope rebuild) |
-| `@your-lib/styled` | 🟡 7 of 75 done | Button + matching wrappers for the 6 primitives above. Tailwind preset done. |
-| `@your-lib/data-table` | 🟡 Basic | TanStack Table integration with sort/filter/pagination. **Missing: virtualization, column resize/pin/reorder, server-side, CSV export, advanced features** |
-| `@your-lib/icons` | ✅ Complete | lucide-react re-export |
-| `@your-lib/cli` | 🟡 Stub | `init` and `add` commands exist but `add` writes placeholder, not real component source. No registry |
+| `@aura-ui/utils` | ✅ Complete | `cn`, compose, type guards, array/object/string/number/DOM utilities |
+| `@aura-ui/hooks` | ✅ 24 hooks done | Core ones (useControllableState, useComposedRefs, useDebounce, etc.) |
+| `@aura-ui/core` | 🟡 Partial | Slot, Primitive, createContext, Portal, VisuallyHidden, DirectionProvider done. **Missing: Presence, FocusScope, FocusGuards, DismissableLayer, RovingFocusGroup, Collection, Popper, Arrow, AccessibleIcon, ScrollLock** |
+| `@aura-ui/themes` | ✅ Complete | ThemeProvider, useTheme, ThemeScript, 3 themes (slate/zinc/rose) |
+| `@aura-ui/primitives` | 🟡 6 of 75 done | Switch, Toggle, Checkbox, Label, Separator, Dialog (Dialog uses a stub focus trap — needs FocusScope rebuild) |
+| `@aura-ui/styled` | 🟡 7 of 75 done | Button + matching wrappers for the 6 primitives above. Tailwind preset done. |
+| `@aura-ui/data-table` | 🟡 Basic | TanStack Table integration with sort/filter/pagination. **Missing: virtualization, column resize/pin/reorder, server-side, CSV export, advanced features** |
+| `@aura-ui/icons` | ✅ Complete | lucide-react re-export |
+| `@aura-ui/cli` | 🟡 Stub | `init` and `add` commands exist but `add` writes placeholder, not real component source. No registry |
 
 **Apps:**
 - `apps/docs` — Next.js 15 landing page only. No actual docs pages yet.
@@ -68,7 +68,7 @@ You are an AI coding agent (Claude Code, Cursor, etc.) tasked with continuing th
 ### ❌ Not done (~90% of total work)
 
 - **69 components** still to build (Tier 1–4)
-- **10 foundation utilities** in `@your-lib/core`
+- **10 foundation utilities** in `@aura-ui/core`
 - **~75 styled wrappers** (one per primitive)
 - **Full DataTable feature set**
 - **All docs MDX pages** for components
@@ -105,8 +105,8 @@ These come from `CLAUDE.md` and `AGENTS.md`. Violating them = revert.
 6. Add a changeset for user-visible changes (`pnpm changeset`)
 7. Update docs for API changes
 8. Run `pnpm typecheck && pnpm lint && pnpm test` before declaring work done
-9. Use `cn()` from `@your-lib/utils` to merge classNames
-10. Use `composeEventHandlers` from `@your-lib/utils` to merge user handlers with internal logic
+9. Use `cn()` from `@aura-ui/utils` to merge classNames
+10. Use `composeEventHandlers` from `@aura-ui/utils` to merge user handlers with internal logic
 
 ---
 
@@ -121,9 +121,9 @@ Memorize this. Every component follows it.
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@your-lib/core';
-import { useControllableState } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+import { Primitive } from '@aura-ui/core';
+import { useControllableState } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 import type { <Name>Props } from './<name>.types';
 
 const <Name> = React.forwardRef<HTML<X>Element, <Name>Props>((props, forwardedRef) => {
@@ -166,7 +166,7 @@ export { <Name> };
 
 ### Compound components (Dialog, Tabs, etc.)
 
-Use `createContext` from `@your-lib/core`. Export parts:
+Use `createContext` from `@aura-ui/core`. Export parts:
 
 ```tsx
 // Inside dialog/index.tsx
@@ -185,7 +185,7 @@ export * as Dialog from './dialog';
 
 User imports as:
 ```tsx
-import { Dialog } from '@your-lib/primitives';
+import { Dialog } from '@aura-ui/primitives';
 <Dialog.Root><Dialog.Trigger /></Dialog.Root>
 ```
 
@@ -196,8 +196,8 @@ import { Dialog } from '@your-lib/primitives';
 'use client';
 
 import * as React from 'react';
-import { <Name> as <Name>Primitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { <Name> as <Name>Primitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const <name>Variants = tv({
@@ -261,7 +261,7 @@ Build in this order. Each phase builds on the previous. **Do not skip phases.**
 
 ### Phase A — Finish foundation utilities (BLOCKS everything else)
 
-These are in `@your-lib/core`. Many later components REQUIRE these.
+These are in `@aura-ui/core`. Many later components REQUIRE these.
 
 | Order | Component | Why it matters | Est. complexity |
 |---|---|---|---|
@@ -400,7 +400,7 @@ The basic DataTable exists. Enhance it incrementally:
 | J1 | Storybook setup at `apps/playground/.storybook/` |
 | J2 | Write stories for every component |
 | J3 | MDX docs pages at `apps/docs/content/components/<name>.mdx` (one per component) |
-| J4 | Real CLI registry: `npx your-lib add <name>` actually fetches & inlines source |
+| J4 | Real CLI registry: `npx aura-ui add <name>` actually fetches & inlines source |
 | J5 | Theme generator UI in docs |
 | J6 | Migration guides (from Radix, MUI, Chakra) |
 | J7 | Bundle size tracking with `size-limit` |
@@ -492,15 +492,15 @@ When you encounter an unclear requirement:
 
 | Package | Allowed runtime deps |
 |---|---|
-| `@your-lib/utils` | `clsx`, `tailwind-merge` |
-| `@your-lib/hooks` | (none — just React peer) |
-| `@your-lib/core` | `@floating-ui/react` |
-| `@your-lib/themes` | (none — just React peer) |
-| `@your-lib/primitives` | `@your-lib/*` internal only |
-| `@your-lib/styled` | `@your-lib/*` internal, `tailwind-variants` |
-| `@your-lib/data-table` | `@tanstack/react-table`, `@tanstack/react-virtual`, `@your-lib/*` |
-| `@your-lib/icons` | `lucide-react` |
-| `@your-lib/cli` | `commander`, `prompts`, `kleur`, `ora`, `execa` |
+| `@aura-ui/utils` | `clsx`, `tailwind-merge` |
+| `@aura-ui/hooks` | (none — just React peer) |
+| `@aura-ui/core` | `@floating-ui/react` |
+| `@aura-ui/themes` | (none — just React peer) |
+| `@aura-ui/primitives` | `@aura-ui/*` internal only |
+| `@aura-ui/styled` | `@aura-ui/*` internal, `tailwind-variants` |
+| `@aura-ui/data-table` | `@tanstack/react-table`, `@tanstack/react-virtual`, `@aura-ui/*` |
+| `@aura-ui/icons` | `lucide-react` |
+| `@aura-ui/cli` | `commander`, `prompts`, `kleur`, `ora`, `execa` |
 
 **If you need a new dep:** add a `// dep: <package> — <one-line reason>` comment in the PR description. If you're an AI agent, ask the human before installing.
 
@@ -519,14 +519,14 @@ Each package has a target gzip size. CI should fail if exceeded (set up `size-li
 
 | Package | Target |
 |---|---|
-| `@your-lib/utils` | < 2 KB |
-| `@your-lib/hooks` | < 5 KB |
-| `@your-lib/core` | < 8 KB |
-| `@your-lib/themes` | < 3 KB |
-| `@your-lib/primitives` | < 20 KB (full) |
-| `@your-lib/styled` | < 25 KB (full) |
-| `@your-lib/data-table` | < 30 KB |
-| `@your-lib/icons` | tree-shakeable per-icon |
+| `@aura-ui/utils` | < 2 KB |
+| `@aura-ui/hooks` | < 5 KB |
+| `@aura-ui/core` | < 8 KB |
+| `@aura-ui/themes` | < 3 KB |
+| `@aura-ui/primitives` | < 20 KB (full) |
+| `@aura-ui/styled` | < 25 KB (full) |
+| `@aura-ui/data-table` | < 30 KB |
+| `@aura-ui/icons` | tree-shakeable per-icon |
 
 Use tree-shakeable exports. No barrel side effects. `sideEffects: false` in every package.json.
 
@@ -679,7 +679,7 @@ You are not building a quick prototype. You are building a library that real tea
 - Every component must work in Next.js App Router (RSC compatible — `'use client'` where needed)
 - Every component must support controlled + uncontrolled state if it has state
 - Every component must be keyboard-navigable
-- Every component must be themeable via the CSS variables in `@your-lib/themes`
+- Every component must be themeable via the CSS variables in `@aura-ui/themes`
 
 **When in doubt:**
 - Choose accessibility over convenience
@@ -693,6 +693,6 @@ You are not building a quick prototype. You are building a library that real tea
 2. Confirm you've read `CLAUDE.md`, `AGENTS.md`, `SKILL.md`, `docs/COMPONENT_TEMPLATE.md`
 3. Run `pnpm install && pnpm build && pnpm playground` to verify the foundation works
 4. If anything is broken, fix it before continuing
-5. Then start Phase A, task A1 (`Presence` in `@your-lib/core`)
+5. Then start Phase A, task A1 (`Presence` in `@aura-ui/core`)
 
 Good luck. Build something the React community will be proud to use.

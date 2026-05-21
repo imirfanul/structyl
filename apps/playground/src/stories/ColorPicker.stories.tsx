@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ColorPicker } from '@your-lib/styled';
+import { ColorPicker } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Specialty/ColorPicker', tags: ['autodocs'] };
 export default meta;

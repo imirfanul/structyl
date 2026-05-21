@@ -29,8 +29,8 @@ import {
   type VisibilityState,
 } from '@tanstack/react-table';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { ChevronDown, ChevronRight, ChevronUp, ChevronsUpDown } from '@your-lib/icons';
-import { cn } from '@your-lib/utils';
+import { ChevronDown, ChevronRight, ChevronUp, ChevronsUpDown } from '@aura-ui/icons';
+import { cn } from '@aura-ui/utils';
 
 export type DataTableColumn<TData, TValue = unknown> = ColumnDef<TData, TValue>;
 
@@ -360,7 +360,7 @@ function renderRow<TData>(row: Row<TData>, table: Table<TData>, enableExpanding:
               position: isPinned ? 'sticky' : undefined,
               left: isPinned === 'left' ? cell.column.getStart('left') : undefined,
               right: isPinned === 'right' ? cell.column.getAfter('right') : undefined,
-              background: isPinned ? 'var(--your-lib-bg, white)' : undefined,
+              background: isPinned ? 'var(--aura-ui-bg, white)' : undefined,
               zIndex: isPinned ? 1 : undefined,
             }}
             className="p-3 align-middle"

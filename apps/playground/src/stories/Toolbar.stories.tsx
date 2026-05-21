@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Toolbar } from '@your-lib/styled';
+import { Toolbar } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Feedback/Toolbar', tags: ['autodocs'] };
 export default meta;

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Popover as PopoverPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Popover as PopoverPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = PopoverPrimitive.Root;
 const Trigger = PopoverPrimitive.Trigger;

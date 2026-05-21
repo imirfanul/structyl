@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Skeleton } from '@your-lib/styled';
+import { Skeleton } from '@aura-ui/styled';
 
 const meta: Meta<typeof Skeleton> = { title: 'Atoms/Skeleton', component: Skeleton, tags: ['autodocs'] };
 export default meta;

@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight } from '@your-lib/icons';
-import { Carousel as CarouselPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { ChevronLeft, ChevronRight } from '@aura-ui/icons';
+import { Carousel as CarouselPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof CarouselPrimitive.Root>,

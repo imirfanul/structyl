@@ -211,7 +211,7 @@ All built-in themes meet WCAG AA contrast ratios for their semantic pairs (`bg`/
 
 ## RTL support
 
-All components use logical CSS properties (`ms-2` not `ml-2`, `start-0` not `left-0`). The `DirectionProvider` from `@your-lib/core` sets the document direction.
+All components use logical CSS properties (`ms-2` not `ml-2`, `start-0` not `left-0`). The `DirectionProvider` from `@aura-ui/core` sets the document direction.
 
 ```tsx
 <DirectionProvider dir="rtl">

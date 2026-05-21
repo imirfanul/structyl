@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Circle } from '@your-lib/icons';
-import { RadioGroup as RadioGroupPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Circle } from '@aura-ui/icons';
+import { RadioGroup as RadioGroupPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,

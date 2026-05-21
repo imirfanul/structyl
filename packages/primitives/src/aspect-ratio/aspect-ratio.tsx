@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@your-lib/core';
+import { Primitive } from '@aura-ui/core';
 import type { AspectRatioProps } from './aspect-ratio.types';
 
 const AspectRatio = React.forwardRef<HTMLDivElement, AspectRatioProps>(
@@ -14,7 +14,7 @@ const AspectRatio = React.forwardRef<HTMLDivElement, AspectRatioProps>(
           width: '100%',
           paddingBottom: `${100 / ratio}%`,
         }}
-        data-your-lib-aspect-ratio-wrapper=""
+        data-aura-ui-aspect-ratio-wrapper=""
       >
         <Primitive.div
           {...rest}

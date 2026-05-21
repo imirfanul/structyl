@@ -17,7 +17,7 @@ This is a living document. Open an issue to propose changes.
 
 ## ✅ Phase A — Foundation utilities (complete)
 
-### `@your-lib/core`
+### `@aura-ui/core`
 - [x] `Primitive`, `Slot`, `createContext`, `Portal`, `VisuallyHidden`, `DirectionProvider`
 - [x] `Presence` — animation-aware mount/unmount
 - [x] `FocusScope` — focus trap with tab cycling
@@ -30,7 +30,7 @@ This is a living document. Open an issue to propose changes.
 - [x] `AccessibleIcon`
 - [x] `ScrollLock`
 
-### `@your-lib/hooks` (24)
+### `@aura-ui/hooks` (24)
 - [x] useControllableState, useToggle, useBoolean, useCounter, usePrevious
 - [x] useComposedRefs, useCallbackRef, useLatest
 - [x] useClickOutside, useEventListener, useKeyPress

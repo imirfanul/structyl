@@ -1,11 +1,11 @@
 {
-  "name": "@your-lib/cli",
+  "name": "@aura-ui/cli",
   "version": "0.0.1",
-  "description": "CLI for adding @your-lib components to your project (shadcn-style)",
+  "description": "CLI for adding @aura-ui components to your project (shadcn-style)",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "your-lib": "./dist/index.js"
+    "aura-ui": "./dist/index.js"
   },
   "files": ["dist"],
   "scripts": {

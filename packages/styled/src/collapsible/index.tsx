@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Collapsible as CollapsiblePrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Collapsible as CollapsiblePrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = CollapsiblePrimitive.Root;
 

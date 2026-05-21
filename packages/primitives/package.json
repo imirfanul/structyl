@@ -1,5 +1,5 @@
 {
-  "name": "@your-lib/primitives",
+  "name": "@aura-ui/primitives",
   "version": "0.0.1",
   "description": "Headless, accessible React primitives — behavior without styling",
   "license": "MIT",
@@ -26,9 +26,9 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@your-lib/core": "workspace:*",
-    "@your-lib/hooks": "workspace:*",
-    "@your-lib/utils": "workspace:*"
+    "@aura-ui/core": "workspace:*",
+    "@aura-ui/hooks": "workspace:*",
+    "@aura-ui/utils": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

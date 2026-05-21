@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Editable as EditablePrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Editable as EditablePrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 const Root = EditablePrimitive.Root;
 

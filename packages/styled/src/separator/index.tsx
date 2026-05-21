@@ -4,8 +4,8 @@ import * as React from 'react';
 import {
   Separator as SeparatorPrimitive,
   type SeparatorProps as SeparatorPrimitiveProps,
-} from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+} from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 export interface SeparatorProps extends SeparatorPrimitiveProps {}
 

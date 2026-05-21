@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PasswordToggleField } from '@your-lib/styled';
+import { PasswordToggleField } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Specialty/PasswordToggleField', tags: ['autodocs'] };
 export default meta;

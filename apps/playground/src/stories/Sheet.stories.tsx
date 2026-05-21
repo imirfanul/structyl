@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Sheet } from '@your-lib/styled';
+import { Sheet } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Overlays/Sheet', tags: ['autodocs'] };
 export default meta;

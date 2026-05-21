@@ -22,7 +22,7 @@ Examples of unacceptable behavior:
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the maintainers at conduct@your-lib.dev. All complaints will be reviewed promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the maintainers at conduct@aura-ui.dev. All complaints will be reviewed promptly and fairly.
 
 ## Attribution
 

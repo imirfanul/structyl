@@ -1,5 +1,5 @@
 /**
- * @your-lib/data-table
+ * @aura-ui/data-table
  *
  * Full-featured DataTable with sorting, filtering, pagination, virtualization,
  * column resize/pin/reorder/visibility, row selection, expanding, grouping,

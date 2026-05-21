@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
-import { cn } from '@your-lib/utils';
+import { cn } from '@aura-ui/utils';
 
 const spinnerVariants = tv({
   base: 'inline-block animate-spin rounded-full border-current border-t-transparent text-primary',

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { createContext } from '@your-lib/core';
-import { useControllableState } from '@your-lib/hooks';
+import { createContext } from '@aura-ui/core';
+import { useControllableState } from '@aura-ui/hooks';
 import * as PopoverPrimitive from '../popover';
 import * as CalendarPrimitive from '../calendar';
 

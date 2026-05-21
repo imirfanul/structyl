@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Slider as SliderPrimitive } from '@your-lib/primitives';
-import { cn } from '@your-lib/utils';
+import { Slider as SliderPrimitive } from '@aura-ui/primitives';
+import { cn } from '@aura-ui/utils';
 
 interface SliderProps
   extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {

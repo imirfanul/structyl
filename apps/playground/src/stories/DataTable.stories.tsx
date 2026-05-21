@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DataTable, type DataTableColumn } from '@your-lib/data-table';
+import { DataTable, type DataTableColumn } from '@aura-ui/data-table';
 
 type User = { id: number; name: string; email: string; role: string };
 const data: User[] = [

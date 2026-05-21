@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Textarea } from '@your-lib/styled';
+import { Textarea } from '@aura-ui/styled';
 
 const meta: Meta<typeof Textarea> = { title: 'Form/Textarea', component: Textarea, tags: ['autodocs'] };
 export default meta;

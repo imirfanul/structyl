@@ -3,12 +3,12 @@ import type { Config } from 'tailwindcss';
 const animate = require('tailwindcss-animate');
 
 /**
- * Tailwind preset for @your-lib/styled.
+ * Tailwind preset for @aura-ui/styled.
  * Maps CSS variables to semantic Tailwind utilities.
  *
  * @example
  * // tailwind.config.ts
- * import yourLibPreset from '@your-lib/styled/tailwind-preset';
+ * import yourLibPreset from '@aura-ui/styled/tailwind-preset';
  * export default { presets: [yourLibPreset] } satisfies Config;
  */
 const preset = {

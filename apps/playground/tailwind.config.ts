@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-import preset from '@your-lib/styled/tailwind-preset';
+import preset from '@aura-ui/styled/tailwind-preset';
 
 export default {
   presets: [preset],

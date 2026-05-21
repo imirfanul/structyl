@@ -1,6 +1,6 @@
 import * as React from 'react';
 import type { Preview } from '@storybook/react';
-import { ThemeProvider } from '@your-lib/themes';
+import { ThemeProvider } from '@aura-ui/themes';
 import '../src/index.css';
 
 const preview: Preview = {

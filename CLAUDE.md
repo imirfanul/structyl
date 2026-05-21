@@ -6,7 +6,7 @@
 
 ## 🎯 Project Identity
 
-**Name:** your-lib (placeholder — rename before publishing)
+**Name:** aura-ui (placeholder — rename before publishing)
 **Type:** Open-source React component library
 **Mission:** Provide a complete, accessible, themable component library with headless behavior + Tailwind-styled layer + a first-class DataTable that Radix UI deliberately omits.
 
@@ -22,8 +22,8 @@
 
 ### Headless-first, styled-second
 Every component MUST exist in two layers:
-- `@your-lib/primitives` — unstyled, accessible behavior only
-- `@your-lib/styled` — Tailwind-styled wrapper around the primitive
+- `@aura-ui/primitives` — unstyled, accessible behavior only
+- `@aura-ui/styled` — Tailwind-styled wrapper around the primitive
 
 NEVER mix styling into the primitives package. NEVER skip the headless layer.
 
@@ -62,7 +62,7 @@ Every stateful primitive supports both modes via `useControllableState`:
 ## 📁 Repository Layout
 
 ```
-your-lib/
+aura-ui/
 ├── apps/
 │   ├── docs/             # Next.js docs site
 │   └── playground/       # Storybook + dev playground
@@ -123,7 +123,7 @@ your-lib/
 - Stories: `*.stories.tsx`
 
 ### Imports
-Use absolute imports via path aliases (`@your-lib/core`), never relative `../../../`.
+Use absolute imports via path aliases (`@aura-ui/core`), never relative `../../../`.
 Always use `import type` for type-only imports.
 
 ### Component anatomy (template)
@@ -161,8 +161,8 @@ Every component must set `displayName` — DevTools and the `Slot` pattern depen
 
 A component is NOT shipped until ALL of these are true:
 
-- [ ] Headless primitive built in `@your-lib/primitives`
-- [ ] Styled wrapper built in `@your-lib/styled`
+- [ ] Headless primitive built in `@aura-ui/primitives`
+- [ ] Styled wrapper built in `@aura-ui/styled`
 - [ ] Supports controlled + uncontrolled state (if stateful)
 - [ ] Supports `asChild` (if it renders an element)
 - [ ] All ARIA attributes correct per WAI-ARIA APG

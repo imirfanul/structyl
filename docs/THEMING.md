@@ -1,6 +1,6 @@
 # Theming
 
-your-lib uses a **CSS variables + Tailwind** approach for theming. This gives you:
+aura-ui uses a **CSS variables + Tailwind** approach for theming. This gives you:
 
 - Runtime theme switching with no re-renders
 - Type-safe theme tokens
@@ -13,7 +13,7 @@ your-lib uses a **CSS variables + Tailwind** approach for theming. This gives yo
 ## Quick start
 
 ```tsx
-import { ThemeProvider } from '@your-lib/themes';
+import { ThemeProvider } from '@aura-ui/themes';
 
 export function App() {
   return (
@@ -78,7 +78,7 @@ Each works in both light and dark mode.
 ## Using `useTheme()`
 
 ```tsx
-import { useTheme } from '@your-lib/themes';
+import { useTheme } from '@aura-ui/themes';
 
 function ThemeToggle() {
   const { theme, setTheme, mode, setMode, resolvedMode } = useTheme();
@@ -117,7 +117,7 @@ function ThemeToggle() {
 <ThemeProvider
   defaultTheme="slate"          // Initial theme
   defaultMode="system"          // 'light' | 'dark' | 'system'
-  storageKey="your-lib-theme"   // localStorage key (false to disable)
+  storageKey="aura-ui-theme"   // localStorage key (false to disable)
   enableTransitions={true}      // Animate theme changes
   themes={{                     // Add custom themes
     myBrand: {
@@ -219,13 +219,13 @@ To use semantic tokens in your own Tailwind classes, extend our preset:
 
 ```js
 // tailwind.config.js
-import yourLibPreset from '@your-lib/styled/tailwind-preset';
+import yourLibPreset from '@aura-ui/styled/tailwind-preset';
 
 export default {
   presets: [yourLibPreset],
   content: [
     './src/**/*.{ts,tsx}',
-    './node_modules/@your-lib/styled/dist/**/*.js',
+    './node_modules/@aura-ui/styled/dist/**/*.js',
   ],
 };
 ```
@@ -247,7 +247,7 @@ For Next.js App Router, place it in your root layout:
 
 ```tsx
 // app/layout.tsx
-import { ThemeProvider, ThemeScript } from '@your-lib/themes';
+import { ThemeProvider, ThemeScript } from '@aura-ui/themes';
 
 export default function RootLayout({ children }) {
   return (

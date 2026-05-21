@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AlertDialog } from '@your-lib/styled';
+import { AlertDialog } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Overlays/AlertDialog', tags: ['autodocs'] };
 export default meta;

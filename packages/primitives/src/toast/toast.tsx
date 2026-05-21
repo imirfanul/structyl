@@ -8,9 +8,9 @@ import {
   Presence,
   DismissableLayer,
   VisuallyHidden,
-} from '@your-lib/core';
-import { useControllableState, useComposedRefs } from '@your-lib/hooks';
-import { composeEventHandlers } from '@your-lib/utils';
+} from '@aura-ui/core';
+import { useControllableState, useComposedRefs } from '@aura-ui/hooks';
+import { composeEventHandlers } from '@aura-ui/utils';
 import type {
   ToastProviderProps,
   ToastViewportProps,
@@ -263,11 +263,11 @@ const Root = React.forwardRef<HTMLLIElement, ToastRootProps>((props, forwardedRe
               const move = isHorizontal ? clampedX : clampedY;
               target.setAttribute('data-swipe', 'move');
               target.style.setProperty(
-                '--your-lib-toast-swipe-move-x',
+                '--aura-ui-toast-swipe-move-x',
                 `${clampedX}px`,
               );
               target.style.setProperty(
-                '--your-lib-toast-swipe-move-y',
+                '--aura-ui-toast-swipe-move-y',
                 `${clampedY}px`,
               );
               if (!hasMoved) onSwipeStart?.(event);
@@ -275,11 +275,11 @@ const Root = React.forwardRef<HTMLLIElement, ToastRootProps>((props, forwardedRe
               if (Math.abs(move) > ctx.swipeThreshold) {
                 target.setAttribute('data-swipe', 'end');
                 target.style.setProperty(
-                  '--your-lib-toast-swipe-end-x',
+                  '--aura-ui-toast-swipe-end-x',
                   `${clampedX}px`,
                 );
                 target.style.setProperty(
-                  '--your-lib-toast-swipe-end-y',
+                  '--aura-ui-toast-swipe-end-y',
                   `${clampedY}px`,
                 );
                 onSwipeEnd?.(event);
@@ -293,8 +293,8 @@ const Root = React.forwardRef<HTMLLIElement, ToastRootProps>((props, forwardedRe
             const target = event.currentTarget as HTMLElement;
             if (swipeDeltaRef.current) {
               target.setAttribute('data-swipe', 'cancel');
-              target.style.removeProperty('--your-lib-toast-swipe-move-x');
-              target.style.removeProperty('--your-lib-toast-swipe-move-y');
+              target.style.removeProperty('--aura-ui-toast-swipe-move-x');
+              target.style.removeProperty('--aura-ui-toast-swipe-move-y');
               onSwipeCancel?.(event);
             }
             swipeStartPointRef.current = null;

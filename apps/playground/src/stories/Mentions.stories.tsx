@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Mentions } from '@your-lib/styled';
+import { Mentions } from '@aura-ui/styled';
 
 const meta: Meta = { title: 'Feedback/Mentions', tags: ['autodocs'] };
 export default meta;
