@@ -459,8 +459,10 @@ export function DataTableToolbar<TData>({
 
 /* ─── Per-column filter UI ──────────────────────────────────────────── */
 
+import type { Column } from '@tanstack/react-table';
+
 export interface DataTableColumnFilterProps<TData, TValue = unknown> {
-  column: import('@tanstack/react-table').Column<TData, TValue>;
+  column: Column<TData, TValue>;
   title?: string;
 }
 

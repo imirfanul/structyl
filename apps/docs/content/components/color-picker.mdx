@@ -1,0 +1,36 @@
+---
+title: ColorPicker
+description: HSV color picker with hue and alpha sliders.
+---
+
+# ColorPicker
+
+HSV color picker with hue and alpha sliders.
+
+## Installation
+
+```bash
+npx your-lib add color-picker
+```
+
+## Usage
+
+```tsx
+import { ColorPicker } from '@your-lib/styled';
+
+export function Example() {
+  return <ColorPicker />;
+}
+```
+
+## API Reference
+
+See the [primitive types](https://github.com/your-org/your-lib/tree/main/packages/primitives/src/color-picker) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+
+## Accessibility
+
+Follows the relevant [WAI-ARIA APG pattern](https://www.w3.org/WAI/ARIA/apg/patterns/). All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+
+## Theming
+
+Styles consume CSS variables from `@your-lib/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

@@ -1,0 +1,36 @@
+---
+title: Sheet
+description: A side-anchored panel that slides in from any edge.
+---
+
+# Sheet
+
+A side-anchored panel that slides in from any edge.
+
+## Installation
+
+```bash
+npx your-lib add sheet
+```
+
+## Usage
+
+```tsx
+import { Sheet } from '@your-lib/styled';
+
+export function Example() {
+  return <Sheet />;
+}
+```
+
+## API Reference
+
+See the [primitive types](https://github.com/your-org/your-lib/tree/main/packages/primitives/src/sheet) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+
+## Accessibility
+
+Follows the relevant [WAI-ARIA APG pattern](https://www.w3.org/WAI/ARIA/apg/patterns/). All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+
+## Theming
+
+Styles consume CSS variables from `@your-lib/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

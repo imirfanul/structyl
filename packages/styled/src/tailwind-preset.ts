@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
+// eslint-disable-next-line @typescript-eslint/no-require-imports, no-undef
 const animate = require('tailwindcss-animate');
 
 /**

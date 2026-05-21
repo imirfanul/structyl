@@ -43,6 +43,10 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Bundle size check
+        run: pnpm size
+        continue-on-error: true
+
   release:
     name: Release
     runs-on: ubuntu-latest

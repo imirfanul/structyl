@@ -1,0 +1,36 @@
+---
+title: Mentions
+description: @-mention textarea with suggestion popover.
+---
+
+# Mentions
+
+@-mention textarea with suggestion popover.
+
+## Installation
+
+```bash
+npx your-lib add mentions
+```
+
+## Usage
+
+```tsx
+import { Mentions } from '@your-lib/styled';
+
+export function Example() {
+  return <Mentions />;
+}
+```
+
+## API Reference
+
+See the [primitive types](https://github.com/your-org/your-lib/tree/main/packages/primitives/src/mentions) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+
+## Accessibility
+
+Follows the relevant [WAI-ARIA APG pattern](https://www.w3.org/WAI/ARIA/apg/patterns/). All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+
+## Theming
+
+Styles consume CSS variables from `@your-lib/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

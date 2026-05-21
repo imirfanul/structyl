@@ -1,0 +1,36 @@
+---
+title: Meter
+description: Quantitative measurement with low/high/optimum thresholds.
+---
+
+# Meter
+
+Quantitative measurement with low/high/optimum thresholds.
+
+## Installation
+
+```bash
+npx your-lib add meter
+```
+
+## Usage
+
+```tsx
+import { Meter } from '@your-lib/styled';
+
+export function Example() {
+  return <Meter />;
+}
+```
+
+## API Reference
+
+See the [primitive types](https://github.com/your-org/your-lib/tree/main/packages/primitives/src/meter) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+
+## Accessibility
+
+Follows the relevant [WAI-ARIA APG pattern](https://www.w3.org/WAI/ARIA/apg/patterns/). All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+
+## Theming
+
+Styles consume CSS variables from `@your-lib/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

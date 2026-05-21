@@ -1,5 +1,6 @@
 [
   {
+    "preset": "@size-limit/preset-small-lib",
     "name": "@your-lib/utils",
     "path": "packages/utils/dist/index.mjs",
     "limit": "2 KB"

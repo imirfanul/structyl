@@ -1,0 +1,36 @@
+---
+title: FileUpload
+description: Drag-and-drop file upload with accept/size validation.
+---
+
+# FileUpload
+
+Drag-and-drop file upload with accept/size validation.
+
+## Installation
+
+```bash
+npx your-lib add file-upload
+```
+
+## Usage
+
+```tsx
+import { FileUpload } from '@your-lib/styled';
+
+export function Example() {
+  return <FileUpload />;
+}
+```
+
+## API Reference
+
+See the [primitive types](https://github.com/your-org/your-lib/tree/main/packages/primitives/src/file-upload) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+
+## Accessibility
+
+Follows the relevant [WAI-ARIA APG pattern](https://www.w3.org/WAI/ARIA/apg/patterns/). All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+
+## Theming
+
+Styles consume CSS variables from `@your-lib/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.
