@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --font-sans: 'Geist', system-ui, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, monospace;
+  }
+
+  * {
+    border-color: hsl(var(--color-border));
+  }
+
+  body {
+    background: hsl(var(--color-bg));
+    color: hsl(var(--color-fg));
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+}

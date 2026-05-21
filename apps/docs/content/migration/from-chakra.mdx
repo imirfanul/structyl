@@ -1,0 +1,42 @@
+---
+title: Migrating from Chakra UI
+description: How to move from Chakra UI to your-lib.
+---
+
+# Migrating from Chakra UI
+
+Chakra is style-props + theme tokens. `your-lib` is Tailwind utility classes + theme tokens via CSS variables.
+
+## Theming
+
+- **Chakra:** `extendTheme({...})` with `tokens` object.
+- **your-lib:** CSS variables in a Tailwind preset (`@your-lib/themes`). Override by writing your own `--primary`, `--bg`, `--fg`, etc.
+
+## Component map
+
+| Chakra                       | your-lib                                              |
+| ---------------------------- | ----------------------------------------------------- |
+| `Button`                     | `Button`                                              |
+| `Input`                      | `Input`                                               |
+| `Stack` / `HStack` / `VStack`| Plain `<div className="flex ...">`                    |
+| `Box`                        | Plain `<div>`                                         |
+| `Heading`                    | Plain `<h1>` … `<h6>` with Tailwind classes           |
+| `Modal`                      | `Dialog`                                              |
+| `Drawer`                     | `Sheet` or `Drawer`                                   |
+| `Menu`                       | `DropdownMenu`                                        |
+| `Tabs`                       | `Tabs`                                                |
+| `Accordion`                  | `Accordion`                                           |
+| `Toast` / `useToast()`       | `Toast` (provider-based, no hook)                     |
+| `Tooltip`                    | `Tooltip`                                             |
+| `Popover`                    | `Popover`                                             |
+| `Editable`                   | `Editable`                                            |
+| `Tag` / tag input            | `Badge` and `TagsInput`                               |
+| `NumberInput`                | `NumberField`                                         |
+| `RadioGroup`                 | `RadioGroup`                                          |
+| `Switch`                     | `Switch`                                              |
+| `Checkbox`                   | `Checkbox`                                            |
+
+## Common patterns
+
+- `useDisclosure()` → `useState(false)` + the open/onOpenChange props on Dialog/Popover/etc.
+- `as` prop → `asChild` prop.

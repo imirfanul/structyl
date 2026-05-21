@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+    --font-sans: ui-sans-serif, system-ui, sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, monospace;
+  }
+
+  body {
+    background: hsl(var(--color-bg));
+    color: hsl(var(--color-fg));
+    font-family: var(--font-sans);
+  }
+}

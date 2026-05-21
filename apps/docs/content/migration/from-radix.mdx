@@ -1,0 +1,37 @@
+---
+title: Migrating from Radix UI
+description: How to move from Radix UI primitives to your-lib.
+---
+
+# Migrating from Radix UI
+
+`your-lib` mirrors Radix UI's primitive APIs almost 1-to-1, with three differences:
+
+1. **Theme tokens.** Where Radix is unstyled, our styled package consumes CSS variables
+   from `@your-lib/themes`. Use `<ThemeProvider>` at the root of your app.
+2. **`asChild` semantics.** Identical to Radix.
+3. **Compound naming.** We re-export as `Dialog`, `Dialog.Root`, etc. — the same dot-notation.
+
+## Component name map
+
+| Radix package                  | your-lib import                  |
+| ------------------------------ | -------------------------------- |
+| `@radix-ui/react-dialog`       | `@your-lib/primitives` (`Dialog`)|
+| `@radix-ui/react-popover`      | `Popover`                        |
+| `@radix-ui/react-tooltip`      | `Tooltip`                        |
+| `@radix-ui/react-dropdown-menu`| `DropdownMenu`                   |
+| `@radix-ui/react-select`       | `Select`                         |
+| `@radix-ui/react-tabs`         | `Tabs`                           |
+| `@radix-ui/react-accordion`    | `Accordion`                      |
+| `@radix-ui/react-collapsible`  | `Collapsible`                    |
+| `@radix-ui/react-toast`        | `Toast`                          |
+| `@radix-ui/react-radio-group`  | `RadioGroup`                     |
+| `@radix-ui/react-switch`       | `Switch`                         |
+| `@radix-ui/react-checkbox`     | `Checkbox`                       |
+| `@radix-ui/react-slider`       | `Slider`                         |
+
+## Behavioral differences
+
+- We expose the same `data-state`, `data-side`, `data-align` attributes for CSS hooks.
+- Our `Form` primitive is closer to `@radix-ui/react-form` but minimal — bring `react-hook-form` if you need full validation.
+- DataTable is built-in (`@your-lib/data-table`) — Radix has no equivalent.

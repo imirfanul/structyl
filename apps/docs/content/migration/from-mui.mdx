@@ -1,0 +1,37 @@
+---
+title: Migrating from MUI
+description: How to move from Material UI to your-lib.
+---
+
+# Migrating from MUI
+
+`your-lib` is Tailwind-styled and headless — quite different from MUI's emotion-based theming. The migration is mostly a styling rewrite.
+
+## Theming
+
+- **MUI:** `<ThemeProvider theme={createTheme(...)}>` with emotion in the background.
+- **your-lib:** `<ThemeProvider theme="slate">` (or your custom theme) consumed via CSS variables. No CSS-in-JS at runtime.
+
+## Component map
+
+| MUI                          | your-lib                                              |
+| ---------------------------- | ----------------------------------------------------- |
+| `Button`                     | `Button`                                              |
+| `TextField`                  | `Input` (+ `Label` + `Form` for validation)           |
+| `Select`                     | `Select`                                              |
+| `Dialog`                     | `Dialog`                                              |
+| `Drawer`                     | `Sheet` (side) or `Drawer` (bottom)                   |
+| `Snackbar`                   | `Toast`                                               |
+| `Autocomplete`               | `Combobox`                                            |
+| `DataGrid`                   | `DataTable`                                           |
+| `Tabs`                       | `Tabs`                                                |
+| `Accordion`                  | `Accordion`                                           |
+| `Menu`                       | `DropdownMenu`                                        |
+| `Tooltip`                    | `Tooltip`                                             |
+| `Popover`                    | `Popover` (or `HoverCard` for hover-triggered)        |
+
+## Styling differences
+
+- All styles are Tailwind utility classes — pass them via `className`.
+- For overrides, prefer composing `cn(...)` over `sx={{}}`.
+- For variants, use `tailwind-variants` (`tv`) instead of MUI's `variants`.
