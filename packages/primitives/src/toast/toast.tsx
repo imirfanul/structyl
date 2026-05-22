@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import {
   createContext,
   Primitive,
@@ -106,7 +107,6 @@ const Viewport = React.forwardRef<HTMLOListElement, ToastViewportProps>(
       >
         <Primitive.ol
           tabIndex={-1}
-          role="region"
           aria-label={label.replace('{hotkey}', hotkeyLabel)}
           {...viewportProps}
           ref={composedRefs}
@@ -214,94 +214,97 @@ const Root = React.forwardRef<HTMLLIElement, ToastRootProps>((props, forwardedRe
   const swipeStartPointRef = React.useRef<{ x: number; y: number } | null>(null);
   const swipeDeltaRef = React.useRef<{ x: number; y: number } | null>(null);
 
-  return (
-    <ToastContextProvider onClose={handleClose}>
-      <Presence present={forceMount || open}>
-        <Primitive.li
-          role="status"
-          aria-live={type === 'foreground' ? 'assertive' : 'polite'}
-          aria-atomic
-          data-state={open ? 'open' : 'closed'}
-          data-swipe-direction={ctx.swipeDirection}
-          tabIndex={0}
-          {...rest}
-          ref={forwardedRef}
-          style={{
-            userSelect: 'none',
-            touchAction: 'none',
-            ...rest.style,
-          }}
-          onKeyDown={composeEventHandlers(rest.onKeyDown, (event) => {
-            if (event.key !== 'Escape') return;
-            onEscapeKeyDown?.(event.nativeEvent);
-            if (!event.nativeEvent.defaultPrevented) {
-              ctx.isFocusedToastEscapeKeyDownRef.current = true;
-              handleClose();
-            }
-          })}
-          onPointerDown={composeEventHandlers(rest.onPointerDown, (event) => {
-            if (event.button !== 0) return;
-            swipeStartPointRef.current = { x: event.clientX, y: event.clientY };
-          })}
-          onPointerMove={composeEventHandlers(rest.onPointerMove, (event) => {
-            if (!swipeStartPointRef.current) return;
-            const x = event.clientX - swipeStartPointRef.current.x;
-            const y = event.clientY - swipeStartPointRef.current.y;
-            const hasMoved = swipeDeltaRef.current !== null;
-            const isHorizontal =
-              ctx.swipeDirection === 'left' || ctx.swipeDirection === 'right';
-            const clampedX = ['left', 'up'].includes(ctx.swipeDirection)
-              ? Math.min(0, x)
-              : Math.max(0, x);
-            const clampedY = ['up', 'left'].includes(ctx.swipeDirection)
-              ? Math.min(0, y)
-              : Math.max(0, y);
-            const moveStarted = Math.abs(isHorizontal ? clampedX : clampedY) > 10;
-            const target = event.currentTarget as HTMLElement;
-            if (hasMoved || moveStarted) {
-              swipeDeltaRef.current = { x: clampedX, y: clampedY };
-              const move = isHorizontal ? clampedX : clampedY;
-              target.setAttribute('data-swipe', 'move');
-              target.style.setProperty(
-                '--aura-ui-toast-swipe-move-x',
-                `${clampedX}px`,
-              );
-              target.style.setProperty(
-                '--aura-ui-toast-swipe-move-y',
-                `${clampedY}px`,
-              );
-              if (!hasMoved) onSwipeStart?.(event);
-              onSwipeMove?.(event);
-              if (Math.abs(move) > ctx.swipeThreshold) {
-                target.setAttribute('data-swipe', 'end');
-                target.style.setProperty(
-                  '--aura-ui-toast-swipe-end-x',
-                  `${clampedX}px`,
-                );
-                target.style.setProperty(
-                  '--aura-ui-toast-swipe-end-y',
-                  `${clampedY}px`,
-                );
-                onSwipeEnd?.(event);
-                handleClose();
-                swipeStartPointRef.current = null;
-                swipeDeltaRef.current = null;
-              }
-            }
-          })}
-          onPointerUp={composeEventHandlers(rest.onPointerUp, (event) => {
-            const target = event.currentTarget as HTMLElement;
-            if (swipeDeltaRef.current) {
-              target.setAttribute('data-swipe', 'cancel');
-              target.style.removeProperty('--aura-ui-toast-swipe-move-x');
-              target.style.removeProperty('--aura-ui-toast-swipe-move-y');
-              onSwipeCancel?.(event);
-            }
+  const toast = (
+    <Primitive.li
+      aria-live={type === 'foreground' ? 'assertive' : 'polite'}
+      aria-atomic
+      data-state={open ? 'open' : 'closed'}
+      data-swipe-direction={ctx.swipeDirection}
+      tabIndex={0}
+      {...rest}
+      ref={forwardedRef}
+      style={{
+        userSelect: 'none',
+        touchAction: 'none',
+        ...rest.style,
+      }}
+      onKeyDown={composeEventHandlers(rest.onKeyDown, (event) => {
+        if (event.key !== 'Escape') return;
+        onEscapeKeyDown?.(event.nativeEvent);
+        if (!event.nativeEvent.defaultPrevented) {
+          ctx.isFocusedToastEscapeKeyDownRef.current = true;
+          handleClose();
+        }
+      })}
+      onPointerDown={composeEventHandlers(rest.onPointerDown, (event) => {
+        if (event.button !== 0) return;
+        swipeStartPointRef.current = { x: event.clientX, y: event.clientY };
+      })}
+      onPointerMove={composeEventHandlers(rest.onPointerMove, (event) => {
+        if (!swipeStartPointRef.current) return;
+        const x = event.clientX - swipeStartPointRef.current.x;
+        const y = event.clientY - swipeStartPointRef.current.y;
+        const hasMoved = swipeDeltaRef.current !== null;
+        const isHorizontal =
+          ctx.swipeDirection === 'left' || ctx.swipeDirection === 'right';
+        const clampedX = ['left', 'up'].includes(ctx.swipeDirection)
+          ? Math.min(0, x)
+          : Math.max(0, x);
+        const clampedY = ['up', 'left'].includes(ctx.swipeDirection)
+          ? Math.min(0, y)
+          : Math.max(0, y);
+        const moveStarted = Math.abs(isHorizontal ? clampedX : clampedY) > 10;
+        const target = event.currentTarget as HTMLElement;
+        if (hasMoved || moveStarted) {
+          swipeDeltaRef.current = { x: clampedX, y: clampedY };
+          const move = isHorizontal ? clampedX : clampedY;
+          target.setAttribute('data-swipe', 'move');
+          target.style.setProperty(
+            '--aura-ui-toast-swipe-move-x',
+            `${clampedX}px`,
+          );
+          target.style.setProperty(
+            '--aura-ui-toast-swipe-move-y',
+            `${clampedY}px`,
+          );
+          if (!hasMoved) onSwipeStart?.(event);
+          onSwipeMove?.(event);
+          if (Math.abs(move) > ctx.swipeThreshold) {
+            target.setAttribute('data-swipe', 'end');
+            target.style.setProperty(
+              '--aura-ui-toast-swipe-end-x',
+              `${clampedX}px`,
+            );
+            target.style.setProperty(
+              '--aura-ui-toast-swipe-end-y',
+              `${clampedY}px`,
+            );
+            onSwipeEnd?.(event);
+            handleClose();
             swipeStartPointRef.current = null;
             swipeDeltaRef.current = null;
-          })}
-        />
-      </Presence>
+          }
+        }
+      })}
+      onPointerUp={composeEventHandlers(rest.onPointerUp, (event) => {
+        const target = event.currentTarget as HTMLElement;
+        if (swipeDeltaRef.current) {
+          target.setAttribute('data-swipe', 'cancel');
+          target.style.removeProperty('--aura-ui-toast-swipe-move-x');
+          target.style.removeProperty('--aura-ui-toast-swipe-move-y');
+          onSwipeCancel?.(event);
+        }
+        swipeStartPointRef.current = null;
+        swipeDeltaRef.current = null;
+      })}
+    />
+  );
+
+  const content = <Presence present={forceMount || open}>{toast}</Presence>;
+
+  return (
+    <ToastContextProvider onClose={handleClose}>
+      {ctx.viewport ? ReactDOM.createPortal(content, ctx.viewport) : content}
     </ToastContextProvider>
   );
 });

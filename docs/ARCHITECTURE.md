@@ -221,7 +221,7 @@ Apps use Next.js; packages stay framework-agnostic (work in Vite, CRA, Remix, et
 
 ## Bundle size discipline
 
-Every package has a budget tracked in `BUDGETS.md`. CI fails if any package exceeds its budget. Use `size-limit` to enforce.
+Every package has a budget tracked in `.size-limit.json`. CI fails if any package exceeds its budget through `size-limit`.
 
 ---
 

@@ -4,7 +4,7 @@ import * as React from 'react';
 import {
   Button, Switch, Checkbox, Label, Dialog, Popover, Tooltip, Select,
   DropdownMenu, Accordion, Tabs, Slider, Avatar, Badge, Card, Alert,
-  Input, Progress, Toast, Skeleton, Separator,
+  Input, Progress, Toast, Skeleton, Spinner, Separator,
   AspectRatio, Textarea, RadioGroup, Toggle, ToggleGroup, Form,
   Collapsible, Breadcrumb, Pagination, Stepper, AlertDialog, Sheet,
   Drawer, HoverCard, ContextMenu, Menubar, NavigationMenu, Combobox,
@@ -13,6 +13,7 @@ import {
   FileUpload, CircularProgress, Meter, ScrollArea, Toolbar, Resizable,
   Carousel, Tree, Editable, TagsInput, Mentions, CopyButton,
 } from '@aura-ui/styled';
+import { DataTable, type DataTableColumn } from '@aura-ui/data-table';
 
 /* ── Types ──────────────────────────────────────────────────────────── */
 
@@ -47,6 +48,21 @@ export interface ComponentEntry {
   keyboard?: KeyboardRow[];
   ariaPattern?: string;
 }
+
+type DocsUser = { id: number; name: string; email: string; role: string };
+
+const docsTableData: DocsUser[] = [
+  { id: 1, name: 'Ada Lovelace', email: 'ada@example.com', role: 'Admin' },
+  { id: 2, name: 'Alan Turing', email: 'alan@example.com', role: 'Editor' },
+  { id: 3, name: 'Grace Hopper', email: 'grace@example.com', role: 'Admin' },
+  { id: 4, name: 'Margaret Hamilton', email: 'margaret@example.com', role: 'Viewer' },
+];
+
+const docsTableColumns: DataTableColumn<DocsUser>[] = [
+  { accessorKey: 'name', header: 'Name' },
+  { accessorKey: 'email', header: 'Email' },
+  { accessorKey: 'role', header: 'Role' },
+];
 
 /* ── Component registry ─────────────────────────────────────────────── */
 
@@ -750,6 +766,26 @@ export default function Demo() {
 }`,
   },
   {
+    slug: 'spinner',
+    name: 'Spinner',
+    category: 'Atoms',
+    description: 'A status indicator for pending work.',
+    features: ['Announces loading state with role="status".', 'Four token-driven sizes.', 'Accepts a custom screen-reader label.'],
+    preview: () => (
+      <div className="flex items-center gap-4">
+        <Spinner size="sm" />
+        <Spinner />
+        <Spinner size="lg" />
+        <Spinner size="xl" label="Loading large preview" />
+      </div>
+    ),
+    code: `import { Spinner } from '@aura-ui/styled';
+
+export default function Demo() {
+  return <Spinner label="Loading results" />;
+}`,
+  },
+  {
     slug: 'separator',
     name: 'Separator',
     category: 'Atoms',
@@ -1272,6 +1308,41 @@ export default function Demo() {
     ),
     code: `import { Mentions } from '@aura-ui/styled';\n\n<Mentions.Root>\n  <Mentions.Textarea placeholder="Try @ada…" />\n  <Mentions.Suggestions items={users}>\n    <Mentions.Items>\n      {(item, i) => <Mentions.Item key={item.id} suggestion={item} index={i}>@{item.label}</Mentions.Item>}\n    </Mentions.Items>\n  </Mentions.Suggestions>\n</Mentions.Root>`,
   },
+  {
+    slug: 'data-table',
+    name: 'DataTable',
+    category: 'Data',
+    description: 'A full-featured data grid with sorting, filtering, pagination, virtualization and row selection.',
+    features: [
+      'Built on TanStack Table with typed column definitions.',
+      'Sorting, filtering, pagination, selection, resizing and pinning.',
+      'Virtualized rows for large datasets.',
+      'Server-side state adapter for remote data.',
+    ],
+    preview: () => (
+      <DataTable
+        columns={docsTableColumns}
+        data={docsTableData}
+        enableSorting
+        enablePagination
+        pageSize={3}
+        className="w-full max-w-2xl"
+      />
+    ),
+    code: `import { DataTable, type DataTableColumn } from '@aura-ui/data-table';
+
+type User = { id: number; name: string; email: string; role: string };
+
+const columns: DataTableColumn<User>[] = [
+  { accessorKey: 'name', header: 'Name' },
+  { accessorKey: 'email', header: 'Email' },
+  { accessorKey: 'role', header: 'Role' },
+];
+
+export default function Demo({ data }: { data: User[] }) {
+  return <DataTable columns={columns} data={data} enableSorting enablePagination />;
+}`,
+  },
 ];
 
 function ToastDemo() {
@@ -1390,4 +1461,4 @@ export const PACKAGES: PackageEntry[] = [
   },
 ];
 
-export const CATEGORIES = ['Atoms', 'Form', 'Disclosure', 'Overlays', 'Compound', 'Misc'];
+export const CATEGORIES = ['Atoms', 'Form', 'Disclosure', 'Overlays', 'Compound', 'Misc', 'Data'];

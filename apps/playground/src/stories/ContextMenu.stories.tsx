@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ContextMenu } from '@aura-ui/styled';
+import { ContextMenuStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Compound/ContextMenu', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>ContextMenu story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <ContextMenuStory /> };

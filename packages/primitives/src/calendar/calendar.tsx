@@ -340,8 +340,7 @@ const Day = React.forwardRef<HTMLButtonElement, CalendarDayProps>(
     return (
       <Primitive.button
         type="button"
-        role="gridcell"
-        aria-selected={selected}
+        aria-pressed={selected}
         aria-disabled={disabled}
         data-state={selected ? 'selected' : 'unselected'}
         data-today={isToday ? '' : undefined}

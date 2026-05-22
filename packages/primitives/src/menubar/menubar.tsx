@@ -136,12 +136,12 @@ const Trigger = React.forwardRef<HTMLButtonElement, MenubarTriggerProps>(
     const composedRef = useComposedRefs(forwardedRef, menuCtx.triggerRef);
     const open = ctx.value === menuCtx.value;
     return (
-      <RovingFocusItem
-        asChild
-        focusable={!props.disabled}
-        tabStopId={menuCtx.value}
-      >
-        <MenuPrimitive.Anchor asChild>
+      <MenuPrimitive.Anchor asChild>
+        <RovingFocusItem
+          asChild
+          focusable={!props.disabled}
+          tabStopId={menuCtx.value}
+        >
           <Primitive.button
             type="button"
             role="menuitem"
@@ -175,8 +175,8 @@ const Trigger = React.forwardRef<HTMLButtonElement, MenubarTriggerProps>(
               }
             })}
           />
-        </MenuPrimitive.Anchor>
-      </RovingFocusItem>
+        </RovingFocusItem>
+      </MenuPrimitive.Anchor>
     );
   },
 );

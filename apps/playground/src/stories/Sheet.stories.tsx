@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Sheet } from '@aura-ui/styled';
+import { SheetStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Overlays/Sheet', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Sheet story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <SheetStory /> };

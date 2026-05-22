@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Avatar } from '@aura-ui/styled';
+import { AvatarStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Atoms/Avatar', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Avatar story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <AvatarStory /> };

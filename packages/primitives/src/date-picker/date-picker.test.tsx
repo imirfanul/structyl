@@ -1,16 +1,16 @@
-import * as React from 'react';
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { describe, expect, it } from 'vitest';
 import * as DatePickerModule from './';
+import { renderDatePickerAxeFixture } from '../../test/axe-fixtures';
 
 describe('DatePicker (primitive)', () => {
   it('exports something usable', () => {
     expect(Object.keys(DatePickerModule).length).toBeGreaterThan(0);
   });
 
-  it.skip('has no accessibility violations in default render', async () => {
-    const { container } = render(<div />);
+  it('has no accessibility violations in default render', async () => {
+    const { container } = render(renderDatePickerAxeFixture());
     expect(await axe(container)).toHaveNoViolations();
   });
 });

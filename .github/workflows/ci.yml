@@ -13,8 +13,8 @@ concurrency:
 jobs:
   ci:
     name: Lint, typecheck, test, build
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,9 +43,17 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Install Playwright browsers
+        run: pnpm --filter playground exec playwright install --with-deps chromium
+
+      - name: Storybook accessibility audit
+        run: pnpm test:a11y
+
+      - name: Storybook visual smoke
+        run: pnpm test:e2e
+
       - name: Bundle size check
         run: pnpm size
-        continue-on-error: true
 
   release:
     name: Release

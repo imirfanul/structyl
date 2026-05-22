@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Mentions } from '@aura-ui/styled';
+import { MentionsStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Feedback/Mentions', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Mentions story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <MentionsStory /> };

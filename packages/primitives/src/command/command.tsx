@@ -90,7 +90,7 @@ const Root = React.forwardRef<HTMLDivElement, CommandRootProps>(
       (id: string) => {
         if (!shouldFilter) return 1;
         const item = itemsRef.current.get(id);
-        if (!item) return 0;
+        if (!item) return search ? 0 : 1;
         return filter(item.value, search, item.keywords);
       },
       [filter, search, shouldFilter],
@@ -189,7 +189,12 @@ const List = React.forwardRef<
   const ctx = useCommandContext('Command.List');
   const composedRef = useComposedRefs(forwardedRef, ctx.listRef);
   return (
-    <Primitive.div role="listbox" {...props} ref={composedRef} />
+    <Primitive.div
+      role="listbox"
+      {...props}
+      aria-label={props['aria-label'] ?? 'Command results'}
+      ref={composedRef}
+    />
   );
 });
 List.displayName = 'Command.List';
@@ -298,7 +303,7 @@ const Separator = React.forwardRef<
   HTMLDivElement,
   React.ComponentPropsWithoutRef<'div'> & { asChild?: boolean }
 >((props, forwardedRef) => (
-  <Primitive.div role="separator" {...props} ref={forwardedRef} />
+  <Primitive.div role="presentation" aria-hidden="true" {...props} ref={forwardedRef} />
 ));
 Separator.displayName = 'Command.Separator';
 

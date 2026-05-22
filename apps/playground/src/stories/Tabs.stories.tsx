@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Tabs } from '@aura-ui/styled';
+import { TabsStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Disclosure/Tabs', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Tabs story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <TabsStory /> };

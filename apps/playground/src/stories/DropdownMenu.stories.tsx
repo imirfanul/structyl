@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DropdownMenu } from '@aura-ui/styled';
+import { DropdownMenuStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Compound/DropdownMenu', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>DropdownMenu story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <DropdownMenuStory /> };

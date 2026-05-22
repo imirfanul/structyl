@@ -4,7 +4,6 @@ import * as React from 'react';
 import Link from 'next/link';
 import { notFound, useParams } from 'next/navigation';
 import { Check, Copy, ArrowUpRight } from '@aura-ui/icons';
-import { Button } from '@aura-ui/styled';
 import { COMPONENTS, HOOKS, PACKAGES, type ComponentEntry } from '../../../lib/registry';
 import { API } from '../../../lib/api-data';
 

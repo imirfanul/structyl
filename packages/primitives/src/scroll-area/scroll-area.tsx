@@ -49,6 +49,7 @@ const Viewport = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef
     return (
       <Primitive.div
         data-aura-ui-scroll-area-viewport=""
+        tabIndex={props.tabIndex ?? 0}
         {...props}
         ref={composedRef}
         style={{

@@ -9,6 +9,8 @@
     "preview": "vite preview --port 3002",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
+    "test:e2e": "playwright test --project=visual",
+    "test:a11y": "playwright test --project=a11y",
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist .turbo storybook-static"
@@ -23,6 +25,8 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.60.0",
     "@storybook/addon-a11y": "^8.3.6",
     "@storybook/addon-essentials": "^8.3.6",
     "@storybook/addon-interactions": "^8.3.6",

@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Pagination } from '@aura-ui/styled';
+import { PaginationStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Disclosure/Pagination', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Pagination story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <PaginationStory /> };

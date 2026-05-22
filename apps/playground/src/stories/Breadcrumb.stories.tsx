@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Breadcrumb } from '@aura-ui/styled';
+import { BreadcrumbStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Disclosure/Breadcrumb', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Breadcrumb story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <BreadcrumbStory /> };

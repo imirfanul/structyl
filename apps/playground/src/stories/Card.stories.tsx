@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Card } from '@aura-ui/styled';
+import { CardStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Atoms/Card', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Card story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <CardStory /> };

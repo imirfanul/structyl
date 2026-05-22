@@ -86,6 +86,17 @@ export const API: Record<string, ApiPart[]> = {
   skeleton: [
     { name: 'Skeleton', description: 'A pulse-animated placeholder. Shape it with classes.', props: [className] },
   ],
+  spinner: [
+    {
+      name: 'Spinner',
+      description: 'A loading status indicator.',
+      props: [
+        { name: 'size', type: "'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: 'Visual size.' },
+        { name: 'label', type: 'string', default: "'Loading'", description: 'Visually hidden label announced to assistive technology.' },
+        className,
+      ],
+    },
+  ],
   separator: [
     {
       name: 'Separator',
@@ -882,6 +893,33 @@ export const API: Record<string, ApiPart[]> = {
     { name: 'DateRangePicker.Root', description: 'A date-range input — Calendar in a Popover.', props: [{ name: 'value', type: '{ from?: Date; to?: Date }', description: 'Controlled range.' }, { name: 'onValueChange', type: '(range) => void', description: 'Called when the range changes.' }] },
     { name: 'DateRangePicker.Trigger', description: 'Opens the calendar.', props: [] },
     { name: 'DateRangePicker.Content', description: 'The popover with the range calendar.', props: [] },
+  ],
+  'data-table': [
+    {
+      name: 'DataTable',
+      description: 'A typed TanStack Table wrapper with Aura styling and batteries included.',
+      props: [
+        { name: 'columns', type: 'DataTableColumn<TData>[]', description: 'Column definitions for the dataset.' },
+        { name: 'data', type: 'TData[]', description: 'Rows to render.' },
+        { name: 'virtual', type: 'boolean | { estimatedRowHeight?: number; overscan?: number }', description: 'Render rows with virtualization.' },
+        { name: 'enableSorting', type: 'boolean', default: 'true', description: 'Enable sortable column headers.' },
+        { name: 'enableFiltering', type: 'boolean', default: 'false', description: 'Enable column filtering state.' },
+        { name: 'enableRowSelection', type: "boolean | 'single'", default: 'false', description: 'Enable row selection checkboxes.' },
+        { name: 'enablePagination', type: 'boolean', default: 'false', description: 'Render pagination controls.' },
+        { name: 'enableColumnResizing', type: 'boolean', default: 'false', description: 'Allow resizing columns.' },
+        { name: 'enableColumnReordering', type: 'boolean', default: 'false', description: 'Allow reordering columns.' },
+        { name: 'enableColumnPinning', type: 'boolean', default: 'false', description: 'Allow pinning columns.' },
+        { name: 'pageSize', type: 'number', default: '10', description: 'Initial rows per page.' },
+        { name: 'loading', type: 'boolean', description: 'Show the loading state.' },
+        { name: 'error', type: 'ReactNode', description: 'Render an error state.' },
+        { name: 'emptyState', type: 'ReactNode', description: 'Render custom empty content.' },
+        { name: 'serverSide', type: '{ state; onStateChange; rowCount }', description: 'External state adapter for remote data.' },
+        { name: 'tableRef', type: 'MutableRefObject<Table<TData> | null>', description: 'Imperative access to the TanStack Table instance.' },
+        className,
+      ],
+    },
+    { name: 'DataTableToolbar', description: 'Optional toolbar for search and actions.', props: [{ name: 'table', type: 'Table<TData>', description: 'TanStack Table instance.' }] },
+    { name: 'DataTableColumnVisibility', description: 'Column visibility menu.', props: [{ name: 'table', type: 'Table<TData>', description: 'TanStack Table instance.' }] },
   ],
 };
 

@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Command } from '@aura-ui/styled';
+import { CommandStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Compound/Command', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Command story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <CommandStory /> };

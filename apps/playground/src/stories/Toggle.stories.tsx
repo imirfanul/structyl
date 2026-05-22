@@ -4,4 +4,4 @@ import { Toggle } from '@aura-ui/styled';
 const meta: Meta<typeof Toggle> = { title: 'Atoms/Toggle', component: Toggle, tags: ['autodocs'] };
 export default meta;
 type Story = StoryObj<typeof Toggle>;
-export const Default: Story = {};
+export const Default: Story = { args: { children: 'Bold', defaultPressed: true } };

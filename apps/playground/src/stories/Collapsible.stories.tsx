@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Collapsible } from '@aura-ui/styled';
+import { CollapsibleStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Disclosure/Collapsible', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Collapsible story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <CollapsibleStory /> };

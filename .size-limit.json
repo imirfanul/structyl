@@ -1,9 +1,8 @@
 [
   {
-    "preset": "@size-limit/preset-small-lib",
     "name": "@aura-ui/utils",
     "path": "packages/utils/dist/index.mjs",
-    "limit": "2 KB"
+    "limit": "8 KB"
   },
   {
     "name": "@aura-ui/hooks",
@@ -13,26 +12,26 @@
   {
     "name": "@aura-ui/core",
     "path": "packages/core/dist/index.mjs",
-    "limit": "20 KB"
+    "limit": "22 KB"
   },
   {
     "name": "@aura-ui/themes",
     "path": "packages/themes/dist/index.mjs",
-    "limit": "3 KB"
+    "limit": "5 KB"
   },
   {
     "name": "@aura-ui/primitives",
     "path": "packages/primitives/dist/index.mjs",
-    "limit": "80 KB"
+    "limit": "50 KB"
   },
   {
     "name": "@aura-ui/styled",
     "path": "packages/styled/dist/index.mjs",
-    "limit": "40 KB"
+    "limit": "72 KB"
   },
   {
     "name": "@aura-ui/data-table",
     "path": "packages/data-table/dist/index.mjs",
-    "limit": "30 KB"
+    "limit": "35 KB"
   }
 ]

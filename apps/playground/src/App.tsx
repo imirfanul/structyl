@@ -26,7 +26,7 @@ import {
 } from '@aura-ui/styled';
 import { useTheme } from '@aura-ui/themes';
 import {
-  DataTable, DataTableToolbar, DataTableColumnVisibility, exportToCSV,
+  DataTable, exportToCSV,
   type DataTableColumn, type Table,
 } from '@aura-ui/data-table';
 
@@ -726,7 +726,7 @@ function FormBasics() {
             <Form.Label asChild><Label>Email address</Label></Form.Label>
             <Form.Control type="email" required placeholder="you@example.com" />
             <Form.Message match="valueMissing">Please enter an email.</Form.Message>
-            <Form.Message match="typeMismatch">That's not a valid email.</Form.Message>
+            <Form.Message match="typeMismatch">That is not a valid email.</Form.Message>
           </Form.Field>
           <Form.Submit asChild><Button className="mt-3 w-full">Submit</Button></Form.Submit>
         </Form.Root>
@@ -1437,7 +1437,6 @@ function PaletteGenerator() {
     const t = v.replace(/[^0-9a-fA-F]/g, '').slice(0, 6);
     return `#${t}`;
   };
-  const isValidHex = (v: string) => /^#[0-9a-fA-F]{6}$/.test(norm(v) + '000000'.slice(0, 7 - norm(v).length));
   const safe = (v: string, fb: string) => (/^#[0-9a-fA-F]{6}$/.test(norm(v)) ? norm(v) : fb);
 
   const accentHex = safe(accent, '#3CDD82');

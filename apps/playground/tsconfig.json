@@ -6,6 +6,6 @@
     "moduleResolution": "Bundler",
     "noEmit": true
   },
-  "include": ["src/**/*", "vite.config.ts"],
+  "include": ["src/**/*", "tests/**/*", "playwright.config.ts", "vite.config.ts"],
   "exclude": ["src/**/*.stories.tsx", ".storybook/**"]
 }

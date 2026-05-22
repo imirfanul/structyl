@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Combobox } from '@aura-ui/styled';
+import { ComboboxStory } from './story-fixtures';
 
 const meta: Meta = { title: 'Compound/Combobox', tags: ['autodocs'] };
 export default meta;
+
 type Story = StoryObj;
-export const Default: Story = { render: () => <div>Combobox story — see playground for full demo</div> };
+
+export const Default: Story = { render: () => <ComboboxStory /> };

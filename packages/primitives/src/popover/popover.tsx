@@ -257,9 +257,6 @@ const ContentImpl = React.forwardRef<HTMLDivElement, ContentImplProps>(
       <>
         <FocusGuards />
         <Popper.Content
-          data-state={ctx.open ? 'open' : 'closed'}
-          role="dialog"
-          id={ctx.contentId}
           side={side}
           sideOffset={sideOffset}
           align={align}
@@ -284,7 +281,14 @@ const ContentImpl = React.forwardRef<HTMLDivElement, ContentImplProps>(
               onUnmountAutoFocus={onCloseAutoFocus}
               style={{ display: 'contents' }}
             >
-              <Primitive.div tabIndex={-1} {...rest} ref={forwardedRef}>
+              <Primitive.div
+                role="dialog"
+                id={ctx.contentId}
+                data-state={ctx.open ? 'open' : 'closed'}
+                tabIndex={-1}
+                {...rest}
+                ref={forwardedRef}
+              >
                 {children}
               </Primitive.div>
             </FocusScope>

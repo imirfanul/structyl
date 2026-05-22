@@ -95,6 +95,7 @@ const Panel = React.forwardRef<HTMLDivElement, ResizablePanelProps>(
         data-panel-id={id}
         data-min-size={minSize}
         data-max-size={maxSize}
+        tabIndex={rest.tabIndex ?? 0}
         {...rest}
         ref={composedRef}
         style={{

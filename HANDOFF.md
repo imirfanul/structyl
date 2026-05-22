@@ -2,6 +2,8 @@
 
 > **Read this entire file before doing anything.** This is the master plan to take `aura-ui` from scaffold (10% complete) to v1.0 launch.
 
+> **Current status note (May 22, 2026):** this file is historical and no longer reflects the implementation state below. The component library, DataTable, docs registry, Storybook examples, primitive axe coverage, and CI automation are now substantially complete. Use `docs/ROADMAP.md` for the current launch checklist; remaining work is manual screen-reader validation and the actual v1.0 publish.
+
 ---
 
 ## 0. How to use this document
