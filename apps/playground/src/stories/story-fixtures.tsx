@@ -4,50 +4,94 @@ import {
   Accordion,
   Alert,
   AlertDialog,
+  AppBar,
+  Autocomplete,
   Avatar,
+  Backdrop,
+  BottomNavigation,
+  Box,
   Breadcrumb,
   Button,
+  ButtonGroup,
   Card,
   Carousel,
+  Chart,
+  Chip,
+  ClickAwayListener,
   Collapsible,
   ColorPicker,
+  Container,
+  CssBaseline,
   Combobox,
   Command,
   ContextMenu,
   DatePicker,
+  DateTimePicker,
   DateRangePicker,
   Drawer,
   DropdownMenu,
   Editable,
   FileUpload,
+  FloatingActionButton,
+  Grid,
   HoverCard,
+  ImageList,
+  InitColorSchemeScript,
   Input,
   Label,
+  Link,
+  List,
+  Masonry,
   Mentions,
   Menubar,
+  Modal,
+  MultiSelect,
   NavigationMenu,
+  NoSsr,
+  Paper,
   NumberField,
   OneTimePasswordField,
   Pagination,
   PasswordToggleField,
   Popover,
+  Popper,
+  Portal,
   RadioGroup,
+  Rating,
   Resizable,
   ScrollArea,
   Select,
   Sheet,
+  Snackbar,
+  SpeedDial,
+  Stack,
   Stepper,
+  SvgIcon,
   Tabs,
+  Table,
   TagsInput,
+  TextareaAutosize,
+  Timeline,
   TimePicker,
   Toast,
   ToggleGroup,
   Toolbar,
+  TransferList,
+  Transition,
+  Typography,
   Tooltip,
   Tree,
 } from '@aura-ui/styled';
 
 const frameworks = ['React', 'Vue', 'Svelte', 'Angular', 'Solid'];
+const frameworkOptions = frameworks.map((framework) => ({
+  value: framework.toLowerCase(),
+  label: framework,
+}));
+const selectOptions = Array.from({ length: 1000 }, (_, index) => ({
+  value: `option-${index + 1}`,
+  label: `Option ${index + 1}`,
+}));
 
 export function AccordionStory() {
   return (
@@ -277,19 +321,33 @@ export function ContextMenuStory() {
 
 export function DatePickerStory() {
   return (
-    <DatePicker.Root defaultValue={new Date(2026, 1, 10)}>
-      <DatePicker.Trigger />
-      <DatePicker.Content />
-    </DatePicker.Root>
+    <DatePicker
+      label="Release date"
+      defaultValue={new Date(2026, 1, 10)}
+      helperText="MUI-style field with a calendar popover."
+    />
   );
 }
 
 export function DateRangePickerStory() {
   return (
-    <DateRangePicker.Root defaultValue={{ from: new Date(2026, 1, 10), to: new Date(2026, 1, 17) }}>
-      <DateRangePicker.Trigger />
-      <DateRangePicker.Content />
-    </DateRangePicker.Root>
+    <DateRangePicker
+      label="Sprint window"
+      defaultValue={[new Date(2026, 1, 10), new Date(2026, 1, 17)]}
+      shortcuts={false}
+      helperText="MUI-style tuple value with a range calendar."
+    />
+  );
+}
+
+export function DateTimePickerStory() {
+  return (
+    <DateTimePicker
+      label="Deployment window"
+      defaultValue={new Date(2026, 1, 10, 14, 30)}
+      minutesStep={15}
+      helperText="MUI-style date and time field."
+    />
   );
 }
 
@@ -604,21 +662,196 @@ export function ScrollAreaStory() {
 }
 
 export function SelectStory() {
+  const [options, setOptions] = React.useState(selectOptions);
+
   return (
-    <Select.Root defaultValue="apple">
-      <Select.Trigger aria-label="Fruit" className="w-[220px]">
-        <Select.Value placeholder="Select a fruit" />
-      </Select.Trigger>
-      <Select.Content>
-        <Select.Label>Fruits</Select.Label>
-        <Select.Item value="apple">Apple</Select.Item>
-        <Select.Item value="banana">Banana</Select.Item>
-        <Select.Item value="cherry">Cherry</Select.Item>
-        <Select.Separator />
-        <Select.Item value="grape">Grape</Select.Item>
-        <Select.Item value="orange">Orange</Select.Item>
-      </Select.Content>
-    </Select.Root>
+    <div className="grid gap-3">
+      <Select.Root defaultValue="apple">
+        <Select.Trigger aria-label="Fruit" className="w-[220px]">
+          <Select.Value placeholder="Select a fruit" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Label>Fruits</Select.Label>
+          <Select.Item value="apple">Apple</Select.Item>
+          <Select.Item value="banana">Banana</Select.Item>
+          <Select.Item value="cherry">Cherry</Select.Item>
+          <Select.Separator />
+          <Select.Item value="grape">Grape</Select.Item>
+          <Select.Item value="orange">Orange</Select.Item>
+        </Select.Content>
+      </Select.Root>
+      <Select.Root
+        searchable
+        onCreateOption={(value) => {
+          setOptions((current) => [{ value, label: value }, ...current]);
+        }}
+      >
+        <Select.Trigger aria-label="Option" className="w-[260px]">
+          <Select.Value placeholder="Search options" />
+        </Select.Trigger>
+        <Select.Content options={options} />
+      </Select.Root>
+    </div>
+  );
+}
+
+export function MuiParityStory() {
+  return (
+    <div className="grid max-w-4xl gap-4">
+      <AppBar className="relative rounded-md">
+        <Typography variant="h4">MUI parity</Typography>
+      </AppBar>
+      <Container size="md" className="grid gap-4 p-0">
+        <CssBaseline />
+        <InitColorSchemeScript />
+        <Grid columns={2}>
+          <Paper className="p-4">
+            <Stack>
+              <Typography variant="h3">Inputs</Typography>
+              <ButtonGroup>
+                <Button variant="outline">One</Button>
+                <Button variant="outline">Two</Button>
+              </ButtonGroup>
+              <div className="flex items-center gap-3">
+                <FloatingActionButton aria-label="Add">+</FloatingActionButton>
+                <Rating defaultValue={3} />
+                <Chip label="Ready" />
+              </div>
+              <TextareaAutosize minRows={2} placeholder="Autosize textarea" />
+            </Stack>
+          </Paper>
+          <Paper className="p-4">
+            <Stack>
+              <Typography variant="h3">Data</Typography>
+              <List.Root className="rounded-md border border-border">
+                <List.Subheader>Items</List.Subheader>
+                <List.Item>
+                  <List.ItemButton>
+                    <List.ItemText>List item</List.ItemText>
+                  </List.ItemButton>
+                </List.Item>
+              </List.Root>
+              <Table.Root>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>Table cell</Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table.Root>
+              <Chart data={[3, 8, 5, 12, 9]} type="line" title="Activity" />
+            </Stack>
+          </Paper>
+        </Grid>
+        <Grid columns={2}>
+          <TransferList options={frameworkOptions} defaultValue={['react']} />
+          <ImageList.Root>
+            <ImageList.Item>
+              <ImageList.Image
+                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=300&h=300&fit=crop"
+                alt="Landscape"
+              />
+              <ImageList.Caption>Image list</ImageList.Caption>
+            </ImageList.Item>
+          </ImageList.Root>
+        </Grid>
+        <Masonry columns={3}>
+          {[1, 2, 3].map((item) => (
+            <Paper key={item} className="p-3 text-sm">
+              Masonry {item}
+            </Paper>
+          ))}
+        </Masonry>
+        <div className="flex flex-wrap items-center gap-3">
+          <Box className="rounded-md border border-border px-3 py-2 text-sm">Box</Box>
+          <Link href="#">Link</Link>
+          <SvgIcon title="Check">
+            <path d="M20 6 9 17l-5-5" />
+          </SvgIcon>
+          <ClickAwayListener>
+            <Button variant="outline">Click-away</Button>
+          </ClickAwayListener>
+          <Transition in className="rounded-md border border-border px-3 py-2 text-sm">
+            Transition
+          </Transition>
+          <Snackbar defaultOpen className="static translate-x-0">
+            Snackbar
+          </Snackbar>
+          <Backdrop open forceMount className="relative h-16 w-28 rounded-md" />
+          <Modal open={false}>Modal</Modal>
+          <SpeedDial.Root defaultOpen className="relative bottom-auto right-auto">
+            <SpeedDial.Content>
+              <SpeedDial.Action aria-label="New">+</SpeedDial.Action>
+            </SpeedDial.Content>
+            <SpeedDial.Trigger />
+          </SpeedDial.Root>
+        </div>
+        <div className="grid gap-3 md:grid-cols-3">
+          <NoSsr fallback={<span className="text-sm text-muted-foreground">Loading</span>}>
+            <span className="text-sm">No SSR</span>
+          </NoSsr>
+          <Popper.Root>
+            <Popper.Anchor>
+              <Button variant="outline">Popper</Button>
+            </Popper.Anchor>
+            <Popper.Content className="rounded-md border border-border bg-popover p-2 text-xs shadow-md">
+              Positioned
+            </Popper.Content>
+          </Popper.Root>
+          <Autocomplete.Root>
+            <Autocomplete.Input placeholder="Autocomplete" />
+            <Autocomplete.Content>
+              {frameworkOptions.map((option) => (
+                <Autocomplete.Item key={option.value} value={option.value}>
+                  {option.label}
+                </Autocomplete.Item>
+              ))}
+            </Autocomplete.Content>
+          </Autocomplete.Root>
+          <BottomNavigation.Root defaultValue="home" className="rounded-md border border-border">
+            <BottomNavigation.Item value="home">Home</BottomNavigation.Item>
+            <BottomNavigation.Item value="search">Search</BottomNavigation.Item>
+          </BottomNavigation.Root>
+          <Timeline.Root>
+            <Timeline.Item>
+              <Timeline.Separator>
+                <Timeline.Dot />
+              </Timeline.Separator>
+              <Timeline.Content>Timeline item</Timeline.Content>
+            </Timeline.Item>
+          </Timeline.Root>
+        </div>
+        <Portal>
+          <span className="fixed bottom-2 left-2 rounded bg-popover px-2 py-1 text-xs shadow">
+            Portal
+          </span>
+        </Portal>
+      </Container>
+    </div>
+  );
+}
+
+export function MultiSelectStory() {
+  const [options, setOptions] = React.useState([
+    ...frameworkOptions,
+    ...Array.from({ length: 1000 }, (_, index) => ({
+      value: `team-${index + 1}`,
+      label: `Team member ${index + 1}`,
+    })),
+  ]);
+
+  return (
+    <MultiSelect.Root
+      defaultValue={['react', 'svelte']}
+      searchable
+      onCreateOption={(value) => {
+        setOptions((current) => [{ value, label: value }, ...current]);
+      }}
+    >
+      <MultiSelect.Trigger aria-label="Frameworks" className="w-[340px]">
+        <MultiSelect.Value placeholder="Select frameworks" options={options} />
+      </MultiSelect.Trigger>
+      <MultiSelect.Content options={options} />
+    </MultiSelect.Root>
   );
 }
 
@@ -703,11 +936,12 @@ export function TagsInputStory() {
 
 export function TimePickerStory() {
   return (
-    <TimePicker.Root defaultValue={{ hour: 10, minute: 30 }} aria-label="Start time">
-      <TimePicker.Segment segment="hour" />
-      <TimePicker.Separator />
-      <TimePicker.Segment segment="minute" />
-    </TimePicker.Root>
+    <TimePicker
+      label="Start time"
+      defaultValue={new Date(2026, 1, 10, 10, 30)}
+      ampm
+      minutesStep={15}
+    />
   );
 }
 

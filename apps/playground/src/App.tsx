@@ -16,10 +16,10 @@ import {
   // Phase E overlays
   AlertDialog, Sheet, Drawer, Popover, Tooltip, HoverCard, Toast,
   // Phase F compound
-  DropdownMenu, ContextMenu, Menubar, NavigationMenu, Select, Combobox, Command,
+  DropdownMenu, ContextMenu, Menubar, NavigationMenu, Select, MultiSelect, Combobox, Command,
   // Phase G specialty
   OneTimePasswordField, PasswordToggleField, NumberField, Calendar, DatePicker,
-  TimePicker, DateRangePicker, ColorPicker, FileUpload,
+  TimePicker, DateRangePicker, DateTimePicker, ColorPicker, FileUpload,
   // Phase H feedback
   CircularProgress, Meter, ScrollArea, Toolbar, Resizable, Carousel, Tree,
   Editable, TagsInput, Mentions, CopyButton,
@@ -29,6 +29,11 @@ import {
   DataTable, exportToCSV,
   type DataTableColumn, type Table,
 } from '@aura-ui/data-table';
+import {
+  componentUsageExamples,
+  componentUsageGroups,
+  type UsageExample,
+} from '../../docs/lib/component-usage-examples';
 
 type User = { id: number; name: string; email: string; role: string };
 const sampleData: User[] = [
@@ -42,6 +47,18 @@ const columns: DataTableColumn<User>[] = [
   { accessorKey: 'name', header: 'Name' },
   { accessorKey: 'email', header: 'Email' },
   { accessorKey: 'role', header: 'Role' },
+];
+
+const multiSelectOptions = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'angular', label: 'Angular' },
+  { value: 'solid', label: 'Solid' },
+  ...Array.from({ length: 1000 }, (_, index) => ({
+    value: `option-${index + 1}`,
+    label: `Option ${index + 1}`,
+  })),
 ];
 
 interface NavSection {
@@ -58,10 +75,11 @@ const SECTIONS: NavSection[] = [
   { id: 'form', title: 'Form Controls', icon: MousePointer2, count: 6, description: 'Inputs, selectors and validation primitives.' },
   { id: 'disclosure', title: 'Disclosure & Nav', icon: Layers, count: 6, description: 'Show/hide and navigation patterns.' },
   { id: 'overlays', title: 'Overlays', icon: Component, count: 8, description: 'Dialogs, popovers, tooltips and notifications.' },
-  { id: 'compound', title: 'Compound', icon: Sparkles, count: 7, description: 'Complex menus, selects, and command palettes.' },
+  { id: 'compound', title: 'Compound', icon: Sparkles, count: 8, description: 'Complex menus, selects, and command palettes.' },
   { id: 'specialty', title: 'Specialty Form', icon: Palette, count: 9, description: 'Date, time, color, OTP and file inputs.' },
   { id: 'feedback', title: 'Feedback & Misc', icon: Bell, count: 11, description: 'Progress, scroll, resize, and editable surfaces.' },
   { id: 'data', title: 'Data', icon: Boxes, count: 1, description: 'Full-featured data grid with all the bells and whistles.' },
+  { id: 'usage', title: 'Usage Gallery', icon: Component, count: 64, description: 'Large prop, state, composition, and data examples for every core component.' },
   { id: 'palette', title: 'Color Palette', icon: Palette, count: 12, description: 'Generate an accessible 12-step color scale from any accent color.' },
 ];
 
@@ -177,7 +195,7 @@ export default function App() {
                   <div className="text-[10px] uppercase tracking-widest text-muted-foreground">playground</div>
                 </div>
               </div>
-              <Badge variant="secondary" className="hidden md:inline-flex">v0.0.1 · 63 components</Badge>
+              <Badge variant="secondary" className="hidden md:inline-flex">v0.0.1 · 64 components</Badge>
               <div className="ml-auto flex items-center gap-2">
                 <div className="relative hidden sm:block">
                   <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
@@ -255,7 +273,7 @@ export default function App() {
               </nav>
               <Separator className="my-4" />
               <div className="space-y-1 px-2 text-[10px] text-muted-foreground">
-                <p>~75 components total</p>
+                <p>~76 components total</p>
                 <p>WCAG 2.2 AA · Tailwind v3</p>
                 <p>React 18 · 19 compatible</p>
               </div>
@@ -291,6 +309,7 @@ export default function App() {
                 {active === 'specialty' && <SpecialtyForm />}
                 {active === 'feedback' && <FeedbackMisc />}
                 {active === 'data' && <DataTableDemo tableRef={tableRef} />}
+                {active === 'usage' && <UsageCoverageGallery />}
                 {active === 'palette' && <PaletteGenerator />}
               </div>
             </main>
@@ -521,6 +540,71 @@ function Demo({ name, description, variant = 'default', children }: DemoProps) {
         </div>
       </div>
     </section>
+  );
+}
+
+/* ─── Usage coverage gallery ─────────────────────────────────────── */
+
+function titleFromSlug(slug: string) {
+  return slug
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function UsageCoverageCard({
+  componentName,
+  example,
+}: {
+  componentName: string;
+  example: UsageExample;
+}) {
+  return (
+    <section className="grid min-h-80 gap-4 rounded-xl border border-border/60 bg-card p-5 shadow-xs">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold tracking-tight">{example.title}</h3>
+          {example.description ? (
+            <p className="mt-1 text-xs text-muted-foreground">{example.description}</p>
+          ) : null}
+        </div>
+        <Badge variant="secondary" className="shrink-0 text-[10px]">
+          {componentName}
+        </Badge>
+      </div>
+      <div className="flex min-h-44 items-center justify-center rounded-lg border border-border/60 bg-muted/20 p-4">
+        {example.preview()}
+      </div>
+    </section>
+  );
+}
+
+function UsageCoverageGallery() {
+  return (
+    <div className="space-y-10">
+      {componentUsageGroups.map((group) => (
+        <section key={group.title} className="space-y-4">
+          <div>
+            <h2 className="text-xl font-semibold tracking-tight">{group.title}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Props, variants, composition patterns, and larger data examples.
+            </p>
+          </div>
+          <div className="grid gap-4 xl:grid-cols-2">
+            {group.slugs.flatMap((slug) => {
+              const examples = componentUsageExamples[slug] ?? [];
+              return examples.map((example) => (
+                <UsageCoverageCard
+                  key={`${slug}-${example.title}`}
+                  componentName={titleFromSlug(slug)}
+                  example={example}
+                />
+              ));
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
   );
 }
 
@@ -949,6 +1033,8 @@ function Overlays() {
 /* ─── Compound ──────────────────────────────────────────────────── */
 
 function Compound() {
+  const [multiOptions, setMultiOptions] = useState(multiSelectOptions);
+
   return (
     <>
       <Demo name="DropdownMenu" description="Anchored menu with check/radio items and sub-menus.">
@@ -1031,6 +1117,21 @@ function Compound() {
         </Select.Root>
       </Demo>
 
+      <Demo name="MultiSelect" description="Multiple selections with searchable virtualized options.">
+        <MultiSelect.Root
+          defaultValue={['react', 'svelte']}
+          searchable
+          onCreateOption={(value) => {
+            setMultiOptions((current) => [{ value, label: value }, ...current]);
+          }}
+        >
+          <MultiSelect.Trigger className="w-[340px]" aria-label="Frameworks">
+            <MultiSelect.Value placeholder="Select frameworks" options={multiOptions} />
+          </MultiSelect.Trigger>
+          <MultiSelect.Content options={multiOptions} />
+        </MultiSelect.Root>
+      </Demo>
+
       <Demo name="Combobox" description="Searchable, autocomplete-style input.">
         <Combobox.Root>
           <Combobox.Input placeholder="Search frameworks…" className="w-[260px]" />
@@ -1069,6 +1170,12 @@ function SpecialtyForm() {
   const [otp, setOtp] = useState('');
   const [num, setNum] = useState<number | undefined>(5);
   const [date, setDate] = useState<Date>();
+  const [time, setTime] = useState<Date | null>(new Date(2026, 4, 23, 9, 30));
+  const [dateTime, setDateTime] = useState<Date | null>(new Date(2026, 4, 23, 14, 30));
+  const [range, setRange] = useState<[Date | null, Date | null]>([
+    new Date(2026, 4, 20),
+    new Date(2026, 4, 27),
+  ]);
   return (
     <>
       <Demo name="OneTimePasswordField" description="OTP/PIN input with paste handling.">
@@ -1097,23 +1204,55 @@ function SpecialtyForm() {
       </Demo>
 
       <Demo name="DatePicker" description="Calendar in a popover.">
-        <DatePicker.Root value={date} onValueChange={setDate}>
-          <DatePicker.Trigger /><DatePicker.Content />
-        </DatePicker.Root>
+        <DatePicker
+          label="Release date"
+          value={date ?? null}
+          onChange={(nextDate) => setDate(nextDate ?? undefined)}
+          minDate={new Date(2026, 4, 1)}
+          maxDate={new Date(2026, 5, 30)}
+          helperText="MUI-style field API with validation bounds."
+        />
       </Demo>
 
-      <Demo name="TimePicker" description="Segmented spinbutton time input." variant="inline">
-        <TimePicker.Root defaultValue={{ hour: 10, minute: 30 }}>
-          <TimePicker.Segment segment="hour" />
-          <TimePicker.Separator />
-          <TimePicker.Segment segment="minute" />
-        </TimePicker.Root>
+      <Demo name="TimePicker" description="MUI-style time field with validation.">
+        <TimePicker
+          label="Start time"
+          value={time}
+          onChange={setTime}
+          ampm
+          minutesStep={15}
+          minTime={new Date(2026, 4, 23, 8, 0)}
+          maxTime={new Date(2026, 4, 23, 18, 0)}
+          helperText="15-minute steps inside business hours."
+        />
       </Demo>
 
       <Demo name="DateRangePicker" description="Pick a date range.">
-        <DateRangePicker.Root>
-          <DateRangePicker.Trigger /><DateRangePicker.Content />
-        </DateRangePicker.Root>
+        <DateRangePicker
+          label="Sprint window"
+          value={range}
+          onChange={setRange}
+          minDate={new Date(2026, 4, 1)}
+          maxDate={new Date(2026, 5, 30)}
+          shortcuts={[
+            { label: 'Last 7 days', getValue: (today) => [new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6), today] },
+            { label: 'Last 30 days', getValue: (today) => [new Date(today.getFullYear(), today.getMonth(), today.getDate() - 29), today] },
+          ]}
+          helperText="Tuple value, two visible calendars, closes after the end date."
+        />
+      </Demo>
+
+      <Demo name="DateTimePicker" description="Pick date and time together.">
+        <DateTimePicker
+          label="Deployment window"
+          value={dateTime}
+          onChange={setDateTime}
+          minDateTime={new Date(2026, 4, 20, 9, 0)}
+          maxDateTime={new Date(2026, 5, 30, 18, 0)}
+          minutesStep={15}
+          format="MM/dd/yyyy HH:mm"
+          helperText="One Date value with date and time validation."
+        />
       </Demo>
 
       <Demo name="ColorPicker" description="HSV area with hue and alpha sliders." variant="wide">

@@ -1,0 +1,21 @@
+---
+title: Collapsible
+---
+
+import { Meta, Story, Props } from '@storybook/addon-docs';
+import { Root, Trigger, Content } from './index';
+
+<Meta title="Disclosure/Collapsible" />
+
+# Collapsible
+
+Use `Collapsible` for showing and hiding content.
+
+<Story name="Default">
+  <Root>
+    <Trigger>Toggle</Trigger>
+    <Content>Hidden</Content>
+  </Root>
+</Story>
+
+<Props of={Root} />

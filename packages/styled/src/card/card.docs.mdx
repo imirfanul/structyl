@@ -1,0 +1,26 @@
+---
+title: Card
+---
+
+import { Canvas, Story } from '@storybook/addon-docs';
+
+# Card
+
+The `Card` styled component is a thin wrapper around the headless `Card` primitive. Use the compound API:
+
+```jsx
+<Card.Root>
+  <Card.Header>
+    <Card.Title>Title</Card.Title>
+    <Card.Description>Description</Card.Description>
+  </Card.Header>
+  <Card.Content>...</Card.Content>
+  <Card.Footer>...</Card.Footer>
+</Card.Root>
+```
+
+## Example
+
+<Canvas>
+  <Story id="styled-card--default" />
+</Canvas>

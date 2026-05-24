@@ -1,0 +1,21 @@
+---
+title: RadioGroup
+---
+
+import { Meta, Story, Props } from '@storybook/addon-docs';
+import { Root, Item } from './index';
+
+<Meta title="Form/RadioGroup" />
+
+# RadioGroup
+
+Use `RadioGroup` for single-choice selections.
+
+<Story name="Default">
+  <Root>
+    <Item value="1">Option 1</Item>
+    <Item value="2">Option 2</Item>
+  </Root>
+</Story>
+
+<Props of={Root} />

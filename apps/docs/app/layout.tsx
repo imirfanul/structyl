@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <ThemeScript defaultTheme="slate" defaultMode="system" />
       </head>
-      <body className="min-h-screen font-sans antialiased">
+      <body className="min-h-screen font-sans antialiased" suppressHydrationWarning>
         <ThemeProvider defaultTheme="slate" defaultMode="system">
           {children}
         </ThemeProvider>

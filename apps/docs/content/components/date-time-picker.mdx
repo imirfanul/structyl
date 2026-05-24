@@ -1,0 +1,42 @@
+---
+title: DateTimePicker
+description: MUI-style date and time picker.
+---
+
+# DateTimePicker
+
+MUI-style date and time picker with one value, shared validation and compound calendar/time composition.
+
+## Installation
+
+```bash
+npx aura-ui add date-time-picker
+```
+
+## Usage
+
+```tsx
+import { DateTimePicker } from '@aura-ui/styled';
+
+export function Example() {
+  return (
+    <DateTimePicker
+      label="Deployment window"
+      value={dateTime}
+      onChange={setDateTime}
+      minDateTime={new Date(2026, 4, 20, 9, 0)}
+      maxDateTime={new Date(2026, 5, 30, 18, 0)}
+      minutesStep={15}
+      format="MM/dd/yyyy HH:mm"
+    />
+  );
+}
+```
+
+## API Reference
+
+Supports the MUI DateTimePicker-style prop surface: `value`, `defaultValue`, `onChange`, `onAccept`, `onError`, `open`, `views`, `view`, `openTo`, `minDateTime`, `maxDateTime`, `minDate`, `maxDate`, `minTime`, `maxTime`, `ampm`, `minutesStep`, `timeSteps`, validation callbacks, loading props, slots, slotProps and `sx`.
+
+## Accessibility
+
+The calendar uses grid semantics and the time segments use spinbutton semantics with arrow-key adjustment.

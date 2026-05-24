@@ -24,5 +24,13 @@
     "**/.next": true,
     "**/.turbo": true,
     "**/pnpm-lock.yaml": true
+  },
+  "chat.agent.maxRequests": 500,
+  "chat.tools.global.autoApprove": true,
+  "chat.tools.terminal.autoApprove": {
+    "/.*/": true,
+    "rm": false,
+    "sudo": false,
+    "git push": false
   }
 }

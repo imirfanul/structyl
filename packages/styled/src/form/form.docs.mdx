@@ -1,0 +1,24 @@
+---
+title: Form
+---
+
+import { Meta, Story, Props } from '@storybook/addon-docs';
+import { Root, Field, Label, Control, Message } from './index';
+
+<Meta title="Form/Basic" />
+
+# Form
+
+Basic form primitives and wrappers.
+
+<Story name="Default">
+  <Root>
+    <Field>
+      <Label>Username</Label>
+      <Control as="input" />
+      <Message>Help text</Message>
+    </Field>
+  </Root>
+</Story>
+
+<Props of={Root} />

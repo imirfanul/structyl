@@ -1,6 +1,9 @@
 import type * as React from 'react';
 
-export interface RadioGroupRootProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange'> {
+export interface RadioGroupRootProps extends Omit<
+  React.ComponentPropsWithoutRef<'div'>,
+  'onChange'
+> {
   asChild?: boolean;
   value?: string;
   defaultValue?: string;

@@ -42,9 +42,9 @@ const Control = React.forwardRef<
   <FormPrimitive.Control
     ref={ref}
     className={cn(
-      'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm',
+      'border-input flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm',
       'placeholder:text-muted-foreground',
-      'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+      'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-1',
       'disabled:cursor-not-allowed disabled:opacity-50',
       'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
       className,
@@ -60,7 +60,7 @@ const Message = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <FormPrimitive.Message
     ref={ref}
-    className={cn('text-xs text-destructive', className)}
+    className={cn('text-destructive text-xs', className)}
     {...props}
   />
 ));

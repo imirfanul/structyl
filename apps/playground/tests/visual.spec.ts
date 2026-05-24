@@ -8,7 +8,11 @@ const smokeStories = [
   'compound-command--default',
   'overlays-toast--default',
   'data-datatable--default',
+  'all-components-usage-gallery--all-core-components',
+  'mui-parity-all-missing-components--all-examples',
 ];
+
+test.setTimeout(120_000);
 
 test('representative Storybook stories render visible, non-empty surfaces', async ({ page }) => {
   for (const storyId of smokeStories) {

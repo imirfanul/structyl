@@ -1,6 +1,9 @@
 import type * as React from 'react';
 
-export interface SliderRootProps extends Omit<React.ComponentPropsWithoutRef<'span'>, 'defaultValue' | 'value' | 'onChange'> {
+export interface SliderRootProps extends Omit<
+  React.ComponentPropsWithoutRef<'span'>,
+  'defaultValue' | 'value' | 'onChange'
+> {
   asChild?: boolean;
   name?: string;
   disabled?: boolean;

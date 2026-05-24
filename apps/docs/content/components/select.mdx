@@ -1,11 +1,11 @@
 ---
 title: Select
-description: A custom dropdown select with keyboard support and typeahead.
+description: A custom dropdown select with keyboard support, search, creation, and virtualized options.
 ---
 
 # Select
 
-A custom dropdown select with keyboard support and typeahead.
+A custom dropdown select with keyboard support, optional search, creation, and virtualized options for large lists.
 
 ## Installation
 
@@ -16,10 +16,27 @@ npx aura-ui add select
 ## Usage
 
 ```tsx
+import * as React from 'react';
 import { Select } from '@aura-ui/styled';
 
 export function Example() {
-  return <Select />;
+  const [options, setOptions] = React.useState([
+    { value: 'react', label: 'React' },
+    { value: 'vue', label: 'Vue' },
+    { value: 'svelte', label: 'Svelte' },
+  ]);
+
+  return (
+    <Select.Root
+      searchable
+      onCreateOption={(value) => setOptions((current) => [{ value, label: value }, ...current])}
+    >
+      <Select.Trigger className="w-[260px]">
+        <Select.Value placeholder="Search options" />
+      </Select.Trigger>
+      <Select.Content options={options} />
+    </Select.Root>
+  );
 }
 ```
 

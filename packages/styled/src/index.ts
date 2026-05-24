@@ -53,17 +53,24 @@ export * as ContextMenu from './context-menu';
 export * as Menubar from './menubar';
 export * as NavigationMenu from './navigation-menu';
 export * as Select from './select';
+export * as MultiSelect from './multi-select';
 export * as Combobox from './combobox';
 export * as Command from './command';
+export * from './material';
 
 // Phase G: specialty form
 export * as OneTimePasswordField from './one-time-password-field';
 export * as PasswordToggleField from './password-toggle-field';
 export * as NumberField from './number-field';
 export * from './calendar';
-export * as DatePicker from './date-picker';
-export * as TimePicker from './time-picker';
-export * as DateRangePicker from './date-range-picker';
+export { DatePicker } from './date-picker';
+export type { DatePickerProps } from './date-picker';
+export { TimePicker } from './time-picker';
+export type { TimePickerProps } from './time-picker';
+export { DateRangePicker } from './date-range-picker';
+export type { DateRangePickerProps } from './date-range-picker';
+export { DateTimePicker } from './date-time-picker';
+export type { DateTimePickerProps } from './date-time-picker';
 export * as ColorPicker from './color-picker';
 export * as FileUpload from './file-upload';
 

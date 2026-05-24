@@ -24,17 +24,11 @@ const alertVariants = tv({
 });
 
 interface AlertRootProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertVariants> {}
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {}
 
 const Root = React.forwardRef<HTMLDivElement, AlertRootProps>(
   ({ className, variant, ...props }, ref) => (
-    <div
-      ref={ref}
-      role="alert"
-      className={cn(alertVariants({ variant }), className)}
-      {...props}
-    />
+    <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props} />
   ),
 );
 Root.displayName = 'Alert.Root';
@@ -50,11 +44,16 @@ const Title = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHead
 );
 Title.displayName = 'Alert.Title';
 
-const Description = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <div ref={ref as React.Ref<HTMLDivElement>} className={cn('text-sm [&_p]:leading-relaxed', className)} {...props} />
-  ),
-);
+const Description = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref as React.Ref<HTMLDivElement>}
+    className={cn('text-sm [&_p]:leading-relaxed', className)}
+    {...props}
+  />
+));
 Description.displayName = 'Alert.Description';
 
 export { Root, Title, Description, alertVariants };

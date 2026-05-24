@@ -1,11 +1,11 @@
 ---
 title: DateRangePicker
-description: Range variant of DatePicker.
+description: MUI-style range picker with shortcuts.
 ---
 
 # DateRangePicker
 
-Range variant of DatePicker.
+MUI-style range picker with tuple values, validation, multiple calendars and shortcut action buttons.
 
 ## Installation
 
@@ -19,7 +19,18 @@ npx aura-ui add date-range-picker
 import { DateRangePicker } from '@aura-ui/styled';
 
 export function Example() {
-  return <DateRangePicker />;
+  return (
+    <DateRangePicker
+      label="Report period"
+      value={range}
+      onChange={setRange}
+      calendars={2}
+      shortcuts={[
+        { label: 'Last 7 days', getValue: (today) => [addDays(today, -6), today] },
+        { label: 'Last 30 days', getValue: (today) => [addDays(today, -29), today] },
+      ]}
+    />
+  );
 }
 ```
 

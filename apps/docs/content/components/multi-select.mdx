@@ -1,0 +1,54 @@
+---
+title: Multi Select
+description: A multi-value select with searchable, creatable, and virtualized options.
+---
+
+# Multi Select
+
+A multi-value select with keyboard support, optional search, creation, and virtualized options for large lists. Selected options are shown directly inside the trigger.
+
+## Installation
+
+```bash
+npx aura-ui add multi-select
+```
+
+## Usage
+
+```tsx
+import * as React from 'react';
+import { MultiSelect } from '@aura-ui/styled';
+
+export function Example() {
+  const [options, setOptions] = React.useState([
+    { value: 'react', label: 'React' },
+    { value: 'vue', label: 'Vue' },
+    { value: 'svelte', label: 'Svelte' },
+  ]);
+
+  return (
+    <MultiSelect.Root
+      defaultValue={['react']}
+      searchable
+      onCreateOption={(value) => setOptions((current) => [{ value, label: value }, ...current])}
+    >
+      <MultiSelect.Trigger className="w-[320px]">
+        <MultiSelect.Value placeholder="Select frameworks" options={options} />
+      </MultiSelect.Trigger>
+      <MultiSelect.Content options={options} />
+    </MultiSelect.Root>
+  );
+}
+```
+
+## API Reference
+
+See the [primitive types](https://github.com/your-org/aura-ui/tree/main/packages/primitives/src/multi-select) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+
+## Accessibility
+
+Uses a combobox trigger and a multi-selectable listbox popup. All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+
+## Theming
+
+Styles consume CSS variables from `@aura-ui/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

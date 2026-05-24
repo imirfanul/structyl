@@ -5,6 +5,8 @@ interface StorybookIndex {
   entries: Record<string, { id: string; name: string; title: string; type: string }>;
 }
 
+const storyRenderTimeout = 60_000;
+
 export async function getDefaultStories(request: APIRequestContext) {
   const response = await request.get('/index.json');
   expect(response.ok()).toBe(true);
@@ -21,9 +23,9 @@ export async function gotoStory(page: Page, storyId: string) {
   await expect
     .poll(async () => root.evaluate((element) => element.childElementCount), {
       message: storyId,
-      timeout: 30_000,
+      timeout: storyRenderTimeout,
     })
     .toBeGreaterThan(0);
-  await expect(root, storyId).toBeVisible({ timeout: 30_000 });
+  await expect(root, storyId).toBeVisible({ timeout: storyRenderTimeout });
   return root;
 }

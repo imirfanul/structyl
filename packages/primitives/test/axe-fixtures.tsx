@@ -12,6 +12,7 @@ import * as Combobox from '../src/combobox';
 import * as Command from '../src/command';
 import * as ContextMenu from '../src/context-menu';
 import * as DatePicker from '../src/date-picker';
+import * as DateTimePicker from '../src/date-time-picker';
 import * as DateRangePicker from '../src/date-range-picker';
 import * as Dialog from '../src/dialog';
 import * as DropdownMenu from '../src/dropdown-menu';
@@ -592,6 +593,39 @@ export function renderTimePickerAxeFixture() {
       <TimePicker.Segment segment="minute" />
       <TimePicker.Segment segment="period" />
     </TimePicker.Root>
+  );
+}
+
+export function renderDateTimePickerAxeFixture() {
+  return (
+    <DateTimePicker.Root defaultOpen defaultValue={January2024}>
+      <DateTimePicker.Trigger>
+        <DateTimePicker.Value />
+      </DateTimePicker.Trigger>
+      <DateTimePicker.Content aria-label="Choose date and time">
+        <DateTimePicker.Calendar defaultMonth={January2024}>
+          <Calendar.Header>
+            <Calendar.PreviousButton>Previous</Calendar.PreviousButton>
+            <Calendar.Heading />
+            <Calendar.NextButton>Next</Calendar.NextButton>
+          </Calendar.Header>
+          <Calendar.Grid aria-label="January 2024">
+            <Calendar.GridHead />
+            <Calendar.GridBody>
+              {(date, props) => (
+                <Calendar.Day
+                  date={date}
+                  isOutsideMonth={props.isOutsideMonth}
+                  aria-label={date.toDateString()}
+                />
+              )}
+            </Calendar.GridBody>
+          </Calendar.Grid>
+        </DateTimePicker.Calendar>
+        <DateTimePicker.Segment segment="hour" />
+        <DateTimePicker.Segment segment="minute" />
+      </DateTimePicker.Content>
+    </DateTimePicker.Root>
   );
 }
 

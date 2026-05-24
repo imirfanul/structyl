@@ -4,7 +4,7 @@ Component documentation index. Each component has a dedicated MDX page with API,
 
 - Atoms: Button, Badge, Card, Alert, Avatar, Skeleton, Spinner, AspectRatio, Progress, Separator, Label
 - Form: Input, Textarea, Switch, Checkbox, Toggle, RadioGroup, ToggleGroup, Slider, Form
-- Specialty form: NumberField, OneTimePasswordField, PasswordToggleField, Calendar, DatePicker, TimePicker, DateRangePicker, ColorPicker, FileUpload
+- Specialty form: NumberField, OneTimePasswordField, PasswordToggleField, Calendar, DatePicker, DateRangePicker, TimePicker, DateTimePicker, ColorPicker, FileUpload
 - Disclosure & nav: Collapsible, Accordion, Tabs, Breadcrumb, Pagination, Stepper
 - Overlays: Dialog, AlertDialog, Sheet, Drawer, Popover, Tooltip, HoverCard, Toast
 - Complex compound: DropdownMenu, ContextMenu, Menubar, NavigationMenu, Select, Combobox, Command

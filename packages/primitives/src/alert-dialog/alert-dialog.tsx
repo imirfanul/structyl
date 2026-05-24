@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive } from '@aura-ui/core';
+import { createContext } from '@aura-ui/core';
 import { composeEventHandlers } from '@aura-ui/utils';
 import { useComposedRefs } from '@aura-ui/hooks';
 import * as DialogPrimitive from '../dialog';

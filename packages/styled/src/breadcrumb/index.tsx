@@ -16,7 +16,7 @@ const List = React.forwardRef<HTMLOListElement, React.ComponentPropsWithoutRef<'
     <ol
       ref={ref}
       className={cn(
-        'flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground sm:gap-2.5',
+        'text-muted-foreground flex flex-wrap items-center gap-1.5 break-words text-sm sm:gap-2.5',
         className,
       )}
       {...props}
@@ -40,11 +40,7 @@ const Link = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
   ({ asChild, className, ...props }, ref) => {
     const Comp = asChild ? Slot : 'a';
     return (
-      <Comp
-        ref={ref}
-        className={cn('transition-colors hover:text-fg', className)}
-        {...props}
-      />
+      <Comp ref={ref} className={cn('hover:text-fg transition-colors', className)} {...props} />
     );
   },
 );
@@ -57,18 +53,14 @@ const Page = React.forwardRef<HTMLSpanElement, React.ComponentPropsWithoutRef<'s
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn('font-normal text-fg', className)}
+      className={cn('text-fg font-normal', className)}
       {...props}
     />
   ),
 );
 Page.displayName = 'Breadcrumb.Page';
 
-const Separator: React.FC<React.ComponentProps<'li'>> = ({
-  children,
-  className,
-  ...props
-}) => (
+const Separator: React.FC<React.ComponentProps<'li'>> = ({ children, className, ...props }) => (
   <li
     role="presentation"
     aria-hidden="true"

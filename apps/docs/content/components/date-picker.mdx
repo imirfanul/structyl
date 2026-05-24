@@ -1,11 +1,11 @@
 ---
 title: DatePicker
-description: Calendar in a popover for date selection.
+description: MUI-style calendar field for date selection.
 ---
 
 # DatePicker
 
-Calendar in a popover for date selection.
+MUI-style calendar field for date selection. Supports controlled values, validation, loading states, view props, formatting and compound composition.
 
 ## Installation
 
@@ -19,7 +19,20 @@ npx aura-ui add date-picker
 import { DatePicker } from '@aura-ui/styled';
 
 export function Example() {
-  return <DatePicker />;
+  return (
+    <DatePicker
+      label="Release date"
+      value={date}
+      onChange={(nextDate, context) => {
+        setDate(nextDate);
+        console.log(context.validationError);
+      }}
+      minDate={new Date(2026, 4, 1)}
+      maxDate={new Date(2026, 5, 30)}
+      format="MM/dd/yyyy"
+      disablePast
+    />
+  );
 }
 ```
 

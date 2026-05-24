@@ -111,13 +111,25 @@ function composeRefs<T>(...refs: (React.Ref<T> | undefined)[]) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getElementRef(element: React.ReactElement): React.Ref<any> | undefined {
-  // React 19+ exposes refs as a prop directly
-  // React 18 and earlier used `element.ref`
-  const props = element.props as { ref?: React.Ref<unknown> };
-  const ref19 = props?.ref;
+  // React <=18 in DEV exposes `ref` on `props` behind a warning getter.
+  let getter = Object.getOwnPropertyDescriptor(element.props, 'ref')?.get;
+  let mayWarn = getter && 'isReactWarning' in getter && getter.isReactWarning;
+  if (mayWarn) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (element as any).ref;
+  }
+
+  // React 19 in DEV exposes `ref` on the element behind a warning getter.
+  getter = Object.getOwnPropertyDescriptor(element, 'ref')?.get;
+  mayWarn = getter && 'isReactWarning' in getter && getter.isReactWarning;
+  if (mayWarn) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return (element.props as any).ref;
+  }
+
+  // Production, or once React has moved `ref` onto `props`.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ref18 = (element as any).ref;
-  return (ref19 ?? ref18) as React.Ref<unknown> | undefined;
+  return (element.props as any).ref || (element as any).ref;
 }
 
 export { Slot, Slottable };

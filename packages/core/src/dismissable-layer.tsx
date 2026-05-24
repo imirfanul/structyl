@@ -54,6 +54,7 @@ const DismissableLayer = React.forwardRef<HTMLDivElement, DismissableLayerProps>
 
     const context = React.useContext(DismissableLayerContext);
     const [node, setNode] = React.useState<HTMLDivElement | null>(null);
+    const [, forceUpdate] = React.useState({});
     const ownerDocument = node?.ownerDocument ?? (typeof document !== 'undefined' ? document : null);
     const layers = Array.from(context.layers);
     const [highestLayerWithOutsidePointerEventsDisabled] = [...context.layersWithOutsidePointerEventsDisabled].slice(-1);
@@ -87,7 +88,10 @@ const DismissableLayer = React.forwardRef<HTMLDivElement, DismissableLayerProps>
     }, ownerDocument);
 
     useEscapeKeydown((event) => {
-      const isHighest = index === context.layers.size - 1;
+      // Read from the live Set so newly registered layers are included
+      const layers = Array.from(context.layers);
+      const index = node ? layers.indexOf(node) : -1;
+      const isHighest = node != null && index === layers.length - 1;
       if (!isHighest) return;
       onEscapeKeyDown?.(event);
       if (!event.defaultPrevented && onDismiss) {
@@ -96,7 +100,10 @@ const DismissableLayer = React.forwardRef<HTMLDivElement, DismissableLayerProps>
       }
     }, ownerDocument);
 
-    React.useEffect(() => {
+    // Register layer and manage body pointer-events.
+    // Uses useLayoutEffect so that the imperative style update happens
+    // before the browser paints, preventing a flash of broken pointer-events.
+    React.useLayoutEffect(() => {
       if (!node) return;
       if (disableOutsidePointerEvents) {
         if (context.layersWithOutsidePointerEventsDisabled.size === 0 && ownerDocument) {
@@ -106,7 +113,15 @@ const DismissableLayer = React.forwardRef<HTMLDivElement, DismissableLayerProps>
         context.layersWithOutsidePointerEventsDisabled.add(node);
       }
       context.layers.add(node);
+
+      // Imperatively set pointer-events on this node now that the layer
+      // sets have been updated.  This avoids a render-cycle delay that
+      // would otherwise leave the node with pointer-events:none inherited
+      // from body.
+      updatePointerEventsOnNode(node, context);
+
       dispatchUpdate();
+      forceUpdate({});
       return () => {
         if (
           disableOutsidePointerEvents &&
@@ -118,13 +133,23 @@ const DismissableLayer = React.forwardRef<HTMLDivElement, DismissableLayerProps>
       };
     }, [node, ownerDocument, disableOutsidePointerEvents, context]);
 
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
       return () => {
         if (!node) return;
         context.layers.delete(node);
         context.layersWithOutsidePointerEventsDisabled.delete(node);
         dispatchUpdate();
       };
+    }, [node, context]);
+
+    // Keep pointer-events in sync when other layers register/unregister.
+    React.useEffect(() => {
+      const handleUpdate = () => {
+        if (node) updatePointerEventsOnNode(node, context);
+        forceUpdate({});
+      };
+      document.addEventListener(CONTEXT_UPDATE, handleUpdate);
+      return () => document.removeEventListener(CONTEXT_UPDATE, handleUpdate);
     }, [node, context]);
 
     const composedRefs = useComposedRefs(forwardedRef, setNode);
@@ -177,7 +202,32 @@ const DismissableLayerBranch = React.forwardRef<HTMLDivElement, DismissableLayer
 );
 DismissableLayerBranch.displayName = 'DismissableLayerBranch';
 
+
 /* ── helpers ─────────────────────────────────────────────────────────── */
+
+/**
+ * Imperatively update `pointer-events` on a DismissableLayer node.
+ * This is called from layout-effects so the style is applied before
+ * the browser paints, avoiding a broken-pointer-events flash.
+ */
+function updatePointerEventsOnNode(
+  node: HTMLElement,
+  context: DismissableLayerContextValue,
+) {
+  const layers = Array.from(context.layers);
+  const [highest] = [...context.layersWithOutsidePointerEventsDisabled].slice(-1);
+  const highestIndex = highest ? layers.indexOf(highest) : -1;
+  const nodeIndex = layers.indexOf(node);
+  const isBodyDisabled = context.layersWithOutsidePointerEventsDisabled.size > 0;
+  const isEnabled = nodeIndex >= highestIndex;
+
+  if (isBodyDisabled) {
+    node.style.pointerEvents = isEnabled ? 'auto' : 'none';
+  } else {
+    node.style.removeProperty('pointer-events');
+  }
+}
+
 
 function dispatchUpdate() {
   if (typeof document === 'undefined') return;

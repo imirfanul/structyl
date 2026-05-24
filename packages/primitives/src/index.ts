@@ -25,11 +25,7 @@ export type {
 } from './avatar';
 
 export * as Progress from './progress';
-export type {
-  ProgressRootProps,
-  ProgressIndicatorProps,
-  ProgressState,
-} from './progress';
+export type { ProgressRootProps, ProgressIndicatorProps, ProgressState } from './progress';
 
 export * as RadioGroup from './radio-group';
 export type {
@@ -87,12 +83,7 @@ export type {
 } from './accordion';
 
 export * as Tabs from './tabs';
-export type {
-  TabsRootProps,
-  TabsListProps,
-  TabsTriggerProps,
-  TabsContentProps,
-} from './tabs';
+export type { TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './tabs';
 
 export * as AlertDialog from './alert-dialog';
 export type {
@@ -167,7 +158,10 @@ export type {
 } from './menu';
 
 export * as DropdownMenu from './dropdown-menu';
-export type { DropdownMenuRootProps, DropdownMenuTriggerProps } from './dropdown-menu/dropdown-menu';
+export type {
+  DropdownMenuRootProps,
+  DropdownMenuTriggerProps,
+} from './dropdown-menu/dropdown-menu';
 
 export * as ContextMenu from './context-menu';
 export type { ContextMenuRootProps, ContextMenuTriggerProps } from './context-menu/context-menu';
@@ -182,16 +176,44 @@ export type {
   NavigationMenuLinkProps,
 } from './navigation-menu/navigation-menu';
 
+export * as Breadcrumb from './breadcrumb';
+export type { BreadcrumbProps } from './breadcrumb/breadcrumb';
+
 export * as Select from './select';
 export type {
   SelectRootProps,
+  SelectFilterOption,
+  SelectOption,
   SelectTriggerProps,
   SelectValueProps,
+  SelectSearchInputProps,
   SelectPortalProps,
   SelectContentProps,
   SelectItemProps,
+  SelectCreateItemProps,
   SelectItemTextProps,
+  SelectOptionsProps,
 } from './select/select';
+
+export * as MultiSelect from './multi-select';
+export type {
+  MultiSelectRootProps,
+  MultiSelectFilterOption,
+  MultiSelectOption,
+  MultiSelectSelectedOption,
+  MultiSelectTriggerProps,
+  MultiSelectValueProps,
+  MultiSelectSearchInputProps,
+  MultiSelectPortalProps,
+  MultiSelectContentProps,
+  MultiSelectItemProps,
+  MultiSelectCreateItemProps,
+  MultiSelectItemTextProps,
+  MultiSelectOptionsProps,
+} from './multi-select/multi-select';
+
+export * as Material from './material';
+export * from './material';
 
 export * as Combobox from './combobox';
 export type {
@@ -218,15 +240,13 @@ export type {
 } from './one-time-password-field/one-time-password-field';
 
 export * as PasswordToggleField from './password-toggle-field';
-export type {
-  PasswordToggleFieldRootProps,
-} from './password-toggle-field/password-toggle-field';
+export type { PasswordToggleFieldRootProps } from './password-toggle-field/password-toggle-field';
 
 export * as NumberField from './number-field';
 export type { NumberFieldRootProps } from './number-field/number-field';
 
 export * as Calendar from './calendar';
-export type { CalendarRootProps } from './calendar/calendar';
+export type { CalendarDateRange, CalendarRootProps } from './calendar/calendar';
 
 export * as DatePicker from './date-picker';
 export type { DatePickerRootProps } from './date-picker/date-picker';
@@ -242,13 +262,31 @@ export * as DateRangePicker from './date-range-picker';
 export type {
   DateRangePickerRootProps,
   DateRange,
+  DateRangeTuple,
+  DateRangeValue,
+  DateRangePickerShortcut,
 } from './date-range-picker/date-range-picker';
 
-export * as ColorPicker from './color-picker';
+export * as DateTimePicker from './date-time-picker';
 export type {
-  ColorPickerRootProps,
-  HsvaColor,
-} from './color-picker/color-picker';
+  DateTimePickerRootProps,
+  SegmentProps as DateTimePickerSegmentProps,
+} from './date-time-picker/date-time-picker';
+export type {
+  DatePickerView,
+  DateRangePosition,
+  DateTimePickerView,
+  DateTimeValidationError,
+  DateValidationError,
+  PickerChangeContext,
+  PickerFieldSection,
+  PickerSelectedSections,
+  TimePickerView,
+  TimeValidationError,
+} from './picker-utils';
+
+export * as ColorPicker from './color-picker';
+export type { ColorPickerRootProps, HsvaColor } from './color-picker/color-picker';
 export { hsvaToHex } from './color-picker/color-picker';
 
 export * as FileUpload from './file-upload';
@@ -256,7 +294,10 @@ export type { FileUploadRootProps } from './file-upload/file-upload';
 
 // Phase H: feedback & misc
 export * as ScrollArea from './scroll-area';
-export type { ScrollAreaRootProps, ScrollbarProps as ScrollAreaScrollbarProps } from './scroll-area/scroll-area';
+export type {
+  ScrollAreaRootProps,
+  ScrollbarProps as ScrollAreaScrollbarProps,
+} from './scroll-area/scroll-area';
 
 export * as Toolbar from './toolbar';
 export type { ToolbarRootProps } from './toolbar/toolbar';
@@ -287,9 +328,22 @@ export type {
   SuggestionsProps as MentionsSuggestionsProps,
 } from './mentions/mentions';
 
+export * as Card from './card';
+export type { CardRootProps, CardSectionProps } from './card/card.types';
+
 export * from './aspect-ratio';
 export * from './switch';
 export * from './toggle';
 export * from './checkbox';
 export * from './label';
 export * from './separator';
+export * from './skeleton';
+export { Skeleton } from './skeleton/skeleton';
+export * from './spinner';
+export { Spinner } from './spinner/spinner';
+export type { SpinnerProps } from './spinner/spinner';
+export { Badge } from './badge/badge';
+export type { BadgeProps } from './badge/badge';
+export * from './alert';
+export * from './input';
+export * from './textarea';

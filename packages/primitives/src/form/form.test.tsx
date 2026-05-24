@@ -1,3 +1,26 @@
+'use client';
+
+import * as React from 'react';
+import { render } from '@testing-library/react';
+import { axe } from 'jest-axe';
+import { Root, Field, Label, Control, Message } from './index';
+
+describe('Form (primitive)', () => {
+  it('renders a form field with label and message', async () => {
+    const { container, getByText } = render(
+      <Root>
+        <Field name="foo">
+          <Label htmlFor="foo">Foo</Label>
+          <Control as="input" id="foo" />
+          <Message>Help text</Message>
+        </Field>
+      </Root>,
+    );
+    expect(getByText('Foo')).toBeTruthy();
+    const results = await axe(container);
+    expect(results.violations).toHaveLength(0);
+  });
+});
 import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import { describe, expect, it } from 'vitest';

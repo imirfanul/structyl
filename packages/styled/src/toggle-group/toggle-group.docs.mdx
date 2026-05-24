@@ -1,0 +1,21 @@
+---
+title: ToggleGroup
+---
+
+import { Meta, Story, Props } from '@storybook/addon-docs';
+import { Root, Item } from './index';
+
+<Meta title="Form/ToggleGroup" />
+
+# ToggleGroup
+
+Use `ToggleGroup` for on/off groups that can be single or multiple selection.
+
+<Story name="Default">
+  <Root>
+    <Item value="a">A</Item>
+    <Item value="b">B</Item>
+  </Root>
+</Story>
+
+<Props of={Root} />

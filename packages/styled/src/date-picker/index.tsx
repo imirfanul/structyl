@@ -1,13 +1,72 @@
 'use client';
 
 import * as React from 'react';
-import { CalendarIcon } from '@aura-ui/icons';
-import { DatePicker as DatePickerPrimitive } from '@aura-ui/primitives';
+import { CalendarIcon, ChevronLeft, ChevronRight } from '@aura-ui/icons';
+import { Calendar as CalendarPrimitive, DatePicker as DatePickerPrimitive } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
 import { buttonVariants } from '../button';
 import { Calendar as StyledCalendar } from '../calendar';
 
 const Root = DatePickerPrimitive.Root;
+
+const Value = DatePickerPrimitive.Value;
+const Loading = DatePickerPrimitive.Loading;
+
+interface CalendarProps
+  extends React.ComponentPropsWithoutRef<typeof DatePickerPrimitive.Calendar> {
+  showOutsideDays?: boolean;
+  showDaysOutsideCurrentMonth?: boolean;
+}
+
+const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
+  ({ className, showOutsideDays, showDaysOutsideCurrentMonth, ...props }, ref) => (
+    <DatePickerPrimitive.Calendar
+      ref={ref}
+      className={cn('rounded-md bg-popover p-3 text-popover-foreground', className)}
+      showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth ?? showOutsideDays}
+      {...props}
+    >
+      <CalendarPrimitive.Header className="mb-2 flex items-center justify-between">
+        <CalendarPrimitive.PreviousButton className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <ChevronLeft className="h-4 w-4" />
+        </CalendarPrimitive.PreviousButton>
+        <CalendarPrimitive.Heading />
+        <CalendarPrimitive.NextButton className="inline-flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+          <ChevronRight className="h-4 w-4" />
+        </CalendarPrimitive.NextButton>
+      </CalendarPrimitive.Header>
+      <CalendarPrimitive.Grid className="w-full border-collapse">
+        <CalendarPrimitive.GridHead />
+        <CalendarPrimitive.GridBody>
+          {(date, { isOutsideMonth }) => {
+            if ((showDaysOutsideCurrentMonth ?? showOutsideDays ?? true) === false && isOutsideMonth) {
+              return <span className="block h-8 w-8" aria-hidden="true" />;
+            }
+
+            return (
+              <CalendarPrimitive.Day
+                date={date}
+                isOutsideMonth={isOutsideMonth}
+                aria-label={new Intl.DateTimeFormat(props.locale, { dateStyle: 'full' }).format(date)}
+                className={cn(
+                  'inline-flex h-8 w-8 items-center justify-center rounded-md text-sm font-normal',
+                  'hover:bg-accent hover:text-accent-foreground',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                  'data-[state=selected]:bg-primary data-[state=selected]:text-primary-foreground',
+                  'data-[today]:font-semibold data-[today]:text-primary',
+                  'data-[outside]:text-muted-foreground/40',
+                  'data-[in-range]:bg-accent data-[in-range]:text-accent-foreground',
+                  'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+                )}
+              />
+            );
+          }}
+        </CalendarPrimitive.GridBody>
+      </CalendarPrimitive.Grid>
+    </DatePickerPrimitive.Calendar>
+  ),
+);
+Calendar.displayName = 'DatePicker.Calendar';
 
 const Trigger = React.forwardRef<
   React.ElementRef<typeof DatePickerPrimitive.Trigger>,
@@ -18,7 +77,7 @@ const Trigger = React.forwardRef<
     className={cn(
       buttonVariants({ variant: 'outline' }),
       'w-[240px] justify-start text-left font-normal',
-      'data-[placeholder]:text-muted-foreground',
+      'disabled:pointer-events-none disabled:opacity-50',
       className,
     )}
     {...props}
@@ -31,26 +90,176 @@ Trigger.displayName = 'DatePicker.Trigger';
 
 const Content = React.forwardRef<
   React.ElementRef<typeof DatePickerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DatePickerPrimitive.Content>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DatePickerPrimitive.Content> & {
+    calendarClassName?: string;
+    loading?: boolean;
+    showOutsideDays?: boolean;
+    showDaysOutsideCurrentMonth?: boolean;
+  }
+>(({
+  className,
+  children,
+  align = 'center',
+  sideOffset = 6,
+  calendarClassName,
+  loading,
+  showOutsideDays,
+  showDaysOutsideCurrentMonth,
+  ...props
+}, ref) => (
   <DatePickerPrimitive.Portal>
     <DatePickerPrimitive.Content
       ref={ref}
+      align={align}
+      sideOffset={sideOffset}
       className={cn(
-        'z-50 rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-md',
-        'data-[state=open]:animate-in data-[state=closed]:animate-out',
+        'z-50 rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-md outline-none',
+        'origin-[var(--aura-ui-popper-transform-origin,center)]',
+        'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
         className,
       )}
       {...props}
     >
-      <DatePickerPrimitive.Calendar>
-        {/* fallback in case user doesn't provide a child */}
-      </DatePickerPrimitive.Calendar>
+      {children ?? (
+        loading ? (
+          <div className="p-4 text-sm text-muted-foreground">
+            <DatePickerPrimitive.Loading />
+          </div>
+        ) : (
+          <Calendar
+            className={calendarClassName}
+            showOutsideDays={showOutsideDays}
+            showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
+          />
+        )
+      )}
     </DatePickerPrimitive.Content>
   </DatePickerPrimitive.Portal>
 ));
 Content.displayName = 'DatePicker.Content';
 
-const Value = DatePickerPrimitive.Value;
+interface DatePickerProps
+  extends Omit<React.ComponentPropsWithoutRef<typeof DatePickerPrimitive.Root>, 'children'> {
+  className?: string;
+  triggerClassName?: string;
+  contentClassName?: string;
+  calendarClassName?: string;
+  label?: React.ReactNode;
+  helperText?: React.ReactNode;
+  placeholder?: React.ReactNode;
+  format?: React.ComponentPropsWithoutRef<typeof DatePickerPrimitive.Root>['format'];
+  formatDensity?: React.ComponentPropsWithoutRef<typeof DatePickerPrimitive.Root>['formatDensity'];
+  id?: string;
+  name?: string;
+  required?: boolean;
+  error?: boolean;
+  showOutsideDays?: boolean;
+}
 
-export { Root, Trigger, Content, Value, StyledCalendar as Calendar };
+const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerProps>(
+  (
+    {
+      className,
+      triggerClassName,
+      contentClassName,
+      calendarClassName,
+      label,
+      helperText,
+      placeholder,
+      format,
+      formatDensity,
+      locale,
+      id,
+      name,
+      required,
+      error,
+      disabled,
+      readOnly,
+      autoFocus,
+      disableOpenPicker,
+      loading,
+      showOutsideDays,
+      showDaysOutsideCurrentMonth,
+      ...props
+    },
+    ref,
+  ) => {
+    const generatedId = React.useId();
+    const triggerId = id ?? generatedId;
+    const helperId = helperText ? `${triggerId}-helper` : undefined;
+    const labelText = typeof label === 'string' ? label : undefined;
+
+    return (
+      <Root
+        {...props}
+        disabled={disabled}
+        readOnly={readOnly}
+        locale={locale}
+        loading={loading}
+      >
+        <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
+          {label ? (
+            <label className="text-sm font-medium text-foreground" htmlFor={triggerId}>
+              {label}
+              {required ? <span aria-hidden="true"> *</span> : null}
+            </label>
+          ) : null}
+          <Trigger
+            id={triggerId}
+            name={name}
+            disabled={disabled || disableOpenPicker}
+            autoFocus={autoFocus}
+            aria-invalid={error || undefined}
+            aria-describedby={helperId}
+            aria-label={labelText ?? 'Choose date'}
+            className={triggerClassName}
+          >
+            <DatePickerPrimitive.Value
+              locale={locale}
+              format={format}
+              formatDensity={formatDensity}
+              placeholder={placeholder ?? 'MM/DD/YYYY'}
+            />
+          </Trigger>
+          {helperText ? (
+            <p
+              id={helperId}
+              className={cn('text-xs text-muted-foreground', error && 'text-destructive')}
+            >
+              {helperText}
+            </p>
+          ) : null}
+        </div>
+        <Content className={contentClassName}>
+          {loading ? (
+            <div className="p-4 text-sm text-muted-foreground">
+              <Loading />
+            </div>
+          ) : (
+            <Calendar
+              className={calendarClassName}
+              locale={locale}
+              showOutsideDays={showOutsideDays}
+              showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
+            />
+          )}
+        </Content>
+      </Root>
+    );
+  },
+);
+DatePickerRoot.displayName = 'DatePicker';
+
+const DatePicker = Object.assign(DatePickerRoot, {
+  Root,
+  Trigger,
+  Content,
+  Value,
+  Calendar,
+  Loading,
+  StyledCalendar,
+});
+
+export { DatePicker, Root, Trigger, Content, Value, Calendar, Loading, StyledCalendar };
+export type { DatePickerProps, CalendarProps };

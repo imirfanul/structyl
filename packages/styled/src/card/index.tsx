@@ -36,11 +36,12 @@ const Title = React.forwardRef<HTMLHeadingElement, React.HTMLAttributes<HTMLHead
 );
 Title.displayName = 'Card.Title';
 
-const Description = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
-  ),
-);
+const Description = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
+));
 Description.displayName = 'Card.Description';
 
 const Content = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
@@ -52,7 +53,11 @@ Content.displayName = 'Card.Content';
 
 const Footer = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn('flex items-center gap-2 border-t border-border/50 p-6 pt-4', className)} {...props} />
+    <div
+      ref={ref}
+      className={cn('flex items-center gap-2 border-t border-border/50 p-6 pt-4', className)}
+      {...props}
+    />
   ),
 );
 Footer.displayName = 'Card.Footer';

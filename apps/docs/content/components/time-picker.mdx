@@ -1,11 +1,11 @@
 ---
 title: TimePicker
-description: Segmented time selection with arrow-key adjustment.
+description: MUI-style time picker with segmented primitives.
 ---
 
 # TimePicker
 
-Segmented time selection with arrow-key adjustment.
+MUI-style time picker with popover columns, min/max validation, AM/PM mode, time steps and segmented primitives.
 
 ## Installation
 
@@ -19,7 +19,17 @@ npx aura-ui add time-picker
 import { TimePicker } from '@aura-ui/styled';
 
 export function Example() {
-  return <TimePicker />;
+  return (
+    <TimePicker
+      label="Start time"
+      value={time}
+      onChange={setTime}
+      ampm
+      minutesStep={15}
+      minTime={new Date(2026, 4, 23, 8, 0)}
+      maxTime={new Date(2026, 4, 23, 18, 0)}
+    />
+  );
 }
 ```
 

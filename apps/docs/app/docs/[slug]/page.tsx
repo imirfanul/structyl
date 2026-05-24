@@ -43,7 +43,24 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
       <p className="mt-3 text-base text-muted-foreground">{entry.description}</p>
 
       {/* Preview + code */}
-      <PreviewBlock preview={entry.preview} code={entry.code} />
+      <PreviewBlock title="Basic usage" preview={entry.preview} code={entry.code} />
+
+      {entry.examples && entry.examples.length > 0 && (
+        <Section title="Examples">
+          <div className="grid gap-8">
+            {entry.examples.map((example) => (
+              <PreviewBlock
+                key={example.title}
+                title={example.title}
+                description={example.description}
+                preview={example.preview}
+                code={example.code}
+                compact
+              />
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* Features */}
       {entry.features.length > 0 && (
@@ -151,10 +168,28 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
 
 /* ── Preview block with Preview / Code tabs ─────────────────────────── */
 
-function PreviewBlock({ preview, code }: { preview: () => React.ReactNode; code: string }) {
+function PreviewBlock({
+  title,
+  description,
+  preview,
+  code,
+  compact = false,
+}: {
+  title?: string;
+  description?: string;
+  preview: () => React.ReactNode;
+  code: string;
+  compact?: boolean;
+}) {
   const [tab, setTab] = React.useState<'preview' | 'code'>('preview');
   return (
-    <div className="mt-8">
+    <div className={compact ? '' : 'mt-8'}>
+      {title && (
+        <div className="mb-3">
+          <h3 className="text-sm font-semibold">{title}</h3>
+          {description ? <p className="mt-1 text-sm text-muted-foreground">{description}</p> : null}
+        </div>
+      )}
       <div className="flex items-center gap-1 border-b border-border">
         {(['preview', 'code'] as const).map((t) => (
           <button
@@ -170,7 +205,11 @@ function PreviewBlock({ preview, code }: { preview: () => React.ReactNode; code:
         ))}
       </div>
       {tab === 'preview' ? (
-        <div className="flex min-h-[240px] items-center justify-center rounded-b-xl border border-t-0 border-border bg-gradient-to-br from-accent/20 to-transparent p-10">
+        <div
+          className={`flex items-center justify-center rounded-b-xl border border-t-0 border-border bg-gradient-to-br from-accent/20 to-transparent ${
+            compact ? 'min-h-[180px] p-6' : 'min-h-[240px] p-10'
+          }`}
+        >
           {preview()}
         </div>
       ) : (

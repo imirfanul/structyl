@@ -5,7 +5,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 import { cn } from '@aura-ui/utils';
 
 const spinnerVariants = tv({
-  base: 'inline-block animate-spin rounded-full border-current border-t-transparent text-primary',
+  base: 'text-primary inline-block animate-spin rounded-full border-current border-t-transparent',
   variants: {
     size: {
       sm: 'h-4 w-4 border-2',
@@ -18,8 +18,7 @@ const spinnerVariants = tv({
 });
 
 interface SpinnerProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof spinnerVariants> {
+  extends React.HTMLAttributes<HTMLSpanElement>, VariantProps<typeof spinnerVariants> {
   /** Visually hidden label for screen readers. */
   label?: string;
 }

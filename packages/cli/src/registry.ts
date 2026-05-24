@@ -18,6 +18,11 @@ export interface RegistryEntry {
 }
 
 const PRIMITIVES = ['@aura-ui/primitives', '@aura-ui/core', '@aura-ui/hooks', '@aura-ui/utils', '@aura-ui/icons'];
+const MATERIAL_REGISTRY = {
+  dependencies: PRIMITIVES,
+  sourcePath: 'material/index.tsx',
+  registryDependencies: ['button', 'combobox'],
+} satisfies Omit<RegistryEntry, 'name'>;
 
 export const REGISTRY: Record<string, RegistryEntry> = {
   // Atoms
@@ -83,8 +88,10 @@ export const REGISTRY: Record<string, RegistryEntry> = {
   menubar: { name: 'menubar', dependencies: PRIMITIVES, sourcePath: 'menubar/index.tsx' },
   'navigation-menu': { name: 'navigation-menu', dependencies: PRIMITIVES, sourcePath: 'navigation-menu/index.tsx' },
   select: { name: 'select', dependencies: PRIMITIVES, sourcePath: 'select/index.tsx' },
+  'multi-select': { name: 'multi-select', dependencies: PRIMITIVES, sourcePath: 'multi-select/index.tsx' },
   combobox: { name: 'combobox', dependencies: PRIMITIVES, sourcePath: 'combobox/index.tsx' },
   command: { name: 'command', dependencies: PRIMITIVES, sourcePath: 'command/index.tsx' },
+  autocomplete: { name: 'autocomplete', ...MATERIAL_REGISTRY },
 
   // Specialty form
   'one-time-password-field': {
@@ -106,6 +113,12 @@ export const REGISTRY: Record<string, RegistryEntry> = {
     registryDependencies: ['calendar', 'button'],
   },
   'time-picker': { name: 'time-picker', dependencies: PRIMITIVES, sourcePath: 'time-picker/index.tsx' },
+  'date-time-picker': {
+    name: 'date-time-picker',
+    dependencies: PRIMITIVES,
+    sourcePath: 'date-time-picker/index.tsx',
+    registryDependencies: ['calendar', 'button', 'time-picker'],
+  },
   'date-range-picker': {
     name: 'date-range-picker',
     dependencies: PRIMITIVES,
@@ -136,6 +149,39 @@ export const REGISTRY: Record<string, RegistryEntry> = {
     sourcePath: 'copy-button/index.tsx',
     registryDependencies: ['button'],
   },
+  box: { name: 'box', ...MATERIAL_REGISTRY },
+  container: { name: 'container', ...MATERIAL_REGISTRY },
+  stack: { name: 'stack', ...MATERIAL_REGISTRY },
+  grid: { name: 'grid', ...MATERIAL_REGISTRY },
+  paper: { name: 'paper', ...MATERIAL_REGISTRY },
+  typography: { name: 'typography', ...MATERIAL_REGISTRY },
+  link: { name: 'link', ...MATERIAL_REGISTRY },
+  'svg-icon': { name: 'svg-icon', ...MATERIAL_REGISTRY },
+  chart: { name: 'chart', ...MATERIAL_REGISTRY },
+  chip: { name: 'chip', ...MATERIAL_REGISTRY },
+  'button-group': { name: 'button-group', ...MATERIAL_REGISTRY },
+  'floating-action-button': { name: 'floating-action-button', ...MATERIAL_REGISTRY },
+  rating: { name: 'rating', ...MATERIAL_REGISTRY },
+  'transfer-list': { name: 'transfer-list', ...MATERIAL_REGISTRY },
+  list: { name: 'list', ...MATERIAL_REGISTRY },
+  'image-list': { name: 'image-list', ...MATERIAL_REGISTRY },
+  table: { name: 'table', ...MATERIAL_REGISTRY },
+  backdrop: { name: 'backdrop', ...MATERIAL_REGISTRY },
+  snackbar: { name: 'snackbar', ...MATERIAL_REGISTRY },
+  modal: { name: 'modal', ...MATERIAL_REGISTRY },
+  'app-bar': { name: 'app-bar', ...MATERIAL_REGISTRY },
+  'bottom-navigation': { name: 'bottom-navigation', ...MATERIAL_REGISTRY },
+  'speed-dial': { name: 'speed-dial', ...MATERIAL_REGISTRY },
+  masonry: { name: 'masonry', ...MATERIAL_REGISTRY },
+  timeline: { name: 'timeline', ...MATERIAL_REGISTRY },
+  'click-away-listener': { name: 'click-away-listener', ...MATERIAL_REGISTRY },
+  'no-ssr': { name: 'no-ssr', ...MATERIAL_REGISTRY },
+  portal: { name: 'portal', ...MATERIAL_REGISTRY },
+  popper: { name: 'popper', ...MATERIAL_REGISTRY },
+  'textarea-autosize': { name: 'textarea-autosize', ...MATERIAL_REGISTRY },
+  transition: { name: 'transition', ...MATERIAL_REGISTRY },
+  'css-baseline': { name: 'css-baseline', ...MATERIAL_REGISTRY },
+  'init-color-scheme-script': { name: 'init-color-scheme-script', ...MATERIAL_REGISTRY },
 
   // Data
   'data-table': {
