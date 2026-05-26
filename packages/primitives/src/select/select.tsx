@@ -405,7 +405,12 @@ export interface SelectContentProps extends React.ComponentPropsWithoutRef<'div'
   align?: 'start' | 'center' | 'end';
   alignOffset?: number;
   avoidCollisions?: boolean;
+  collisionBoundary?: Element | Element[] | null;
   collisionPadding?: number;
+  strategy?: 'fixed' | 'absolute';
+  sticky?: 'partial' | 'always';
+  hideWhenDetached?: boolean;
+  updatePositionStrategy?: 'always' | 'optimized';
   onCloseAutoFocus?: (event: Event) => void;
   onEscapeKeyDown?: (event: KeyboardEvent) => void;
   onPointerDownOutside?: (event: Event) => void;
@@ -422,7 +427,12 @@ const Content = React.forwardRef<HTMLDivElement, SelectContentProps>((props, for
     align = 'start',
     alignOffset,
     avoidCollisions = true,
+    collisionBoundary,
     collisionPadding,
+    strategy,
+    sticky,
+    hideWhenDetached,
+    updatePositionStrategy,
     onCloseAutoFocus,
     onEscapeKeyDown,
     onPointerDownOutside,
@@ -470,7 +480,12 @@ const Content = React.forwardRef<HTMLDivElement, SelectContentProps>((props, for
           align={align}
           alignOffset={alignOffset}
           avoidCollisions={avoidCollisions}
+          collisionBoundary={collisionBoundary}
           collisionPadding={collisionPadding}
+          strategy={strategy}
+          sticky={sticky}
+          hideWhenDetached={hideWhenDetached}
+          updatePositionStrategy={updatePositionStrategy}
         >
           <DismissableLayer
             asChild

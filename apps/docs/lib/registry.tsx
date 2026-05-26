@@ -97,7 +97,7 @@ import {
   Transition,
   CssBaseline,
 } from '@aura-ui/styled';
-import { DataTable, type DataTableColumn } from '@aura-ui/data-table';
+import { DataTable, type DataTableColumn, type DataTableColumnDef, type DataTableFilterGroup } from '@aura-ui/data-table';
 import { componentUsageExamples } from './component-usage-examples';
 
 /* ── Types ──────────────────────────────────────────────────────────── */
@@ -142,20 +142,95 @@ export interface ComponentEntry {
   examples?: ComponentExample[];
 }
 
-type DocsUser = { id: number; name: string; email: string; role: string };
+type DocsUser = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  team: string;
+  status: 'Active' | 'Paused' | 'Blocked' | 'Invited';
+  revenue: number;
+  cost: number;
+  score: number;
+};
 
 const docsTableData: DocsUser[] = [
-  { id: 1, name: 'Ada Lovelace', email: 'ada@example.com', role: 'Admin' },
-  { id: 2, name: 'Alan Turing', email: 'alan@example.com', role: 'Editor' },
-  { id: 3, name: 'Grace Hopper', email: 'grace@example.com', role: 'Admin' },
-  { id: 4, name: 'Margaret Hamilton', email: 'margaret@example.com', role: 'Viewer' },
+  {
+    id: 1,
+    name: 'Ada Lovelace',
+    email: 'ada@example.com',
+    role: 'Admin',
+    team: 'Platform',
+    status: 'Active',
+    revenue: 1800,
+    cost: 920,
+    score: 91,
+  },
+  {
+    id: 2,
+    name: 'Alan Turing',
+    email: 'alan@example.com',
+    role: 'Editor',
+    team: 'Risk',
+    status: 'Paused',
+    revenue: 1300,
+    cost: 810,
+    score: 74,
+  },
+  {
+    id: 3,
+    name: 'Grace Hopper',
+    email: 'grace@example.com',
+    role: 'Admin',
+    team: 'Growth',
+    status: 'Active',
+    revenue: 2100,
+    cost: 990,
+    score: 88,
+  },
+  {
+    id: 4,
+    name: 'Margaret Hamilton',
+    email: 'margaret@example.com',
+    role: 'Viewer',
+    team: 'Design',
+    status: 'Blocked',
+    revenue: 980,
+    cost: 720,
+    score: 67,
+  },
+  {
+    id: 5,
+    name: 'Katherine Johnson',
+    email: 'katherine@example.com',
+    role: 'Owner',
+    team: 'Support',
+    status: 'Invited',
+    revenue: 1500,
+    cost: 760,
+    score: 82,
+  },
 ];
 
-const docsTableColumns: DataTableColumn<DocsUser>[] = [
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'email', header: 'Email' },
-  { accessorKey: 'role', header: 'Role' },
+const docsTableColumns: DataTableColumnDef<DocsUser>[] = [
+  { field: 'name', headerName: 'Name', size: 170 },
+  { field: 'email', headerName: 'Email', size: 220 },
+  { field: 'role', headerName: 'Role', size: 110, align: 'center' },
+  { field: 'team', headerName: 'Team', size: 120 },
+  { field: 'status', headerName: 'Status', size: 120 },
+  { field: 'revenue', headerName: 'Revenue', type: 'number', size: 120 },
+  { field: 'cost', headerName: 'Cost', type: 'number', size: 110 },
+  { field: 'score', headerName: 'Score', type: 'number', size: 90 },
 ];
+
+const docsTableFilter: DataTableFilterGroup = {
+  id: 'root',
+  logic: 'or',
+  items: [
+    { id: 'active', columnId: 'status', operator: 'equals', value: 'Active' },
+    { id: 'score', columnId: 'score', operator: 'gte', value: 80 },
+  ],
+};
 
 const materialOptions = [
   { value: 'react', label: 'React' },
@@ -4882,9 +4957,7 @@ export default function Demo() {
     category: 'Form',
     description: 'A calendar inside a popover for picking a date.',
     features: ['MUI-style field API.', 'Popover-anchored calendar.', 'Controlled or uncontrolled.'],
-    preview: () => (
-      <DatePicker label="Release date" defaultValue={new Date(2026, 4, 23)} />
-    ),
+    preview: () => <DatePicker label="Release date" defaultValue={new Date(2026, 4, 23)} />,
     code: `import { DatePicker } from '@aura-ui/styled';\n\n<DatePicker\n  label="Release date"\n  value={date}\n  onChange={setDate}\n/>`,
   },
   {
@@ -4905,8 +4978,8 @@ export default function Demo() {
     slug: 'time-picker',
     name: 'Time Picker',
     category: 'Form',
-    description: 'A MUI-style time field with segmented primitive composition.',
-    features: ['Date value API.', 'AM/PM and 24h modes.', 'Min/max time validation.'],
+    description: 'A MUI-style time field with a 12-hour analog clock panel.',
+    features: ['1-12 hour clock.', 'AM/PM and seconds selection.', 'Min/max time validation.'],
     preview: () => (
       <TimePicker label="Start time" defaultValue={new Date(2026, 4, 23, 9, 30)} ampm />
     ),
@@ -4916,13 +4989,18 @@ export default function Demo() {
     slug: 'date-time-picker',
     name: 'Date Time Picker',
     category: 'Form',
-    description: 'Pick a date and time from one popover with MUI-style props.',
-    features: ['Date-time value API.', 'Min/max date-time validation.', 'AM/PM and seconds support.'],
+    description: 'Pick a date first, then choose the time from one popover with MUI-style props.',
+    features: [
+      'Date-first time picker flow.',
+      'Min/max date-time validation.',
+      'AM/PM and seconds support.',
+    ],
     preview: () => (
       <DateTimePicker
         label="Deployment window"
         defaultValue={new Date(2026, 4, 23, 14, 30)}
         minutesStep={15}
+        helperText="Select the date, then choose the time."
       />
     ),
     code: `import { DateTimePicker } from '@aura-ui/styled';\n\n<DateTimePicker\n  label="Deployment window"\n  value={dateTime}\n  onChange={setDateTime}\n  minDateTime={start}\n  maxDateTime={end}\n/>`,
@@ -5127,35 +5205,79 @@ export default function Demo() {
     name: 'DataTable',
     category: 'Data',
     description:
-      'A full-featured data grid with sorting, filtering, pagination, virtualization and row selection.',
+      'A full-featured data grid with a rich column definition API, tree data, copy/paste, density, bulk actions, row action menus, custom slots, search, nested filters, virtualization, pinning, grouping, aggregation and more.',
     features: [
-      'Built on TanStack Table with typed column definitions.',
-      'Sorting, filtering, pagination, selection, resizing and pinning.',
-      'Virtualized rows for large datasets.',
-      'Server-side state adapter for remote data.',
+      'Rich DataTableColumnDef API — field, type, align, flex, renderCell, description, filterOperators.',
+      'Tree data with depth indentation and Expand All / Collapse All toolbar buttons.',
+      'Ctrl+C copy/paste to TSV for Excel and Google Sheets.',
+      'Density toggle — compact, standard, comfortable cell padding.',
+      'Bulk actions panel when rows are selected; row action menu and inline button columns.',
+      'Pagination with page-number dropdown, rows-per-page selector and total row count.',
+      'Row copy and column copy via row/column menus.',
+      'Full slot system — replace toolbar, pagination, column menu, filter, search, loaders, empty states.',
+      'Distinct empty states: NoRowsOverlay (empty source) vs NoResultsOverlay (filtered empty).',
+      'Sorting, global search, nested AND/OR filters, selection, resizing, pinning and reordering.',
+      'Virtualized rows and columns for large datasets with lazy loading.',
+      'Column configuration, aggregation totals, inline create, detail panels and localization.',
+      'Server-side state adapter, skeleton/spinner/text loaders and accessibility built in.',
     ],
     preview: () => (
       <DataTable
         columns={docsTableColumns}
         data={docsTableData}
+        getRowId={(row) => String(row.id)}
         enableSorting
+        enableGlobalSearch
+        enableAdvancedFiltering
+        defaultAdvancedFilter={docsTableFilter}
+        enableColumnConfiguration
+        enableColumnPinning
+        enableRowSelection
+        enableRowPinning
         enablePagination
-        pageSize={3}
-        className="w-full max-w-2xl"
+        pageSize={4}
+        aggregations={{ revenue: 'sum', cost: 'avg', score: 'max' }}
+        rowTotals={{ columns: ['revenue', 'cost'] }}
+        rowActions={(row) => (
+          <Button size="sm" variant="ghost">
+            Open {row.original.id}
+          </Button>
+        )}
+        renderDetailPanel={(row) => (
+          <div className="grid gap-1 text-sm">
+            <strong>{row.original.name}</strong>
+            <span className="text-muted-foreground">{row.original.team} team details</span>
+          </div>
+        )}
+        className="w-full max-w-4xl"
       />
     ),
-    code: `import { DataTable, type DataTableColumn } from '@aura-ui/data-table';
+    code: `import { DataTable, type DataTableColumnDef } from '@aura-ui/data-table';
 
-type User = { id: number; name: string; email: string; role: string };
+type User = { id: number; name: string; email: string; role: string; revenue: number };
 
-const columns: DataTableColumn<User>[] = [
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'email', header: 'Email' },
-  { accessorKey: 'role', header: 'Role' },
+const columns: DataTableColumnDef<User>[] = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'email', headerName: 'Email' },
+  { field: 'role', headerName: 'Role', align: 'center' },
+  { field: 'revenue', headerName: 'Revenue', type: 'number' },
 ];
 
 export default function Demo({ data }: { data: User[] }) {
-  return <DataTable columns={columns} data={data} enableSorting enablePagination />;
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      enableSorting
+      enableGlobalSearch
+      enableAdvancedFiltering
+      enableColumnConfiguration
+      enableRowSelection
+      enableColumnPinning
+      aggregations={{ revenue: 'sum' }}
+      renderDetailPanel={(row) => <UserDetail row={row} />}
+    />
+  );
 }`,
   },
 ];

@@ -271,6 +271,8 @@ export * as DateTimePicker from './date-time-picker';
 export type {
   DateTimePickerRootProps,
   SegmentProps as DateTimePickerSegmentProps,
+  TimePanelProps as DateTimePickerTimePanelProps,
+  TimePanelRenderProps as DateTimePickerTimePanelRenderProps,
 } from './date-time-picker/date-time-picker';
 export type {
   DatePickerView,

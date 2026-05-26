@@ -4,4 +4,4 @@
 "@aura-ui/cli": patch
 ---
 
-Expand picker parity with MUI-style DatePicker, DateRangePicker, TimePicker and DateTimePicker props, validation contexts, range shortcuts, loading states and date-time field composition.
+Expand picker parity with MUI-style DatePicker, DateRangePicker, TimePicker and DateTimePicker props, validation contexts, range shortcuts, loading states, separate analog TimePicker selection and the staged DateTimePicker date-to-time flow.

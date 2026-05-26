@@ -34,7 +34,12 @@ export interface MenuContentProps extends React.ComponentPropsWithoutRef<'div'> 
   align?: 'start' | 'center' | 'end';
   alignOffset?: number;
   avoidCollisions?: boolean;
+  collisionBoundary?: Element | Element[] | null;
   collisionPadding?: number;
+  strategy?: 'fixed' | 'absolute';
+  sticky?: 'partial' | 'always';
+  hideWhenDetached?: boolean;
+  updatePositionStrategy?: 'always' | 'optimized';
 }
 
 export interface MenuItemProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onSelect'> {

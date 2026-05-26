@@ -1,33 +1,105 @@
 import { useState, useRef, useEffect } from 'react';
 import {
-  Moon, Sun, Bell, Mail, Settings, Star, Search, Sparkles, Layers,
-  Boxes, Component, Palette, Type, MousePointer2, ChevronRight,
-  Paintbrush, Copy, RotateCcw, Check,
+  Moon,
+  Sun,
+  Bell,
+  Mail,
+  Settings,
+  Star,
+  Search,
+  Sparkles,
+  Layers,
+  Boxes,
+  Component,
+  Palette,
+  Type,
+  MousePointer2,
+  ChevronRight,
+  Paintbrush,
+  Copy,
+  RotateCcw,
+  Check,
 } from '@aura-ui/icons';
 import {
   // Foundations
-  Button, Checkbox, Dialog, Label, Separator, Switch, Toggle,
+  Button,
+  Checkbox,
+  Dialog,
+  Label,
+  Separator,
+  Switch,
+  Toggle,
   // Phase B atoms
-  AspectRatio, Avatar, Progress, Skeleton, Badge, Card, Spinner, Alert,
+  AspectRatio,
+  Avatar,
+  Progress,
+  Skeleton,
+  Badge,
+  Card,
+  Spinner,
+  Alert,
   // Phase C form
-  Input, Textarea, RadioGroup, ToggleGroup, Slider, Form,
+  Input,
+  Textarea,
+  RadioGroup,
+  ToggleGroup,
+  Slider,
+  Form,
   // Phase D disclosure
-  Collapsible, Accordion, Tabs, Breadcrumb, Pagination, Stepper,
+  Collapsible,
+  Accordion,
+  Tabs,
+  Breadcrumb,
+  Pagination,
+  Stepper,
   // Phase E overlays
-  AlertDialog, Sheet, Drawer, Popover, Tooltip, HoverCard, Toast,
+  AlertDialog,
+  Sheet,
+  Drawer,
+  Popover,
+  Tooltip,
+  HoverCard,
+  Toast,
   // Phase F compound
-  DropdownMenu, ContextMenu, Menubar, NavigationMenu, Select, MultiSelect, Combobox, Command,
+  DropdownMenu,
+  ContextMenu,
+  Menubar,
+  NavigationMenu,
+  Select,
+  MultiSelect,
+  Combobox,
+  Command,
   // Phase G specialty
-  OneTimePasswordField, PasswordToggleField, NumberField, Calendar, DatePicker,
-  TimePicker, DateRangePicker, DateTimePicker, ColorPicker, FileUpload,
+  OneTimePasswordField,
+  PasswordToggleField,
+  NumberField,
+  Calendar,
+  DatePicker,
+  TimePicker,
+  DateRangePicker,
+  DateTimePicker,
+  ColorPicker,
+  FileUpload,
   // Phase H feedback
-  CircularProgress, Meter, ScrollArea, Toolbar, Resizable, Carousel, Tree,
-  Editable, TagsInput, Mentions, CopyButton,
+  CircularProgress,
+  Meter,
+  ScrollArea,
+  Toolbar,
+  Resizable,
+  Carousel,
+  Tree,
+  Editable,
+  TagsInput,
+  Mentions,
+  CopyButton,
 } from '@aura-ui/styled';
 import { useTheme } from '@aura-ui/themes';
 import {
-  DataTable, exportToCSV,
-  type DataTableColumn, type Table,
+  DataTable,
+  exportToCSV,
+  type DataTableColumn,
+  type DataTableFilterGroup,
+  type Table,
 } from '@aura-ui/data-table';
 import {
   componentUsageExamples,
@@ -35,19 +107,59 @@ import {
   type UsageExample,
 } from '../../docs/lib/component-usage-examples';
 
-type User = { id: number; name: string; email: string; role: string };
-const sampleData: User[] = [
-  { id: 1, name: 'Ada Lovelace', email: 'ada@example.com', role: 'Admin' },
-  { id: 2, name: 'Alan Turing', email: 'alan@example.com', role: 'Editor' },
-  { id: 3, name: 'Grace Hopper', email: 'grace@example.com', role: 'Admin' },
-  { id: 4, name: 'Linus Torvalds', email: 'linus@example.com', role: 'Viewer' },
-  { id: 5, name: 'Margaret Hamilton', email: 'margaret@example.com', role: 'Admin' },
-];
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  role: 'Admin' | 'Editor' | 'Viewer' | 'Owner';
+  team: string;
+  status: 'Active' | 'Paused' | 'Blocked' | 'Invited';
+  revenue: number;
+  cost: number;
+  score: number;
+};
+const sampleData: User[] = Array.from({ length: 160 }, (_, index) => {
+  const roles: User['role'][] = ['Admin', 'Editor', 'Viewer', 'Owner'];
+  const statuses: User['status'][] = ['Active', 'Paused', 'Blocked', 'Invited'];
+  const teams = ['Platform', 'Design', 'Growth', 'Risk', 'Support'];
+  return {
+    id: index + 1,
+    name: `User ${index + 1}`,
+    email: `user${index + 1}@example.com`,
+    role: roles[index % roles.length] ?? 'Viewer',
+    team: teams[index % teams.length] ?? 'Platform',
+    status: statuses[index % statuses.length] ?? 'Active',
+    revenue: 1000 + index * 45,
+    cost: 600 + index * 21,
+    score: 40 + ((index * 9) % 60),
+  };
+});
 const columns: DataTableColumn<User>[] = [
-  { accessorKey: 'name', header: 'Name' },
-  { accessorKey: 'email', header: 'Email' },
-  { accessorKey: 'role', header: 'Role' },
+  { accessorKey: 'name', header: 'Name', size: 170 },
+  { accessorKey: 'email', header: 'Email', size: 220 },
+  { accessorKey: 'role', header: 'Role', size: 110 },
+  { accessorKey: 'team', header: 'Team', size: 130 },
+  { accessorKey: 'status', header: 'Status', size: 120 },
+  { accessorKey: 'revenue', header: 'Revenue', size: 120 },
+  { accessorKey: 'cost', header: 'Cost', size: 120 },
+  { accessorKey: 'score', header: 'Score', size: 90 },
 ];
+
+const dataTableAdvancedFilter: DataTableFilterGroup = {
+  id: 'root',
+  logic: 'and',
+  items: [
+    { id: 'active', columnId: 'status', operator: 'notEmpty' },
+    {
+      id: 'score-or-team',
+      logic: 'or',
+      items: [
+        { id: 'score', columnId: 'score', operator: 'gte', value: 70 },
+        { id: 'team', columnId: 'team', operator: 'equals', value: 'Design' },
+      ],
+    },
+  ],
+};
 
 const multiSelectOptions = [
   { value: 'react', label: 'React' },
@@ -70,17 +182,83 @@ interface NavSection {
 }
 
 const SECTIONS: NavSection[] = [
-  { id: 'foundations', title: 'Foundations', icon: Type, count: 7, description: 'Building blocks that establish the design language.' },
-  { id: 'atoms', title: 'Atoms', icon: Boxes, count: 8, description: 'Single-purpose styled components with no internal state.' },
-  { id: 'form', title: 'Form Controls', icon: MousePointer2, count: 6, description: 'Inputs, selectors and validation primitives.' },
-  { id: 'disclosure', title: 'Disclosure & Nav', icon: Layers, count: 6, description: 'Show/hide and navigation patterns.' },
-  { id: 'overlays', title: 'Overlays', icon: Component, count: 8, description: 'Dialogs, popovers, tooltips and notifications.' },
-  { id: 'compound', title: 'Compound', icon: Sparkles, count: 8, description: 'Complex menus, selects, and command palettes.' },
-  { id: 'specialty', title: 'Specialty Form', icon: Palette, count: 9, description: 'Date, time, color, OTP and file inputs.' },
-  { id: 'feedback', title: 'Feedback & Misc', icon: Bell, count: 11, description: 'Progress, scroll, resize, and editable surfaces.' },
-  { id: 'data', title: 'Data', icon: Boxes, count: 1, description: 'Full-featured data grid with all the bells and whistles.' },
-  { id: 'usage', title: 'Usage Gallery', icon: Component, count: 64, description: 'Large prop, state, composition, and data examples for every core component.' },
-  { id: 'palette', title: 'Color Palette', icon: Palette, count: 12, description: 'Generate an accessible 12-step color scale from any accent color.' },
+  {
+    id: 'foundations',
+    title: 'Foundations',
+    icon: Type,
+    count: 7,
+    description: 'Building blocks that establish the design language.',
+  },
+  {
+    id: 'atoms',
+    title: 'Atoms',
+    icon: Boxes,
+    count: 8,
+    description: 'Single-purpose styled components with no internal state.',
+  },
+  {
+    id: 'form',
+    title: 'Form Controls',
+    icon: MousePointer2,
+    count: 6,
+    description: 'Inputs, selectors and validation primitives.',
+  },
+  {
+    id: 'disclosure',
+    title: 'Disclosure & Nav',
+    icon: Layers,
+    count: 6,
+    description: 'Show/hide and navigation patterns.',
+  },
+  {
+    id: 'overlays',
+    title: 'Overlays',
+    icon: Component,
+    count: 8,
+    description: 'Dialogs, popovers, tooltips and notifications.',
+  },
+  {
+    id: 'compound',
+    title: 'Compound',
+    icon: Sparkles,
+    count: 8,
+    description: 'Complex menus, selects, and command palettes.',
+  },
+  {
+    id: 'specialty',
+    title: 'Specialty Form',
+    icon: Palette,
+    count: 9,
+    description: 'Date, time, color, OTP and file inputs.',
+  },
+  {
+    id: 'feedback',
+    title: 'Feedback & Misc',
+    icon: Bell,
+    count: 11,
+    description: 'Progress, scroll, resize, and editable surfaces.',
+  },
+  {
+    id: 'data',
+    title: 'Data',
+    icon: Boxes,
+    count: 1,
+    description: 'Full-featured data grid with all the bells and whistles.',
+  },
+  {
+    id: 'usage',
+    title: 'Usage Gallery',
+    icon: Component,
+    count: 64,
+    description: 'Large prop, state, composition, and data examples for every core component.',
+  },
+  {
+    id: 'palette',
+    title: 'Color Palette',
+    icon: Palette,
+    count: 12,
+    description: 'Generate an accessible 12-step color scale from any accent color.',
+  },
 ];
 
 // Color presets — each preset is HSL "H S% L%" for primary
@@ -143,9 +321,7 @@ export default function App() {
   const tableRef = useRef<Table<User> | null>(null);
   const activeSection = SECTIONS.find((s) => s.id === active) ?? SECTIONS[0]!;
 
-  const filtered = SECTIONS.filter((s) =>
-    s.title.toLowerCase().includes(search.toLowerCase()),
-  );
+  const filtered = SECTIONS.filter((s) => s.title.toLowerCase().includes(search.toLowerCase()));
 
   // Apply builder tokens to <html> so portaled overlays inherit them too
   useEffect(() => {
@@ -154,8 +330,7 @@ export default function App() {
     root.style.setProperty('--color-ring', builder.primary);
     root.style.setProperty('--radius', builder.radius);
     root.style.fontSize = `${16 * builder.scale}px`;
-    document.body.style.filter =
-      builder.contrast !== 100 ? `contrast(${builder.contrast}%)` : '';
+    document.body.style.filter = builder.contrast !== 100 ? `contrast(${builder.contrast}%)` : '';
     return () => {
       root.style.removeProperty('--color-primary');
       root.style.removeProperty('--color-ring');
@@ -176,29 +351,35 @@ export default function App() {
       await navigator.clipboard.writeText(cssOutput);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (e) { void e; }
+    } catch (e) {
+      void e;
+    }
   };
 
   return (
     <Toast.Provider>
       <Tooltip.Provider delayDuration={200}>
-        <div className="min-h-screen bg-bg text-fg">
+        <div className="bg-bg text-fg min-h-screen">
           {/* Header */}
-          <header className="sticky top-0 z-50 border-b border-border/60 bg-bg/70 backdrop-blur-glass">
+          <header className="border-border/60 bg-bg/70 backdrop-blur-glass sticky top-0 z-50 border-b">
             <div className="flex h-14 items-center gap-4 px-6">
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-sm">
+                <div className="from-primary to-primary/70 text-primary-foreground flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br shadow-sm">
                   <Sparkles className="h-4 w-4" />
                 </div>
                 <div className="leading-tight">
                   <div className="text-sm font-semibold tracking-tight">aura-ui</div>
-                  <div className="text-[10px] uppercase tracking-widest text-muted-foreground">playground</div>
+                  <div className="text-muted-foreground text-[10px] uppercase tracking-widest">
+                    playground
+                  </div>
                 </div>
               </div>
-              <Badge variant="secondary" className="hidden md:inline-flex">v0.0.1 · 64 components</Badge>
+              <Badge variant="secondary" className="hidden md:inline-flex">
+                v0.0.1 · 64 components
+              </Badge>
               <div className="ml-auto flex items-center gap-2">
                 <div className="relative hidden sm:block">
-                  <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+                  <Search className="text-muted-foreground pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2" />
                   <Input
                     placeholder="Search components…"
                     value={search}
@@ -229,7 +410,9 @@ export default function App() {
                       {resolvedMode === 'dark' ? <Sun /> : <Moon />}
                     </Button>
                   </Tooltip.Trigger>
-                  <Tooltip.Content>{resolvedMode === 'dark' ? 'Light mode' : 'Dark mode'}</Tooltip.Content>
+                  <Tooltip.Content>
+                    {resolvedMode === 'dark' ? 'Light mode' : 'Dark mode'}
+                  </Tooltip.Content>
                 </Tooltip.Root>
               </div>
             </div>
@@ -237,8 +420,8 @@ export default function App() {
 
           <div className="mx-auto grid max-w-[1600px] grid-cols-[240px_1fr_300px] gap-0">
             {/* Sidebar */}
-            <aside className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto border-r border-border/60 px-3 py-6">
-              <div className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <aside className="border-border/60 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto border-r px-3 py-6">
+              <div className="text-muted-foreground mb-2 px-2 text-[10px] font-semibold uppercase tracking-widest">
                 Components
               </div>
               <nav className="space-y-0.5">
@@ -249,13 +432,15 @@ export default function App() {
                     <button
                       key={s.id}
                       onClick={() => setActive(s.id)}
-                      className={`group relative flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-xs transition-all duration-snappy ${
+                      className={`duration-snappy group relative flex w-full items-center gap-2.5 rounded-md px-2.5 py-1.5 text-xs transition-all ${
                         isActive
                           ? 'bg-accent text-accent-foreground font-medium'
                           : 'text-muted-foreground hover:bg-accent/50 hover:text-fg'
                       }`}
                     >
-                      <Icon className={`h-3.5 w-3.5 transition-transform ${isActive ? 'text-primary' : ''}`} />
+                      <Icon
+                        className={`h-3.5 w-3.5 transition-transform ${isActive ? 'text-primary' : ''}`}
+                      />
                       <span className="flex-1 text-left">{s.title}</span>
                       <span
                         className={`text-[10px] tabular-nums tracking-tight ${
@@ -265,14 +450,14 @@ export default function App() {
                         {s.count}
                       </span>
                       {isActive && (
-                        <span className="absolute -left-3 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full bg-primary" />
+                        <span className="bg-primary absolute -left-3 top-1/2 h-4 w-0.5 -translate-y-1/2 rounded-full" />
                       )}
                     </button>
                   );
                 })}
               </nav>
               <Separator className="my-4" />
-              <div className="space-y-1 px-2 text-[10px] text-muted-foreground">
+              <div className="text-muted-foreground space-y-1 px-2 text-[10px]">
                 <p>~76 components total</p>
                 <p>WCAG 2.2 AA · Tailwind v3</p>
                 <p>React 18 · 19 compatible</p>
@@ -282,24 +467,40 @@ export default function App() {
             {/* Main content */}
             <main className="min-w-0">
               {/* Hero */}
-              <div className="border-b border-border/60 bg-gradient-to-b from-accent/20 to-transparent px-8 py-10">
+              <div className="border-border/60 from-accent/20 border-b bg-gradient-to-b to-transparent px-8 py-10">
                 <Breadcrumb.Root>
                   <Breadcrumb.List>
-                    <Breadcrumb.Item><Breadcrumb.Link href="#" className="text-xs">Playground</Breadcrumb.Link></Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                      <Breadcrumb.Link href="#" className="text-xs">
+                        Playground
+                      </Breadcrumb.Link>
+                    </Breadcrumb.Item>
                     <Breadcrumb.Separator />
-                    <Breadcrumb.Item><Breadcrumb.Page className="text-xs">{activeSection.title}</Breadcrumb.Page></Breadcrumb.Item>
+                    <Breadcrumb.Item>
+                      <Breadcrumb.Page className="text-xs">{activeSection.title}</Breadcrumb.Page>
+                    </Breadcrumb.Item>
                   </Breadcrumb.List>
                 </Breadcrumb.Root>
-                <h1 className="mt-3 text-3xl font-semibold tracking-tight">{activeSection.title}</h1>
-                <p className="mt-2 max-w-2xl text-sm text-muted-foreground">{activeSection.description}</p>
+                <h1 className="mt-3 text-3xl font-semibold tracking-tight">
+                  {activeSection.title}
+                </h1>
+                <p className="text-muted-foreground mt-2 max-w-2xl text-sm">
+                  {activeSection.description}
+                </p>
                 <div className="mt-4 flex flex-wrap gap-1.5">
-                  <Badge variant="outline" className="font-mono text-[10px]">{activeSection.count} components</Badge>
-                  <Badge variant="success" className="font-mono text-[10px]">Production-ready</Badge>
-                  <Badge variant="secondary" className="font-mono text-[10px]">Themeable</Badge>
+                  <Badge variant="outline" className="font-mono text-[10px]">
+                    {activeSection.count} components
+                  </Badge>
+                  <Badge variant="success" className="font-mono text-[10px]">
+                    Production-ready
+                  </Badge>
+                  <Badge variant="secondary" className="font-mono text-[10px]">
+                    Themeable
+                  </Badge>
                 </div>
               </div>
 
-              <div className="px-8 py-8 space-y-8">
+              <div className="space-y-8 px-8 py-8">
                 {active === 'foundations' && <Foundations />}
                 {active === 'atoms' && <Atoms />}
                 {active === 'form' && <FormBasics />}
@@ -315,170 +516,181 @@ export default function App() {
             </main>
 
             {/* Docked Theme Panel */}
-            <aside className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto border-l border-border/60 bg-card/30 px-5 py-6">
-              <div className="flex items-center gap-2 mb-1">
-                <Paintbrush className="h-4 w-4 text-primary" />
+            <aside className="border-border/60 bg-card/30 sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto border-l px-5 py-6">
+              <div className="mb-1 flex items-center gap-2">
+                <Paintbrush className="text-primary h-4 w-4" />
                 <h2 className="text-sm font-semibold tracking-tight">Theme</h2>
               </div>
-              <p className="text-[11px] text-muted-foreground mb-5">
+              <p className="text-muted-foreground mb-5 text-[11px]">
                 Build your theme. Changes apply live to every component.
               </p>
 
-            <div className="space-y-6">
-              {/* Base theme */}
-              <ThemeSection title="Base theme" subtitle="The neutral color palette">
-                <div className="grid grid-cols-3 gap-2">
-                  {themes.map((t) => (
-                    <button
-                      key={t}
-                      onClick={() => setTheme(t)}
-                      className={`flex items-center justify-center rounded-md border px-3 py-2 text-xs font-medium transition-all duration-snappy ${
-                        theme === t
-                          ? 'border-primary bg-primary text-primary-foreground shadow-sm scale-[1.02]'
-                          : 'border-border hover:border-border-strong'
-                      }`}
-                    >
-                      {t.charAt(0).toUpperCase() + t.slice(1)}
-                    </button>
-                  ))}
-                </div>
-              </ThemeSection>
-
-              {/* Accent color */}
-              <ThemeSection title="Accent color" subtitle="Primary brand color">
-                <div className="grid grid-cols-7 gap-2">
-                  {COLOR_PRESETS.map((c) => (
-                    <Tooltip.Root key={c.name}>
-                      <Tooltip.Trigger asChild>
-                        <button
-                          onClick={() => setBuilder((b) => ({ ...b, primary: c.hsl }))}
-                          aria-label={c.name}
-                          className={`group/swatch relative h-8 w-8 rounded-full ring-2 ring-offset-2 ring-offset-bg transition-all duration-snappy active:scale-90 ${
-                            builder.primary === c.hsl ? 'ring-primary' : 'ring-transparent hover:ring-border-strong'
-                          }`}
-                          style={{ backgroundColor: `hsl(${c.hsl})` }}
-                        >
-                          {builder.primary === c.hsl && (
-                            <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow animate-in zoom-in-50 duration-150" />
-                          )}
-                        </button>
-                      </Tooltip.Trigger>
-                      <Tooltip.Content>{c.name}</Tooltip.Content>
-                    </Tooltip.Root>
-                  ))}
-                </div>
-              </ThemeSection>
-
-              {/* Radius */}
-              <ThemeSection title="Radius" subtitle="Border roundness">
-                <div className="grid grid-cols-3 gap-2">
-                  {RADIUS_PRESETS.map((r) => (
-                    <button
-                      key={r.value}
-                      onClick={() => setBuilder((b) => ({ ...b, radius: r.value }))}
-                      className={`flex flex-col items-center gap-1.5 rounded-md border px-2 py-2 text-[10px] font-medium transition-all duration-snappy ${
-                        builder.radius === r.value
-                          ? 'border-primary bg-accent shadow-sm'
-                          : 'border-border hover:border-border-strong'
-                      }`}
-                    >
-                      <div
-                        className="h-6 w-6 border-2 border-fg"
-                        style={{ borderRadius: r.value }}
-                      />
-                      {r.name}
-                    </button>
-                  ))}
-                </div>
-              </ThemeSection>
-
-              {/* Scale */}
-              <ThemeSection title="Scaling" subtitle="Overall component size">
-                <div className="grid grid-cols-5 gap-2">
-                  {SCALE_PRESETS.map((s) => (
-                    <button
-                      key={s.value}
-                      onClick={() => setBuilder((b) => ({ ...b, scale: s.value }))}
-                      className={`rounded-md border px-2 py-2 text-[10px] font-medium tabular-nums transition-all duration-snappy ${
-                        builder.scale === s.value
-                          ? 'border-primary bg-accent shadow-sm'
-                          : 'border-border hover:border-border-strong'
-                      }`}
-                    >
-                      {s.name}
-                    </button>
-                  ))}
-                </div>
-              </ThemeSection>
-
-              {/* Contrast */}
-              <ThemeSection title="Contrast" subtitle={`${builder.contrast}%`}>
-                <Slider
-                  value={[builder.contrast]}
-                  onValueChange={([v]) => v !== undefined && setBuilder((b) => ({ ...b, contrast: v }))}
-                  min={80}
-                  max={130}
-                  step={5}
-                />
-              </ThemeSection>
-
-              {/* Mode */}
-              <ThemeSection title="Appearance" subtitle="Light / Dark / Match system">
-                <div className="grid grid-cols-3 gap-2">
-                  {(['light', 'dark', 'system'] as const).map((m) => (
-                    <button
-                      key={m}
-                      onClick={() => setMode(m)}
-                      className={`flex items-center justify-center gap-1.5 rounded-md border px-2 py-2 text-xs font-medium capitalize transition-all duration-snappy ${
-                        (m === 'system' ? false : resolvedMode === m)
-                          ? 'border-primary bg-primary text-primary-foreground'
-                          : 'border-border hover:border-border-strong'
-                      }`}
-                    >
-                      {m === 'light' && <Sun className="h-3 w-3" />}
-                      {m === 'dark' && <Moon className="h-3 w-3" />}
-                      {m === 'system' && <Sparkles className="h-3 w-3" />}
-                      {m}
-                    </button>
-                  ))}
-                </div>
-              </ThemeSection>
-
-              {/* Live preview */}
-              <ThemeSection title="Live preview" subtitle="See your theme in action">
-                <div className="rounded-lg border border-border bg-card p-3 space-y-2">
-                  <div className="flex gap-2">
-                    <Button size="sm">Primary</Button>
-                    <Button size="sm" variant="outline">Outline</Button>
+              <div className="space-y-6">
+                {/* Base theme */}
+                <ThemeSection title="Base theme" subtitle="The neutral color palette">
+                  <div className="grid grid-cols-3 gap-2">
+                    {themes.map((t) => (
+                      <button
+                        key={t}
+                        onClick={() => setTheme(t)}
+                        className={`duration-snappy flex items-center justify-center rounded-md border px-3 py-2 text-xs font-medium transition-all ${
+                          theme === t
+                            ? 'border-primary bg-primary text-primary-foreground scale-[1.02] shadow-sm'
+                            : 'border-border hover:border-border-strong'
+                        }`}
+                      >
+                        {t.charAt(0).toUpperCase() + t.slice(1)}
+                      </button>
+                    ))}
                   </div>
-                  <Input placeholder="Sample input" className="h-8 text-xs" />
-                  <div className="flex gap-1.5">
-                    <Badge>New</Badge>
-                    <Badge variant="success">Active</Badge>
-                    <Badge variant="warning">Beta</Badge>
+                </ThemeSection>
+
+                {/* Accent color */}
+                <ThemeSection title="Accent color" subtitle="Primary brand color">
+                  <div className="grid grid-cols-7 gap-2">
+                    {COLOR_PRESETS.map((c) => (
+                      <Tooltip.Root key={c.name}>
+                        <Tooltip.Trigger asChild>
+                          <button
+                            onClick={() => setBuilder((b) => ({ ...b, primary: c.hsl }))}
+                            aria-label={c.name}
+                            className={`group/swatch ring-offset-bg duration-snappy relative h-8 w-8 rounded-full ring-2 ring-offset-2 transition-all active:scale-90 ${
+                              builder.primary === c.hsl
+                                ? 'ring-primary'
+                                : 'hover:ring-border-strong ring-transparent'
+                            }`}
+                            style={{ backgroundColor: `hsl(${c.hsl})` }}
+                          >
+                            {builder.primary === c.hsl && (
+                              <Check className="animate-in zoom-in-50 absolute inset-0 m-auto h-4 w-4 text-white drop-shadow duration-150" />
+                            )}
+                          </button>
+                        </Tooltip.Trigger>
+                        <Tooltip.Content>{c.name}</Tooltip.Content>
+                      </Tooltip.Root>
+                    ))}
                   </div>
+                </ThemeSection>
+
+                {/* Radius */}
+                <ThemeSection title="Radius" subtitle="Border roundness">
+                  <div className="grid grid-cols-3 gap-2">
+                    {RADIUS_PRESETS.map((r) => (
+                      <button
+                        key={r.value}
+                        onClick={() => setBuilder((b) => ({ ...b, radius: r.value }))}
+                        className={`duration-snappy flex flex-col items-center gap-1.5 rounded-md border px-2 py-2 text-[10px] font-medium transition-all ${
+                          builder.radius === r.value
+                            ? 'border-primary bg-accent shadow-sm'
+                            : 'border-border hover:border-border-strong'
+                        }`}
+                      >
+                        <div
+                          className="border-fg h-6 w-6 border-2"
+                          style={{ borderRadius: r.value }}
+                        />
+                        {r.name}
+                      </button>
+                    ))}
+                  </div>
+                </ThemeSection>
+
+                {/* Scale */}
+                <ThemeSection title="Scaling" subtitle="Overall component size">
+                  <div className="grid grid-cols-5 gap-2">
+                    {SCALE_PRESETS.map((s) => (
+                      <button
+                        key={s.value}
+                        onClick={() => setBuilder((b) => ({ ...b, scale: s.value }))}
+                        className={`duration-snappy rounded-md border px-2 py-2 text-[10px] font-medium tabular-nums transition-all ${
+                          builder.scale === s.value
+                            ? 'border-primary bg-accent shadow-sm'
+                            : 'border-border hover:border-border-strong'
+                        }`}
+                      >
+                        {s.name}
+                      </button>
+                    ))}
+                  </div>
+                </ThemeSection>
+
+                {/* Contrast */}
+                <ThemeSection title="Contrast" subtitle={`${builder.contrast}%`}>
+                  <Slider
+                    value={[builder.contrast]}
+                    onValueChange={([v]) =>
+                      v !== undefined && setBuilder((b) => ({ ...b, contrast: v }))
+                    }
+                    min={80}
+                    max={130}
+                    step={5}
+                  />
+                </ThemeSection>
+
+                {/* Mode */}
+                <ThemeSection title="Appearance" subtitle="Light / Dark / Match system">
+                  <div className="grid grid-cols-3 gap-2">
+                    {(['light', 'dark', 'system'] as const).map((m) => (
+                      <button
+                        key={m}
+                        onClick={() => setMode(m)}
+                        className={`duration-snappy flex items-center justify-center gap-1.5 rounded-md border px-2 py-2 text-xs font-medium capitalize transition-all ${
+                          (m === 'system' ? false : resolvedMode === m)
+                            ? 'border-primary bg-primary text-primary-foreground'
+                            : 'border-border hover:border-border-strong'
+                        }`}
+                      >
+                        {m === 'light' && <Sun className="h-3 w-3" />}
+                        {m === 'dark' && <Moon className="h-3 w-3" />}
+                        {m === 'system' && <Sparkles className="h-3 w-3" />}
+                        {m}
+                      </button>
+                    ))}
+                  </div>
+                </ThemeSection>
+
+                {/* Live preview */}
+                <ThemeSection title="Live preview" subtitle="See your theme in action">
+                  <div className="border-border bg-card space-y-2 rounded-lg border p-3">
+                    <div className="flex gap-2">
+                      <Button size="sm">Primary</Button>
+                      <Button size="sm" variant="outline">
+                        Outline
+                      </Button>
+                    </div>
+                    <Input placeholder="Sample input" className="h-8 text-xs" />
+                    <div className="flex gap-1.5">
+                      <Badge>New</Badge>
+                      <Badge variant="success">Active</Badge>
+                      <Badge variant="warning">Beta</Badge>
+                    </div>
+                  </div>
+                </ThemeSection>
+
+                {/* CSS output */}
+                <ThemeSection title="Export CSS" subtitle="Paste into your globals.css">
+                  <pre className="border-border bg-muted/50 text-fg overflow-x-auto rounded-md border p-3 font-mono text-[11px] leading-relaxed">
+                    {cssOutput}
+                  </pre>
+                </ThemeSection>
+
+                {/* Actions */}
+                <div className="bg-card/95 border-border/50 sticky bottom-0 -mx-5 flex gap-2 border-t px-5 py-3 backdrop-blur">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setBuilder(DEFAULT_BUILDER)}
+                    className="flex-1 gap-1.5"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    Reset
+                  </Button>
+                  <Button size="sm" onClick={handleCopy} className="flex-1 gap-1.5">
+                    {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+                    {copied ? 'Copied!' : 'Copy theme'}
+                  </Button>
                 </div>
-              </ThemeSection>
-
-              {/* CSS output */}
-              <ThemeSection title="Export CSS" subtitle="Paste into your globals.css">
-                <pre className="rounded-md border border-border bg-muted/50 p-3 text-[11px] leading-relaxed font-mono text-fg overflow-x-auto">
-                  {cssOutput}
-                </pre>
-              </ThemeSection>
-
-              {/* Actions */}
-              <div className="flex gap-2 sticky bottom-0 bg-card/95 backdrop-blur py-3 -mx-5 px-5 border-t border-border/50">
-                <Button variant="outline" size="sm" onClick={() => setBuilder(DEFAULT_BUILDER)} className="flex-1 gap-1.5">
-                  <RotateCcw className="h-3.5 w-3.5" />
-                  Reset
-                </Button>
-                <Button size="sm" onClick={handleCopy} className="flex-1 gap-1.5">
-                  {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                  {copied ? 'Copied!' : 'Copy theme'}
-                </Button>
               </div>
-            </div>
             </aside>
           </div>
         </div>
@@ -502,7 +714,7 @@ function ThemeSection({
     <div className="space-y-2.5">
       <div>
         <h3 className="text-xs font-semibold tracking-tight">{title}</h3>
-        {subtitle && <p className="text-[10px] text-muted-foreground">{subtitle}</p>}
+        {subtitle && <p className="text-muted-foreground text-[10px]">{subtitle}</p>}
       </div>
       {children}
     </div>
@@ -521,21 +733,26 @@ interface DemoProps {
 function Demo({ name, description, variant = 'default', children }: DemoProps) {
   return (
     <section className="group/demo">
-      <div className="flex items-baseline justify-between gap-2 mb-3">
+      <div className="mb-3 flex items-baseline justify-between gap-2">
         <div>
           <h2 className="text-base font-semibold tracking-tight">{name}</h2>
-          {description && <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>}
+          {description && <p className="text-muted-foreground mt-0.5 text-xs">{description}</p>}
         </div>
-        <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">{`<${name} />`}</code>
+        <code className="bg-muted text-muted-foreground rounded px-1.5 py-0.5 font-mono text-[10px]">{`<${name} />`}</code>
       </div>
-      <div className={`rounded-xl border border-border/60 bg-card shadow-xs overflow-hidden`}>
+      <div className={`border-border/60 bg-card shadow-xs overflow-hidden rounded-xl border`}>
         <div className="absolute right-2 top-2 hidden group-hover/demo:flex"></div>
-        <div className={
-          variant === 'plain' ? '' :
-          variant === 'wide' ? 'p-6' :
-          variant === 'inline' ? 'flex flex-wrap items-center gap-3 p-8 min-h-[140px]' :
-          'flex items-center justify-center p-10 min-h-[200px] bg-gradient-to-br from-bg to-muted/20'
-        }>
+        <div
+          className={
+            variant === 'plain'
+              ? ''
+              : variant === 'wide'
+                ? 'p-6'
+                : variant === 'inline'
+                  ? 'flex min-h-[140px] flex-wrap items-center gap-3 p-8'
+                  : 'from-bg to-muted/20 flex min-h-[200px] items-center justify-center bg-gradient-to-br p-10'
+          }
+        >
           {children}
         </div>
       </div>
@@ -560,19 +777,19 @@ function UsageCoverageCard({
   example: UsageExample;
 }) {
   return (
-    <section className="grid min-h-80 gap-4 rounded-xl border border-border/60 bg-card p-5 shadow-xs">
+    <section className="border-border/60 bg-card shadow-xs grid min-h-80 gap-4 rounded-xl border p-5">
       <div className="flex items-start justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold tracking-tight">{example.title}</h3>
           {example.description ? (
-            <p className="mt-1 text-xs text-muted-foreground">{example.description}</p>
+            <p className="text-muted-foreground mt-1 text-xs">{example.description}</p>
           ) : null}
         </div>
         <Badge variant="secondary" className="shrink-0 text-[10px]">
           {componentName}
         </Badge>
       </div>
-      <div className="flex min-h-44 items-center justify-center rounded-lg border border-border/60 bg-muted/20 p-4">
+      <div className="border-border/60 bg-muted/20 flex min-h-44 items-center justify-center rounded-lg border p-4">
         {example.preview()}
       </div>
     </section>
@@ -586,7 +803,7 @@ function UsageCoverageGallery() {
         <section key={group.title} className="space-y-4">
           <div>
             <h2 className="text-xl font-semibold tracking-tight">{group.title}</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 text-sm">
               Props, variants, composition patterns, and larger data examples.
             </p>
           </div>
@@ -615,50 +832,87 @@ function Foundations() {
   const [pressed, setPressed] = useState(false);
   return (
     <>
-      <Demo name="Button" description="Six variants × four sizes. Spring press, smooth color transitions." variant="inline">
+      <Demo
+        name="Button"
+        description="Six variants × four sizes. Spring press, smooth color transitions."
+        variant="inline"
+      >
         <Button>Default</Button>
         <Button variant="secondary">Secondary</Button>
         <Button variant="outline">Outline</Button>
         <Button variant="ghost">Ghost</Button>
         <Button variant="link">Link</Button>
         <Button variant="destructive">Destructive</Button>
-        <Separator className="w-full my-1" />
+        <Separator className="my-1 w-full" />
         <Button size="sm">Small</Button>
         <Button>Default</Button>
         <Button size="lg">Large</Button>
-        <Button size="icon" aria-label="Settings"><Settings /></Button>
+        <Button size="icon" aria-label="Settings">
+          <Settings />
+        </Button>
       </Demo>
 
       <Demo name="Switch" description="iOS-style toggle with spring thumb animation.">
         <div className="flex flex-col items-center gap-3">
           <div className="flex items-center gap-3">
             <Switch checked={switchOn} onCheckedChange={setSwitchOn} id="notif" />
-            <Label htmlFor="notif" className="cursor-pointer">Notifications</Label>
+            <Label htmlFor="notif" className="cursor-pointer">
+              Notifications
+            </Label>
           </div>
           <div className="flex items-center gap-2">
-            <Switch size="sm" defaultChecked /> <span className="text-xs text-muted-foreground">sm</span>
-            <Switch size="md" defaultChecked /> <span className="text-xs text-muted-foreground">md</span>
-            <Switch size="lg" defaultChecked /> <span className="text-xs text-muted-foreground">lg</span>
+            <Switch size="sm" defaultChecked />{' '}
+            <span className="text-muted-foreground text-xs">sm</span>
+            <Switch size="md" defaultChecked />{' '}
+            <span className="text-muted-foreground text-xs">md</span>
+            <Switch size="lg" defaultChecked />{' '}
+            <span className="text-muted-foreground text-xs">lg</span>
           </div>
         </div>
       </Demo>
 
-      <Demo name="Checkbox" description="Square checkbox with animated check. Spring press." variant="inline">
-        <div className="flex items-center gap-2"><Checkbox id="c1" defaultChecked /><Label htmlFor="c1">Accept terms</Label></div>
-        <div className="flex items-center gap-2"><Checkbox id="c2" /><Label htmlFor="c2">Subscribe</Label></div>
-        <div className="flex items-center gap-2"><Checkbox id="c3" checked="indeterminate" /><Label htmlFor="c3">Indeterminate</Label></div>
-        <div className="flex items-center gap-2"><Checkbox id="c4" disabled /><Label htmlFor="c4">Disabled</Label></div>
+      <Demo
+        name="Checkbox"
+        description="Square checkbox with animated check. Spring press."
+        variant="inline"
+      >
+        <div className="flex items-center gap-2">
+          <Checkbox id="c1" defaultChecked />
+          <Label htmlFor="c1">Accept terms</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox id="c2" />
+          <Label htmlFor="c2">Subscribe</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox id="c3" checked="indeterminate" />
+          <Label htmlFor="c3">Indeterminate</Label>
+        </div>
+        <div className="flex items-center gap-2">
+          <Checkbox id="c4" disabled />
+          <Label htmlFor="c4">Disabled</Label>
+        </div>
       </Demo>
 
       <Demo name="Toggle" description="Two-state button toggle." variant="inline">
-        <Toggle pressed={pressed} onPressedChange={setPressed}>Bold</Toggle>
-        <Toggle defaultPressed><span className="italic">Italic</span></Toggle>
-        <Toggle><span className="underline">Underline</span></Toggle>
+        <Toggle pressed={pressed} onPressedChange={setPressed}>
+          Bold
+        </Toggle>
+        <Toggle defaultPressed>
+          <span className="italic">Italic</span>
+        </Toggle>
+        <Toggle>
+          <span className="underline">Underline</span>
+        </Toggle>
       </Demo>
 
-      <Demo name="Label & Separator" description="Form label + horizontal/vertical dividers." variant="inline">
+      <Demo
+        name="Label & Separator"
+        description="Form label + horizontal/vertical dividers."
+        variant="inline"
+      >
         <Label>Standalone label</Label>
-        <Separator className="w-full my-2" />
+        <Separator className="my-2 w-full" />
         <div className="flex items-center text-sm">
           A <Separator className="mx-3 h-4 w-px" /> B <Separator className="mx-3 h-4 w-px" /> C
         </div>
@@ -672,31 +926,51 @@ function Foundations() {
 function Atoms() {
   return (
     <>
-      <Demo name="Card" description="Compound: Root, Header, Title, Description, Content, Footer." variant="wide">
-        <Card.Root className="max-w-sm mx-auto">
+      <Demo
+        name="Card"
+        description="Compound: Root, Header, Title, Description, Content, Footer."
+        variant="wide"
+      >
+        <Card.Root className="mx-auto max-w-sm">
           <Card.Header>
             <Card.Title>Notifications</Card.Title>
             <Card.Description>You have 3 unread messages.</Card.Description>
           </Card.Header>
           <Card.Content className="flex items-center gap-3">
-            <Avatar.Root><Avatar.Image src="https://i.pravatar.cc/40?img=1" alt="" /><Avatar.Fallback>AL</Avatar.Fallback></Avatar.Root>
+            <Avatar.Root>
+              <Avatar.Image src="https://i.pravatar.cc/40?img=1" alt="" />
+              <Avatar.Fallback>AL</Avatar.Fallback>
+            </Avatar.Root>
             <div className="text-sm">
               <p className="font-medium">Ada Lovelace</p>
               <p className="text-muted-foreground text-xs">3 minutes ago</p>
             </div>
           </Card.Content>
           <Card.Footer>
-            <Button size="sm" variant="outline" className="ml-auto">Mark read</Button>
+            <Button size="sm" variant="outline" className="ml-auto">
+              Mark read
+            </Button>
             <Button size="sm">View all</Button>
           </Card.Footer>
         </Card.Root>
       </Demo>
 
       <Demo name="Avatar" description="Image with intelligent fallback states." variant="inline">
-        <Avatar.Root><Avatar.Image src="https://i.pravatar.cc/80?img=1" alt="" /><Avatar.Fallback>AD</Avatar.Fallback></Avatar.Root>
-        <Avatar.Root><Avatar.Image src="https://i.pravatar.cc/80?img=8" alt="" /><Avatar.Fallback>JS</Avatar.Fallback></Avatar.Root>
-        <Avatar.Root><Avatar.Image src="https://i.pravatar.cc/80?img=12" alt="" /><Avatar.Fallback>MK</Avatar.Fallback></Avatar.Root>
-        <Avatar.Root><Avatar.Fallback>+5</Avatar.Fallback></Avatar.Root>
+        <Avatar.Root>
+          <Avatar.Image src="https://i.pravatar.cc/80?img=1" alt="" />
+          <Avatar.Fallback>AD</Avatar.Fallback>
+        </Avatar.Root>
+        <Avatar.Root>
+          <Avatar.Image src="https://i.pravatar.cc/80?img=8" alt="" />
+          <Avatar.Fallback>JS</Avatar.Fallback>
+        </Avatar.Root>
+        <Avatar.Root>
+          <Avatar.Image src="https://i.pravatar.cc/80?img=12" alt="" />
+          <Avatar.Fallback>MK</Avatar.Fallback>
+        </Avatar.Root>
+        <Avatar.Root>
+          <Avatar.Fallback>+5</Avatar.Fallback>
+        </Avatar.Root>
       </Demo>
 
       <Demo name="Badge" description="Status descriptors with six variants." variant="inline">
@@ -709,26 +983,32 @@ function Atoms() {
       </Demo>
 
       <Demo name="Progress" description="Animated linear progress with smooth fill." variant="wide">
-        <div className="space-y-4 max-w-md mx-auto">
+        <div className="mx-auto max-w-md space-y-4">
           <Progress value={25} />
           <Progress value={62} />
           <Progress value={91} />
         </div>
       </Demo>
 
-      <Demo name="AspectRatio" description="Constrains content to a fixed width/height ratio." variant="wide">
-        <div className="max-w-md mx-auto">
-          <AspectRatio ratio={16 / 9} className="rounded-lg overflow-hidden">
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary/20 to-accent text-sm font-medium">16 : 9</div>
+      <Demo
+        name="AspectRatio"
+        description="Constrains content to a fixed width/height ratio."
+        variant="wide"
+      >
+        <div className="mx-auto max-w-md">
+          <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg">
+            <div className="from-primary/20 to-accent flex h-full w-full items-center justify-center bg-gradient-to-br text-sm font-medium">
+              16 : 9
+            </div>
           </AspectRatio>
         </div>
       </Demo>
 
       <Demo name="Skeleton" description="Pulse-animated loading placeholder.">
-        <div className="space-y-3 w-full max-w-md">
+        <div className="w-full max-w-md space-y-3">
           <div className="flex items-center gap-3">
             <Skeleton className="h-10 w-10 rounded-full" />
-            <div className="space-y-2 flex-1">
+            <div className="flex-1 space-y-2">
               <Skeleton className="h-4 w-1/3" />
               <Skeleton className="h-3 w-1/2" />
             </div>
@@ -737,7 +1017,11 @@ function Atoms() {
         </div>
       </Demo>
 
-      <Demo name="Spinner" description="Indeterminate loading indicator in four sizes." variant="inline">
+      <Demo
+        name="Spinner"
+        description="Indeterminate loading indicator in four sizes."
+        variant="inline"
+      >
         <Spinner size="sm" />
         <Spinner size="md" />
         <Spinner size="lg" />
@@ -745,10 +1029,19 @@ function Atoms() {
       </Demo>
 
       <Demo name="Alert" description="Contextual inline messages." variant="wide">
-        <div className="space-y-3 max-w-md mx-auto">
-          <Alert.Root><Alert.Title>Heads up!</Alert.Title><Alert.Description>You can edit this any time.</Alert.Description></Alert.Root>
-          <Alert.Root variant="destructive"><Alert.Title>Error</Alert.Title><Alert.Description>Something broke. Try again.</Alert.Description></Alert.Root>
-          <Alert.Root variant="success"><Alert.Title>Success</Alert.Title><Alert.Description>Your changes are saved.</Alert.Description></Alert.Root>
+        <div className="mx-auto max-w-md space-y-3">
+          <Alert.Root>
+            <Alert.Title>Heads up!</Alert.Title>
+            <Alert.Description>You can edit this any time.</Alert.Description>
+          </Alert.Root>
+          <Alert.Root variant="destructive">
+            <Alert.Title>Error</Alert.Title>
+            <Alert.Description>Something broke. Try again.</Alert.Description>
+          </Alert.Root>
+          <Alert.Root variant="success">
+            <Alert.Title>Success</Alert.Title>
+            <Alert.Description>Your changes are saved.</Alert.Description>
+          </Alert.Root>
         </div>
       </Demo>
     </>
@@ -764,26 +1057,43 @@ function FormBasics() {
   return (
     <>
       <Demo name="Input" description="Text input with focus ring and invalid state." variant="wide">
-        <div className="grid gap-3 max-w-md mx-auto">
-          <div className="grid gap-1.5"><Label htmlFor="em">Email</Label><Input id="em" type="email" placeholder="you@example.com" /></div>
-          <div className="grid gap-1.5"><Label htmlFor="pw">Password</Label><Input id="pw" type="password" placeholder="••••••••" /></div>
-          <div className="grid gap-1.5"><Label htmlFor="dis">Disabled</Label><Input id="dis" placeholder="Disabled" disabled /></div>
+        <div className="mx-auto grid max-w-md gap-3">
+          <div className="grid gap-1.5">
+            <Label htmlFor="em">Email</Label>
+            <Input id="em" type="email" placeholder="you@example.com" />
+          </div>
+          <div className="grid gap-1.5">
+            <Label htmlFor="pw">Password</Label>
+            <Input id="pw" type="password" placeholder="••••••••" />
+          </div>
+          <div className="grid gap-1.5">
+            <Label htmlFor="dis">Disabled</Label>
+            <Input id="dis" placeholder="Disabled" disabled />
+          </div>
         </div>
       </Demo>
 
       <Demo name="Textarea" description="Multi-line text with smooth focus.">
-        <Textarea placeholder="Tell us about yourself…" className="max-w-md min-h-[100px]" />
+        <Textarea placeholder="Tell us about yourself…" className="min-h-[100px] max-w-md" />
       </Demo>
 
       <Demo name="RadioGroup" description="Mutually exclusive selection with arrow-key navigation.">
-        <RadioGroup.Root value={radio} onValueChange={setRadio} className="grid gap-2 max-w-sm mx-auto">
+        <RadioGroup.Root
+          value={radio}
+          onValueChange={setRadio}
+          className="mx-auto grid max-w-sm gap-2"
+        >
           {[
             { v: 'a', l: 'Default option' },
             { v: 'b', l: 'Comfortable option' },
             { v: 'c', l: 'Compact option' },
           ].map(({ v, l }) => (
-            <label key={v} className="flex items-center gap-3 rounded-md border border-border/50 p-3 cursor-pointer hover:bg-accent/30 transition-colors">
-              <RadioGroup.Item value={v} id={`r-${v}`} /><span className="text-sm">{l}</span>
+            <label
+              key={v}
+              className="border-border/50 hover:bg-accent/30 flex cursor-pointer items-center gap-3 rounded-md border p-3 transition-colors"
+            >
+              <RadioGroup.Item value={v} id={`r-${v}`} />
+              <span className="text-sm">{l}</span>
             </label>
           ))}
         </RadioGroup.Root>
@@ -791,28 +1101,44 @@ function FormBasics() {
 
       <Demo name="ToggleGroup" description="Single or multiple toggle selection." variant="inline">
         <ToggleGroup.Root type="multiple" value={tg} onValueChange={setTg}>
-          <ToggleGroup.Item value="bold"><strong>B</strong></ToggleGroup.Item>
-          <ToggleGroup.Item value="italic"><em>I</em></ToggleGroup.Item>
-          <ToggleGroup.Item value="underline"><span className="underline">U</span></ToggleGroup.Item>
+          <ToggleGroup.Item value="bold">
+            <strong>B</strong>
+          </ToggleGroup.Item>
+          <ToggleGroup.Item value="italic">
+            <em>I</em>
+          </ToggleGroup.Item>
+          <ToggleGroup.Item value="underline">
+            <span className="underline">U</span>
+          </ToggleGroup.Item>
         </ToggleGroup.Root>
       </Demo>
 
       <Demo name="Slider" description="Pointer + keyboard control. Multi-thumb support.">
         <div className="w-full max-w-md space-y-2">
           <Slider value={slider} onValueChange={setSlider} max={100} />
-          <p className="text-xs text-muted-foreground text-center">Value: {slider[0]}</p>
+          <p className="text-muted-foreground text-center text-xs">Value: {slider[0]}</p>
         </div>
       </Demo>
 
       <Demo name="Form" description="Declarative validation built on native ValidityState.">
-        <Form.Root className="max-w-md w-full" onSubmit={(e) => { e.preventDefault(); alert('submitted!'); }}>
+        <Form.Root
+          className="w-full max-w-md"
+          onSubmit={(e) => {
+            e.preventDefault();
+            alert('submitted!');
+          }}
+        >
           <Form.Field name="email" className="grid gap-1.5">
-            <Form.Label asChild><Label>Email address</Label></Form.Label>
+            <Form.Label asChild>
+              <Label>Email address</Label>
+            </Form.Label>
             <Form.Control type="email" required placeholder="you@example.com" />
             <Form.Message match="valueMissing">Please enter an email.</Form.Message>
             <Form.Message match="typeMismatch">That is not a valid email.</Form.Message>
           </Form.Field>
-          <Form.Submit asChild><Button className="mt-3 w-full">Submit</Button></Form.Submit>
+          <Form.Submit asChild>
+            <Button className="mt-3 w-full">Submit</Button>
+          </Form.Submit>
         </Form.Root>
       </Demo>
     </>
@@ -831,21 +1157,37 @@ function Disclosure() {
           <Collapsible.Trigger asChild>
             <Button variant="outline" className="w-full justify-between">
               {open ? 'Hide details' : 'Show details'}
-              <ChevronRight className={`h-4 w-4 transition-transform duration-smooth ${open ? 'rotate-90' : ''}`} />
+              <ChevronRight
+                className={`duration-smooth h-4 w-4 transition-transform ${open ? 'rotate-90' : ''}`}
+              />
             </Button>
           </Collapsible.Trigger>
-          <Collapsible.Content className="mt-2 rounded-lg border border-border bg-muted/30 p-4 text-sm">
+          <Collapsible.Content className="border-border bg-muted/30 mt-2 rounded-lg border p-4 text-sm">
             <p>This content is animated in and out smoothly.</p>
-            <p className="mt-1 text-muted-foreground text-xs">The height transitions using CSS variables.</p>
+            <p className="text-muted-foreground mt-1 text-xs">
+              The height transitions using CSS variables.
+            </p>
           </Collapsible.Content>
         </Collapsible.Root>
       </Demo>
 
-      <Demo name="Accordion" description="Multi-section disclosure with arrow-key navigation." variant="wide">
-        <Accordion.Root type="single" collapsible className="w-full max-w-md mx-auto">
+      <Demo
+        name="Accordion"
+        description="Multi-section disclosure with arrow-key navigation."
+        variant="wide"
+      >
+        <Accordion.Root type="single" collapsible className="mx-auto w-full max-w-md">
           {[
-            { v: 'a', q: 'Is it accessible?', a: 'Yes. Each panel follows the WAI-ARIA APG specification.' },
-            { v: 'b', q: 'Is it animated?', a: 'Yes. Spring-eased height transitions out of the box.' },
+            {
+              v: 'a',
+              q: 'Is it accessible?',
+              a: 'Yes. Each panel follows the WAI-ARIA APG specification.',
+            },
+            {
+              v: 'b',
+              q: 'Is it animated?',
+              a: 'Yes. Spring-eased height transitions out of the box.',
+            },
             { v: 'c', q: 'Is it themeable?', a: 'Yes. All colors come from CSS variables.' },
           ].map(({ v, q, a }) => (
             <Accordion.Item key={v} value={v}>
@@ -856,27 +1198,43 @@ function Disclosure() {
         </Accordion.Root>
       </Demo>
 
-      <Demo name="Tabs" description="Active tab gets a subtle shadow lift. Arrow keys cycle." variant="wide">
-        <Tabs.Root defaultValue="acc" className="w-full max-w-md mx-auto">
+      <Demo
+        name="Tabs"
+        description="Active tab gets a subtle shadow lift. Arrow keys cycle."
+        variant="wide"
+      >
+        <Tabs.Root defaultValue="acc" className="mx-auto w-full max-w-md">
           <Tabs.List>
             <Tabs.Trigger value="acc">Account</Tabs.Trigger>
             <Tabs.Trigger value="pwd">Password</Tabs.Trigger>
             <Tabs.Trigger value="bill">Billing</Tabs.Trigger>
           </Tabs.List>
-          <Tabs.Content value="acc" className="text-sm text-muted-foreground p-2">Make changes to your account here.</Tabs.Content>
-          <Tabs.Content value="pwd" className="text-sm text-muted-foreground p-2">Change your password here.</Tabs.Content>
-          <Tabs.Content value="bill" className="text-sm text-muted-foreground p-2">Manage your billing.</Tabs.Content>
+          <Tabs.Content value="acc" className="text-muted-foreground p-2 text-sm">
+            Make changes to your account here.
+          </Tabs.Content>
+          <Tabs.Content value="pwd" className="text-muted-foreground p-2 text-sm">
+            Change your password here.
+          </Tabs.Content>
+          <Tabs.Content value="bill" className="text-muted-foreground p-2 text-sm">
+            Manage your billing.
+          </Tabs.Content>
         </Tabs.Root>
       </Demo>
 
       <Demo name="Breadcrumb" description="Trail of links showing the current location.">
         <Breadcrumb.Root>
           <Breadcrumb.List>
-            <Breadcrumb.Item><Breadcrumb.Link href="#">Home</Breadcrumb.Link></Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
+            </Breadcrumb.Item>
             <Breadcrumb.Separator />
-            <Breadcrumb.Item><Breadcrumb.Link href="#">Library</Breadcrumb.Link></Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href="#">Library</Breadcrumb.Link>
+            </Breadcrumb.Item>
             <Breadcrumb.Separator />
-            <Breadcrumb.Item><Breadcrumb.Page>Components</Breadcrumb.Page></Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Breadcrumb.Page>Components</Breadcrumb.Page>
+            </Breadcrumb.Item>
           </Breadcrumb.List>
         </Breadcrumb.Root>
       </Demo>
@@ -884,22 +1242,32 @@ function Disclosure() {
       <Demo name="Pagination" description="Navigate between pages of results.">
         <Pagination.Root>
           <Pagination.Content>
-            <Pagination.Item><Pagination.Previous onClick={() => setPage((p) => Math.max(1, p - 1))} /></Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Previous onClick={() => setPage((p) => Math.max(1, p - 1))} />
+            </Pagination.Item>
             {[1, 2, 3].map((p) => (
               <Pagination.Item key={p}>
-                <Pagination.Link isActive={page === p} onClick={() => setPage(p)}>{p}</Pagination.Link>
+                <Pagination.Link isActive={page === p} onClick={() => setPage(p)}>
+                  {p}
+                </Pagination.Link>
               </Pagination.Item>
             ))}
-            <Pagination.Item><Pagination.Ellipsis /></Pagination.Item>
-            <Pagination.Item><Pagination.Next onClick={() => setPage((p) => Math.min(3, p + 1))} /></Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Ellipsis />
+            </Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Next onClick={() => setPage((p) => Math.min(3, p + 1))} />
+            </Pagination.Item>
           </Pagination.Content>
         </Pagination.Root>
       </Demo>
 
       <Demo name="Stepper" description="Multi-step process indicator." variant="wide">
-        <Stepper.Root activeStep={1} className="max-w-md mx-auto">
-          <Stepper.Step index={0} /><Stepper.Separator />
-          <Stepper.Step index={1} /><Stepper.Separator />
+        <Stepper.Root activeStep={1} className="mx-auto max-w-md">
+          <Stepper.Step index={0} />
+          <Stepper.Separator />
+          <Stepper.Step index={1} />
+          <Stepper.Separator />
           <Stepper.Step index={2} />
         </Stepper.Root>
       </Demo>
@@ -915,21 +1283,35 @@ function Overlays() {
     <>
       <Demo name="Dialog" description="Modal overlay with focus trap, scroll lock, zoom-in.">
         <Dialog.Root>
-          <Dialog.Trigger asChild><Button>Open dialog</Button></Dialog.Trigger>
+          <Dialog.Trigger asChild>
+            <Button>Open dialog</Button>
+          </Dialog.Trigger>
           <Dialog.Portal>
             <Dialog.Overlay />
             <Dialog.Content>
               <Dialog.Header>
                 <Dialog.Title>Edit profile</Dialog.Title>
-                <Dialog.Description>Make changes to your profile. Click save when done.</Dialog.Description>
+                <Dialog.Description>
+                  Make changes to your profile. Click save when done.
+                </Dialog.Description>
               </Dialog.Header>
               <div className="grid gap-3 py-2">
-                <div className="grid gap-1.5"><Label htmlFor="name">Name</Label><Input id="name" defaultValue="Ada Lovelace" /></div>
-                <div className="grid gap-1.5"><Label htmlFor="user">Username</Label><Input id="user" defaultValue="@ada" /></div>
+                <div className="grid gap-1.5">
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" defaultValue="Ada Lovelace" />
+                </div>
+                <div className="grid gap-1.5">
+                  <Label htmlFor="user">Username</Label>
+                  <Input id="user" defaultValue="@ada" />
+                </div>
               </div>
               <Dialog.Footer>
-                <Dialog.Close asChild><Button variant="outline">Cancel</Button></Dialog.Close>
-                <Dialog.Close asChild><Button>Save changes</Button></Dialog.Close>
+                <Dialog.Close asChild>
+                  <Button variant="outline">Cancel</Button>
+                </Dialog.Close>
+                <Dialog.Close asChild>
+                  <Button>Save changes</Button>
+                </Dialog.Close>
               </Dialog.Footer>
             </Dialog.Content>
           </Dialog.Portal>
@@ -938,13 +1320,17 @@ function Overlays() {
 
       <Demo name="AlertDialog" description="Confirmation dialog requiring explicit action.">
         <AlertDialog.Root>
-          <AlertDialog.Trigger asChild><Button variant="destructive">Delete account</Button></AlertDialog.Trigger>
+          <AlertDialog.Trigger asChild>
+            <Button variant="destructive">Delete account</Button>
+          </AlertDialog.Trigger>
           <AlertDialog.Portal>
             <AlertDialog.Overlay />
             <AlertDialog.Content>
               <AlertDialog.Header>
                 <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-                <AlertDialog.Description>This will permanently delete your account.</AlertDialog.Description>
+                <AlertDialog.Description>
+                  This will permanently delete your account.
+                </AlertDialog.Description>
               </AlertDialog.Header>
               <AlertDialog.Footer>
                 <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
@@ -955,12 +1341,21 @@ function Overlays() {
         </AlertDialog.Root>
       </Demo>
 
-      <Demo name="Sheet" description="Side-anchored panel sliding in from any edge." variant="inline">
-        {(['top','right','bottom','left'] as const).map((side) => (
+      <Demo
+        name="Sheet"
+        description="Side-anchored panel sliding in from any edge."
+        variant="inline"
+      >
+        {(['top', 'right', 'bottom', 'left'] as const).map((side) => (
           <Sheet.Root key={side}>
-            <Sheet.Trigger asChild><Button variant="outline">{side}</Button></Sheet.Trigger>
+            <Sheet.Trigger asChild>
+              <Button variant="outline">{side}</Button>
+            </Sheet.Trigger>
             <Sheet.Content side={side}>
-              <Sheet.Header><Sheet.Title>Sheet from {side}</Sheet.Title><Sheet.Description>Slides smoothly from the {side} edge.</Sheet.Description></Sheet.Header>
+              <Sheet.Header>
+                <Sheet.Title>Sheet from {side}</Sheet.Title>
+                <Sheet.Description>Slides smoothly from the {side} edge.</Sheet.Description>
+              </Sheet.Header>
             </Sheet.Content>
           </Sheet.Root>
         ))}
@@ -968,24 +1363,42 @@ function Overlays() {
 
       <Demo name="Drawer" description="Mobile-friendly bottom-sheet with a drag handle.">
         <Drawer.Root>
-          <Drawer.Trigger asChild><Button variant="outline">Open drawer</Button></Drawer.Trigger>
+          <Drawer.Trigger asChild>
+            <Button variant="outline">Open drawer</Button>
+          </Drawer.Trigger>
           <Drawer.Content>
-            <Drawer.Header><Drawer.Title>Are you sure?</Drawer.Title><Drawer.Description>This action cannot be undone.</Drawer.Description></Drawer.Header>
-            <Drawer.Footer><Button>Submit</Button><Drawer.Close asChild><Button variant="outline">Cancel</Button></Drawer.Close></Drawer.Footer>
+            <Drawer.Header>
+              <Drawer.Title>Are you sure?</Drawer.Title>
+              <Drawer.Description>This action cannot be undone.</Drawer.Description>
+            </Drawer.Header>
+            <Drawer.Footer>
+              <Button>Submit</Button>
+              <Drawer.Close asChild>
+                <Button variant="outline">Cancel</Button>
+              </Drawer.Close>
+            </Drawer.Footer>
           </Drawer.Content>
         </Drawer.Root>
       </Demo>
 
       <Demo name="Popover" description="Glass-blur floating panel with spring entry.">
         <Popover.Root>
-          <Popover.Trigger asChild><Button variant="outline">Open popover</Button></Popover.Trigger>
+          <Popover.Trigger asChild>
+            <Button variant="outline">Open popover</Button>
+          </Popover.Trigger>
           <Popover.Content>
             <div className="grid gap-2">
-              <h4 className="font-medium text-sm">Dimensions</h4>
-              <p className="text-xs text-muted-foreground">Set width and height for the layer.</p>
-              <div className="grid grid-cols-3 items-center gap-2 mt-2">
-                <Label htmlFor="w" className="text-xs">Width</Label><Input id="w" defaultValue="100%" className="col-span-2 h-7 text-xs" />
-                <Label htmlFor="h" className="text-xs">Height</Label><Input id="h" defaultValue="25px" className="col-span-2 h-7 text-xs" />
+              <h4 className="text-sm font-medium">Dimensions</h4>
+              <p className="text-muted-foreground text-xs">Set width and height for the layer.</p>
+              <div className="mt-2 grid grid-cols-3 items-center gap-2">
+                <Label htmlFor="w" className="text-xs">
+                  Width
+                </Label>
+                <Input id="w" defaultValue="100%" className="col-span-2 h-7 text-xs" />
+                <Label htmlFor="h" className="text-xs">
+                  Height
+                </Label>
+                <Input id="h" defaultValue="25px" className="col-span-2 h-7 text-xs" />
               </div>
             </div>
           </Popover.Content>
@@ -994,24 +1407,36 @@ function Overlays() {
 
       <Demo name="Tooltip" description="Inverted dark bubble with backdrop blur." variant="inline">
         <Tooltip.Root>
-          <Tooltip.Trigger asChild><Button variant="outline">Hover me</Button></Tooltip.Trigger>
+          <Tooltip.Trigger asChild>
+            <Button variant="outline">Hover me</Button>
+          </Tooltip.Trigger>
           <Tooltip.Content>Subtle and snappy.</Tooltip.Content>
         </Tooltip.Root>
         <Tooltip.Root>
-          <Tooltip.Trigger asChild><Button variant="ghost" size="icon" aria-label="Star"><Star /></Button></Tooltip.Trigger>
+          <Tooltip.Trigger asChild>
+            <Button variant="ghost" size="icon" aria-label="Star">
+              <Star />
+            </Button>
+          </Tooltip.Trigger>
           <Tooltip.Content>Add to favorites</Tooltip.Content>
         </Tooltip.Root>
       </Demo>
 
       <Demo name="HoverCard" description="Richer popover triggered by hover.">
         <HoverCard.Root>
-          <HoverCard.Trigger asChild><a className="underline cursor-pointer">@aura-ui</a></HoverCard.Trigger>
+          <HoverCard.Trigger asChild>
+            <a className="cursor-pointer underline">@aura-ui</a>
+          </HoverCard.Trigger>
           <HoverCard.Content>
             <div className="flex items-start gap-3">
-              <Avatar.Root><Avatar.Fallback>AU</Avatar.Fallback></Avatar.Root>
+              <Avatar.Root>
+                <Avatar.Fallback>AU</Avatar.Fallback>
+              </Avatar.Root>
               <div>
                 <h4 className="text-sm font-semibold">@aura-ui</h4>
-                <p className="text-xs text-muted-foreground">React component library — open source.</p>
+                <p className="text-muted-foreground text-xs">
+                  React component library — open source.
+                </p>
               </div>
             </div>
           </HoverCard.Content>
@@ -1039,12 +1464,20 @@ function Compound() {
     <>
       <Demo name="DropdownMenu" description="Anchored menu with check/radio items and sub-menus.">
         <DropdownMenu.Root>
-          <DropdownMenu.Trigger asChild><Button variant="outline">Open menu</Button></DropdownMenu.Trigger>
+          <DropdownMenu.Trigger asChild>
+            <Button variant="outline">Open menu</Button>
+          </DropdownMenu.Trigger>
           <DropdownMenu.Content className="w-56">
             <DropdownMenu.Label>My account</DropdownMenu.Label>
             <DropdownMenu.Separator />
-            <DropdownMenu.Item><Settings />Settings<DropdownMenu.Shortcut>⌘,</DropdownMenu.Shortcut></DropdownMenu.Item>
-            <DropdownMenu.Item><Mail />Inbox<DropdownMenu.Shortcut>⌘I</DropdownMenu.Shortcut></DropdownMenu.Item>
+            <DropdownMenu.Item>
+              <Settings />
+              Settings<DropdownMenu.Shortcut>⌘,</DropdownMenu.Shortcut>
+            </DropdownMenu.Item>
+            <DropdownMenu.Item>
+              <Mail />
+              Inbox<DropdownMenu.Shortcut>⌘I</DropdownMenu.Shortcut>
+            </DropdownMenu.Item>
             <DropdownMenu.Separator />
             <DropdownMenu.Item>Sign out</DropdownMenu.Item>
           </DropdownMenu.Content>
@@ -1053,7 +1486,7 @@ function Compound() {
 
       <Demo name="ContextMenu" description="Right-click menu.">
         <ContextMenu.Root>
-          <ContextMenu.Trigger className="flex h-32 w-full max-w-md items-center justify-center rounded-md border-2 border-dashed border-border text-sm text-muted-foreground">
+          <ContextMenu.Trigger className="border-border text-muted-foreground flex h-32 w-full max-w-md items-center justify-center rounded-md border-2 border-dashed text-sm">
             Right-click anywhere inside
           </ContextMenu.Trigger>
           <ContextMenu.Content>
@@ -1070,7 +1503,9 @@ function Compound() {
           <Menubar.Menu>
             <Menubar.Trigger>File</Menubar.Trigger>
             <Menubar.Content>
-              <Menubar.Item>New <span className="ml-auto text-xs text-muted-foreground/70">⌘N</span></Menubar.Item>
+              <Menubar.Item>
+                New <span className="text-muted-foreground/70 ml-auto text-xs">⌘N</span>
+              </Menubar.Item>
               <Menubar.Item>Open</Menubar.Item>
               <Menubar.Item>Save</Menubar.Item>
             </Menubar.Content>
@@ -1095,16 +1530,24 @@ function Compound() {
       <Demo name="NavigationMenu" description="Site-level navigation with submenus.">
         <NavigationMenu.Root>
           <NavigationMenu.List>
-            <NavigationMenu.Item value="docs"><NavigationMenu.Trigger>Documentation</NavigationMenu.Trigger></NavigationMenu.Item>
-            <NavigationMenu.Item value="learn"><NavigationMenu.Trigger>Learn</NavigationMenu.Trigger></NavigationMenu.Item>
-            <NavigationMenu.Item value="comm"><NavigationMenu.Trigger>Community</NavigationMenu.Trigger></NavigationMenu.Item>
+            <NavigationMenu.Item value="docs">
+              <NavigationMenu.Trigger>Documentation</NavigationMenu.Trigger>
+            </NavigationMenu.Item>
+            <NavigationMenu.Item value="learn">
+              <NavigationMenu.Trigger>Learn</NavigationMenu.Trigger>
+            </NavigationMenu.Item>
+            <NavigationMenu.Item value="comm">
+              <NavigationMenu.Trigger>Community</NavigationMenu.Trigger>
+            </NavigationMenu.Item>
           </NavigationMenu.List>
         </NavigationMenu.Root>
       </Demo>
 
       <Demo name="Select" description="Custom dropdown select with typeahead and keyboard nav.">
         <Select.Root>
-          <Select.Trigger className="w-[220px]"><Select.Value placeholder="Select a fruit" /></Select.Trigger>
+          <Select.Trigger className="w-[220px]">
+            <Select.Value placeholder="Select a fruit" />
+          </Select.Trigger>
           <Select.Content>
             <Select.Label>Fruits</Select.Label>
             <Select.Item value="apple">Apple</Select.Item>
@@ -1117,7 +1560,10 @@ function Compound() {
         </Select.Root>
       </Demo>
 
-      <Demo name="MultiSelect" description="Multiple selections with searchable virtualized options.">
+      <Demo
+        name="MultiSelect"
+        description="Multiple selections with searchable virtualized options."
+      >
         <MultiSelect.Root
           defaultValue={['react', 'svelte']}
           searchable
@@ -1137,25 +1583,43 @@ function Compound() {
           <Combobox.Input placeholder="Search frameworks…" className="w-[260px]" />
           <Combobox.Content>
             {['React', 'Vue', 'Svelte', 'Angular', 'Solid'].map((v) => (
-              <Combobox.Item key={v} value={v.toLowerCase()}>{v}</Combobox.Item>
+              <Combobox.Item key={v} value={v.toLowerCase()}>
+                {v}
+              </Combobox.Item>
             ))}
           </Combobox.Content>
         </Combobox.Root>
       </Demo>
 
-      <Demo name="Command" description="cmdk-style command palette with fuzzy search." variant="wide">
-        <Command.Root className="max-w-md mx-auto rounded-lg border border-border shadow-md">
+      <Demo
+        name="Command"
+        description="cmdk-style command palette with fuzzy search."
+        variant="wide"
+      >
+        <Command.Root className="border-border mx-auto max-w-md rounded-lg border shadow-md">
           <Command.Input placeholder="Type a command or search…" />
           <Command.List>
             <Command.Empty>No results found.</Command.Empty>
             <Command.Group heading="Suggestions">
-              <Command.Item><Search className="mr-2 h-4 w-4" />Search<Command.Shortcut>⌘K</Command.Shortcut></Command.Item>
-              <Command.Item><Star className="mr-2 h-4 w-4" />Favorites</Command.Item>
-              <Command.Item><Mail className="mr-2 h-4 w-4" />Mail</Command.Item>
+              <Command.Item>
+                <Search className="mr-2 h-4 w-4" />
+                Search<Command.Shortcut>⌘K</Command.Shortcut>
+              </Command.Item>
+              <Command.Item>
+                <Star className="mr-2 h-4 w-4" />
+                Favorites
+              </Command.Item>
+              <Command.Item>
+                <Mail className="mr-2 h-4 w-4" />
+                Mail
+              </Command.Item>
             </Command.Group>
             <Command.Separator />
             <Command.Group heading="Settings">
-              <Command.Item><Settings className="mr-2 h-4 w-4" />Preferences</Command.Item>
+              <Command.Item>
+                <Settings className="mr-2 h-4 w-4" />
+                Preferences
+              </Command.Item>
             </Command.Group>
           </Command.List>
         </Command.Root>
@@ -1180,7 +1644,9 @@ function SpecialtyForm() {
     <>
       <Demo name="OneTimePasswordField" description="OTP/PIN input with paste handling.">
         <OneTimePasswordField.Root length={6} value={otp} onValueChange={setOtp}>
-          {[0, 1, 2, 3, 4, 5].map((i) => (<OneTimePasswordField.Input key={i} index={i} />))}
+          {[0, 1, 2, 3, 4, 5].map((i) => (
+            <OneTimePasswordField.Input key={i} index={i} />
+          ))}
         </OneTimePasswordField.Root>
       </Demo>
 
@@ -1199,8 +1665,14 @@ function SpecialtyForm() {
         </NumberField.Root>
       </Demo>
 
-      <Demo name="Calendar" description="Zero-dep calendar: single, range or multi-select." variant="wide">
-        <div className="flex justify-center"><Calendar mode="single" /></div>
+      <Demo
+        name="Calendar"
+        description="Zero-dep calendar: single, range or multi-select."
+        variant="wide"
+      >
+        <div className="flex justify-center">
+          <Calendar mode="single" />
+        </div>
       </Demo>
 
       <Demo name="DatePicker" description="Calendar in a popover.">
@@ -1214,7 +1686,7 @@ function SpecialtyForm() {
         />
       </Demo>
 
-      <Demo name="TimePicker" description="MUI-style time field with validation.">
+      <Demo name="TimePicker" description="12-hour analog clock with AM/PM and validation.">
         <TimePicker
           label="Start time"
           value={time}
@@ -1223,7 +1695,7 @@ function SpecialtyForm() {
           minutesStep={15}
           minTime={new Date(2026, 4, 23, 8, 0)}
           maxTime={new Date(2026, 4, 23, 18, 0)}
-          helperText="15-minute steps inside business hours."
+          helperText="1-12 clock with AM/PM and 15-minute steps inside business hours."
         />
       </Demo>
 
@@ -1235,14 +1707,26 @@ function SpecialtyForm() {
           minDate={new Date(2026, 4, 1)}
           maxDate={new Date(2026, 5, 30)}
           shortcuts={[
-            { label: 'Last 7 days', getValue: (today) => [new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6), today] },
-            { label: 'Last 30 days', getValue: (today) => [new Date(today.getFullYear(), today.getMonth(), today.getDate() - 29), today] },
+            {
+              label: 'Last 7 days',
+              getValue: (today) => [
+                new Date(today.getFullYear(), today.getMonth(), today.getDate() - 6),
+                today,
+              ],
+            },
+            {
+              label: 'Last 30 days',
+              getValue: (today) => [
+                new Date(today.getFullYear(), today.getMonth(), today.getDate() - 29),
+                today,
+              ],
+            },
           ]}
           helperText="Tuple value, two visible calendars, closes after the end date."
         />
       </Demo>
 
-      <Demo name="DateTimePicker" description="Pick date and time together.">
+      <Demo name="DateTimePicker" description="Pick the date first, then the time.">
         <DateTimePicker
           label="Deployment window"
           value={dateTime}
@@ -1257,7 +1741,7 @@ function SpecialtyForm() {
 
       <Demo name="ColorPicker" description="HSV area with hue and alpha sliders." variant="wide">
         <div className="flex justify-center">
-          <ColorPicker.Root className="rounded-lg border border-border bg-card p-4">
+          <ColorPicker.Root className="border-border bg-card rounded-lg border p-4">
             <ColorPicker.Area />
             <ColorPicker.HueSlider />
             <ColorPicker.AlphaSlider />
@@ -1267,8 +1751,9 @@ function SpecialtyForm() {
       </Demo>
 
       <Demo name="FileUpload" description="Drag-and-drop with validation." variant="wide">
-        <FileUpload.Root multiple maxFiles={3} className="max-w-md mx-auto">
-          <FileUpload.Dropzone /><FileUpload.Input />
+        <FileUpload.Root multiple maxFiles={3} className="mx-auto max-w-md">
+          <FileUpload.Dropzone />
+          <FileUpload.Input />
         </FileUpload.Root>
       </Demo>
     </>
@@ -1281,7 +1766,11 @@ function FeedbackMisc() {
   const [tags, setTags] = useState<string[]>(['react', 'tailwind']);
   return (
     <>
-      <Demo name="CircularProgress" description="Determinate + indeterminate circular spinner." variant="inline">
+      <Demo
+        name="CircularProgress"
+        description="Determinate + indeterminate circular spinner."
+        variant="inline"
+      >
         <CircularProgress value={null} />
         <CircularProgress value={30} />
         <CircularProgress value={75} />
@@ -1297,40 +1786,67 @@ function FeedbackMisc() {
       </Demo>
 
       <Demo name="ScrollArea" description="Custom scrollbar that shows on hover.">
-        <ScrollArea.Root className="h-40 w-64 rounded-lg border border-border">
-          <div className="p-3 space-y-1">
-            {Array.from({ length: 50 }, (_, i) => (<div key={i} className="text-sm py-0.5">Item {i + 1}</div>))}
+        <ScrollArea.Root className="border-border h-40 w-64 rounded-lg border">
+          <div className="space-y-1 p-3">
+            {Array.from({ length: 50 }, (_, i) => (
+              <div key={i} className="py-0.5 text-sm">
+                Item {i + 1}
+              </div>
+            ))}
           </div>
         </ScrollArea.Root>
       </Demo>
 
       <Demo name="Toolbar" description="Row of related controls with roving focus.">
         <Toolbar.Root>
-          <Toolbar.Button><Bell className="h-4 w-4" /></Toolbar.Button>
-          <Toolbar.Button><Settings className="h-4 w-4" /></Toolbar.Button>
+          <Toolbar.Button>
+            <Bell className="h-4 w-4" />
+          </Toolbar.Button>
+          <Toolbar.Button>
+            <Settings className="h-4 w-4" />
+          </Toolbar.Button>
           <Toolbar.Separator />
           <Toolbar.Button>Done</Toolbar.Button>
         </Toolbar.Root>
       </Demo>
 
       <Demo name="Resizable" description="Resizable panels with keyboard handles." variant="wide">
-        <Resizable.Group className="h-32 rounded-lg border border-border overflow-hidden">
-          <Resizable.Panel id="a" defaultSize={50} className="flex items-center justify-center text-sm bg-muted/30">Panel A</Resizable.Panel>
+        <Resizable.Group className="border-border h-32 overflow-hidden rounded-lg border">
+          <Resizable.Panel
+            id="a"
+            defaultSize={50}
+            className="bg-muted/30 flex items-center justify-center text-sm"
+          >
+            Panel A
+          </Resizable.Panel>
           <Resizable.Handle between={['a', 'b']} withHandle />
-          <Resizable.Panel id="b" defaultSize={50} className="flex items-center justify-center text-sm">Panel B</Resizable.Panel>
+          <Resizable.Panel
+            id="b"
+            defaultSize={50}
+            className="flex items-center justify-center text-sm"
+          >
+            Panel B
+          </Resizable.Panel>
         </Resizable.Group>
       </Demo>
 
-      <Demo name="Carousel" description="Image/content slider with arrows and keyboard." variant="wide">
-        <Carousel.Root className="max-w-sm mx-auto">
+      <Demo
+        name="Carousel"
+        description="Image/content slider with arrows and keyboard."
+        variant="wide"
+      >
+        <Carousel.Root className="mx-auto max-w-sm">
           <Carousel.Content>
             {[1, 2, 3].map((i) => (
               <Carousel.Item key={i}>
-                <div className="flex h-32 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-accent text-3xl font-semibold">{i}</div>
+                <div className="from-primary/20 to-accent flex h-32 items-center justify-center rounded-lg bg-gradient-to-br text-3xl font-semibold">
+                  {i}
+                </div>
               </Carousel.Item>
             ))}
           </Carousel.Content>
-          <Carousel.Previous /><Carousel.Next />
+          <Carousel.Previous />
+          <Carousel.Next />
         </Carousel.Root>
       </Demo>
 
@@ -1339,12 +1855,18 @@ function FeedbackMisc() {
           <Tree.Item id="root" hasChildren>
             <Tree.Trigger hasChildren>📁 src</Tree.Trigger>
             <Tree.Group>
-              <Tree.Item id="a"><Tree.Trigger hasChildren={false}>📄 index.ts</Tree.Trigger></Tree.Item>
-              <Tree.Item id="b"><Tree.Trigger hasChildren={false}>📄 App.tsx</Tree.Trigger></Tree.Item>
+              <Tree.Item id="a">
+                <Tree.Trigger hasChildren={false}>📄 index.ts</Tree.Trigger>
+              </Tree.Item>
+              <Tree.Item id="b">
+                <Tree.Trigger hasChildren={false}>📄 App.tsx</Tree.Trigger>
+              </Tree.Item>
               <Tree.Item id="c" hasChildren>
                 <Tree.Trigger hasChildren>📁 components</Tree.Trigger>
                 <Tree.Group>
-                  <Tree.Item id="d"><Tree.Trigger hasChildren={false}>📄 Button.tsx</Tree.Trigger></Tree.Item>
+                  <Tree.Item id="d">
+                    <Tree.Trigger hasChildren={false}>📄 Button.tsx</Tree.Trigger>
+                  </Tree.Item>
                 </Tree.Group>
               </Tree.Item>
             </Tree.Group>
@@ -1354,13 +1876,16 @@ function FeedbackMisc() {
 
       <Demo name="Editable" description="Click to edit text inline.">
         <Editable.Root defaultValue="Double-click to edit me">
-          <Editable.Preview /><Editable.Input />
+          <Editable.Preview />
+          <Editable.Input />
         </Editable.Root>
       </Demo>
 
       <Demo name="TagsInput" description="Chips with delimiter parsing and paste-split.">
         <TagsInput.Root value={tags} onValueChange={setTags} className="w-full max-w-md">
-          <TagsInput.Items>{(tag, i) => <TagsInput.Tag key={i} index={i} tag={tag} />}</TagsInput.Items>
+          <TagsInput.Items>
+            {(tag, i) => <TagsInput.Tag key={i} index={i} tag={tag} />}
+          </TagsInput.Items>
           <TagsInput.Input placeholder="Add tags…" />
         </TagsInput.Root>
       </Demo>
@@ -1375,11 +1900,13 @@ function FeedbackMisc() {
               { id: '3', label: 'alan' },
             ]}
           >
-            <div className="rounded-lg border border-border bg-popover/95 backdrop-blur-glass p-1 shadow-overlay">
+            <div className="border-border bg-popover/95 backdrop-blur-glass shadow-overlay rounded-lg border p-1">
               <Mentions.Items>
                 {(item, i) => (
                   <Mentions.Item key={item.id} suggestion={item} index={i}>
-                    <div className="cursor-pointer rounded-md px-2 py-1.5 text-sm hover:bg-accent">@{item.label}</div>
+                    <div className="hover:bg-accent cursor-pointer rounded-md px-2 py-1.5 text-sm">
+                      @{item.label}
+                    </div>
                   </Mentions.Item>
                 )}
               </Mentions.Items>
@@ -1388,8 +1915,14 @@ function FeedbackMisc() {
         </Mentions.Root>
       </Demo>
 
-      <Demo name="CopyButton" description="Copy-to-clipboard with success feedback." variant="inline">
-        <code className="rounded-md bg-muted px-3 py-2 text-sm font-mono">npm install @aura-ui/styled</code>
+      <Demo
+        name="CopyButton"
+        description="Copy-to-clipboard with success feedback."
+        variant="inline"
+      >
+        <code className="bg-muted rounded-md px-3 py-2 font-mono text-sm">
+          npm install @aura-ui/styled
+        </code>
         <CopyButton value="npm install @aura-ui/styled" />
       </Demo>
     </>
@@ -1399,21 +1932,100 @@ function FeedbackMisc() {
 /* ─── DataTable ─────────────────────────────────────────────────── */
 
 function DataTableDemo({ tableRef }: { tableRef: React.MutableRefObject<Table<User> | null> }) {
+  const [rows, setRows] = useState(sampleData.slice(0, 80));
+
   return (
-    <Demo name="DataTable" description="Full-featured data grid: sort, filter, virtualize, column pin/resize/visibility, row selection, CSV/JSON export." variant="wide">
+    <Demo
+      name="DataTable"
+      description="MUI-like grid surface: search, nested filters, virtualization, configuration, pinning, totals, inline add, details, lazy loading and export."
+      variant="wide"
+    >
       <DataTable
         columns={columns}
-        data={sampleData}
+        data={rows}
+        getRowId={(row) => String(row.id)}
         enableSorting
         enableFiltering
+        enableGlobalSearch
+        enableAdvancedFiltering
+        defaultAdvancedFilter={dataTableAdvancedFilter}
         enableRowSelection
-        enablePagination
+        enableColumnSelection
+        enableColumnConfiguration
         enableColumnResizing
-        pageSize={3}
+        enableColumnReordering
+        enableRowReordering
+        enableColumnPinning
+        enableRowPinning
+        enableGrouping
+        virtual={{ estimatedRowHeight: 44, overscan: 10 }}
+        virtualColumns={{ estimatedColumnWidth: 140, overscan: 4 }}
+        height={420}
+        defaultRowPinning={{ top: ['1'], bottom: ['80'] }}
+        hasMore={rows.length < sampleData.length}
+        loadingMore={rows.length < sampleData.length}
+        onLoadMore={() =>
+          setRows((current) =>
+            sampleData.slice(0, Math.min(current.length + 20, sampleData.length)),
+          )
+        }
+        inlineCreateRow={{
+          fields: [
+            { id: 'name', label: 'Name', placeholder: 'New user' },
+            { id: 'email', label: 'Email', placeholder: 'new@example.com' },
+            { id: 'role', label: 'Role', placeholder: 'Viewer' },
+          ],
+          onAdd: (values) =>
+            setRows((current) => [
+              ...current,
+              {
+                id: current.length + 1,
+                name: values.name || `User ${current.length + 1}`,
+                email: values.email || 'new@example.com',
+                role: (values.role as User['role']) || 'Viewer',
+                team: 'Support',
+                status: 'Invited',
+                revenue: 0,
+                cost: 0,
+                score: 50,
+              },
+            ]),
+        }}
+        aggregations={{ revenue: 'sum', cost: 'avg', score: 'max' }}
+        rowTotals={{ columns: ['revenue', 'cost'] }}
+        rowActions={(row) => (
+          <Button size="sm" variant="ghost">
+            Open {row.original.id}
+          </Button>
+        )}
+        renderDetailPanel={(row) => (
+          <div className="grid gap-1 text-sm">
+            <strong>{row.original.name}</strong>
+            <span className="text-muted-foreground">
+              {row.original.team} team, {row.original.status.toLowerCase()} status
+            </span>
+          </div>
+        )}
+        getRowClassName={(row) =>
+          row.original.status === 'Blocked' ? 'bg-destructive/10' : undefined
+        }
+        getCellColSpan={(cell, row) =>
+          cell.column.id === 'name' && row.original.status === 'Blocked' ? 2 : undefined
+        }
+        loadingVariant="skeleton"
+        skeletonRows={6}
+        localeText={{
+          searchPlaceholder: 'Search users, teams, roles...',
+          selectedRows: (selected, total) => `${selected}/${total} rows selected`,
+        }}
         tableRef={tableRef}
       />
       <div className="mt-4 flex flex-wrap gap-2">
-        <Button variant="outline" size="sm" onClick={() => tableRef.current && exportToCSV(tableRef.current, 'users.csv')}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => tableRef.current && exportToCSV(tableRef.current, 'users.csv')}
+        >
           Export CSV
         </Button>
       </div>
@@ -1421,14 +2033,17 @@ function DataTableDemo({ tableRef }: { tableRef: React.MutableRefObject<Table<Us
   );
 }
 
-
 /* ─── Custom Palette Generator (Radix-faithful) ──────────────────── */
 
 const clampN = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 
 function hexToRgb(hex: string): [number, number, number] {
   let h = hex.replace('#', '').trim();
-  if (h.length === 3) h = h.split('').map((c) => c + c).join('');
+  if (h.length === 3)
+    h = h
+      .split('')
+      .map((c) => c + c)
+      .join('');
   return [
     parseInt(h.slice(0, 2), 16) || 0,
     parseInt(h.slice(2, 4), 16) || 0,
@@ -1507,7 +2122,9 @@ function getAlphaColor(solidHex: string, bgHex: string): string {
   alpha = clampN(alpha, 0, 1);
   if (alpha === 0) return '#00000000';
   const fg = channels.map(([s, b]) => clampN((s - b * (1 - alpha)) / alpha, 0, 255));
-  const aHex = Math.round(alpha * 255).toString(16).padStart(2, '0');
+  const aHex = Math.round(alpha * 255)
+    .toString(16)
+    .padStart(2, '0');
   return `${rgbToHex(fg[0]!, fg[1]!, fg[2]!)}${aHex}`;
 }
 
@@ -1606,28 +2223,31 @@ function PaletteGenerator() {
       await navigator.clipboard.writeText(text);
       setCopied(label);
       setTimeout(() => setCopied(null), 2000);
-    } catch (e) { void e; }
+    } catch (e) {
+      void e;
+    }
   };
 
   return (
     <div className="mx-auto max-w-5xl">
       {/* Hero */}
-      <div className="text-center mb-8">
-        <span className="text-xs text-muted-foreground">← aura-ui Colors</span>
+      <div className="mb-8 text-center">
+        <span className="text-muted-foreground text-xs">← aura-ui Colors</span>
         <h1 className="mt-2 text-4xl font-semibold tracking-tight">Create a custom palette</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          A full 12-step scale with solid + alpha variants and contrast / surface / indicator / track tokens.
+        <p className="text-muted-foreground mt-2 text-sm">
+          A full 12-step scale with solid + alpha variants and contrast / surface / indicator /
+          track tokens.
         </p>
       </div>
 
       {/* Light / Dark toggle */}
-      <div className="flex justify-center mb-6">
-        <div className="inline-flex rounded-lg border border-border bg-muted/50 p-1">
+      <div className="mb-6 flex justify-center">
+        <div className="border-border bg-muted/50 inline-flex rounded-lg border p-1">
           {(['light', 'dark'] as const).map((m) => (
             <button
               key={m}
               onClick={() => switchMode(m)}
-              className={`flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-medium capitalize transition-all duration-snappy ${
+              className={`duration-snappy flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-medium capitalize transition-all ${
                 mode === m ? 'bg-bg text-fg shadow-sm' : 'text-muted-foreground hover:text-fg'
               }`}
             >
@@ -1639,7 +2259,7 @@ function PaletteGenerator() {
       </div>
 
       {/* Inputs + Copy menu */}
-      <div className="flex flex-wrap items-end justify-center gap-3 mb-8">
+      <div className="mb-8 flex flex-wrap items-end justify-center gap-3">
         {[
           { label: 'Accent', value: accent, set: setAccent, hex: accentHex },
           { label: 'Gray', value: gray, set: setGray, hex: grayHex },
@@ -1647,8 +2267,8 @@ function PaletteGenerator() {
         ].map((f) => (
           <div key={f.label} className="grid gap-1.5">
             <Label className="text-xs">{f.label}</Label>
-            <div className="flex h-9 items-center gap-2 rounded-md border border-border bg-bg pl-2 pr-3">
-              <label className="relative h-5 w-5 shrink-0 cursor-pointer rounded border border-border overflow-hidden">
+            <div className="border-border bg-bg flex h-9 items-center gap-2 rounded-md border pl-2 pr-3">
+              <label className="border-border relative h-5 w-5 shrink-0 cursor-pointer overflow-hidden rounded border">
                 <span className="block h-full w-full" style={{ background: f.hex }} />
                 <input
                   type="color"
@@ -1680,12 +2300,19 @@ function PaletteGenerator() {
             </DropdownMenu.Item>
             <DropdownMenu.Separator />
             <DropdownMenu.Item
-              onClick={() => copyText(`${selector} {\n${paletteToCss('accent', accentPalette)}\n}`, 'Copied accent')}
+              onClick={() =>
+                copyText(
+                  `${selector} {\n${paletteToCss('accent', accentPalette)}\n}`,
+                  'Copied accent',
+                )
+              }
             >
               Copy accent scale
             </DropdownMenu.Item>
             <DropdownMenu.Item
-              onClick={() => copyText(`${selector} {\n${paletteToCss('gray', grayPalette)}\n}`, 'Copied gray')}
+              onClick={() =>
+                copyText(`${selector} {\n${paletteToCss('gray', grayPalette)}\n}`, 'Copied gray')
+              }
             >
               Copy gray scale
             </DropdownMenu.Item>
@@ -1698,7 +2325,7 @@ function PaletteGenerator() {
 
       {/* Scale grids */}
       <div
-        className="rounded-xl border p-6 space-y-5"
+        className="space-y-5 rounded-xl border p-6"
         style={{ background: bgHex, borderColor: mode === 'light' ? '#0001' : '#fff2' }}
       >
         <div>
@@ -1707,7 +2334,7 @@ function PaletteGenerator() {
             {SCALE_GROUPS.map((g) => (
               <div
                 key={g.label}
-                className="text-center text-[11px] font-medium pb-1"
+                className="pb-1 text-center text-[11px] font-medium"
                 style={{ flex: g.span, color: mode === 'light' ? '#00000080' : '#ffffff80' }}
               >
                 {g.label}
@@ -1715,7 +2342,7 @@ function PaletteGenerator() {
             ))}
           </div>
           {/* Number row */}
-          <div className="flex mb-2">
+          <div className="mb-2 flex">
             {SCALE_NUMBERS.map((n) => (
               <div
                 key={n}
@@ -1736,7 +2363,10 @@ function PaletteGenerator() {
         </div>
 
         {/* Token swatches */}
-        <div className="flex flex-wrap gap-4 pt-2 border-t" style={{ borderColor: mode === 'light' ? '#0001' : '#fff2' }}>
+        <div
+          className="flex flex-wrap gap-4 border-t pt-2"
+          style={{ borderColor: mode === 'light' ? '#0001' : '#fff2' }}
+        >
           {[
             { name: 'contrast', value: accentPalette.contrast },
             { name: 'surface', value: accentPalette.surface },
@@ -1748,7 +2378,10 @@ function PaletteGenerator() {
                 className="h-5 w-5 rounded border"
                 style={{ background: t.value, borderColor: mode === 'light' ? '#0002' : '#fff3' }}
               />
-              <span className="text-[11px] font-mono" style={{ color: mode === 'light' ? '#000a' : '#fffa' }}>
+              <span
+                className="font-mono text-[11px]"
+                style={{ color: mode === 'light' ? '#000a' : '#fffa' }}
+              >
                 accent-{t.name}
               </span>
             </div>
@@ -1758,14 +2391,23 @@ function PaletteGenerator() {
 
       {/* Generated CSS */}
       <div className="mt-8">
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex items-center justify-between">
           <h2 className="text-base font-semibold tracking-tight">Generated CSS</h2>
-          <Button size="sm" variant="outline" onClick={() => copyText(fullCss, 'Copied CSS')} className="gap-1.5">
-            {copied === 'Copied CSS' ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => copyText(fullCss, 'Copied CSS')}
+            className="gap-1.5"
+          >
+            {copied === 'Copied CSS' ? (
+              <Check className="h-3.5 w-3.5" />
+            ) : (
+              <Copy className="h-3.5 w-3.5" />
+            )}
             {copied === 'Copied CSS' ? 'Copied!' : 'Copy CSS'}
           </Button>
         </div>
-        <pre className="max-h-96 overflow-auto rounded-xl border border-border bg-muted/40 p-4 text-[11px] leading-relaxed font-mono">
+        <pre className="border-border bg-muted/40 max-h-96 overflow-auto rounded-xl border p-4 font-mono text-[11px] leading-relaxed">
           {fullCss}
         </pre>
       </div>
@@ -1787,7 +2429,10 @@ function PaletteRow({
   return (
     <div>
       {label && (
-        <div className="text-[10px] mb-1" style={{ color: mode === 'light' ? '#00000055' : '#ffffff55' }}>
+        <div
+          className="mb-1 text-[10px]"
+          style={{ color: mode === 'light' ? '#00000055' : '#ffffff55' }}
+        >
           {label}
         </div>
       )}
@@ -1796,8 +2441,7 @@ function PaletteRow({
         style={
           bg
             ? {
-                backgroundImage:
-                  'repeating-conic-gradient(#0000000c 0% 25%, transparent 0% 50%)',
+                backgroundImage: 'repeating-conic-gradient(#0000000c 0% 25%, transparent 0% 50%)',
                 backgroundSize: '12px 12px',
               }
             : undefined
@@ -1806,13 +2450,16 @@ function PaletteRow({
         {colors.map((c, i) => (
           <div key={i} className="group/sw relative flex-1">
             <div
-              className="h-12 transition-transform duration-snappy group-hover/sw:scale-y-110"
+              className="duration-snappy h-12 transition-transform group-hover/sw:scale-y-110"
               style={{ background: c }}
             />
             <div className="pointer-events-none absolute -bottom-7 left-1/2 z-10 hidden -translate-x-1/2 group-hover/sw:block">
               <div
-                className="w-max rounded px-1.5 py-0.5 text-[9px] font-mono shadow"
-                style={{ background: mode === 'light' ? '#111' : '#fff', color: mode === 'light' ? '#fff' : '#111' }}
+                className="w-max rounded px-1.5 py-0.5 font-mono text-[9px] shadow"
+                style={{
+                  background: mode === 'light' ? '#111' : '#fff',
+                  color: mode === 'light' ? '#fff' : '#111',
+                }}
               >
                 {c}
               </div>

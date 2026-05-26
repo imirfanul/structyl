@@ -1,8 +1,5 @@
 import type * as React from 'react';
-import type {
-  PointerDownOutsideEvent,
-  FocusOutsideEvent,
-} from '@aura-ui/core';
+import type { PointerDownOutsideEvent, FocusOutsideEvent } from '@aura-ui/core';
 
 export interface PopoverRootProps {
   children?: React.ReactNode;
@@ -35,7 +32,12 @@ export interface PopoverContentProps extends React.ComponentPropsWithoutRef<'div
   alignOffset?: number;
   arrowPadding?: number;
   avoidCollisions?: boolean;
+  collisionBoundary?: Element | Element[] | null;
   collisionPadding?: number;
+  strategy?: 'fixed' | 'absolute';
+  sticky?: 'partial' | 'always';
+  hideWhenDetached?: boolean;
+  updatePositionStrategy?: 'always' | 'optimized';
   onOpenAutoFocus?: (event: Event) => void;
   onCloseAutoFocus?: (event: Event) => void;
   onEscapeKeyDown?: (event: KeyboardEvent) => void;

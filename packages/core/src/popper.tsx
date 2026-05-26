@@ -50,20 +50,18 @@ interface PopperAnchorProps extends React.ComponentPropsWithoutRef<typeof Primit
   virtualRef?: React.RefObject<{ getBoundingClientRect: () => DOMRect }>;
 }
 
-const PopperAnchor = React.forwardRef<HTMLDivElement, PopperAnchorProps>(
-  (props, forwardedRef) => {
-    const { virtualRef, ...anchorProps } = props;
-    const ctx = usePopperContext('PopperAnchor');
-    const ref = React.useRef<HTMLDivElement>(null);
-    const composedRefs = useComposedRefs(forwardedRef, ref);
+const PopperAnchor = React.forwardRef<HTMLDivElement, PopperAnchorProps>((props, forwardedRef) => {
+  const { virtualRef, ...anchorProps } = props;
+  const ctx = usePopperContext('PopperAnchor');
+  const ref = React.useRef<HTMLDivElement>(null);
+  const composedRefs = useComposedRefs(forwardedRef, ref);
 
-    React.useEffect(() => {
-      ctx.onAnchorChange((virtualRef?.current as unknown as HTMLElement) ?? ref.current);
-    });
+  React.useEffect(() => {
+    ctx.onAnchorChange((virtualRef?.current as unknown as HTMLElement) ?? ref.current);
+  });
 
-    return virtualRef ? null : <Primitive.div {...anchorProps} ref={composedRefs} />;
-  },
-);
+  return virtualRef ? null : <Primitive.div {...anchorProps} ref={composedRefs} />;
+});
 PopperAnchor.displayName = 'PopperAnchor';
 
 /* ── Content ─────────────────────────────────────────────────────────── */
@@ -146,7 +144,7 @@ const PopperContent = React.forwardRef<HTMLDivElement, PopperContentProps>(
       avoidCollisions &&
         shiftMiddleware({
           mainAxis: true,
-          crossAxis: false,
+          crossAxis: true,
           limiter: sticky === 'partial' ? limitShift() : undefined,
           ...detectOverflowOptions,
         }),
@@ -188,10 +186,18 @@ const PopperContent = React.forwardRef<HTMLDivElement, PopperContentProps>(
     const arrowX = middlewareData.arrow?.x;
     const arrowY = middlewareData.arrow?.y;
     const cannotCenterArrow = middlewareData.arrow?.centerOffset !== 0;
-    const [contentZIndex, setContentZIndex] = React.useState<string>();
+    const contentStyleZIndex = contentProps.style?.zIndex;
+    const [contentZIndex, setContentZIndex] = React.useState<React.CSSProperties['zIndex']>(
+      contentStyleZIndex ?? 50,
+    );
     React.useLayoutEffect(() => {
-      if (content) setContentZIndex(window.getComputedStyle(content).zIndex);
-    }, [content]);
+      if (!content) {
+        setContentZIndex(contentStyleZIndex ?? 50);
+        return;
+      }
+      const computedZIndex = window.getComputedStyle(content).zIndex;
+      setContentZIndex(computedZIndex === 'auto' ? (contentStyleZIndex ?? 50) : computedZIndex);
+    }, [content, contentProps.className, contentStyleZIndex]);
 
     return (
       <div
@@ -203,11 +209,12 @@ const PopperContent = React.forwardRef<HTMLDivElement, PopperContentProps>(
           minWidth: 'max-content',
           zIndex: contentZIndex,
           ['--aura-ui-popper-transform-origin' as string]:
-            [
-              middlewareData.transformOrigin?.x,
-              middlewareData.transformOrigin?.y,
-            ].join(' ') || undefined,
-          ...(middlewareData.hide?.referenceHidden && { visibility: 'hidden', pointerEvents: 'none' }),
+            [middlewareData.transformOrigin?.x, middlewareData.transformOrigin?.y].join(' ') ||
+            undefined,
+          ...(middlewareData.hide?.referenceHidden && {
+            visibility: 'hidden',
+            pointerEvents: 'none',
+          }),
         }}
         dir={dir}
       >
@@ -269,7 +276,11 @@ const PopperArrow = React.forwardRef<SVGSVGElement, ArrowProps>((props, forwarde
         visibility: contentContext.shouldHideArrow ? 'hidden' : undefined,
       }}
     >
-      <ArrowPrimitive {...arrowProps} ref={forwardedRef} style={{ ...arrowProps.style, display: 'block' }} />
+      <ArrowPrimitive
+        {...arrowProps}
+        ref={forwardedRef}
+        style={{ ...arrowProps.style, display: 'block' }}
+      />
     </span>
   );
 });
@@ -342,10 +353,5 @@ function useSize(element: HTMLElement | null) {
   return size;
 }
 
-export {
-  Popper as Root,
-  PopperAnchor as Anchor,
-  PopperContent as Content,
-  PopperArrow as Arrow,
-};
+export { Popper as Root, PopperAnchor as Anchor, PopperContent as Content, PopperArrow as Arrow };
 export type { PopperContentProps, PopperAnchorProps, Side, Align };

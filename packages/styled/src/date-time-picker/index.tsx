@@ -6,13 +6,18 @@ import {
   Calendar as CalendarPrimitive,
   DateTimePicker as DateTimePickerPrimitive,
 } from '@aura-ui/primitives';
+import type { TimePickerView } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
 import { buttonVariants } from '../button';
 import { Calendar as StyledCalendar } from '../calendar';
+import { TimePickerPanel } from '../time-picker';
 
 const Root = DateTimePickerPrimitive.Root;
 const Value = DateTimePickerPrimitive.Value;
 const Loading = DateTimePickerPrimitive.Loading;
+const DatePanel = DateTimePickerPrimitive.DatePanel;
+const TimePanel = DateTimePickerPrimitive.TimePanel;
+const DateButton = DateTimePickerPrimitive.DateButton;
 
 interface CalendarProps
   extends React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Calendar> {
@@ -91,23 +96,6 @@ const Separator: React.FC<{ children?: React.ReactNode }> = ({ children = ':' })
 );
 Separator.displayName = 'DateTimePicker.Separator';
 
-function TimeField({ withSeconds, ampm }: { withSeconds?: boolean; ampm?: boolean }) {
-  return (
-    <div className="flex items-center gap-1 border-t border-border p-3">
-      <Segment segment="hour" />
-      <Separator />
-      <Segment segment="minute" />
-      {withSeconds ? (
-        <>
-          <Separator />
-          <Segment segment="second" />
-        </>
-      ) : null}
-      {ampm ? <Segment segment="period" className="ml-1 min-w-10" /> : null}
-    </div>
-  );
-}
-
 const Trigger = React.forwardRef<
   React.ElementRef<typeof DateTimePickerPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Trigger>
@@ -137,6 +125,13 @@ const Content = React.forwardRef<
     showDaysOutsideCurrentMonth?: boolean;
     withSeconds?: boolean;
     ampm?: boolean;
+    maxTime?: Date;
+    minTime?: Date;
+    minutesStep?: number;
+    shouldDisableTime?: React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Root>['shouldDisableTime'];
+    skipDisabled?: boolean;
+    timeSteps?: React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Root>['timeSteps'];
+    views?: React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Root>['views'];
   }
 >(
   (
@@ -150,7 +145,14 @@ const Content = React.forwardRef<
       showOutsideDays,
       showDaysOutsideCurrentMonth,
       withSeconds,
-      ampm,
+      ampm = true,
+      maxTime,
+      minTime,
+      minutesStep,
+      shouldDisableTime,
+      skipDisabled,
+      timeSteps,
+      views,
       ...props
     },
     ref,
@@ -176,12 +178,46 @@ const Content = React.forwardRef<
             </div>
           ) : (
             <div>
-              <Calendar
-                className={calendarClassName}
-                showOutsideDays={showOutsideDays}
-                showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
-              />
-              <TimeField withSeconds={withSeconds} ampm={ampm} />
+              <DateTimePickerPrimitive.DatePanel>
+                <Calendar
+                  className={calendarClassName}
+                  showOutsideDays={showOutsideDays}
+                  showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
+                />
+              </DateTimePickerPrimitive.DatePanel>
+              <DateTimePickerPrimitive.TimePanel>
+                {({ value, onAccept, onCancel, onChange }) => (
+                  <div className="grid gap-2 p-3">
+                    <div className="flex items-center justify-between gap-3 border-b border-border pb-2">
+                      <DateTimePickerPrimitive.DateButton className="rounded-md px-2 py-1 text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                        Change date
+                      </DateTimePickerPrimitive.DateButton>
+                      <div className="text-sm font-medium">
+                        <DateTimePickerPrimitive.Value
+                          format={{ dateStyle: 'medium' }}
+                          placeholder="Select date"
+                        />
+                      </div>
+                    </div>
+                    <TimePickerPanel
+                      ampm={ampm}
+                      maxTime={maxTime}
+                      minTime={minTime}
+                      minutesStep={minutesStep}
+                      onAccept={onAccept}
+                      onCancel={onCancel}
+                      onChange={onChange}
+                      referenceDate={value}
+                      shouldDisableTime={shouldDisableTime}
+                      skipDisabled={skipDisabled}
+                      timeSteps={timeSteps}
+                      value={value}
+                      views={getTimeViews(views)}
+                      withSeconds={withSeconds}
+                    />
+                  </div>
+                )}
+              </DateTimePickerPrimitive.TimePanel>
             </div>
           )
         )}
@@ -231,7 +267,13 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
       showOutsideDays,
       showDaysOutsideCurrentMonth,
       ampm,
+      maxTime,
+      minTime,
+      minutesStep,
+      shouldDisableTime,
+      skipDisabled,
       timeSteps,
+      views,
       ...props
     },
     ref,
@@ -250,7 +292,13 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
         locale={locale}
         loading={loading}
         ampm={ampm}
+        maxTime={maxTime}
+        minTime={minTime}
+        minutesStep={minutesStep}
+        shouldDisableTime={shouldDisableTime}
+        skipDisabled={skipDisabled}
         timeSteps={timeSteps}
+        views={views}
       >
         <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
           {label ? (
@@ -292,6 +340,13 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
           showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
           withSeconds={withSeconds}
           ampm={ampm}
+          maxTime={maxTime}
+          minTime={minTime}
+          minutesStep={minutesStep}
+          shouldDisableTime={shouldDisableTime}
+          skipDisabled={skipDisabled}
+          timeSteps={timeSteps}
+          views={views}
         />
       </Root>
     );
@@ -305,6 +360,9 @@ const DateTimePicker = Object.assign(DateTimePickerRoot, {
   Content,
   Value,
   Calendar,
+  DatePanel,
+  TimePanel,
+  DateButton,
   Segment,
   Separator,
   Loading,
@@ -318,9 +376,22 @@ export {
   Content,
   Value,
   Calendar,
+  DatePanel,
+  TimePanel,
+  DateButton,
   Segment,
   Separator,
   Loading,
   StyledCalendar,
 };
 export type { DateTimePickerProps, CalendarProps };
+
+function getTimeViews(
+  views: React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Root>['views'],
+) {
+  if (!views) return undefined;
+  const timeViews = views.filter((view): view is TimePickerView =>
+    view === 'hours' || view === 'minutes' || view === 'seconds' || view === 'meridiem',
+  );
+  return timeViews.length ? timeViews : undefined;
+}

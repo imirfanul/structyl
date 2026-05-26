@@ -29,10 +29,36 @@ describe('TimePicker (styled)', () => {
     );
 
     fireEvent.click(screen.getByRole('button', { name: 'Start time' }));
-    fireEvent.click(screen.getByRole('option', { name: '10' }));
+    fireEvent.click(screen.getByRole('button', { name: '10 hours' }));
 
     expect(handleChange).toHaveBeenCalledWith(
       new Date(2026, 4, 23, 10, 30),
+      expect.objectContaining({ source: 'view', validationError: null }),
+    );
+  });
+
+  it('supports seconds as a clock selector', () => {
+    const handleChange = vi.fn();
+
+    render(
+      <TimePicker
+        label="System time"
+        defaultValue={new Date(2026, 4, 23, 5, 33, 0)}
+        onChange={handleChange}
+        views={['hours', 'minutes', 'seconds']}
+      />,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'System time' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Select seconds' }));
+
+    expect(screen.getByRole('group', { name: 'Seconds clock' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: '60 seconds' })).toBeTruthy();
+
+    fireEvent.click(screen.getByRole('button', { name: '45 seconds' }));
+
+    expect(handleChange).toHaveBeenLastCalledWith(
+      new Date(2026, 4, 23, 5, 33, 45),
       expect.objectContaining({ source: 'view', validationError: null }),
     );
   });

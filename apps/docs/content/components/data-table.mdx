@@ -1,11 +1,11 @@
 ---
 title: DataTable
-description: A full-featured data grid with sorting, filtering, virtualization, and export.
+description: A full-featured data grid with column configuration, tree data, copy/paste, density, toolbar actions, search, filters, virtualization, pinning, grouping, aggregation and more.
 ---
 
 # DataTable
 
-A full-featured data grid with sorting, filtering, virtualization, and export.
+DataTable is the Aura grid surface for large, interactive datasets. It uses TanStack Table for the table model and adds styled UI for the full set of features you expect from a production grid: column type system, rich column definition API, tree data, copy/paste, density toggle, toolbar actions, search, nested filters, row and column virtualization, configuration menus, pinning, selection, reordering, inline creation, totals, loaders, localization and server-side state.
 
 ## Installation
 
@@ -13,24 +13,1100 @@ A full-featured data grid with sorting, filtering, virtualization, and export.
 npx aura-ui add data-table
 ```
 
-## Usage
+## Basic Usage
 
 ```tsx
-import { DataTable } from '@aura-ui/styled';
+import { DataTable, type DataTableColumnDef } from '@aura-ui/data-table';
 
-export function Example() {
-  return <DataTable />;
+type User = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  revenue: number;
+};
+
+const columns: DataTableColumnDef<User>[] = [
+  { field: 'name', headerName: 'Name' },
+  { field: 'email', headerName: 'Email' },
+  { field: 'role', headerName: 'Role' },
+  { field: 'revenue', headerName: 'Revenue', type: 'number' },
+];
+
+export function Example({ rows }: { rows: User[] }) {
+  return (
+    <DataTable
+      columns={columns}
+      data={rows}
+      enableSorting
+      enableGlobalSearch
+      enablePagination
+      enableRowSelection
+    />
+  );
 }
 ```
 
-## API Reference
+## Column Definition API
 
-See the [primitive types](https://github.com/your-org/aura-ui/tree/main/packages/primitives/src/data-table) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+`DataTableColumnDef` extends the standard TanStack `ColumnDef` with a rich set of column-level options covering header, type, alignment, flex sizing, value getter/setter, custom cell/header renderers, description tooltip, and per-column filter operators.
+
+```tsx
+import type { DataTableColumnDef } from '@aura-ui/data-table';
+
+const columns: DataTableColumnDef<User>[] = [
+  {
+    // field / fieldId — accessor key and stable DB id
+    field: 'name',
+    fieldId: 'user_name',
+    headerName: 'Full Name',
+    description: 'The user's display name (first + last)',
+
+    // type drives default alignment and filter operators
+    type: 'string',
+
+    // explicit alignment overrides the type default
+    align: 'left',
+
+    // flex: column stretches to fill remaining space
+    flex: 1,
+
+    // valueGetter replaces accessorFn
+    valueGetter: (row) => `${row.firstName} ${row.lastName}`,
+
+    // renderCell replaces the cell renderer
+    renderCell: ({ value }) => <strong>{String(value)}</strong>,
+
+    // renderHeader replaces the header renderer
+    renderHeader: ({ column }) => (
+      <span className="text-primary">{column.id}</span>
+    ),
+
+    // per-column filter operators (overrides the global set)
+    filterOperators: ['contains', 'equals', 'startsWith'],
+  },
+  {
+    field: 'revenue',
+    headerName: 'Revenue',
+    type: 'number',           // right-aligns automatically
+    align: 'right',
+    size: 120,
+    renderCell: ({ value }) => `$${Number(value).toLocaleString()}`,
+  },
+  {
+    field: 'joined',
+    headerName: 'Joined',
+    type: 'date',             // right-aligns automatically
+    renderCell: ({ value }) => new Date(String(value)).toLocaleDateString(),
+  },
+  {
+    field: 'active',
+    headerName: 'Active',
+    type: 'boolean',
+    align: 'center',
+    renderCell: ({ value }) => (value ? '✓' : '✗'),
+  },
+  {
+    field: 'score',
+    headerName: 'Score',
+    type: 'number',
+
+    // valueSetter writes edits back to the row (inline editing)
+    valueSetter: (row, value) => { row.score = Number(value); },
+  },
+];
+```
+
+### Column type defaults
+
+| Type | Default alignment | Recommended filter operators |
+|---|---|---|
+| `string` | left | contains, equals, startsWith, endsWith, empty, notEmpty |
+| `number` | right | equals, gt, gte, lt, lte, empty, notEmpty |
+| `date` | right | equals, gt, gte, lt, lte, empty, notEmpty |
+| `dateTime` | right | equals, gt, gte, lt, lte, empty, notEmpty |
+| `boolean` | center | equals, empty, notEmpty |
+
+## Search And Nested Filters
+
+Use `enableGlobalSearch` for quick search and `enableAdvancedFiltering` for an AND/OR filter builder. The same filter model can be controlled or sent to a server adapter.
+
+```tsx
+const advancedFilter = {
+  id: 'root',
+  logic: 'and',
+  items: [
+    { id: 'active', columnId: 'status', operator: 'equals', value: 'Active' },
+    {
+      id: 'score-or-team',
+      logic: 'or',
+      items: [
+        { id: 'score', columnId: 'score', operator: 'gte', value: 80 },
+        { id: 'team', columnId: 'team', operator: 'contains', value: 'Platform' },
+      ],
+    },
+  ],
+};
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableGlobalSearch
+  enableAdvancedFiltering
+  defaultAdvancedFilter={advancedFilter}
+/>;
+```
+
+## Virtualization
+
+Row and column virtualization can be enabled independently for very large datasets.
+
+```tsx
+<DataTable
+  columns={[...columns, ...metricColumns]}
+  data={largeRows}
+  virtual={{ estimatedRowHeight: 44, overscan: 12 }}
+  virtualColumns={{ estimatedColumnWidth: 120, overscan: 6 }}
+  height={420}
+  enableColumnResizing
+/>
+```
+
+## Configuration, Pinning And Reordering
+
+The built-in column panel and column menus cover visibility, pinning, grouping and column selection. Drag-and-drop handlers cover row and column order.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  getRowId={(row) => row.id}
+  enableColumnConfiguration
+  enableColumnSelection
+  enableColumnPinning
+  enableColumnReordering
+  enableRowPinning
+  enableRowReordering
+  enableGrouping
+  defaultRowPinning={{ top: ['row-1'], bottom: ['row-99'] }}
+/>
+```
+
+## Actions, Inline Create And Detail Rows
+
+Use `rowActions` to append an action column, `inlineCreateRow` for in-grid row creation and `renderDetailPanel` for master/detail content.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  inlineCreateRow={{
+    fields: [
+      { id: 'name', label: 'Name' },
+      { id: 'email', label: 'Email' },
+    ],
+    onAdd: addUser,
+  }}
+  rowActions={(row) => <Button>Open {row.original.name}</Button>}
+  renderDetailPanel={(row) => <UserDetails user={row.original} />}
+/>
+```
+
+## Totals And Spanning
+
+Use `aggregations` for footer totals and `rowTotals` for a calculated row total column. `getCellColSpan` and `getCellRowSpan` provide cell-level spanning.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  aggregations={{ revenue: 'sum', cost: 'avg', score: 'max' }}
+  rowTotals={{ columns: ['revenue', 'cost'] }}
+  getCellColSpan={(cell, row) =>
+    cell.column.id === 'name' && row.original.status === 'Blocked' ? 2 : undefined
+  }
+  getCellRowSpan={(cell, row) =>
+    cell.column.id === 'team' && row.original.team === 'Platform' ? 2 : undefined
+  }
+/>
+```
+
+## Lazy Loading And Loaders
+
+`onLoadMore` fires when the scroll container gets near the bottom. Use `loadingVariant` for text, skeleton or spinner loading states.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  virtual={{ estimatedRowHeight: 44 }}
+  height={360}
+  hasMore={hasMore}
+  loadingMore={loadingMore}
+  onLoadMore={loadMore}
+  loadingVariant="skeleton"
+/>
+```
+
+## Localization
+
+All built-in labels can be localized with `localeText`.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  localeText={{
+    searchPlaceholder: 'Buscar...',
+    filters: 'Filtros',
+    columns: 'Columnas',
+    loading: 'Cargando...',
+    selectedRows: (selected, total) => `${selected}/${total} filas`,
+    page: (page, pageCount) => `Pagina ${page} de ${pageCount}`,
+  }}
+/>
+```
+
+## Server-Side State
+
+When `serverSide` is provided, sorting, filtering and pagination state are delegated to your data loader.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={query.data.rows}
+  serverSide={{
+    state,
+    rowCount: query.data.total,
+    onStateChange: setState,
+  }}
+  enableSorting
+  enableGlobalSearch
+  enableAdvancedFiltering
+  enablePagination
+/>
+```
+
+## Tree Data
+
+Set `treeData` and provide `getSubRows` to render a parent/child hierarchy with automatic indentation and expand/collapse controls. Expand All and Collapse All buttons appear in the toolbar automatically.
+
+```tsx
+type Category = { id: string; name: string; children?: Category[] };
+
+<DataTable
+  columns={[
+    { field: 'name', headerName: 'Category', flex: 1 },
+    { field: 'id', headerName: 'ID', type: 'string', size: 100 },
+  ]}
+  data={categories}
+  treeData
+  getSubRows={(row) => row.children}
+  getRowId={(row) => row.id}
+/>
+```
+
+## Copy / Paste
+
+Enable `enableCopyPaste` to let users press **Ctrl+C** (or **⌘+C**) to copy selected rows as tab-separated values (TSV) compatible with Excel and Google Sheets. If no rows are selected the first visible row is copied.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableRowSelection
+  enableCopyPaste
+  onCopy={(rows, text) => console.log('Copied', rows.length, 'rows', text)}
+/>
+```
+
+## Density Toggle
+
+Add `enableDensityToggle` to show a Density menu in the toolbar. You can also control density from outside using `density` + `onDensityChange`.
+
+```tsx
+// Uncontrolled
+<DataTable columns={columns} data={rows} enableDensityToggle defaultDensity="compact" />
+
+// Controlled
+<DataTable
+  columns={columns}
+  data={rows}
+  density={density}
+  onDensityChange={setDensity}
+  enableDensityToggle
+/>
+```
+
+| Value | Cell padding |
+|---|---|
+| `compact` | `py-1 px-2` |
+| `standard` | `p-3` (default) |
+| `comfortable` | `py-4 px-4` |
+
+## Toolbar Actions
+
+Pass custom `toolbarActions` to add icon/label buttons with tooltips to the right toolbar section. Each action receives the live `table` instance so you can trigger exports, open dialogs, or run custom logic.
+
+```tsx
+import { exportToCSV, exportToJSON } from '@aura-ui/data-table';
+
+<DataTable
+  columns={columns}
+  data={rows}
+  toolbarActions={[
+    {
+      id: 'csv',
+      label: 'CSV',
+      tooltip: 'Export as CSV',
+      icon: <DownloadIcon />,
+      onClick: (table) => exportToCSV(table, 'users.csv'),
+    },
+    {
+      id: 'json',
+      label: 'JSON',
+      tooltip: 'Export as JSON',
+      onClick: (table) => exportToJSON(table, 'users.json'),
+    },
+    {
+      id: 'refresh',
+      label: 'Refresh',
+      tooltip: 'Refresh data',
+      onClick: () => refetch(),
+    },
+  ]}
+  onRefresh={refetch}
+/>
+```
+
+You can also use `DataTableToolbarButton` directly in the `toolbarEnd` slot for fully custom controls:
+
+```tsx
+import { DataTableToolbarButton } from '@aura-ui/data-table';
+
+<DataTable
+  columns={columns}
+  data={rows}
+  toolbarEnd={
+    <DataTableToolbarButton tooltip="Export as CSV" onClick={() => exportToCSV(table)}>
+      Export
+    </DataTableToolbarButton>
+  }
+/>
+```
+
+## Column Pinning And Groups
+
+Column pinning (left/right) and column grouping are available via the column menu or the configuration panel.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableColumnPinning
+  enableGrouping
+  enableColumnConfiguration
+  enableColumnReordering
+/>
+```
+
+## Export
+
+`exportToCSV` and `exportToJSON` are standalone helpers you call against the live `table` instance — typically from a toolbar action or a button outside the grid.
+
+```tsx
+import { exportToCSV, exportToJSON } from '@aura-ui/data-table';
+
+// All visible rows
+exportToCSV(table, 'report.csv');
+
+// Selected rows only
+exportToCSV(table, 'selected.csv', { onlySelected: true });
+
+// Include hidden columns
+exportToCSV(table, 'full.csv', { includeHidden: true });
+
+// JSON export
+exportToJSON(table, 'report.json', { onlySelected: true });
+```
+
+## Inline Editing
+
+`EditableCell` renders a span that switches to an `<input>` on click or Enter, then calls `onCommit` on blur or Enter.
+
+```tsx
+import { EditableCell } from '@aura-ui/data-table';
+
+const columns: DataTableColumnDef<User>[] = [
+  {
+    field: 'name',
+    headerName: 'Name',
+    renderCell: ({ row, value }) => (
+      <EditableCell
+        value={value}
+        onCommit={(next) => updateUser(row.original.id, { name: String(next) })}
+      />
+    ),
+  },
+  {
+    field: 'score',
+    headerName: 'Score',
+    type: 'number',
+    renderCell: ({ row, value }) => (
+      <EditableCell
+        type="number"
+        value={value}
+        onCommit={(next) => updateUser(row.original.id, { score: Number(next) })}
+      />
+    ),
+  },
+];
+```
+
+## Row Grouping
+
+Enable `enableGrouping` to let users group by any column via the column menu.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableGrouping
+  enableColumnConfiguration
+/>
+```
+
+## Pagination
+
+The built-in pagination bar includes a page-number dropdown, an items-per-page selector, and icon-only first/previous/next/last navigation buttons.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enablePagination
+  pageSize={25}
+  pageSizeOptions={[10, 25, 50, 100]}
+  showTotalRows
+/>
+```
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `pageSizeOptions` | `number[]` | `[10, 25, 50, 100]` | Choices shown in the rows-per-page selector |
+| `showTotalRows` | `boolean` | `true` | Show the total filtered row count |
+
+## Bulk Actions
+
+When rows are selected and `bulkActions` is provided, a panel appears above the table with user-supplied action buttons and a **Clear selection** link.
+
+```tsx
+import type { DataTableBulkAction } from '@aura-ui/data-table';
+
+const bulkActions: DataTableBulkAction<User>[] = [
+  {
+    id: 'delete',
+    label: 'Delete',
+    icon: <TrashIcon />,
+    tooltip: 'Delete selected rows',
+    variant: 'destructive',
+    onClick: (rows, table) => {
+      deleteUsers(rows.map((r) => r.original.id));
+      table.resetRowSelection();
+    },
+  },
+  {
+    id: 'export',
+    label: 'Export',
+    onClick: (rows) => exportRows(rows.map((r) => r.original)),
+  },
+];
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableRowSelection
+  bulkActions={bulkActions}
+/>
+```
+
+The `disabled` prop can be a boolean or a function receiving the selected rows: `disabled: (rows) => rows.length > 50`.
+
+## Row Action Columns
+
+Two structured action column types are available, in addition to the legacy `rowActions` free-form renderer.
+
+### 3-dot menu (`rowActionMenu`)
+
+Renders a ⋮ button that opens a dropdown with item labels, icons, optional separators, and per-item `disabled`/`hidden` guards.
+
+```tsx
+import type { DataTableRowActionItem } from '@aura-ui/data-table';
+
+<DataTable
+  columns={columns}
+  data={rows}
+  rowActionMenu={[
+    {
+      id: 'edit',
+      label: 'Edit',
+      icon: <PencilIcon />,
+      onClick: (row) => openEditDialog(row.original),
+    },
+    { id: 'sep', separator: true, label: '', onClick: () => {} },
+    {
+      id: 'delete',
+      label: 'Delete',
+      icon: <TrashIcon />,
+      variant: 'destructive',
+      disabled: (row) => !row.original.canDelete,
+      onClick: (row) => deleteUser(row.original.id),
+    },
+  ]}
+/>
+```
+
+### Inline buttons (`rowActionButtons`)
+
+Renders a set of icon/text buttons directly in the row, one per item.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  rowActionButtons={[
+    {
+      id: 'view',
+      label: 'View',
+      onClick: (row) => navigate(`/users/${row.original.id}`),
+    },
+    {
+      id: 'archive',
+      label: 'Archive',
+      hidden: (row) => row.original.status === 'Archived',
+      onClick: (row) => archiveUser(row.original.id),
+    },
+  ]}
+/>
+```
+
+## Row And Column Copy
+
+Enable `enableRowCopy` to add a **Copy row** option to the row pinning menu. Enable `enableColumnCopy` to add a **Copy column** option to column menus — it copies all visible cell values for that column as a newline-separated list.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableRowPinning
+  enableRowCopy
+  enableColumnCopy
+/>
+```
+
+## Custom Slot Components
+
+Replace any built-in sub-component with your own via the `slots` prop. Each slot receives typed props matching the built-in component's signature.
+
+```tsx
+import type { DataTableSlots } from '@aura-ui/data-table';
+
+function MyToolbar({ table, localeText }) {
+  return (
+    <div className="flex items-center gap-2 p-2">
+      <strong>Custom toolbar</strong>
+      <button onClick={() => table.resetColumnFilters()}>Reset filters</button>
+    </div>
+  );
+}
+
+function MyPagination({ table, localeText, pageSizeOptions }) {
+  const { pageIndex, pageSize } = table.getState().pagination;
+  return (
+    <div>
+      Page {pageIndex + 1} of {table.getPageCount()}
+      <button onClick={() => table.previousPage()}>‹</button>
+      <button onClick={() => table.nextPage()}>›</button>
+    </div>
+  );
+}
+
+const slots: DataTableSlots<User> = {
+  Toolbar: MyToolbar,
+  Pagination: MyPagination,
+};
+
+<DataTable columns={columns} data={rows} slots={slots} />
+```
+
+Available slot keys:
+
+| Slot | Props | Replaces |
+|---|---|---|
+| `Toolbar` | `{ table, localeText }` | Entire top toolbar |
+| `Pagination` | `{ table, localeText, pageSizeOptions }` | Pagination bar |
+| `ColumnMenu` | `{ column, table, localeText, ... }` | Column header dropdown |
+| `Filter` | `{ table, localeText }` | Filter panel |
+| `Search` | `{ value, onChange, localeText }` | Global search input |
+| `LoadingSkeleton` | `{ rows, columns }` | Skeleton loading rows |
+| `LoadingOverlay` | `{ text }` | Spinner/overlay loading state |
+| `NoRowsOverlay` | `{}` | Empty state when source data is empty |
+| `NoResultsOverlay` | `{}` | Empty state when filters/search return nothing |
+
+## Empty States
+
+Two distinct empty-state components can be customized independently:
+
+- **`NoRowsOverlay`** — shown when `data.length === 0` (no source records at all)
+- **`NoResultsOverlay`** — shown when rows exist but current search/filter returns nothing
+
+```tsx
+function EmptyData() {
+  return (
+    <div className="flex flex-col items-center gap-2 py-12 text-center">
+      <DatabaseIcon className="size-10 text-muted-foreground" />
+      <p className="text-muted-foreground text-sm">No records yet. Create the first one.</p>
+    </div>
+  );
+}
+
+function NoResults() {
+  return (
+    <div className="flex flex-col items-center gap-2 py-12 text-center">
+      <SearchXIcon className="size-10 text-muted-foreground" />
+      <p className="text-muted-foreground text-sm">No results match your filters.</p>
+    </div>
+  );
+}
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableGlobalSearch
+  slots={{
+    NoRowsOverlay: EmptyData,
+    NoResultsOverlay: NoResults,
+  }}
+/>
+```
 
 ## Accessibility
 
-Follows the relevant [WAI-ARIA APG pattern](https://www.w3.org/WAI/ARIA/apg/patterns/). All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+The table renders with `role="grid"`, keyboard-reachable buttons and form controls, native checkbox semantics for selection, localized labels for built-in controls, and `aria-sort` on sortable headers. Copy/paste emits clipboard events. Tree nodes are announced as expanded/collapsed with `aria-label`.
 
 ## Theming
 
-Styles consume CSS variables from `@aura-ui/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.
+Styles consume Aura theme tokens such as `bg`, `foreground`, `muted`, `border`, `primary`, `popover`, `accent`, `destructive` and `ring`. Use `className`, `tableClassName`, row callbacks and column definitions for additional customization.
+
+## Built-in Cell Type Renderers
+
+Several `type` values for `DataTableColumnDef` render rich cells automatically without requiring a custom `renderCell`. Configure behavior using companion column-level props.
+
+```tsx
+const columns: DataTableColumnDef<Order>[] = [
+  {
+    field: 'status',
+    headerName: 'Status',
+    type: 'badge',
+    badgeMap: {
+      Active:   { label: 'Active',   color: 'green' },
+      Inactive: { label: 'Inactive', color: 'gray'  },
+      Pending:  { label: 'Pending',  color: 'yellow' },
+    },
+  },
+  {
+    field: 'revenue',
+    headerName: 'Revenue',
+    type: 'currency',
+    currencyCode: 'USD',
+    currencyLocale: 'en-US',
+  },
+  {
+    field: 'completion',
+    headerName: 'Progress',
+    type: 'progress',
+    progressMax: 100,
+  },
+  {
+    field: 'trend',
+    headerName: 'Trend',
+    type: 'sparkline',
+    sparklineData: (row) => row.weeklyTrend,
+    sparklineType: 'line',
+  },
+  {
+    field: 'rating',
+    headerName: 'Rating',
+    type: 'rating',
+    ratingMax: 5,
+  },
+  {
+    field: 'name',
+    headerName: 'Name',
+    type: 'link',
+    linkHref: (value, row) => `/orders/${row.id}`,
+    linkTarget: '_blank',
+  },
+  {
+    field: 'owner',
+    headerName: 'Owner',
+    type: 'avatar',
+    avatarSrc: (value, row) => row.ownerAvatarUrl,
+  },
+];
+```
+
+## Row Status Indicator
+
+`getRowStatus` receives each row and returns a semantic status string. The table renders a colored left-border stripe on matching rows to give users an at-a-glance visual signal.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  getRowStatus={(row) => {
+    if (row.original.errorCount > 0) return 'error';
+    if (row.original.warningCount > 0) return 'warning';
+    if (row.original.confirmed) return 'success';
+    return undefined;
+  }}
+/>
+```
+
+## Custom Row Height
+
+`rowHeight` sets a uniform row height in pixels when passed a number, or controls individual row heights when passed a function.
+
+```tsx
+// Uniform height
+<DataTable columns={columns} data={rows} rowHeight={56} />
+
+// Per-row height
+<DataTable
+  columns={columns}
+  data={rows}
+  rowHeight={(row, index) => (row.original.hasDetails ? 80 : 44)}
+/>
+```
+
+## Filter Chips
+
+Enable `enableFilterChips` to render active column filters as removable chip pills above the table header. Clicking the × on a chip clears that filter immediately.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableAdvancedFiltering
+  enableFilterChips
+/>
+```
+
+## Excel Export
+
+`exportToXLSX` produces a real `.xlsx` file via SheetJS. It accepts the same options as `exportToCSV` (`onlySelected`, `includeHidden`).
+
+```tsx
+import { exportToXLSX } from '@aura-ui/data-table';
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableRowSelection
+  toolbarActions={[
+    {
+      id: 'xlsx',
+      label: 'Excel',
+      tooltip: 'Export as Excel',
+      onClick: (table) => exportToXLSX(table, 'report.xlsx'),
+    },
+    {
+      id: 'xlsx-selected',
+      label: 'Export Selected',
+      onClick: (table) =>
+        exportToXLSX(table, 'selected.xlsx', { onlySelected: true }),
+    },
+  ]}
+/>
+```
+
+## Inline Editing v2
+
+The inline editing system gains activation mode control, undo/redo, a per-commit callback, and dirty-row tracking.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  editMode="dblclick"
+  enableUndoRedo
+  dirtyRows={dirtyRows}
+  onDirtyRowsChange={setDirtyRows}
+  onCellEditCommit={({ field, row, oldValue, newValue }) => {
+    console.log(`${field} changed from ${oldValue} to ${newValue}`);
+    persistEdit(row.original.id, field, newValue);
+  }}
+/>
+```
+
+## Cell Range Selection
+
+`enableCellSelection` lets users click-drag or Shift+click to select a rectangular range of cells. `onCellSelectionChange` receives a `DataTableCellSelection` object describing the selected rectangle, or `null` when the selection is cleared.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableCellSelection
+  onCellSelectionChange={(selection) => {
+    if (selection) {
+      const { startRowIndex, startColIndex, endRowIndex, endColIndex } = selection;
+      console.log(`Selected rows ${startRowIndex}–${endRowIndex}, cols ${startColIndex}–${endColIndex}`);
+    }
+  }}
+/>
+```
+
+## Tool Panel
+
+`enableToolPanel` adds a collapsible right-side panel with three tabs: **Columns** (visibility toggle), **Filters** (active filter manager), and **Stats** (column statistics). Use `defaultToolPanelTab` to control which tab opens first.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableColumnConfiguration
+  enableAdvancedFiltering
+  enableToolPanel
+  defaultToolPanelTab="Columns"
+/>
+```
+
+## Live Data Flash
+
+`enableLiveData` makes cells flash with a highlight animation whenever their value changes. Pair with `liveDataKey` (the row identity field) so the table can detect which rows updated, and `onLiveDataUpdate` to receive change notifications.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={liveRows}
+  enableLiveData
+  liveDataKey="id"
+  onLiveDataUpdate={(changedRows) => {
+    console.log('Rows updated:', changedRows.map((r) => r.id));
+  }}
+/>
+```
+
+## Async Detail Panel
+
+`loadDetailPanel` is an async alternative to `renderDetailPanel` — it receives the row and returns a `Promise<ReactNode>`. Panels are fetched on expand and cached in an LRU cache; control the cache size with `detailPanelCacheSize` (default `20`).
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  loadDetailPanel={async (row) => {
+    const details = await fetchOrderDetails(row.original.id);
+    return <OrderDetailView details={details} />;
+  }}
+  detailPanelCacheSize={50}
+/>
+```
+
+## Print-Optimized Styles
+
+`enablePrintStyles` injects `@media print` CSS that hides the toolbar, pagination, and action columns, and expands the table to full page width. Call `window.print()` to produce a clean printout without extra UI chrome.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enablePrintStyles
+  toolbarActions={[
+    {
+      id: 'print',
+      label: 'Print',
+      tooltip: 'Print table',
+      onClick: () => window.print(),
+    },
+  ]}
+/>
+```
+
+## Pivot Mode
+
+`enablePivot` adds a **Pivot** button to the toolbar. When active, the table switches to a pivot view driven by `pivotConfig`. Use `onPivotConfigChange` to control the config externally.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enablePivot
+  pivotConfig={{
+    rowGroupField: 'region',
+    pivotField: 'quarter',
+    valueField: 'revenue',
+    aggregation: 'sum',
+  }}
+  onPivotConfigChange={(config) => setPivotConfig(config)}
+/>
+```
+
+The `DataTablePivotConfig` type:
+
+```tsx
+type DataTablePivotConfig = {
+  rowGroupField: string;
+  pivotField: string;
+  valueField: string;
+  aggregation: 'count' | 'sum' | 'avg' | 'min' | 'max';
+};
+```
+
+## Saved Views
+
+`enableSavedViews` adds a **Views** button to the toolbar that opens a right-side drawer. Users can save the current table state (sort, filters, column visibility, density, column order, sizing, pinning, grouping, and conditional formatting rules) as a named view, then load or delete it later. Pass `savedViews` and `onSavedViewsChange` for controlled state that you can persist to a database.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableSavedViews
+  savedViews={savedViews}
+  onSavedViewsChange={setSavedViews}
+/>
+```
+
+The `DataTableSavedView` type:
+
+```tsx
+type DataTableSavedView = {
+  id: string;
+  name: string;
+  createdAt: string;
+  state: {
+    sorting?: SortingState;
+    columnFilters?: ColumnFiltersState;
+    globalFilter?: string;
+    columnVisibility?: VisibilityState;
+    columnOrder?: ColumnOrderState;
+    columnSizing?: ColumnSizingState;
+    columnPinning?: ColumnPinningState;
+    density?: 'compact' | 'standard' | 'comfortable';
+    grouping?: GroupingState;
+    conditionalFormattingRules?: DataTableConditionalRule[];
+  };
+};
+```
+
+## Column Header Stats Row
+
+`enableHeaderStats` adds an extra row at the bottom of `<thead>` showing per-column aggregate stats. Use `headerStatsConfig` to specify which aggregation to display for each field.
+
+```tsx
+<DataTable
+  columns={columns}
+  data={rows}
+  enableHeaderStats
+  headerStatsConfig={{
+    revenue: 'sum',
+    score:   'avg',
+    id:      'count',
+    joined:  'min',
+  }}
+/>
+```
+
+Supported aggregations: `'count' | 'sum' | 'avg' | 'min' | 'max' | 'nullCount' | 'unique'`.
+
+## Schema Validation
+
+`enableValidation` activates cell-level validation. Add a `displayValidate` function to any column definition — it receives the cell value and the full row and returns an error message string (or `undefined` for valid). Invalid cells show a red outline and an error tooltip. `onValidationChange` streams the current list of `DataTableValidationError` objects whenever any value changes.
+
+```tsx
+const columns: DataTableColumnDef<User>[] = [
+  {
+    field: 'email',
+    headerName: 'Email',
+    displayValidate: (value) => {
+      if (!String(value).includes('@')) return 'Must be a valid email address';
+    },
+  },
+  {
+    field: 'score',
+    headerName: 'Score',
+    type: 'number',
+    displayValidate: (value) => {
+      if (Number(value) < 0 || Number(value) > 100) return 'Score must be between 0 and 100';
+    },
+  },
+];
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableValidation
+  onValidationChange={(errors) => setFormErrors(errors)}
+/>
+```
+
+The `DataTableValidationError` type:
+
+```tsx
+type DataTableValidationError = {
+  rowId: string;
+  field: string;
+  value: unknown;
+  message: string;
+};
+```
+
+## Column Value Formatting
+
+Fine-grained `Intl` formatting is available without a custom `renderCell`. Set a default `locale` at the table level, then override formatting per column with `dateFormat`, `numberFormat`, and `timezone`.
+
+```tsx
+<DataTable
+  columns={[
+    {
+      field: 'joined',
+      headerName: 'Joined',
+      type: 'date',
+      dateFormat: { year: 'numeric', month: 'long', day: 'numeric' },
+      timezone: 'America/New_York',
+    },
+    {
+      field: 'revenue',
+      headerName: 'Revenue',
+      type: 'number',
+      numberFormat: { style: 'currency', currency: 'EUR', minimumFractionDigits: 2 },
+    },
+  ]}
+  data={rows}
+  locale="de-DE"
+/>
+```
+
+## Accessibility (ARIA Grid)
+
+The table renders a full ARIA grid with `role="grid"`, `aria-rowcount`, `aria-colcount`, `aria-rowindex`, `aria-colindex`, and `aria-selected` on every cell. Use `ariaLabel` or `ariaLabelledBy` to give the grid an accessible name.
+
+```tsx
+// Via ariaLabel
+<DataTable
+  columns={columns}
+  data={rows}
+  ariaLabel="User accounts"
+/>
+
+// Via ariaLabelledBy (referencing an existing heading element)
+<>
+  <h2 id="users-heading">User Accounts</h2>
+  <DataTable
+    columns={columns}
+    data={rows}
+    ariaLabelledBy="users-heading"
+  />
+</>
+```

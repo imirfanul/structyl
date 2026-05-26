@@ -76,7 +76,18 @@ import {
   Tooltip,
   Tree,
 } from '@aura-ui/styled';
-import { DataTable, type DataTableColumn } from '@aura-ui/data-table';
+import {
+  DataTable,
+  type DataTableBulkAction,
+  type DataTableColumnDef,
+  type DataTableConditionalRule,
+  type DataTableFilterGroup,
+  type DataTableRowActionItem,
+  type DataTableSlots,
+  type DataTablePivotConfig,
+  type DataTableSavedView,
+  type DataTableCellSelection,
+} from '@aura-ui/data-table';
 
 export interface UsageExample {
   title: string;
@@ -91,15 +102,29 @@ type ProjectRow = {
   owner: string;
   status: 'Healthy' | 'Review' | 'Blocked' | 'Queued';
   budget: string;
+  revenue: number;
+  cost: number;
   progress: number;
 };
 
 const people = [
   { id: 'ada', name: 'Ada Lovelace', role: 'Admin', email: 'ada@aura.dev', initials: 'AL' },
   { id: 'grace', name: 'Grace Hopper', role: 'Engineer', email: 'grace@aura.dev', initials: 'GH' },
-  { id: 'margaret', name: 'Margaret Hamilton', role: 'Reviewer', email: 'margaret@aura.dev', initials: 'MH' },
+  {
+    id: 'margaret',
+    name: 'Margaret Hamilton',
+    role: 'Reviewer',
+    email: 'margaret@aura.dev',
+    initials: 'MH',
+  },
   { id: 'alan', name: 'Alan Turing', role: 'Research', email: 'alan@aura.dev', initials: 'AT' },
-  { id: 'katherine', name: 'Katherine Johnson', role: 'Analyst', email: 'katherine@aura.dev', initials: 'KJ' },
+  {
+    id: 'katherine',
+    name: 'Katherine Johnson',
+    role: 'Analyst',
+    email: 'katherine@aura.dev',
+    initials: 'KJ',
+  },
   { id: 'radia', name: 'Radia Perlman', role: 'Network', email: 'radia@aura.dev', initials: 'RP' },
 ];
 
@@ -112,17 +137,810 @@ const projectRows: ProjectRow[] = Array.from({ length: 24 }, (_, index) => {
     owner: owners[index % owners.length] ?? 'Ada Lovelace',
     status: statuses[index % statuses.length] ?? 'Queued',
     budget: `$${(12 + index * 3).toLocaleString()}k`,
+    revenue: 1500 + index * 120,
+    cost: 700 + index * 75,
     progress: 35 + ((index * 7) % 60),
   };
 });
 
-const projectColumns: DataTableColumn<ProjectRow>[] = [
-  { accessorKey: 'project', header: 'Project' },
-  { accessorKey: 'owner', header: 'Owner' },
-  { accessorKey: 'status', header: 'Status' },
-  { accessorKey: 'budget', header: 'Budget' },
-  { accessorKey: 'progress', header: 'Progress' },
+const largeProjectRows: ProjectRow[] = Array.from({ length: 1200 }, (_, index) => {
+  const base = projectRows[index % projectRows.length] ?? projectRows[0]!;
+  return {
+    ...base,
+    id: index + 1,
+    project: `Workspace ${index + 1}`,
+    revenue: 1500 + index * 33,
+    cost: 700 + index * 19,
+    progress: 20 + ((index * 11) % 80),
+  };
+});
+
+const projectColumns: DataTableColumnDef<ProjectRow>[] = [
+  { field: 'project', headerName: 'Project', size: 180 },
+  { field: 'owner', headerName: 'Owner', size: 180 },
+  { field: 'status', headerName: 'Status', size: 120 },
+  { field: 'budget', headerName: 'Budget', size: 110 },
+  { field: 'revenue', headerName: 'Revenue', type: 'number', size: 120 },
+  { field: 'cost', headerName: 'Cost', type: 'number', size: 110 },
+  { field: 'progress', headerName: 'Progress', type: 'number', size: 110 },
 ];
+
+const projectMetricColumns: DataTableColumnDef<ProjectRow>[] = Array.from(
+  { length: 18 },
+  (_, index) => ({
+    id: `metric-${index + 1}`,
+    headerName: `M${index + 1}`,
+    type: 'number' as const,
+    size: 90,
+    accessorFn: (row: ProjectRow) => row.progress + index,
+  }),
+);
+
+const projectAdvancedFilter: DataTableFilterGroup = {
+  id: 'root',
+  logic: 'and',
+  items: [
+    { id: 'status', columnId: 'status', operator: 'notEmpty' },
+    {
+      id: 'progress-or-owner',
+      logic: 'or',
+      items: [
+        { id: 'progress', columnId: 'progress', operator: 'gte', value: 70 },
+        { id: 'owner', columnId: 'owner', operator: 'contains', value: 'Ada' },
+      ],
+    },
+  ],
+};
+
+function DataTableInlineExample() {
+  const [rows, setRows] = React.useState(projectRows.slice(0, 10));
+  return (
+    <DataTable
+      columns={projectColumns}
+      data={rows}
+      enableGlobalSearch
+      inlineCreateRow={{
+        fields: [
+          { id: 'project', label: 'Project', placeholder: 'Workspace' },
+          { id: 'owner', label: 'Owner', placeholder: 'Owner' },
+        ],
+        onAdd: (values) =>
+          setRows((current) => [
+            ...current,
+            {
+              id: current.length + 1,
+              project: values.project || `Workspace ${current.length + 1}`,
+              owner: values.owner || 'Ada Lovelace',
+              status: 'Queued',
+              budget: '$0k',
+              revenue: 0,
+              cost: 0,
+              progress: 0,
+            },
+          ]),
+      }}
+      hasMore={rows.length < projectRows.length}
+      loadingMore={rows.length < projectRows.length}
+      onLoadMore={() =>
+        setRows((current) => projectRows.slice(0, Math.min(current.length + 6, projectRows.length)))
+      }
+      loadingVariant="skeleton"
+      localeText={{
+        searchPlaceholder: 'Buscar proyectos...',
+        columns: 'Columnas',
+        filters: 'Filtros',
+        loadingMore: 'Cargando mas...',
+      }}
+      height={320}
+      className="w-full max-w-3xl"
+    />
+  );
+}
+
+/* ── DataTable new feature preview components ────────────────────────── */
+
+type DocUser = {
+  id: number;
+  name: string;
+  email: string;
+  role: 'Admin' | 'Editor' | 'Viewer';
+  revenue: number;
+  score: number;
+  joined: string;
+  active: boolean;
+};
+
+const docUsers: DocUser[] = Array.from({ length: 12 }, (_, i) => ({
+  id: i + 1,
+  name: `User ${i + 1}`,
+  email: `user${i + 1}@example.com`,
+  role: (['Admin', 'Editor', 'Viewer'] as const)[i % 3]!,
+  revenue: 1200 + i * 80,
+  score: 40 + ((i * 7) % 60),
+  joined: `2026-${String((i % 12) + 1).padStart(2, '0')}-${String((i % 27) + 1).padStart(2, '0')}`,
+  active: i % 3 !== 2,
+}));
+
+const docColumns: DataTableColumnDef<DocUser>[] = [
+  { field: 'name', headerName: 'Name', size: 160 },
+  { field: 'email', headerName: 'Email', size: 220 },
+  { field: 'role', headerName: 'Role', size: 110 },
+  { field: 'revenue', headerName: 'Revenue', type: 'number', size: 120 },
+  { field: 'score', headerName: 'Score', type: 'number', size: 100 },
+  { field: 'joined', headerName: 'Joined', type: 'date', size: 120 },
+];
+
+type DocCategory = { id: string; name: string; type: string; count: number; children?: DocCategory[] };
+const docCategoryTree: DocCategory[] = [
+  {
+    id: 'eng', name: 'Engineering', type: 'Department', count: 42,
+    children: [
+      { id: 'fe', name: 'Frontend', type: 'Team', count: 12 },
+      { id: 'be', name: 'Backend', type: 'Team', count: 18 },
+      { id: 'infra', name: 'Infrastructure', type: 'Team', count: 12 },
+    ],
+  },
+  {
+    id: 'design', name: 'Design', type: 'Department', count: 14,
+    children: [
+      { id: 'ux', name: 'UX', type: 'Team', count: 8 },
+      { id: 'brand', name: 'Brand', type: 'Team', count: 6 },
+    ],
+  },
+  {
+    id: 'growth', name: 'Growth', type: 'Department', count: 20,
+    children: [
+      { id: 'seo', name: 'SEO', type: 'Team', count: 7 },
+      { id: 'paid', name: 'Paid', type: 'Team', count: 13 },
+    ],
+  },
+];
+
+function DataTableColumnDefExample() {
+  return (
+    <DataTable<DocUser>
+      columns={[
+        { field: 'name', headerName: 'Full Name', description: 'User display name', flex: 1, renderCell: ({ value }) => <strong>{String(value)}</strong> },
+        { field: 'email', headerName: 'Email', size: 220, filterOperators: ['contains', 'equals'] },
+        { field: 'role', headerName: 'Role', size: 110, align: 'center' },
+        { field: 'revenue', headerName: 'Revenue', type: 'number', size: 130, renderCell: ({ value }) => `$${Number(value).toLocaleString()}` },
+        { field: 'score', headerName: 'Score', type: 'number', size: 100, description: 'Performance score (0–100)' },
+        { field: 'joined', headerName: 'Joined', type: 'date', size: 120 },
+      ] satisfies DataTableColumnDef<DocUser>[]}
+      data={docUsers}
+      enableSorting
+      enableGlobalSearch
+      className="w-full max-w-4xl"
+    />
+  );
+}
+
+function DataTableTreeDataExample() {
+  return (
+    <DataTable<DocCategory>
+      columns={[
+        { field: 'name', headerName: 'Name', flex: 1 },
+        { field: 'type', headerName: 'Type', size: 120, align: 'center' },
+        { field: 'count', headerName: 'Members', type: 'number', size: 110, description: 'Total headcount' },
+      ]}
+      data={docCategoryTree}
+      treeData
+      getSubRows={(row) => row.children}
+      getRowId={(row) => row.id}
+      className="w-full max-w-2xl"
+    />
+  );
+}
+
+function DataTableSlotsExample() {
+  const slots: DataTableSlots<DocUser> = {
+    NoRowsOverlay: () => (
+      <div className="flex flex-col items-center gap-2 py-10 text-center">
+        <p className="text-muted-foreground text-sm font-medium">No users yet. Create the first one.</p>
+      </div>
+    ),
+    NoResultsOverlay: () => (
+      <div className="flex flex-col items-center gap-2 py-10 text-center">
+        <p className="text-muted-foreground text-sm font-medium">No users match your search or filters.</p>
+      </div>
+    ),
+  };
+  return (
+    <div className="grid w-full max-w-3xl gap-4">
+      <DataTable columns={docColumns} data={[]} enableGlobalSearch slots={slots} className="w-full" />
+    </div>
+  );
+}
+
+function DataTableConditionalFormattingExample() {
+  const [rules, setRules] = React.useState<DataTableConditionalRule[]>([
+    {
+      id: 'high-score',
+      columnId: 'score',
+      operator: 'gte',
+      value: '80',
+      backgroundColor: '#dcfce7',
+      textColor: '#166534',
+    },
+    {
+      id: 'low-score',
+      columnId: 'score',
+      operator: 'lt',
+      value: '50',
+      backgroundColor: '#fee2e2',
+      textColor: '#991b1b',
+    },
+  ]);
+  return (
+    <DataTable<DocUser>
+      columns={[
+        { field: 'name', headerName: 'Name', size: 160 },
+        { field: 'role', headerName: 'Role', size: 120 },
+        { field: 'score', headerName: 'Score', type: 'number', size: 100 },
+        { field: 'revenue', headerName: 'Revenue', type: 'number', size: 120 },
+      ]}
+      data={docUsers}
+      enableConditionalFormatting
+      conditionalFormattingRules={rules}
+      onConditionalFormattingRulesChange={setRules}
+      className="w-full max-w-3xl"
+    />
+  );
+}
+
+function DataTableMobileCardExample() {
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        Resize the browser to below the <code>md</code> breakpoint to see the card view.
+      </p>
+      <DataTable
+        columns={docColumns}
+        data={docUsers.slice(0, 6)}
+        mobileBreakpoint="md"
+        className="w-full max-w-3xl"
+      />
+    </div>
+  );
+}
+
+function DataTableLiveDataExample() {
+  const [rows, setRows] = React.useState(docUsers.slice(0, 6));
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setRows((prev) =>
+        prev.map((r, i) => {
+          if (i % 3 !== Math.floor(Math.random() * 3)) return r;
+          return {
+            ...r,
+            score: Math.max(0, Math.min(100, r.score + Math.round((Math.random() - 0.5) * 20))),
+            revenue: r.revenue + Math.round((Math.random() - 0.5) * 200),
+          };
+        }),
+      );
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <DataTable
+      columns={docColumns}
+      data={rows}
+      enableLiveData
+      liveDataKey="id"
+      className="w-full max-w-3xl"
+    />
+  );
+}
+
+function DataTableAsyncDetailPanelExample() {
+  return (
+    <div className="grid w-full max-w-3xl gap-2">
+      <p className="text-muted-foreground text-xs">
+        Click ▶ to expand a row — panel loads async then caches.
+      </p>
+      <DataTable
+        columns={docColumns}
+        data={docUsers.slice(0, 6)}
+        getRowId={(row) => String(row.id)}
+        loadDetailPanel={async (row) => {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          return (
+            <div className="grid gap-1 p-3 text-sm">
+              <strong>{row.original.name}</strong>
+              <span className="text-muted-foreground">
+                {row.original.email} · {row.original.role} · Score: {row.original.score}
+              </span>
+            </div>
+          );
+        }}
+        detailPanelCacheSize={10}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+type PivotRow = {
+  id: number; region: string; product: string; category: string;
+  quarter: string; rep: string; sales: number; cost: number; units: number; margin: number;
+};
+const pivotData: PivotRow[] = [
+  { id: 1,  region: 'North', product: 'Widget A', category: 'Hardware', quarter: 'Q1', rep: 'Alice',   sales: 12400, cost: 7200,  units: 80,  margin: 42 },
+  { id: 2,  region: 'North', product: 'Widget B', category: 'Software', quarter: 'Q1', rep: 'Bob',     sales: 8800,  cost: 2900,  units: 55,  margin: 67 },
+  { id: 3,  region: 'North', product: 'Widget C', category: 'Services', quarter: 'Q1', rep: 'Carol',   sales: 6100,  cost: 4200,  units: 31,  margin: 31 },
+  { id: 4,  region: 'South', product: 'Widget A', category: 'Hardware', quarter: 'Q1', rep: 'Dave',    sales: 9500,  cost: 5600,  units: 63,  margin: 41 },
+  { id: 5,  region: 'South', product: 'Widget B', category: 'Software', quarter: 'Q1', rep: 'Eve',     sales: 11200, cost: 3700,  units: 70,  margin: 67 },
+  { id: 6,  region: 'East',  product: 'Widget A', category: 'Hardware', quarter: 'Q1', rep: 'Frank',   sales: 7800,  cost: 4500,  units: 52,  margin: 42 },
+  { id: 7,  region: 'East',  product: 'Widget C', category: 'Services', quarter: 'Q1', rep: 'Grace',   sales: 5200,  cost: 3600,  units: 26,  margin: 31 },
+  { id: 8,  region: 'West',  product: 'Widget B', category: 'Software', quarter: 'Q1', rep: 'Hank',    sales: 9900,  cost: 3200,  units: 62,  margin: 68 },
+  { id: 9,  region: 'West',  product: 'Widget A', category: 'Hardware', quarter: 'Q1', rep: 'Ivy',     sales: 14100, cost: 8200,  units: 94,  margin: 42 },
+  { id: 10, region: 'North', product: 'Widget B', category: 'Software', quarter: 'Q2', rep: 'Alice',   sales: 13000, cost: 4300,  units: 82,  margin: 67 },
+  { id: 11, region: 'North', product: 'Widget A', category: 'Hardware', quarter: 'Q2', rep: 'Bob',     sales: 15500, cost: 9100,  units: 103, margin: 41 },
+  { id: 12, region: 'South', product: 'Widget C', category: 'Services', quarter: 'Q2', rep: 'Carol',   sales: 7300,  cost: 5000,  units: 37,  margin: 32 },
+  { id: 13, region: 'South', product: 'Widget A', category: 'Hardware', quarter: 'Q2', rep: 'Dave',    sales: 10800, cost: 6300,  units: 72,  margin: 42 },
+  { id: 14, region: 'East',  product: 'Widget B', category: 'Software', quarter: 'Q2', rep: 'Eve',     sales: 6200,  cost: 2100,  units: 39,  margin: 66 },
+  { id: 15, region: 'East',  product: 'Widget A', category: 'Hardware', quarter: 'Q2', rep: 'Frank',   sales: 13500, cost: 7900,  units: 90,  margin: 41 },
+  { id: 16, region: 'West',  product: 'Widget C', category: 'Services', quarter: 'Q2', rep: 'Grace',   sales: 4900,  cost: 3400,  units: 25,  margin: 31 },
+  { id: 17, region: 'West',  product: 'Widget B', category: 'Software', quarter: 'Q2', rep: 'Hank',    sales: 8400,  cost: 2800,  units: 53,  margin: 67 },
+  { id: 18, region: 'North', product: 'Widget C', category: 'Services', quarter: 'Q3', rep: 'Ivy',     sales: 5800,  cost: 4000,  units: 29,  margin: 31 },
+  { id: 19, region: 'North', product: 'Widget A', category: 'Hardware', quarter: 'Q3', rep: 'Alice',   sales: 17200, cost: 10000, units: 114, margin: 42 },
+  { id: 20, region: 'South', product: 'Widget B', category: 'Software', quarter: 'Q3', rep: 'Bob',     sales: 12600, cost: 4100,  units: 79,  margin: 67 },
+  { id: 21, region: 'South', product: 'Widget A', category: 'Hardware', quarter: 'Q3', rep: 'Carol',   sales: 9100,  cost: 5300,  units: 61,  margin: 42 },
+  { id: 22, region: 'East',  product: 'Widget C', category: 'Services', quarter: 'Q3', rep: 'Dave',    sales: 6700,  cost: 4600,  units: 34,  margin: 31 },
+  { id: 23, region: 'East',  product: 'Widget B', category: 'Software', quarter: 'Q3', rep: 'Eve',     sales: 11400, cost: 3800,  units: 72,  margin: 67 },
+  { id: 24, region: 'West',  product: 'Widget A', category: 'Hardware', quarter: 'Q3', rep: 'Frank',   sales: 16100, cost: 9400,  units: 107, margin: 42 },
+  { id: 25, region: 'West',  product: 'Widget C', category: 'Services', quarter: 'Q3', rep: 'Grace',   sales: 5500,  cost: 3800,  units: 28,  margin: 31 },
+  { id: 26, region: 'North', product: 'Widget B', category: 'Software', quarter: 'Q4', rep: 'Hank',    sales: 14800, cost: 4900,  units: 93,  margin: 67 },
+  { id: 27, region: 'South', product: 'Widget C', category: 'Services', quarter: 'Q4', rep: 'Ivy',     sales: 8200,  cost: 5700,  units: 41,  margin: 30 },
+  { id: 28, region: 'East',  product: 'Widget A', category: 'Hardware', quarter: 'Q4', rep: 'Alice',   sales: 18500, cost: 10800, units: 123, margin: 42 },
+  { id: 29, region: 'West',  product: 'Widget B', category: 'Software', quarter: 'Q4', rep: 'Bob',     sales: 9700,  cost: 3200,  units: 61,  margin: 67 },
+  { id: 30, region: 'North', product: 'Widget A', category: 'Hardware', quarter: 'Q4', rep: 'Carol',   sales: 20100, cost: 11700, units: 134, margin: 42 },
+];
+
+function DataTablePivotExample() {
+  const [pivotConfig, setPivotConfig] = React.useState<DataTablePivotConfig | undefined>(undefined);
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        30 rows across 4 regions, 3 products, 3 categories and 4 quarters.{' '}
+        Click the <strong>Pivot</strong> button in the toolbar to open the configuration drawer and choose row group, pivot field, value field and aggregation.
+      </p>
+      <DataTable<PivotRow>
+        columns={[
+          { field: 'region',   headerName: 'Region',   size: 110 },
+          { field: 'product',  headerName: 'Product',  size: 110 },
+          { field: 'category', headerName: 'Category', size: 110 },
+          { field: 'quarter',  headerName: 'Quarter',  size: 90  },
+          { field: 'rep',      headerName: 'Rep',      size: 100 },
+          { field: 'sales',    headerName: 'Sales',    type: 'number', size: 100 },
+          { field: 'cost',     headerName: 'Cost',     type: 'number', size: 90  },
+          { field: 'units',    headerName: 'Units',    type: 'number', size: 80  },
+          { field: 'margin',   headerName: 'Margin %', type: 'number', size: 90  },
+        ]}
+        data={pivotData}
+        enablePivot
+        pivotConfig={pivotConfig}
+        onPivotConfigChange={setPivotConfig}
+        enableSorting
+        enablePagination
+        pageSize={15}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function DataTableStatePersistenceExample() {
+  return (
+    <div className="grid w-full max-w-3xl gap-2">
+      <p className="text-muted-foreground text-xs">
+        Sort, filter, resize, and paginate — then refresh the page. State is restored from{' '}
+        <code>localStorage</code> automatically.
+      </p>
+      <DataTable
+        columns={docColumns}
+        data={docUsers}
+        stateKey="docs-users-demo"
+        enableSorting
+        enableGlobalSearch
+        enablePagination
+        enableColumnResizing
+        pageSize={5}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+// ── Consolidated merged examples ──────────────────────────────────────────
+
+function DataTableColumnManagementExample() {
+  const [locked, setLocked] = React.useState<string[]>(['name']);
+  return (
+    <div className="grid w-full gap-3">
+      <p className="text-muted-foreground text-xs">
+        <strong>Resize:</strong> drag the ▕ handle at column edges. <strong>Double-click</strong> a handle to auto-fit.{' '}
+        <strong>Reorder:</strong> drag column headers. <strong>Pin:</strong> open column ⋮ menu → Pin left / right.{' '}
+        <strong>Lock:</strong> locked columns (currently: Name) can't be resized, reordered, or hidden.
+      </p>
+      <DataTable<DocUser>
+        columns={docColumns}
+        data={docUsers.slice(0, 8)}
+        enableSorting
+        enableColumnResizing
+        enableColumnAutoSize
+        enableColumnReordering
+        enableColumnPinning
+        enableColumnConfiguration
+        lockedColumns={locked}
+        onLockedColumnsChange={setLocked}
+        className="w-full"
+      />
+      <p className="text-muted-foreground mt-2 text-xs font-medium">Column groups — nested columns under a shared header:</p>
+      <DataTable<DocUser>
+        columns={[
+          {
+            headerName: 'Identity',
+            columns: [
+              { field: 'name', headerName: 'Name', size: 150 },
+              { field: 'role', headerName: 'Role', size: 110 },
+            ],
+          },
+          {
+            headerName: 'Performance',
+            columns: [
+              { field: 'score', headerName: 'Score', type: 'number', size: 100 },
+              { field: 'revenue', headerName: 'Revenue', type: 'number', size: 130 },
+            ],
+          },
+          { field: 'joined', headerName: 'Joined', type: 'date', size: 120 },
+        ]}
+        data={docUsers.slice(0, 6)}
+        enableSorting
+        enableColumnResizing
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function DataTableRowManagementExample() {
+  const [rows, setRows] = React.useState<DocUser[]>(docUsers.slice(0, 8));
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        <strong>Reorder rows:</strong> drag the ⠿ grip on the left. <strong>Pin rows:</strong> open the row grip menu → Pin top / bottom.{' '}
+        <strong>Copy:</strong> use row ⋮ menu to copy a single row, or column ⋮ menu to copy all column values.
+      </p>
+      <DataTable<DocUser>
+        columns={docColumns}
+        data={rows}
+        enableRowReordering
+        enableRowPinning
+        enableRowCopy
+        enableColumnCopy
+        onRowOrderChange={(newRows) => setRows(newRows as DocUser[])}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function DataTableRowActionsExample() {
+  const [loadingIds, setLoadingIds] = React.useState<string[]>([]);
+  const [rows, setRows] = React.useState<DocUser[]>(docUsers.slice(0, 8));
+  const rowActionMenu: DataTableRowActionItem<DocUser>[] = [
+    { id: 'edit', label: 'Edit', onClick: () => {} },
+    { id: 'sep', separator: true, label: '', onClick: () => {} },
+    {
+      id: 'delete',
+      label: 'Delete',
+      variant: 'destructive',
+      onClick: (row) => setRows((prev) => prev.filter((r) => r.id !== row.original.id)),
+    },
+  ];
+  const rowActionButtons: DataTableRowActionItem<DocUser>[] = [
+    {
+      id: 'save',
+      label: 'Save',
+      onClick: (row) => {
+        const id = String(row.original.id);
+        setLoadingIds((p) => [...p, id]);
+        setTimeout(() => setLoadingIds((p) => p.filter((x) => x !== id)), 1500);
+      },
+    },
+  ];
+  const bulkActions: DataTableBulkAction<DocUser>[] = [
+    {
+      id: 'delete-selected',
+      label: 'Delete selected',
+      variant: 'destructive',
+      onClick: (selectedRows, table) => {
+        const ids = new Set(selectedRows.map((r) => r.original.id));
+        setRows((prev) => prev.filter((r) => !ids.has(r.id)));
+        table.resetRowSelection();
+      },
+    },
+  ];
+  const [ctxMsg, setCtxMsg] = React.useState<string | null>(null);
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        <strong>⋮ menu:</strong> per-row dropdown with Edit and Delete. <strong>Save button:</strong> inline button that triggers a 1.5 s loading state on that row.{' '}
+        <strong>Bulk:</strong> select rows to show the bulk-action bar.{' '}
+        <strong>Right-click</strong> any row or cell for a context menu.
+        {ctxMsg && <span className="ml-2 text-primary">{ctxMsg}</span>}
+      </p>
+      <DataTable<DocUser>
+        columns={docColumns}
+        data={rows}
+        getRowId={(row) => String(row.id)}
+        enableRowSelection
+        rowActionMenu={rowActionMenu}
+        rowActionButtons={rowActionButtons}
+        bulkActions={bulkActions}
+        loadingRowIds={loadingIds}
+        onRowContextMenu={(row) => setCtxMsg(`Row context: ${row.original.name}`)}
+        onCellContextMenu={(cell, row) => setCtxMsg(`Cell context: ${cell.column.id} = ${String(cell.getValue())} (${row.original.name})`)}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function DataTableToolbarFeaturesExample() {
+  const [density, setDensity] = React.useState<'compact' | 'standard' | 'comfortable'>('standard');
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        Density toggle · Export dropdown (CSV / JSON / XLSX) · Fullscreen · Print · Refresh — all in the toolbar. Status bar is pinned below.
+      </p>
+      <DataTable<DocUser>
+        columns={docColumns}
+        data={docUsers}
+        enableSorting
+        enableRowSelection
+        enableDensityToggle
+        density={density}
+        onDensityChange={setDensity}
+        enableExport
+        enableFullscreen
+        enableStatusBar
+        onRefresh={() => {}}
+        onPrint={() => {}}
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function DataTableRowAppearanceExample() {
+  return (
+    <DataTable<DocUser>
+      columns={docColumns}
+      data={docUsers.slice(0, 10)}
+      striped
+      enableRowNumbers
+      enableCellTooltip
+      getRowStatus={(row) => {
+        if (row.original.role === 'Admin' && row.original.active) return 'success';
+        if (!row.original.active) return 'error';
+        if (row.original.role === 'Editor') return 'warning';
+        return undefined;
+      }}
+      rowHeight={(_row, i) => (i % 2 === 0 ? 36 : 52)}
+      getCellClassName={(cell) => {
+        if (cell.column.id === 'score') {
+          const v = Number(cell.getValue());
+          if (v >= 80) return 'text-green-600 font-semibold';
+          if (v < 50) return 'text-red-500';
+        }
+        return undefined;
+      }}
+      className="w-full max-w-3xl"
+    />
+  );
+}
+
+function DataTableSortingFilteringExample() {
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        <strong>Multi-sort:</strong> hold Shift and click column headers — numbered badges show sort priority.{' '}
+        <strong>Quick filters:</strong> type in the input below each header.{' '}
+        <strong>Filter chips:</strong> active filters appear as removable chips.
+      </p>
+      <DataTable<DocUser>
+        columns={docColumns}
+        data={docUsers}
+        enableSorting
+        enableFiltering
+        enableFilterChips
+        quickFilterColumns={['name', 'role']}
+        className="w-full max-w-3xl"
+      />
+    </div>
+  );
+}
+
+function DataTablePaginationStatusExample() {
+  return (
+    <DataTable<DocUser>
+      columns={docColumns}
+      data={docUsers}
+      enableSorting
+      enableRowSelection
+      enablePagination
+      pageSize={5}
+      pageSizeOptions={[5, 10, 25]}
+      showTotalRows
+      enableStatusBar
+      className="w-full max-w-3xl"
+    />
+  );
+}
+
+function DataTableInlineEditingAllExample() {
+  const [rows, setRows] = React.useState<DocUser[]>(docUsers.slice(0, 8).map((r) => ({ ...r })));
+  const [dirtyRows, setDirtyRows] = React.useState<Set<string>>(new Set());
+  const editableColumns = [
+    {
+      field: 'name',
+      headerName: 'Name',
+      size: 160,
+      editable: true,
+      valueSetter: (row: DocUser, value: unknown) => {
+        setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, name: String(value) } : r)));
+      },
+    },
+    {
+      field: 'score',
+      headerName: 'Score',
+      type: 'number' as const,
+      size: 100,
+      editable: true,
+      displayValidate: (value: unknown) => {
+        const n = Number(value);
+        if (isNaN(n) || n < 0 || n > 100) return 'Score must be 0–100';
+        return undefined;
+      },
+      valueSetter: (row: DocUser, value: unknown) => {
+        setRows((prev) => prev.map((r) => (r.id === row.id ? { ...r, score: Number(value) } : r)));
+      },
+    },
+    { field: 'role', headerName: 'Role', size: 110 },
+    { field: 'revenue', headerName: 'Revenue', type: 'number' as const, size: 130 },
+  ];
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        <strong>Double-click</strong> Name or Score to edit inline. <strong>Ctrl+Z / Ctrl+Y</strong> to undo/redo.{' '}
+        Score must be 0–100 (red outline + tooltip on invalid). Dirty rows are tracked.{' '}
+        {dirtyRows.size > 0 && <span className="text-orange-500">{dirtyRows.size} unsaved row(s).</span>}
+      </p>
+      <DataTable<DocUser>
+        columns={editableColumns}
+        data={rows}
+        getRowId={(row) => String(row.id)}
+        editMode="dblclick"
+        enableUndoRedo
+        enableValidation
+        enablePaste
+        dirtyRows={dirtyRows}
+        onDirtyRowsChange={setDirtyRows}
+        className="w-full max-w-3xl"
+      />
+    </div>
+  );
+}
+
+function DataTableClipboardSelectionExample() {
+  const [selection, setSelection] = React.useState<DataTableCellSelection | null>(null);
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        <strong>Ctrl+C</strong> copies selected rows as TSV (paste into Excel / Sheets).{' '}
+        <strong>Click-drag</strong> or <strong>Shift+click</strong> to select a cell range.
+        {selection && (
+          <span className="ml-2 font-mono">
+            Selected: rows {selection.startRowIndex}–{selection.endRowIndex}, cols {selection.startColIndex}–{selection.endColIndex}
+          </span>
+        )}
+      </p>
+      <DataTable<DocUser>
+        columns={docColumns}
+        data={docUsers.slice(0, 8)}
+        enableRowSelection
+        enableCopyPaste
+        enableCellSelection
+        onCellSelectionChange={setSelection}
+        className="w-full max-w-3xl"
+      />
+    </div>
+  );
+}
+
+type CellRendererRow = { id: number; status: string; revenue: number; score: number; rating: number; joined: Date; name: string };
+const _crNames = ['Alice', 'Bob', 'Carol', 'Dave', 'Eve', 'Frank', 'Grace', 'Heidi'];
+const _crStatuses = ['success', 'warning', 'error', 'info', 'success', 'warning', 'error', 'info'];
+const cellRendererRows: CellRendererRow[] = Array.from({ length: 8 }, (_, i) => ({
+  id: i + 1,
+  name: _crNames[i] ?? `User ${i + 1}`,
+  status: _crStatuses[i] ?? 'info',
+  revenue: 1200 + i * 340,
+  score: 20 + i * 10,
+  rating: (i % 5) + 1,
+  joined: new Date(2022, i % 12, (i * 3) + 1),
+}));
+
+function DataTableCellRenderersExample() {
+  return (
+    <DataTable<CellRendererRow>
+      columns={[
+        { field: 'name', headerName: 'Name', size: 110 },
+        {
+          field: 'status',
+          headerName: 'Status',
+          type: 'badge',
+          size: 100,
+          badgeMap: {
+            success: { label: 'Active', color: '#dcfce7', textColor: '#166534' },
+            warning: { label: 'Paused', color: '#fef9c3', textColor: '#854d0e' },
+            error: { label: 'Blocked', color: '#fee2e2', textColor: '#991b1b' },
+            info: { label: 'Invited', color: '#dbeafe', textColor: '#1e40af' },
+          },
+        },
+        { field: 'revenue', headerName: 'Revenue', type: 'currency', currencyCode: 'USD', size: 120 },
+        { field: 'score', headerName: 'Score', type: 'progress', progressMax: 100, size: 130 },
+        { field: 'rating', headerName: 'Rating', type: 'rating', ratingMax: 5, size: 120 },
+        {
+          field: 'joined',
+          headerName: 'Joined',
+          type: 'date',
+          size: 130,
+          dateFormat: { dateStyle: 'long' },
+          locale: 'en-US',
+        },
+      ]}
+      data={cellRendererRows}
+      className="w-full max-w-3xl"
+    />
+  );
+}
+
+function DataTableAnalyticsFeaturesExample() {
+  const [savedViews, setSavedViews] = React.useState<DataTableSavedView[]>([
+    {
+      id: 'high-scores',
+      name: 'High scores',
+      createdAt: new Date().toISOString(),
+      state: { sorting: [{ id: 'score', desc: true }] },
+    },
+  ]);
+  return (
+    <div className="grid w-full gap-2">
+      <p className="text-muted-foreground text-xs">
+        <strong>Tool panel:</strong> open the ▶ button on the right to access Columns, Filters, and Stats tabs.{' '}
+        <strong>Saved views:</strong> toolbar button to save and restore named table states.{' '}
+        <strong>Header stats:</strong> sum/avg/count row pinned below column headers.
+      </p>
+      <DataTable<DocUser>
+        columns={docColumns}
+        data={docUsers}
+        enableSorting
+        enableFiltering
+        enableRowSelection
+        enableToolPanel
+        enableHeaderStats
+        headerStatsConfig={{ score: 'avg', revenue: 'sum', name: 'count' }}
+        enableSavedViews
+        savedViews={savedViews}
+        onSavedViewsChange={setSavedViews}
+        className="w-full"
+      />
+    </div>
+  );
+}
 
 const productOptions = [
   'Analytics dashboard',
@@ -163,11 +981,13 @@ function ExampleShell({
   className?: string;
 }) {
   return (
-    <div className={`grid w-full max-w-xl gap-3 rounded-lg border border-border bg-card p-4 ${className}`}>
+    <div
+      className={`border-border bg-card grid w-full max-w-xl gap-3 rounded-lg border p-4 ${className}`}
+    >
       <div className="flex items-center justify-between gap-3">
         <div>
           <div className="text-sm font-semibold">{title}</div>
-          <div className="text-xs text-muted-foreground">Realistic app composition</div>
+          <div className="text-muted-foreground text-xs">Realistic app composition</div>
         </div>
         <Badge variant="secondary">Example</Badge>
       </div>
@@ -207,16 +1027,13 @@ function MentionsPeopleExample() {
       className="w-full max-w-md"
       defaultValue="Please review this with @ada and @grace before release."
     >
-      <Mentions.Textarea
-        placeholder="Write an update..."
-        rows={4}
-      />
+      <Mentions.Textarea placeholder="Write an update..." rows={4} />
       <Mentions.Suggestions items={people.map((person) => ({ id: person.id, label: person.name }))}>
-        <div className="rounded-md border border-border bg-popover p-1 shadow-md">
+        <div className="border-border bg-popover rounded-md border p-1 shadow-md">
           <Mentions.Items>
             {(item, index) => (
               <Mentions.Item key={item.id} suggestion={item} index={index}>
-                <div className="rounded px-2 py-1 text-sm hover:bg-accent">@{item.label}</div>
+                <div className="hover:bg-accent rounded px-2 py-1 text-sm">@{item.label}</div>
               </Mentions.Item>
             )}
           </Mentions.Items>
@@ -322,7 +1139,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   button: [
     {
       title: 'Variants and sizes',
-      description: 'Preview the common visual variants, icon affordance and disabled state together.',
+      description:
+        'Preview the common visual variants, icon affordance and disabled state together.',
       preview: () => (
         <div className="flex flex-wrap items-center gap-2">
           <Button size="sm">Small</Button>
@@ -350,7 +1168,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   dialog: [
     {
       title: 'Form dialog',
-      description: 'Use Dialog for edit flows that need focus trapping, labeled content and actions.',
+      description:
+        'Use Dialog for edit flows that need focus trapping, labeled content and actions.',
       preview: () => (
         <Dialog.Root>
           <Dialog.Trigger asChild>
@@ -453,7 +1272,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
             <div className="grid gap-3">
               <div>
                 <div className="text-sm font-medium">Notifications</div>
-                <div className="text-xs text-muted-foreground">Control product updates.</div>
+                <div className="text-muted-foreground text-xs">Control product updates.</div>
               </div>
               <label className="flex items-center justify-between gap-3 text-sm">
                 Email summaries
@@ -479,7 +1298,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   tooltip: [
     {
       title: 'Icon toolbar labels',
-      description: 'Wrap icon-only controls with Tooltip so the command has an accessible visible hint.',
+      description:
+        'Wrap icon-only controls with Tooltip so the command has an accessible visible hint.',
       preview: () => (
         <Tooltip.Provider>
           <div className="flex gap-2">
@@ -516,7 +1336,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   select: [
     {
       title: 'Searchable large options',
-      description: 'Use searchable with the virtualized options prop to keep large lists responsive.',
+      description:
+        'Use searchable with the virtualized options prop to keep large lists responsive.',
       preview: () => (
         <Select.Root searchable defaultValue="workspace-12">
           <Select.Trigger className="w-72" aria-label="Select workspace">
@@ -536,7 +1357,11 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Creation flow',
       description: 'Pass onCreateOption to let users create a value when search has no match.',
       preview: () => (
-        <Select.Root searchable onCreateOption={() => {}} createOptionLabel={(value) => `Create ${value}`}>
+        <Select.Root
+          searchable
+          onCreateOption={() => {}}
+          createOptionLabel={(value) => `Create ${value}`}
+        >
           <Select.Trigger className="w-72" aria-label="Choose or create product">
             <Select.Value placeholder="Choose or create" />
           </Select.Trigger>
@@ -558,9 +1383,16 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Selected chips and overflow',
       description: 'Selected values render in the trigger and can collapse into an overflow count.',
       preview: () => (
-        <MultiSelect.Root searchable defaultValue={['workspace-2', 'workspace-8', 'workspace-13', 'workspace-21']}>
+        <MultiSelect.Root
+          searchable
+          defaultValue={['workspace-2', 'workspace-8', 'workspace-13', 'workspace-21']}
+        >
           <MultiSelect.Trigger className="w-80" aria-label="Select workspaces">
-            <MultiSelect.Value options={largeOptions} maxVisible={3} placeholder="Select workspaces" />
+            <MultiSelect.Value
+              options={largeOptions}
+              maxVisible={3}
+              placeholder="Select workspaces"
+            />
           </MultiSelect.Trigger>
           <MultiSelect.Content options={largeOptions} optionHeight={36} optionOverscan={8} />
         </MultiSelect.Root>
@@ -612,7 +1444,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           <label className="flex items-center gap-2 text-sm">
             <Checkbox defaultChecked="indeterminate" /> Some rows selected
           </label>
-          <label className="flex items-center gap-2 text-sm text-muted-foreground">
+          <label className="text-muted-foreground flex items-center gap-2 text-sm">
             <Checkbox disabled /> Disabled option
           </label>
         </div>
@@ -626,17 +1458,36 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   accordion: [
     {
       title: 'Multiple open panels',
-      description: 'Use type="multiple" for FAQ and settings pages where several sections can stay open.',
+      description:
+        'Use type="multiple" for FAQ and settings pages where several sections can stay open.',
       preview: () => (
-        <Accordion.Root type="multiple" defaultValue={['billing', 'security']} className="w-full max-w-md">
+        <Accordion.Root
+          type="multiple"
+          defaultValue={['billing', 'security']}
+          className="w-full max-w-md"
+        >
           {[
-            { value: 'billing', title: 'Billing', content: 'Invoices, payment methods and tax details.' },
-            { value: 'security', title: 'Security', content: 'Two-factor authentication and audit logs.' },
-            { value: 'members', title: 'Members', content: 'Seats, roles and invitation settings.' },
+            {
+              value: 'billing',
+              title: 'Billing',
+              content: 'Invoices, payment methods and tax details.',
+            },
+            {
+              value: 'security',
+              title: 'Security',
+              content: 'Two-factor authentication and audit logs.',
+            },
+            {
+              value: 'members',
+              title: 'Members',
+              content: 'Seats, roles and invitation settings.',
+            },
           ].map((item) => (
             <Accordion.Item key={item.value} value={item.value}>
               <Accordion.Trigger>{item.title}</Accordion.Trigger>
-              <Accordion.Content className="text-sm text-muted-foreground">{item.content}</Accordion.Content>
+              <Accordion.Content className="text-muted-foreground text-sm">
+                {item.content}
+              </Accordion.Content>
             </Accordion.Item>
           ))}
         </Accordion.Root>
@@ -664,10 +1515,10 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
             <Input aria-label="Profile name" defaultValue="Ada Lovelace" />
             <Input aria-label="Profile email" defaultValue="ada@aura.dev" />
           </Tabs.Content>
-          <Tabs.Content value="security" className="text-sm text-muted-foreground">
+          <Tabs.Content value="security" className="text-muted-foreground text-sm">
             Two-factor authentication is enabled.
           </Tabs.Content>
-          <Tabs.Content value="billing" className="text-sm text-muted-foreground">
+          <Tabs.Content value="billing" className="text-muted-foreground text-sm">
             Team plan renews on June 1.
           </Tabs.Content>
         </Tabs.Root>
@@ -709,7 +1560,10 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           {people.slice(0, 5).map((person, index) => (
             <Avatar.Root key={person.id} className="-ml-1 first:ml-0">
               {index % 2 === 0 ? (
-                <Avatar.Image src={`https://i.pravatar.cc/96?img=${index + 12}`} alt={person.name} />
+                <Avatar.Image
+                  src={`https://i.pravatar.cc/96?img=${index + 12}`}
+                  alt={person.name}
+                />
               ) : null}
               <Avatar.Fallback delayMs={index === 1 ? 300 : 0}>{person.initials}</Avatar.Fallback>
             </Avatar.Root>
@@ -725,7 +1579,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   badge: [
     {
       title: 'Status variants',
-      description: 'Badges cover neutral labels, success, warning, destructive and outline statuses.',
+      description:
+        'Badges cover neutral labels, success, warning, destructive and outline statuses.',
       preview: () => (
         <div className="flex flex-wrap gap-2">
           <Badge>Default</Badge>
@@ -745,7 +1600,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   card: [
     {
       title: 'Product card',
-      description: 'Compose header, description, content and footer for a complete application card.',
+      description:
+        'Compose header, description, content and footer for a complete application card.',
       preview: () => (
         <Card.Root className="w-full max-w-sm">
           <Card.Header>
@@ -754,14 +1610,16 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           </Card.Header>
           <Card.Content className="grid gap-3">
             <Progress value={72} aria-label="Plan usage" />
-            <div className="grid grid-cols-3 gap-2 text-center text-xs text-muted-foreground">
+            <div className="text-muted-foreground grid grid-cols-3 gap-2 text-center text-xs">
               <span>32 seats</span>
               <span>18 projects</span>
               <span>94% SLA</span>
             </div>
           </Card.Content>
           <Card.Footer className="justify-end gap-2">
-            <Button variant="outline" size="sm">Details</Button>
+            <Button variant="outline" size="sm">
+              Details
+            </Button>
             <Button size="sm">Upgrade</Button>
           </Card.Footer>
         </Card.Root>
@@ -783,15 +1641,21 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       preview: () => (
         <div className="grid w-full max-w-lg gap-3">
           <Alert.Root variant="success">
-            <Alert.Title role="heading" aria-level={4}>Deployment complete</Alert.Title>
+            <Alert.Title role="heading" aria-level={4}>
+              Deployment complete
+            </Alert.Title>
             <Alert.Description>Production updated without errors.</Alert.Description>
           </Alert.Root>
           <Alert.Root variant="warning">
-            <Alert.Title role="heading" aria-level={4}>Review required</Alert.Title>
+            <Alert.Title role="heading" aria-level={4}>
+              Review required
+            </Alert.Title>
             <Alert.Description>Two checks need manual approval.</Alert.Description>
           </Alert.Root>
           <Alert.Root variant="destructive">
-            <Alert.Title role="heading" aria-level={4}>Payment failed</Alert.Title>
+            <Alert.Title role="heading" aria-level={4}>
+              Payment failed
+            </Alert.Title>
             <Alert.Description>Update billing to avoid workspace suspension.</Alert.Description>
           </Alert.Root>
         </div>
@@ -823,7 +1687,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   progress: [
     {
       title: 'Determinate and indeterminate',
-      description: 'Use value for known progress, or null for pending work without a measured value.',
+      description:
+        'Use value for known progress, or null for pending work without a measured value.',
       preview: () => (
         <div className="grid w-full max-w-md gap-4">
           <Progress value={32} aria-label="Import progress" />
@@ -843,7 +1708,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   toast: [
     {
       title: 'Toast variants and actions',
-      description: 'Toast supports variants, action buttons, close buttons and persistent viewports.',
+      description:
+        'Toast supports variants, action buttons, close buttons and persistent viewports.',
       preview: () => <ToastVariantsExample />,
       code: `<Toast.Provider>
   <Toast.Root open variant="success">
@@ -885,7 +1751,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   spinner: [
     {
       title: 'Sizes and labels',
-      description: 'Use different sizes and labels for button, inline and page-level loading states.',
+      description:
+        'Use different sizes and labels for button, inline and page-level loading states.',
       preview: () => (
         <div className="flex items-center gap-4">
           <Spinner size="sm" label="Loading small action" />
@@ -903,7 +1770,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   separator: [
     {
       title: 'Horizontal and vertical',
-      description: 'Use decorative separators for layout rhythm or semantic separators for regions.',
+      description:
+        'Use decorative separators for layout rhythm or semantic separators for regions.',
       preview: () => (
         <div className="grid gap-4 text-sm">
           <div>
@@ -952,7 +1820,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   textarea: [
     {
       title: 'Textarea states',
-      description: 'Textarea keeps native behavior while matching input focus, invalid and disabled styling.',
+      description:
+        'Textarea keeps native behavior while matching input focus, invalid and disabled styling.',
       preview: () => (
         <div className="grid w-full max-w-md gap-3">
           <Textarea
@@ -991,7 +1860,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'toggle-group': [
     {
       title: 'Single and multiple groups',
-      description: 'Use type="single" for mutually exclusive choices and type="multiple" for toolbars.',
+      description:
+        'Use type="single" for mutually exclusive choices and type="multiple" for toolbars.',
       preview: () => (
         <div className="grid gap-4">
           <ToggleGroup.Root type="single" defaultValue="left" aria-label="Text alignment">
@@ -1028,9 +1898,16 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           {[
             { value: 'starter', title: 'Starter', description: 'For personal projects.' },
             { value: 'team', title: 'Team', description: 'Shared workspaces and reviews.' },
-            { value: 'enterprise', title: 'Enterprise', description: 'Advanced controls and support.' },
+            {
+              value: 'enterprise',
+              title: 'Enterprise',
+              description: 'Advanced controls and support.',
+            },
           ].map((item) => (
-            <label key={item.value} className="flex items-start gap-3 rounded-md border border-border p-3 text-sm">
+            <label
+              key={item.value}
+              className="border-border flex items-start gap-3 rounded-md border p-3 text-sm"
+            >
               <RadioGroup.Item value={item.value} className="mt-0.5" />
               <span>
                 <span className="block font-medium">{item.title}</span>
@@ -1053,7 +1930,10 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Validation states',
       description: 'Form coordinates labels, controls and native ValidityState messages.',
       preview: () => (
-        <Form.Root className="grid w-full max-w-sm gap-3" onSubmit={(event) => event.preventDefault()}>
+        <Form.Root
+          className="grid w-full max-w-sm gap-3"
+          onSubmit={(event) => event.preventDefault()}
+        >
           <Form.Field name="email" className="grid gap-1.5">
             <Form.Label asChild>
               <Label>Email</Label>
@@ -1061,10 +1941,10 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
             <Form.Control asChild>
               <Input type="email" required placeholder="you@example.com" />
             </Form.Control>
-            <Form.Message match="valueMissing" className="text-xs text-destructive">
+            <Form.Message match="valueMissing" className="text-destructive text-xs">
               Email is required.
             </Form.Message>
-            <Form.Message match="typeMismatch" className="text-xs text-destructive">
+            <Form.Message match="typeMismatch" className="text-destructive text-xs">
               Use a valid email address.
             </Form.Message>
           </Form.Field>
@@ -1086,17 +1966,21 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'aspect-ratio': [
     {
       title: 'Media cards',
-      description: 'AspectRatio keeps image, video and preview tiles stable across responsive widths.',
+      description:
+        'AspectRatio keeps image, video and preview tiles stable across responsive widths.',
       preview: () => (
         <div className="grid w-full max-w-md gap-3">
-          <AspectRatio ratio={16 / 9} className="overflow-hidden rounded-lg border border-border">
+          <AspectRatio ratio={16 / 9} className="border-border overflow-hidden rounded-lg border">
             <img
               src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&h=450&fit=crop"
               alt="Workspace desk"
               className="h-full w-full object-cover"
             />
           </AspectRatio>
-          <AspectRatio ratio={4 / 3} className="grid place-items-center rounded-lg bg-muted text-sm">
+          <AspectRatio
+            ratio={4 / 3}
+            className="bg-muted grid place-items-center rounded-lg text-sm"
+          >
             4:3 preview area
           </AspectRatio>
         </div>
@@ -1146,7 +2030,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       description: 'CopyButton can be used beside code, API keys and generated theme values.',
       preview: () => (
         <div className="grid gap-3">
-          <div className="flex items-center gap-2 rounded-md border border-border bg-muted/40 p-2">
+          <div className="border-border bg-muted/40 flex items-center gap-2 rounded-md border p-2">
             <code className="text-sm">pnpm add @aura-ui/styled</code>
             <CopyButton
               value="pnpm add @aura-ui/styled"
@@ -1166,7 +2050,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   collapsible: [
     {
       title: 'Release notes disclosure',
-      description: 'Use Collapsible for compact optional content with controlled or uncontrolled state.',
+      description:
+        'Use Collapsible for compact optional content with controlled or uncontrolled state.',
       preview: () => (
         <Collapsible.Root defaultOpen className="w-full max-w-md">
           <Collapsible.Trigger asChild>
@@ -1175,7 +2060,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
               <Plus className="h-4 w-4" />
             </Button>
           </Collapsible.Trigger>
-          <Collapsible.Content className="mt-2 rounded-md border border-border p-4 text-sm text-muted-foreground">
+          <Collapsible.Content className="border-border text-muted-foreground mt-2 rounded-md border p-4 text-sm">
             Added searchable selects, multi-select values, and expanded component examples.
           </Collapsible.Content>
         </Collapsible.Root>
@@ -1189,7 +2074,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   breadcrumb: [
     {
       title: 'Long path with ellipsis',
-      description: 'Breadcrumb supports links, separators, current page and compact overflow markers.',
+      description:
+        'Breadcrumb supports links, separators, current page and compact overflow markers.',
       preview: () => (
         <Breadcrumb.Root>
           <Breadcrumb.List>
@@ -1229,12 +2115,26 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       preview: () => (
         <Pagination.Root>
           <Pagination.Content>
-            <Pagination.Item><Pagination.Previous href="#" /></Pagination.Item>
-            <Pagination.Item><Pagination.Link href="#">1</Pagination.Link></Pagination.Item>
-            <Pagination.Item><Pagination.Ellipsis /></Pagination.Item>
-            <Pagination.Item><Pagination.Link href="#" isActive>8</Pagination.Link></Pagination.Item>
-            <Pagination.Item><Pagination.Link href="#">9</Pagination.Link></Pagination.Item>
-            <Pagination.Item><Pagination.Next href="#" /></Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Previous href="#" />
+            </Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Link href="#">1</Pagination.Link>
+            </Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Ellipsis />
+            </Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Link href="#" isActive>
+                8
+              </Pagination.Link>
+            </Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Link href="#">9</Pagination.Link>
+            </Pagination.Item>
+            <Pagination.Item>
+              <Pagination.Next href="#" />
+            </Pagination.Item>
           </Pagination.Content>
         </Pagination.Root>
       ),
@@ -1251,20 +2151,33 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   stepper: [
     {
       title: 'Labeled checkout flow',
-      description: 'Stepper supports active step state, titles, descriptions and vertical orientation.',
+      description:
+        'Stepper supports active step state, titles, descriptions and vertical orientation.',
       preview: () => (
         <div className="grid gap-6">
           <Stepper.Root activeStep={1} className="w-full max-w-md">
-            <Stepper.Step index={0}><Stepper.Title>Plan</Stepper.Title></Stepper.Step>
+            <Stepper.Step index={0}>
+              <Stepper.Title>Plan</Stepper.Title>
+            </Stepper.Step>
             <Stepper.Separator />
-            <Stepper.Step index={1}><Stepper.Title>Billing</Stepper.Title></Stepper.Step>
+            <Stepper.Step index={1}>
+              <Stepper.Title>Billing</Stepper.Title>
+            </Stepper.Step>
             <Stepper.Separator />
-            <Stepper.Step index={2}><Stepper.Title>Confirm</Stepper.Title></Stepper.Step>
+            <Stepper.Step index={2}>
+              <Stepper.Title>Confirm</Stepper.Title>
+            </Stepper.Step>
           </Stepper.Root>
           <Stepper.Root activeStep={2} orientation="vertical" className="max-w-sm">
-            <Stepper.Step index={0}><Stepper.Title>Created</Stepper.Title><Stepper.Description>Workspace is ready.</Stepper.Description></Stepper.Step>
+            <Stepper.Step index={0}>
+              <Stepper.Title>Created</Stepper.Title>
+              <Stepper.Description>Workspace is ready.</Stepper.Description>
+            </Stepper.Step>
             <Stepper.Separator />
-            <Stepper.Step index={1}><Stepper.Title>Reviewed</Stepper.Title><Stepper.Description>Checks passed.</Stepper.Description></Stepper.Step>
+            <Stepper.Step index={1}>
+              <Stepper.Title>Reviewed</Stepper.Title>
+              <Stepper.Description>Checks passed.</Stepper.Description>
+            </Stepper.Step>
           </Stepper.Root>
         </div>
       ),
@@ -1323,7 +2236,9 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           {(['right', 'left', 'top', 'bottom'] as const).map((side) => (
             <Sheet.Root key={side}>
               <Sheet.Trigger asChild>
-                <Button variant="outline" size="sm">{side}</Button>
+                <Button variant="outline" size="sm">
+                  {side}
+                </Button>
               </Sheet.Trigger>
               <Sheet.Content side={side}>
                 <Sheet.Header>
@@ -1382,16 +2297,23 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       preview: () => (
         <HoverCard.Root>
           <HoverCard.Trigger asChild>
-            <button type="button" className="font-medium text-primary underline-offset-4 hover:underline">
+            <button
+              type="button"
+              className="text-primary font-medium underline-offset-4 hover:underline"
+            >
               @ada
             </button>
           </HoverCard.Trigger>
           <HoverCard.Content className="w-72">
             <div className="flex gap-3">
-              <Avatar.Root><Avatar.Fallback>AL</Avatar.Fallback></Avatar.Root>
+              <Avatar.Root>
+                <Avatar.Fallback>AL</Avatar.Fallback>
+              </Avatar.Root>
               <div className="grid gap-1">
                 <div className="text-sm font-medium">Ada Lovelace</div>
-                <div className="text-xs text-muted-foreground">Admin, release owner and systems reviewer.</div>
+                <div className="text-muted-foreground text-xs">
+                  Admin, release owner and systems reviewer.
+                </div>
               </div>
             </div>
           </HoverCard.Content>
@@ -1409,10 +2331,11 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'context-menu': [
     {
       title: 'File context menu',
-      description: 'ContextMenu supports nested actions, checkboxes and radio groups from a right-click surface.',
+      description:
+        'ContextMenu supports nested actions, checkboxes and radio groups from a right-click surface.',
       preview: () => (
         <ContextMenu.Root>
-          <ContextMenu.Trigger className="flex h-32 w-72 items-center justify-center rounded-md border-2 border-dashed border-border text-sm text-muted-foreground">
+          <ContextMenu.Trigger className="border-border text-muted-foreground flex h-32 w-72 items-center justify-center rounded-md border-2 border-dashed text-sm">
             Right-click a file row
           </ContextMenu.Trigger>
           <ContextMenu.Content className="w-56">
@@ -1445,7 +2368,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   menubar: [
     {
       title: 'Application menubar',
-      description: 'Menubar supports multiple menus, submenus, shortcuts, checkbox and radio items.',
+      description:
+        'Menubar supports multiple menus, submenus, shortcuts, checkbox and radio items.',
       preview: () => (
         <Menubar.Root>
           <Menubar.Menu>
@@ -1480,7 +2404,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'navigation-menu': [
     {
       title: 'Documentation navigation',
-      description: 'NavigationMenu supports triggers, content panels, links, viewport and indicator slots.',
+      description:
+        'NavigationMenu supports triggers, content panels, links, viewport and indicator slots.',
       preview: () => (
         <NavigationMenu.Root>
           <NavigationMenu.List>
@@ -1489,7 +2414,11 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
               <NavigationMenu.Content>
                 <div className="grid w-80 grid-cols-2 gap-2 p-3">
                   {['Button', 'Select', 'Dialog', 'DataTable'].map((item) => (
-                    <NavigationMenu.Link key={item} href="#" className="rounded-md p-2 text-sm hover:bg-accent">
+                    <NavigationMenu.Link
+                      key={item}
+                      href="#"
+                      className="hover:bg-accent rounded-md p-2 text-sm"
+                    >
                       {item}
                     </NavigationMenu.Link>
                   ))}
@@ -1554,18 +2483,26 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Command palette with groups',
       description: 'Command combines search input, grouped actions, shortcuts and empty states.',
       preview: () => (
-        <Command.Root className="w-full max-w-md rounded-lg border border-border">
+        <Command.Root className="border-border w-full max-w-md rounded-lg border">
           <Command.Input placeholder="Type a command or search..." />
           <Command.List>
             <Command.Empty>No results found.</Command.Empty>
             <Command.Group heading="Navigation">
-              <Command.Item><Home className="h-4 w-4" /> Dashboard <Command.Shortcut>G D</Command.Shortcut></Command.Item>
-              <Command.Item><Users className="h-4 w-4" /> Members <Command.Shortcut>G M</Command.Shortcut></Command.Item>
+              <Command.Item>
+                <Home className="h-4 w-4" /> Dashboard <Command.Shortcut>G D</Command.Shortcut>
+              </Command.Item>
+              <Command.Item>
+                <Users className="h-4 w-4" /> Members <Command.Shortcut>G M</Command.Shortcut>
+              </Command.Item>
             </Command.Group>
             <Command.Separator />
             <Command.Group heading="Actions">
-              <Command.Item><Plus className="h-4 w-4" /> Create project</Command.Item>
-              <Command.Item><Settings className="h-4 w-4" /> Open settings</Command.Item>
+              <Command.Item>
+                <Plus className="h-4 w-4" /> Create project
+              </Command.Item>
+              <Command.Item>
+                <Settings className="h-4 w-4" /> Open settings
+              </Command.Item>
             </Command.Group>
           </Command.List>
         </Command.Root>
@@ -1625,7 +2562,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
             <PasswordToggleField.Input id="usage-password" placeholder="Enter password" />
             <PasswordToggleField.Toggle />
           </PasswordToggleField.Root>
-          <p className="text-xs text-muted-foreground">Use at least 12 characters.</p>
+          <p className="text-muted-foreground text-xs">Use at least 12 characters.</p>
         </div>
       ),
       code: `<Label htmlFor="password">Password</Label>
@@ -1646,7 +2583,11 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
             <NumberField.Input aria-label="Seats" />
             <NumberField.IncrementTrigger />
           </NumberField.Root>
-          <NumberField.Root defaultValue={1200} step={100} formatOptions={{ style: 'currency', currency: 'USD' }}>
+          <NumberField.Root
+            defaultValue={1200}
+            step={100}
+            formatOptions={{ style: 'currency', currency: 'USD' }}
+          >
             <NumberField.DecrementTrigger />
             <NumberField.Input aria-label="Budget" />
             <NumberField.IncrementTrigger />
@@ -1685,7 +2626,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'date-picker': [
     {
       title: 'MUI-style field',
-      description: 'Use the direct component API for label, value, onChange, validation bounds, view props and helper text.',
+      description:
+        'Use the direct component API for label, value, onChange, validation bounds, view props and helper text.',
       preview: () => (
         <DatePicker
           label="Release date"
@@ -1710,7 +2652,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
     },
     {
       title: 'Validation and loading',
-      description: 'Mirror MUI validation props such as disablePast, shouldDisableDate, loading and renderLoading.',
+      description:
+        'Mirror MUI validation props such as disablePast, shouldDisableDate, loading and renderLoading.',
       preview: () => (
         <div className="grid gap-3">
           <DatePicker
@@ -1788,9 +2731,27 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           calendars={1}
           defaultOpen
           shortcuts={[
-            { label: 'Yesterday', getValue: (today) => [new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1), new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1)] },
-            { label: 'Last 14 days', getValue: (today) => [new Date(today.getFullYear(), today.getMonth(), today.getDate() - 13), today] },
-            { label: 'Quarter to date', getValue: (today) => [new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1), today] },
+            {
+              label: 'Yesterday',
+              getValue: (today) => [
+                new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1),
+                new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1),
+              ],
+            },
+            {
+              label: 'Last 14 days',
+              getValue: (today) => [
+                new Date(today.getFullYear(), today.getMonth(), today.getDate() - 13),
+                today,
+              ],
+            },
+            {
+              label: 'Quarter to date',
+              getValue: (today) => [
+                new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1),
+                today,
+              ],
+            },
           ]}
           helperText="Shortcut selections call onChange and onAccept with source='shortcut'."
         />
@@ -1809,7 +2770,9 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Date range field',
       description: 'Use DateRangePicker for reporting windows, bookings and project timelines.',
       preview: () => (
-        <DateRangePicker.Root defaultValue={{ from: new Date(2026, 4, 20), to: new Date(2026, 4, 27) }}>
+        <DateRangePicker.Root
+          defaultValue={{ from: new Date(2026, 4, 20), to: new Date(2026, 4, 27) }}
+        >
           <DateRangePicker.Trigger className="w-72">
             <DateRangePicker.Value placeholder="Pick date range" />
           </DateRangePicker.Trigger>
@@ -1827,7 +2790,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'time-picker': [
     {
       title: 'MUI-style time field',
-      description: 'Use value/defaultValue, ampm, minutesStep, minTime, maxTime and shouldDisableTime.',
+      description:
+        'Use the 12-hour analog clock panel with AM/PM, minutesStep, minTime, maxTime and shouldDisableTime.',
       preview: () => (
         <div className="grid gap-3">
           <TimePicker
@@ -1837,14 +2801,15 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
             minutesStep={15}
             minTime={new Date(2026, 4, 23, 8, 0)}
             maxTime={new Date(2026, 4, 23, 18, 0)}
-            helperText="15-minute steps between 8:00 AM and 6:00 PM."
+            helperText="12-hour analog clock with 15-minute steps between 8:00 AM and 6:00 PM."
           />
           <TimePicker
             label="System time"
             defaultValue={new Date(2026, 4, 23, 14, 5, 45)}
             views={['hours', 'minutes', 'seconds']}
             timeSteps={{ hours: 1, minutes: 5, seconds: 15 }}
-            format="HH:mm:ss"
+            format="hh:mm:ss a"
+            helperText="Seconds use a separate 1-60 clock selector."
           />
         </div>
       ),
@@ -1889,7 +2854,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'date-time-picker': [
     {
       title: 'MUI-style date time field',
-      description: 'Combine DatePicker and TimePicker props in one popover.',
+      description: 'Pick the date first, then choose the time from the staged time picker.',
       preview: () => (
         <DateTimePicker
           label="Deployment window"
@@ -1898,7 +2863,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           maxDateTime={new Date(2026, 5, 30, 18, 0)}
           minutesStep={15}
           format="MM/dd/yyyy HH:mm"
-          helperText="Date and time validation share one value."
+          helperText="Date and time validation share one Date value."
         />
       ),
       code: `<DateTimePicker
@@ -1912,7 +2877,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
     },
     {
       title: 'AM/PM with seconds',
-      description: 'Enable ampm and seconds through timeSteps just like MUI time views.',
+      description: 'Enable AM/PM and seconds while keeping the date-first, time-second flow.',
       preview: () => (
         <DateTimePicker
           label="Audit timestamp"
@@ -1920,6 +2885,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           ampm
           timeSteps={{ hours: 1, minutes: 5, seconds: 15 }}
           format="MM/dd/yyyy hh:mm:ss a"
+          helperText="After selecting a date, the time picker shows hours, minutes and seconds."
         />
       ),
       code: `<DateTimePicker
@@ -1934,7 +2900,10 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Theme color editor',
       description: 'Compose area, hue, alpha and swatch controls for theme builder surfaces.',
       preview: () => (
-        <ColorPicker.Root defaultValue={{ h: 236, s: 72, v: 86, a: 0.85 }} className="w-72 rounded-lg border border-border bg-card p-3">
+        <ColorPicker.Root
+          defaultValue={{ h: 236, s: 72, v: 86, a: 0.85 }}
+          className="border-border bg-card w-72 rounded-lg border p-3"
+        >
           <ColorPicker.Area />
           <div className="mt-3 grid gap-3">
             <ColorPicker.HueSlider />
@@ -1959,10 +2928,16 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Upload constraints',
       description: 'FileUpload supports multiple files, accept filters, max size and max count.',
       preview: () => (
-        <FileUpload.Root multiple accept="image/*,.pdf" maxFiles={3} maxSize={1024 * 1024 * 5} className="w-full max-w-md">
+        <FileUpload.Root
+          multiple
+          accept="image/*,.pdf"
+          maxFiles={3}
+          maxSize={1024 * 1024 * 5}
+          className="w-full max-w-md"
+        >
           <FileUpload.Dropzone>
-            <FileText className="h-8 w-8 text-muted-foreground" />
-            <span className="text-sm text-muted-foreground">Upload PDFs or images up to 5 MB</span>
+            <FileText className="text-muted-foreground h-8 w-8" />
+            <span className="text-muted-foreground text-sm">Upload PDFs or images up to 5 MB</span>
           </FileUpload.Dropzone>
           <FileUpload.Input />
           <FileUpload.List />
@@ -1980,12 +2955,23 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Long activity feed',
       description: 'ScrollArea keeps long content usable with themeable scrollbars.',
       preview: () => (
-        <ScrollArea.Root className="h-64 w-full max-w-md rounded-md border border-border">
+        <ScrollArea.Root className="border-border h-64 w-full max-w-md rounded-md border">
           <div className="grid gap-2 p-3">
             {projectRows.map((row) => (
-              <div key={row.id} className="flex items-center justify-between gap-3 rounded-md bg-muted/40 px-3 py-2 text-sm">
+              <div
+                key={row.id}
+                className="bg-muted/40 flex items-center justify-between gap-3 rounded-md px-3 py-2 text-sm"
+              >
                 <span>{row.project}</span>
-                <Badge variant={row.status === 'Blocked' ? 'destructive' : row.status === 'Review' ? 'warning' : 'secondary'}>
+                <Badge
+                  variant={
+                    row.status === 'Blocked'
+                      ? 'destructive'
+                      : row.status === 'Review'
+                        ? 'warning'
+                        : 'secondary'
+                  }
+                >
                   {row.status}
                 </Badge>
               </div>
@@ -2006,10 +2992,16 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       description: 'Toolbar groups commands, links and separators with roving focus behavior.',
       preview: () => (
         <Toolbar.Root aria-label="Editor toolbar">
-          <Toolbar.Button aria-label="Bold"><strong>B</strong></Toolbar.Button>
-          <Toolbar.Button aria-label="Italic"><em>I</em></Toolbar.Button>
+          <Toolbar.Button aria-label="Bold">
+            <strong>B</strong>
+          </Toolbar.Button>
+          <Toolbar.Button aria-label="Italic">
+            <em>I</em>
+          </Toolbar.Button>
           <Toolbar.Separator />
-          <Toolbar.Button><Copy className="h-4 w-4" /> Copy</Toolbar.Button>
+          <Toolbar.Button>
+            <Copy className="h-4 w-4" /> Copy
+          </Toolbar.Button>
           <Toolbar.Link href="#">Docs</Toolbar.Link>
         </Toolbar.Root>
       ),
@@ -2026,7 +3018,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       title: 'Dashboard panels',
       description: 'Resizable panels support horizontal and vertical groups with keyboard handles.',
       preview: () => (
-        <Resizable.Group className="h-56 w-full max-w-lg rounded-md border border-border">
+        <Resizable.Group className="border-border h-56 w-full max-w-lg rounded-md border">
           <Resizable.Panel id="nav" defaultSize={28} className="grid place-items-center text-sm">
             Navigation
           </Resizable.Panel>
@@ -2050,16 +3042,18 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       preview: () => (
         <Carousel.Root className="w-full max-w-md">
           <Carousel.Content>
-            {['Design tokens', 'Accessible primitives', 'Playground coverage', 'Docs examples'].map((item, index) => (
-              <Carousel.Item key={item}>
-                <div className="grid h-40 place-items-center rounded-lg bg-muted p-6 text-center">
-                  <div>
-                    <div className="text-2xl font-semibold">{index + 1}</div>
-                    <div className="text-sm text-muted-foreground">{item}</div>
+            {['Design tokens', 'Accessible primitives', 'Playground coverage', 'Docs examples'].map(
+              (item, index) => (
+                <Carousel.Item key={item}>
+                  <div className="bg-muted grid h-40 place-items-center rounded-lg p-6 text-center">
+                    <div>
+                      <div className="text-2xl font-semibold">{index + 1}</div>
+                      <div className="text-muted-foreground text-sm">{item}</div>
+                    </div>
                   </div>
-                </div>
-              </Carousel.Item>
-            ))}
+                </Carousel.Item>
+              ),
+            )}
           </Carousel.Content>
           <Carousel.Previous />
           <Carousel.Next />
@@ -2136,9 +3130,14 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   'tags-input': [
     {
       title: 'Tag collection',
-      description: 'TagsInput supports existing tags, rendered chips, input entry and max-tag workflows.',
+      description:
+        'TagsInput supports existing tags, rendered chips, input entry and max-tag workflows.',
       preview: () => (
-        <TagsInput.Root defaultValue={['react', 'tailwind', 'storybook']} maxTags={6} className="w-full max-w-md">
+        <TagsInput.Root
+          defaultValue={['react', 'tailwind', 'storybook']}
+          maxTags={6}
+          className="w-full max-w-md"
+        >
           <TagsInput.Items>
             {(tag, index) => <TagsInput.Tag key={tag} index={index} tag={tag} />}
           </TagsInput.Items>
@@ -2156,7 +3155,8 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   mentions: [
     {
       title: 'People mention textarea',
-      description: 'Mentions connects a textarea with filtered suggestions and custom item rendering.',
+      description:
+        'Mentions connects a textarea with filtered suggestions and custom item rendering.',
       preview: () => <MentionsPeopleExample />,
       code: `<Mentions.Root>
   <Mentions.Textarea placeholder="Try @ada..." />
@@ -2174,17 +3174,20 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   ],
   'data-table': [
     {
-      title: 'Large sortable table',
-      description: 'DataTable handles sorting, filtering, pagination, selection and virtualization with typed data.',
+      title: 'Search, filters and pagination',
+      description:
+        'Global search, column filter state, nested AND/OR filters, selection and pagination can run locally or be mirrored to a server adapter.',
       preview: () => (
         <DataTable
           columns={projectColumns}
           data={projectRows}
           enableSorting
           enableFiltering
+          enableGlobalSearch
+          enableAdvancedFiltering
+          defaultAdvancedFilter={projectAdvancedFilter}
           enablePagination
           enableRowSelection
-          virtual={{ estimatedRowHeight: 44, overscan: 8 }}
           pageSize={8}
           className="w-full max-w-3xl"
         />
@@ -2194,11 +3197,525 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   data={rows}
   enableSorting
   enableFiltering
+  enableGlobalSearch
+  enableAdvancedFiltering
+  defaultAdvancedFilter={advancedFilter}
   enablePagination
   enableRowSelection
-  virtual={{ estimatedRowHeight: 44, overscan: 8 }}
   pageSize={8}
 />`,
+    },
+    {
+      title: 'Virtual rows and columns',
+      description:
+        'Use row and column virtualization together for unlimited-feeling datasets without rendering every cell.',
+      preview: () => (
+        <DataTable
+          columns={[...projectColumns, ...projectMetricColumns]}
+          data={largeProjectRows}
+          virtual={{ estimatedRowHeight: 44, overscan: 12 }}
+          virtualColumns={{ estimatedColumnWidth: 110, overscan: 5 }}
+          height={360}
+          enableGlobalSearch
+          enableColumnResizing
+          className="w-full max-w-4xl"
+        />
+      ),
+      code: `<DataTable
+  columns={[...columns, ...metricColumns]}
+  data={largeRows}
+  virtual={{ estimatedRowHeight: 44, overscan: 12 }}
+  virtualColumns={{ estimatedColumnWidth: 110, overscan: 5 }}
+  height={360}
+  enableGlobalSearch
+  enableColumnResizing
+/>`,
+    },
+    {
+      title: 'Configuration, pinning and actions',
+      description:
+        'Column configuration, column selection, row pinning, column pinning, grouping, row actions and detail panels are built in.',
+      preview: () => (
+        <DataTable
+          columns={projectColumns}
+          data={projectRows}
+          getRowId={(row) => String(row.id)}
+          enableColumnConfiguration
+          enableColumnSelection
+          enableColumnPinning
+          enableRowPinning
+          enableRowSelection
+          enableGrouping
+          defaultRowPinning={{ top: ['1'], bottom: ['24'] }}
+          rowActions={(row) => (
+            <Button size="sm" variant="ghost">
+              Open {row.original.id}
+            </Button>
+          )}
+          renderDetailPanel={(row) => (
+            <div className="grid gap-1 text-sm">
+              <strong>{row.original.project}</strong>
+              <span className="text-muted-foreground">
+                {row.original.owner} owns this workspace.
+              </span>
+            </div>
+          )}
+          className="w-full max-w-3xl"
+        />
+      ),
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  getRowId={(row) => String(row.id)}
+  enableColumnConfiguration
+  enableColumnSelection
+  enableColumnPinning
+  enableRowPinning
+  enableRowSelection
+  enableGrouping
+  defaultRowPinning={{ top: ['1'], bottom: ['24'] }}
+  rowActions={(row) => <Button>Open {row.original.id}</Button>}
+  renderDetailPanel={(row) => <ProjectDetail row={row} />}
+/>`,
+    },
+    {
+      title: 'Totals, spanning and row configuration',
+      description:
+        'Footer aggregations, row totals, cell colSpan/rowSpan and row-level classes cover analytical grids.',
+      preview: () => (
+        <DataTable
+          columns={projectColumns}
+          data={projectRows}
+          aggregations={{ revenue: 'sum', cost: 'avg', progress: 'max' }}
+          rowTotals={{ columns: ['revenue', 'cost'] }}
+          getRowClassName={(row) =>
+            row.original.status === 'Blocked' ? 'bg-destructive/10' : undefined
+          }
+          getCellColSpan={(cell, row) =>
+            cell.column.id === 'project' && row.original.status === 'Blocked' ? 2 : undefined
+          }
+          getCellRowSpan={(cell, row) =>
+            cell.column.id === 'owner' && row.original.owner === 'Ada Lovelace' ? 2 : undefined
+          }
+          className="w-full max-w-3xl"
+        />
+      ),
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  aggregations={{ revenue: 'sum', cost: 'avg', progress: 'max' }}
+  rowTotals={{ columns: ['revenue', 'cost'] }}
+  getRowClassName={(row) => row.original.status === 'Blocked' ? 'bg-destructive/10' : undefined}
+  getCellColSpan={(cell, row) => cell.column.id === 'project' ? 2 : undefined}
+  getCellRowSpan={(cell, row) => cell.column.id === 'owner' ? 2 : undefined}
+/>`,
+    },
+    {
+      title: 'Inline add, lazy loading and localization',
+      description:
+        'Inline create rows, scroll-end lazy loading, skeleton/spinner/text loaders and localized labels are all prop-driven.',
+      preview: () => <DataTableInlineExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  inlineCreateRow={{ fields, onAdd }}
+  hasMore
+  loadingMore
+  onLoadMore={loadMoreRows}
+  loadingVariant="skeleton"
+  localeText={{ searchPlaceholder: 'Buscar...', columns: 'Columnas' }}
+/>`,
+    },
+    {
+      title: 'Column Definition API',
+      description:
+        'DataTableColumnDef extends TanStack ColumnDef with field, headerName, type, align, flex, renderCell, renderHeader, description and filterOperators.',
+      preview: () => <DataTableColumnDefExample />,
+      code: `import type { DataTableColumnDef } from '@aura-ui/data-table';
+
+const columns: DataTableColumnDef<User>[] = [
+  {
+    field: 'name',
+    headerName: 'Full Name',
+    description: 'User display name',
+    flex: 1,
+    renderCell: ({ value }) => <strong>{String(value)}</strong>,
+  },
+  { field: 'email', headerName: 'Email', size: 220, filterOperators: ['contains', 'equals'] },
+  { field: 'role', headerName: 'Role', size: 110, align: 'center' },
+  { field: 'revenue', headerName: 'Revenue', type: 'number', size: 130,
+    renderCell: ({ value }) => \`$\${Number(value).toLocaleString()}\` },
+  { field: 'score', headerName: 'Score', type: 'number', size: 100, description: 'Performance score (0–100)' },
+  { field: 'joined', headerName: 'Joined', type: 'date', size: 120 },
+];`,
+    },
+    {
+      title: 'Tree data',
+      description:
+        'Set treeData and provide getSubRows to render a parent/child hierarchy with automatic depth indentation. Expand All and Collapse All appear in the toolbar.',
+      preview: () => <DataTableTreeDataExample />,
+      code: `type Category = { id: string; name: string; children?: Category[] };
+
+<DataTable
+  columns={[
+    { field: 'name', headerName: 'Name', flex: 1 },
+    { field: 'type', headerName: 'Type', size: 120, align: 'center' },
+    { field: 'count', headerName: 'Members', type: 'number', size: 110 },
+  ]}
+  data={categories}
+  treeData
+  getSubRows={(row) => row.children}
+  getRowId={(row) => row.id}
+/>`,
+    },
+    {
+      title: 'Column management',
+      description:
+        'Resize columns by dragging the edge handle (double-click to auto-fit). Drag headers to reorder. Pin any column left or right via the ⋮ menu. Lock a column to prevent resize, reorder, and hide. Toggle visibility with the Columns button. Below: column groups created by nesting columns under a parent definition.',
+      preview: () => <DataTableColumnManagementExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  enableColumnResizing
+  enableColumnAutoSize
+  enableColumnReordering
+  enableColumnPinning
+  enableColumnConfiguration
+  lockedColumns={['name']}
+  onLockedColumnsChange={setLocked}
+/>
+
+// Column groups — nest columns under a parent:
+<DataTable
+  columns={[
+    { headerName: 'Identity', columns: [{ field: 'name' }, { field: 'role' }] },
+    { headerName: 'Performance', columns: [{ field: 'score' }, { field: 'revenue' }] },
+    { field: 'joined', headerName: 'Joined', type: 'date' },
+  ]}
+  data={rows}
+  enableColumnResizing
+/>`,
+    },
+    {
+      title: 'Row management',
+      description:
+        'Drag the ⠿ grip to reorder rows — the sorted array is emitted via onRowOrderChange. Pin rows to top or bottom via the grip menu. Use enableRowCopy / enableColumnCopy to add copy options in the row and column context menus.',
+      preview: () => <DataTableRowManagementExample />,
+      code: `const [rows, setRows] = React.useState(data);
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableRowReordering
+  enableRowPinning
+  enableRowCopy
+  enableColumnCopy
+  onRowOrderChange={(newRows) => setRows(newRows)}
+/>`,
+    },
+    {
+      title: 'Row actions',
+      description:
+        'rowActionMenu renders a ⋮ dropdown per row (supports separators, disabled/hidden guards, destructive variants). rowActionButtons renders inline buttons. bulkActions shows a panel when rows are selected. loadingRowIds dims individual rows during async mutations. onRowContextMenu / onCellContextMenu handle right-click events.',
+      preview: () => <DataTableRowActionsExample />,
+      code: `import type { DataTableRowActionItem, DataTableBulkAction } from '@aura-ui/data-table';
+
+const menu: DataTableRowActionItem<User>[] = [
+  { id: 'edit', label: 'Edit', onClick: (row) => edit(row) },
+  { id: 'sep', separator: true, label: '', onClick: () => {} },
+  { id: 'del', label: 'Delete', variant: 'destructive', onClick: (row) => remove(row) },
+];
+const buttons: DataTableRowActionItem<User>[] = [
+  { id: 'save', label: 'Save', onClick: (row) => save(row) },
+];
+const bulk: DataTableBulkAction<User>[] = [
+  { id: 'delete-sel', label: 'Delete selected', variant: 'destructive',
+    onClick: (rows, table) => { deleteAll(rows); table.resetRowSelection(); } },
+];
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableRowSelection
+  rowActionMenu={menu}
+  rowActionButtons={buttons}
+  bulkActions={bulk}
+  loadingRowIds={pendingIds}
+  onRowContextMenu={(row, event) => showContextMenu(row, event)}
+  onCellContextMenu={(cell, row, event) => showCellMenu(cell, row, event)}
+/>`,
+    },
+    {
+      title: 'Toolbar features',
+      description:
+        'enableDensityToggle adds a Density menu (compact / standard / comfortable). enableExport adds a dropdown with CSV, JSON and XLSX. enableFullscreen expands the table to fill the viewport. onPrint adds a Print button. onRefresh adds a Refresh button. enableStatusBar pins a count bar below the table.',
+      preview: () => <DataTableToolbarFeaturesExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  enableRowSelection
+  enableDensityToggle
+  enableExport
+  enableFullscreen
+  enableStatusBar
+  onRefresh={refetch}
+  onPrint={() => window.print()}
+  toolbarActions={[
+    { id: 'custom', label: 'Custom', onClick: (table) => doSomething(table) },
+  ]}
+/>`,
+    },
+    {
+      title: 'Sorting and filtering options',
+      description:
+        'Hold Shift while clicking column headers to build a multi-column sort chain — numbered priority badges appear on each active sort icon. quickFilterColumns renders a search input below specified headers. enableFilterChips shows active filters as removable chips above the table.',
+      preview: () => <DataTableSortingFilteringExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  enableSorting
+  enableFiltering
+  enableFilterChips
+  quickFilterColumns={['name', 'role']}
+/>
+// Shift+click column headers for multi-sort.`,
+    },
+    {
+      title: 'Pagination and status bar',
+      description:
+        'The pagination bar includes a page-number dropdown, rows-per-page selector, total row count, and icon navigation. enableStatusBar adds a compact bar below showing total and selected row counts.',
+      preview: () => <DataTablePaginationStatusExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  enableRowSelection
+  enablePagination
+  pageSize={10}
+  pageSizeOptions={[5, 10, 25, 50]}
+  showTotalRows
+  enableStatusBar
+/>`,
+    },
+    {
+      title: 'Row appearance',
+      description:
+        'striped alternates row backgrounds. enableRowNumbers adds a fixed row-number column. getRowStatus colors the left border stripe per row. rowHeight sets a uniform or per-row pixel height. enableCellTooltip shows the raw value on hover. getCellClassName applies Tailwind classes to individual cells by value.',
+      preview: () => <DataTableRowAppearanceExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  striped
+  enableRowNumbers
+  enableCellTooltip
+  getRowStatus={(row) => row.original.active ? 'success' : 'error'}
+  rowHeight={44}
+  getCellClassName={(cell) => {
+    if (cell.column.id === 'score' && Number(cell.getValue()) >= 80)
+      return 'text-green-600 font-semibold';
+    return undefined;
+  }}
+/>`,
+    },
+    {
+      title: 'Inline editing',
+      description:
+        'Mark columns editable: true and provide valueSetter to write changes back. editMode controls whether a single click or double-click starts editing. enableUndoRedo adds Ctrl+Z / Ctrl+Y. enableValidation + displayValidate on column defs shows a red outline and error tooltip on invalid cells. dirtyRows tracks unsaved row IDs.',
+      preview: () => <DataTableInlineEditingAllExample />,
+      code: `<DataTable
+  columns={[
+    {
+      field: 'name',
+      headerName: 'Name',
+      editable: true,
+      valueSetter: (row, value) => update(row.id, { name: value }),
+    },
+    {
+      field: 'score',
+      headerName: 'Score',
+      type: 'number',
+      editable: true,
+      displayValidate: (value) => {
+        const n = Number(value);
+        return (isNaN(n) || n < 0 || n > 100) ? 'Score must be 0–100' : undefined;
+      },
+      valueSetter: (row, value) => update(row.id, { score: Number(value) }),
+    },
+  ]}
+  data={rows}
+  editMode="dblclick"
+  enableUndoRedo
+  enableValidation
+  enablePaste
+  dirtyRows={dirtyRows}
+  onDirtyRowsChange={setDirtyRows}
+/>`,
+    },
+    {
+      title: 'Clipboard and cell selection',
+      description:
+        'enableCopyPaste lets users press Ctrl+C to copy selected rows as TSV — paste directly into Excel or Google Sheets. enablePaste enables Ctrl+V to paste TSV back into editable cells. enableCellSelection adds click-drag or Shift+click rectangular range selection.',
+      preview: () => <DataTableClipboardSelectionExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  enableRowSelection
+  enableCopyPaste
+  enablePaste
+  enableCellSelection
+  onCellSelectionChange={(sel) => console.log(sel)}
+/>`,
+    },
+    {
+      title: 'Conditional formatting',
+      description:
+        'Set enableConditionalFormatting to add a Format button in the toolbar. Users open a drawer to create rules that highlight cells by column value — choose operator, value, background and text color. Rules are serializable and can be stored externally via conditionalFormattingRules + onConditionalFormattingRulesChange.',
+      preview: () => <DataTableConditionalFormattingExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  enableConditionalFormatting
+  conditionalFormattingRules={rules}
+  onConditionalFormattingRulesChange={setRules}
+/>`,
+    },
+    {
+      title: 'Built-in cell renderers and formatting',
+      description:
+        'Set type on a column to get rich built-in cell rendering: badge (with badgeMap for color mapping), currency (Intl.NumberFormat), progress bar, star rating, link, avatar. Add locale / dateFormat / numberFormat / timezone per column for Intl-based formatting of date and number columns.',
+      preview: () => <DataTableCellRenderersExample />,
+      code: `<DataTable
+  columns={[
+    { field: 'status', type: 'badge',
+      badgeMap: { Active: { color: '#dcfce7', textColor: '#166534' } } },
+    { field: 'revenue', type: 'currency', currencyCode: 'USD' },
+    { field: 'score', type: 'progress', progressMax: 100 },
+    { field: 'rating', type: 'rating', ratingMax: 5 },
+    // Intl formatting:
+    { field: 'joined', type: 'date', dateFormat: { dateStyle: 'long' }, locale: 'en-US' },
+    { field: 'amount', type: 'number',
+      numberFormat: { style: 'currency', currency: 'EUR' }, locale: 'de-DE' },
+  ]}
+  data={rows}
+/>`,
+    },
+    {
+      title: 'Analytics features',
+      description:
+        'enableToolPanel adds a collapsible right-side panel with Columns, Filters, and Stats tabs. enableHeaderStats pins an aggregated stats row below column headers (count / sum / avg / min / max / unique — configurable per column via headerStatsConfig). enableSavedViews adds a drawer to save, load, update and delete named table states.',
+      preview: () => <DataTableAnalyticsFeaturesExample />,
+      code: `import type { DataTableSavedView } from '@aura-ui/data-table';
+
+const [savedViews, setSavedViews] = React.useState<DataTableSavedView[]>([]);
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enableToolPanel
+  enableHeaderStats
+  headerStatsConfig={{ score: 'avg', revenue: 'sum', name: 'count' }}
+  enableSavedViews
+  savedViews={savedViews}
+  onSavedViewsChange={setSavedViews}
+/>`,
+    },
+    {
+      title: 'Live data',
+      description:
+        'Set enableLiveData to watch for data prop changes and flash updated cells with a highlight animation. Pair with liveDataKey (default: "id") as the row identity key. Useful for dashboards with WebSocket or polling data sources.',
+      preview: () => <DataTableLiveDataExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  enableLiveData
+  liveDataKey="id"
+  onLiveDataUpdate={(updated) => console.log('Updated rows:', updated)}
+/>`,
+    },
+    {
+      title: 'Async detail panel',
+      description:
+        'loadDetailPanel receives a Row and returns a Promise<ReactNode>. The resolved content is displayed in an expandable panel below the row. Panels are LRU-cached (detailPanelCacheSize, default 20) so re-expanding does not re-fetch.',
+      preview: () => <DataTableAsyncDetailPanelExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  getRowId={(row) => String(row.id)}
+  loadDetailPanel={async (row) => {
+    const details = await fetchUserDetails(row.original.id);
+    return <UserDetailPanel data={details} />;
+  }}
+  detailPanelCacheSize={20}
+/>`,
+    },
+    {
+      title: 'Pivot mode',
+      description:
+        'Set enablePivot to add a Pivot toolbar button. Clicking it opens a configuration drawer where you choose the row group field, pivot field, value field and aggregation function. The table re-renders as a cross-tabulation view. Pass pivotConfig + onPivotConfigChange for controlled state.',
+      preview: () => <DataTablePivotExample />,
+      code: `import type { DataTablePivotConfig } from '@aura-ui/data-table';
+
+// No initial config — table shows raw data; click Pivot in toolbar to configure
+const [pivotConfig, setPivotConfig] = React.useState<DataTablePivotConfig | undefined>(undefined);
+
+<DataTable
+  columns={columns}
+  data={rows}
+  enablePivot
+  pivotConfig={pivotConfig}
+  onPivotConfigChange={setPivotConfig}
+  enableSorting
+  enablePagination
+  pageSize={15}
+/>`,
+    },
+    {
+      title: 'State persistence',
+      description:
+        'Pass a unique stateKey to automatically save and restore sort, filter, column visibility, column sizing, column order, pagination and density to localStorage. Refresh the page — the table state is fully restored.',
+      preview: () => <DataTableStatePersistenceExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  stateKey="my-users-table"
+  enableSorting
+  enableGlobalSearch
+  enablePagination
+  enableColumnResizing
+/>`,
+    },
+    {
+      title: 'Mobile card view',
+      description:
+        'Set mobileBreakpoint to "sm", "md", or "lg". Below that breakpoint the table switches to a label/value card list — one card per row, one item per column. Resize the browser window to see the transition.',
+      preview: () => <DataTableMobileCardExample />,
+      code: `<DataTable
+  columns={columns}
+  data={rows}
+  mobileBreakpoint="md"
+/>`,
+    },
+    {
+      title: 'Custom empty states',
+      description:
+        'NoRowsOverlay renders when the data source is empty. NoResultsOverlay renders when filters/search produce zero matches from a non-empty dataset. Both accept any ReactNode — render illustrations, calls to action, or upload prompts.',
+      preview: () => <DataTableSlotsExample />,
+      code: `import type { DataTableSlots } from '@aura-ui/data-table';
+
+const slots: DataTableSlots<User> = {
+  NoRowsOverlay: () => (
+    <div className="flex flex-col items-center gap-2 py-12 text-center">
+      <p className="text-muted-foreground text-sm">No users yet.</p>
+      <Button onClick={openCreateDialog}>Add first user</Button>
+    </div>
+  ),
+  NoResultsOverlay: () => (
+    <div className="flex flex-col items-center gap-2 py-12 text-center">
+      <p className="text-muted-foreground text-sm">No results match your filters.</p>
+    </div>
+  ),
+};
+
+<DataTable columns={columns} data={[]} enableGlobalSearch slots={slots} />`,
     },
   ],
 };

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Clock } from '@aura-ui/icons';
+import { ChevronLeft, ChevronRight, Clock } from '@aura-ui/icons';
 import { TimePicker as TimePickerPrimitive } from '@aura-ui/primitives';
 import type { PickerChangeContext, TimePickerView, TimeValidationError } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
@@ -65,6 +65,267 @@ interface TimePickerProps extends Omit<PrimitiveRootProps, 'children'> {
   error?: boolean;
 }
 
+interface TimePickerPanelProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'title'> {
+  value?: Date | null;
+  referenceDate?: Date;
+  onChange?: (value: Date) => void;
+  onAccept?: (value: Date) => void;
+  onCancel?: () => void;
+  ampm?: boolean;
+  views?: TimePickerView[];
+  withSeconds?: boolean;
+  minutesStep?: number;
+  timeSteps?: PrimitiveRootProps['timeSteps'];
+  minTime?: Date;
+  maxTime?: Date;
+  shouldDisableTime?: (value: Date, view: TimePickerView) => boolean;
+  skipDisabled?: boolean;
+  columnClassName?: string;
+  title?: React.ReactNode;
+  showActions?: boolean;
+}
+
+type ClockView = 'hours' | 'minutes' | 'seconds';
+type Meridiem = 'am' | 'pm';
+
+const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
+  (
+    {
+      className,
+      columnClassName,
+      value,
+      referenceDate,
+      onChange,
+      onAccept,
+      onCancel,
+      ampm = true,
+      views,
+      withSeconds,
+      minutesStep,
+      timeSteps,
+      minTime,
+      maxTime,
+      shouldDisableTime,
+      skipDisabled,
+      title = 'SELECT TIME',
+      showActions = true,
+      ...props
+    },
+    ref,
+  ) => {
+    const clockViews = React.useMemo(() => getClockViews(views, withSeconds), [views, withSeconds]);
+    const [activeView, setActiveView] = React.useState<ClockView>(clockViews[0] ?? 'hours');
+    const currentValue = value ?? referenceDate ?? new Date();
+    const minuteStep = minutesStep ?? timeSteps?.minutes ?? 1;
+    const hourStep = timeSteps?.hours ?? 1;
+    const secondStep = timeSteps?.seconds ?? 1;
+
+    React.useEffect(() => {
+      if (!clockViews.includes(activeView)) {
+        setActiveView(clockViews[0] ?? 'hours');
+      }
+    }, [activeView, clockViews]);
+
+    const updatePart = (part: ClockView | 'period', amount: number | Meridiem) => {
+      const next = new Date(currentValue);
+      if (part === 'hours' && typeof amount === 'number') {
+        next.setHours(ampm ? to24Hour(amount, next.getHours() >= 12 ? 'pm' : 'am') : amount);
+      } else if (part === 'minutes' && typeof amount === 'number') {
+        next.setMinutes(amount);
+      } else if (part === 'seconds' && typeof amount === 'number') {
+        next.setSeconds(amount === 60 ? 0 : amount);
+      } else if (part === 'period' && (amount === 'am' || amount === 'pm')) {
+        next.setHours(to24Hour(toDisplayHour(next.getHours()), amount));
+      }
+      next.setMilliseconds(0);
+      onChange?.(next);
+      if (part !== 'period') {
+        const nextView = getAdjacentClockView(clockViews, part, 1);
+        if (nextView) setActiveView(nextView);
+      }
+    };
+
+    const selectedPart = getSelectedClockPart(currentValue, activeView, ampm);
+    const values = getClockValues(activeView, {
+      ampm,
+      hourStep,
+      minuteStep,
+      secondStep,
+    });
+    const selectedAngle = getClockAngle(activeView, selectedPart);
+    const selectedRadius = getClockRadius(activeView, selectedPart, ampm);
+    const clockValues = values.includes(selectedPart)
+      ? values
+      : [...values, selectedPart].sort((first, second) => first - second);
+    const period = currentValue.getHours() >= 12 ? 'pm' : 'am';
+    const previousView = getAdjacentClockView(clockViews, activeView, -1);
+    const nextView = getAdjacentClockView(clockViews, activeView, 1);
+    const hasSeconds = clockViews.includes('seconds');
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'w-[280px] rounded-md bg-popover p-4 text-popover-foreground shadow-sm',
+          className,
+        )}
+        {...props}
+      >
+        <div className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
+          {title}
+        </div>
+        <div className="mt-2 flex items-start justify-between gap-3">
+          <div className="flex items-baseline text-5xl font-light leading-none tabular-nums">
+            <button
+              type="button"
+              aria-label="Select hours"
+              aria-pressed={activeView === 'hours'}
+              className={cn(
+                'rounded-md px-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                activeView === 'hours' ? 'text-primary' : 'text-popover-foreground',
+              )}
+              onClick={() => setActiveView('hours')}
+            >
+              {pad(ampm ? toDisplayHour(currentValue.getHours()) : currentValue.getHours())}
+            </button>
+            <span className="text-muted-foreground">:</span>
+            <button
+              type="button"
+              aria-label="Select minutes"
+              aria-pressed={activeView === 'minutes'}
+              className={cn(
+                'rounded-md px-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                activeView === 'minutes' ? 'text-primary' : 'text-popover-foreground',
+              )}
+              onClick={() => setActiveView('minutes')}
+            >
+              {pad(currentValue.getMinutes())}
+            </button>
+            {hasSeconds ? (
+              <>
+                <span className="text-muted-foreground">:</span>
+                <button
+                  type="button"
+                  aria-label="Select seconds"
+                  aria-pressed={activeView === 'seconds'}
+                  className={cn(
+                    'rounded-md px-0.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    activeView === 'seconds' ? 'text-primary' : 'text-popover-foreground',
+                  )}
+                  onClick={() => setActiveView('seconds')}
+                >
+                  {pad(currentValue.getSeconds())}
+                </button>
+              </>
+            ) : null}
+          </div>
+          {ampm ? (
+            <div className="grid gap-1 pt-0.5 text-base font-semibold">
+              {(['am', 'pm'] as const).map((item) => (
+                <button
+                  key={item}
+                  type="button"
+                  aria-label={item === 'am' ? 'AM' : 'PM'}
+                  aria-pressed={period === item}
+                  className={cn(
+                    'rounded px-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    period === item ? 'text-primary' : 'text-popover-foreground',
+                  )}
+                  onClick={() => updatePart('period', item)}
+                >
+                  {item.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
+        <div className="mt-4 flex items-center justify-between">
+          <button
+            type="button"
+            aria-label="Previous time view"
+            disabled={!previousView}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
+            onClick={() => previousView && setActiveView(previousView)}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <span className="sr-only">{getClockViewLabel(activeView)}</span>
+          <button
+            type="button"
+            aria-label="Next time view"
+            disabled={!nextView}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
+            onClick={() => nextView && setActiveView(nextView)}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+        </div>
+        <div
+          role="group"
+          aria-label={`${getClockViewLabel(activeView)} clock`}
+          className="relative mx-auto mt-1 h-56 w-56 rounded-full bg-muted/30"
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-0 w-0.5 origin-bottom bg-primary"
+            style={{
+              height: selectedRadius,
+              transform: `translate(-50%, -100%) rotate(${selectedAngle}deg)`,
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary"
+          />
+          {clockValues.map((item) => {
+            const disabled = isClockPartDisabled({
+              current: currentValue,
+              view: activeView,
+              nextPart: item,
+              ampm,
+              shouldDisableTime,
+              minTime,
+              maxTime,
+            });
+            if (disabled && skipDisabled) return null;
+            return (
+              <ClockNumber
+                key={item}
+                active={item === selectedPart}
+                ampm={ampm}
+                className={columnClassName}
+                disabled={disabled}
+                value={item}
+                view={activeView}
+                onSelect={(nextPart) => updatePart(activeView, nextPart)}
+              />
+            );
+          })}
+        </div>
+        {showActions ? (
+          <div className="mt-4 flex justify-end gap-2">
+            <button
+              type="button"
+              className={cn(buttonVariants({ variant: 'ghost' }), 'h-8 px-3 text-xs font-semibold uppercase text-primary')}
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              className={cn(buttonVariants({ variant: 'ghost' }), 'h-8 px-3 text-xs font-semibold uppercase text-primary')}
+              onClick={() => onAccept?.(currentValue)}
+            >
+              OK
+            </button>
+          </div>
+        ) : null}
+      </div>
+    );
+  },
+);
+TimePickerPanel.displayName = 'TimePicker.Panel';
+
 const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
   (
     {
@@ -88,7 +349,7 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
       onError,
       disabled,
       readOnly,
-      ampm = false,
+      ampm = true,
       closeOnSelect = false,
       disableOpenPicker,
       minTime,
@@ -114,10 +375,7 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
       normalizeValue(defaultValue, referenceDate, ampm) ?? null,
     );
     const value = isControlled ? normalizeValue(valueProp, referenceDate, ampm) ?? null : internalValue;
-    const visibleViews = views ?? (props.withSeconds ? ['hours', 'minutes', 'seconds'] : ['hours', 'minutes']);
     const minuteStep = minutesStep ?? timeSteps?.minutes ?? 1;
-    const hourStep = timeSteps?.hours ?? 1;
-    const secondStep = timeSteps?.seconds ?? 5;
 
     const commit = React.useCallback(
       (nextValue: Date | null) => {
@@ -158,21 +416,6 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
       ],
     );
 
-    const updatePart = (part: 'hour' | 'minute' | 'second' | 'period', amount: number | 'am' | 'pm') => {
-      const next = new Date(value ?? referenceDate ?? new Date());
-      if (part === 'hour' && typeof amount === 'number') {
-        next.setHours(ampm ? to24Hour(amount, next.getHours() >= 12 ? 'pm' : 'am') : amount);
-      } else if (part === 'minute' && typeof amount === 'number') {
-        next.setMinutes(amount);
-      } else if (part === 'second' && typeof amount === 'number') {
-        next.setSeconds(amount);
-      } else if (part === 'period' && (amount === 'am' || amount === 'pm')) {
-        next.setHours(to24Hour(toDisplayHour(next.getHours()), amount));
-      }
-      next.setMilliseconds(0);
-      commit(next);
-    };
-
     return (
       <Popover.Root open={open} onOpenChange={setOpen}>
         <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
@@ -212,57 +455,36 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
           ) : null}
         </div>
         <Popover.Content
-          className={cn('w-auto p-2', contentClassName)}
+          className={cn('w-auto overflow-hidden p-0', contentClassName)}
           align="start"
         >
-          <div className="flex max-h-72 gap-2 overflow-auto">
-            {visibleViews.includes('hours') ? (
-              <TimeColumn
-                ariaLabel="Hours"
-                className={columnClassName}
-                values={range(ampm ? 1 : 0, ampm ? 12 : 23, hourStep)}
-                value={value ? (ampm ? toDisplayHour(value.getHours()) : value.getHours()) : undefined}
-                formatValue={(hour) => (ampm ? String(hour) : pad(hour))}
-                isDisabled={(hour) => isPartDisabled(value, 'hours', ampm ? to24Hour(hour, value && value.getHours() >= 12 ? 'pm' : 'am') : hour, shouldDisableTime, minTime, maxTime)}
-                skipDisabled={skipDisabled}
-                onSelect={(hour) => updatePart('hour', hour)}
-              />
-            ) : null}
-            {visibleViews.includes('minutes') ? (
-              <TimeColumn
-                ariaLabel="Minutes"
-                className={columnClassName}
-                values={range(0, 59, minuteStep)}
-                value={value?.getMinutes()}
-                formatValue={pad}
-                isDisabled={(minute) => isPartDisabled(value, 'minutes', minute, shouldDisableTime, minTime, maxTime)}
-                skipDisabled={skipDisabled}
-                onSelect={(minute) => updatePart('minute', minute)}
-              />
-            ) : null}
-            {visibleViews.includes('seconds') ? (
-              <TimeColumn
-                ariaLabel="Seconds"
-                className={columnClassName}
-                values={range(0, 59, secondStep)}
-                value={value?.getSeconds()}
-                formatValue={pad}
-                isDisabled={(second) => isPartDisabled(value, 'seconds', second, shouldDisableTime, minTime, maxTime)}
-                skipDisabled={skipDisabled}
-                onSelect={(second) => updatePart('second', second)}
-              />
-            ) : null}
-            {ampm ? (
-              <TimeColumn
-                ariaLabel="Meridiem"
-                className={columnClassName}
-                values={['am', 'pm']}
-                value={value && value.getHours() >= 12 ? 'pm' : 'am'}
-                formatValue={(period) => period.toUpperCase()}
-                onSelect={(period) => updatePart('period', period)}
-              />
-            ) : null}
-          </div>
+          <TimePickerPanel
+            ampm={ampm}
+            columnClassName={columnClassName}
+            maxTime={maxTime}
+            minTime={minTime}
+            minutesStep={minutesStep}
+            onAccept={(nextValue) => {
+              if (disabled || readOnly) return;
+              const validationError = validateTime(nextValue, {
+                minTime,
+                maxTime,
+                minutesStep: minuteStep,
+                shouldDisableTime,
+              });
+              onAccept?.(nextValue, { validationError, source: 'view' });
+              setOpen(false);
+            }}
+            onCancel={() => setOpen(false)}
+            onChange={commit}
+            referenceDate={referenceDate}
+            shouldDisableTime={shouldDisableTime}
+            skipDisabled={skipDisabled}
+            timeSteps={timeSteps}
+            value={value}
+            views={views}
+            withSeconds={props.withSeconds}
+          />
         </Popover.Content>
       </Popover.Root>
     );
@@ -270,54 +492,134 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
 );
 TimePickerRoot.displayName = 'TimePicker';
 
-interface TimeColumnProps<TValue extends string | number> {
-  ariaLabel: string;
+interface ClockNumberProps {
+  active: boolean;
+  ampm: boolean;
   className?: string;
-  values: TValue[];
-  value?: TValue;
-  formatValue: (value: TValue) => string;
-  isDisabled?: (value: TValue) => boolean;
-  skipDisabled?: boolean;
-  onSelect: (value: TValue) => void;
+  disabled?: boolean;
+  value: number;
+  view: ClockView;
+  onSelect: (value: number) => void;
 }
 
-function TimeColumn<TValue extends string | number>({
-  ariaLabel,
+function ClockNumber({
+  active,
+  ampm,
   className,
-  values,
+  disabled,
   value,
-  formatValue,
-  isDisabled,
-  skipDisabled,
+  view,
   onSelect,
-}: TimeColumnProps<TValue>) {
+}: ClockNumberProps) {
+  const angle = getClockAngle(view, value);
+  const radius = getClockRadius(view, value, ampm);
+  const position = getClockPosition(angle, radius);
+  const showLabel = active || shouldShowClockLabel(view, value, ampm);
+
   return (
-    <div role="listbox" aria-label={ariaLabel} className={cn('grid min-w-16 gap-1', className)}>
-      {values.map((item) => {
-        const disabled = isDisabled?.(item) ?? false;
-        if (disabled && skipDisabled) return null;
-        return (
-          <button
-            key={item}
-            type="button"
-            role="option"
-            aria-selected={item === value}
-            disabled={disabled}
-            className={cn(
-              'rounded-md px-2 py-1.5 text-sm tabular-nums text-muted-foreground transition-colors',
-              'hover:bg-accent hover:text-accent-foreground',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              'aria-selected:bg-primary aria-selected:text-primary-foreground',
-              'disabled:pointer-events-none disabled:opacity-50',
-            )}
-            onClick={() => onSelect(item)}
-          >
-            {formatValue(item)}
-          </button>
-        );
-      })}
-    </div>
+    <button
+      type="button"
+      aria-label={`${formatClockValue(view, value, ampm)} ${getClockUnitLabel(view)}`}
+      aria-pressed={active}
+      disabled={disabled}
+      className={cn(
+        'absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-sm tabular-nums transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        active
+          ? 'h-9 w-9 bg-primary text-primary-foreground'
+          : showLabel
+            ? 'h-8 w-8 text-popover-foreground hover:bg-accent hover:text-accent-foreground'
+            : 'h-4 w-4 text-transparent hover:bg-accent/60',
+        disabled && 'pointer-events-none opacity-40',
+        className,
+      )}
+      style={{
+        left: position.left,
+        top: position.top,
+      }}
+      onClick={() => onSelect(value)}
+    >
+      {showLabel ? formatClockValue(view, value, ampm) : ''}
+    </button>
   );
+}
+
+function getClockViews(views: TimePickerView[] | undefined, withSeconds: boolean | undefined): ClockView[] {
+  const fallback: ClockView[] = withSeconds ? ['hours', 'minutes', 'seconds'] : ['hours', 'minutes'];
+  if (!views) return fallback;
+  const clockViews = views.filter((view): view is ClockView =>
+    view === 'hours' || view === 'minutes' || view === 'seconds',
+  );
+  return clockViews.length ? clockViews : fallback;
+}
+
+function getAdjacentClockView(views: ClockView[], current: ClockView, delta: 1 | -1) {
+  const index = views.indexOf(current);
+  const nextIndex = index + delta;
+  return nextIndex >= 0 && nextIndex < views.length ? views[nextIndex] : undefined;
+}
+
+function getSelectedClockPart(value: Date, view: ClockView, ampm: boolean) {
+  if (view === 'hours') return ampm ? toDisplayHour(value.getHours()) : value.getHours();
+  if (view === 'minutes') return value.getMinutes();
+  return value.getSeconds() === 0 ? 60 : value.getSeconds();
+}
+
+function getClockValues(
+  view: ClockView,
+  options: {
+    ampm: boolean;
+    hourStep: number;
+    minuteStep: number;
+    secondStep: number;
+  },
+) {
+  if (view === 'hours') {
+    return range(options.ampm ? 1 : 0, options.ampm ? 12 : 23, options.hourStep);
+  }
+  if (view === 'minutes') return range(0, 59, options.minuteStep);
+  return range(options.secondStep, 60, options.secondStep);
+}
+
+function getClockAngle(view: ClockView, value: number) {
+  if (view === 'hours') return (value % 12) * 30;
+  return (value % 60) * 6;
+}
+
+function getClockRadius(view: ClockView, value: number, ampm: boolean) {
+  if (view !== 'hours' || ampm) return 92;
+  return value === 0 || value > 12 ? 62 : 92;
+}
+
+function getClockPosition(angle: number, radius: number) {
+  const radians = (angle * Math.PI) / 180;
+  const center = 112;
+  return {
+    left: center + radius * Math.sin(radians),
+    top: center - radius * Math.cos(radians),
+  };
+}
+
+function shouldShowClockLabel(view: ClockView, value: number, ampm: boolean) {
+  if (view === 'hours') return ampm || value % 2 === 0 || value === 23;
+  return value % 5 === 0;
+}
+
+function formatClockValue(view: ClockView, value: number, ampm: boolean) {
+  if (view === 'hours' && ampm) return String(value);
+  return pad(value);
+}
+
+function getClockViewLabel(view: ClockView) {
+  if (view === 'hours') return 'Hours';
+  if (view === 'minutes') return 'Minutes';
+  return 'Seconds';
+}
+
+function getClockUnitLabel(view: ClockView) {
+  if (view === 'hours') return 'hours';
+  if (view === 'minutes') return 'minutes';
+  return 'seconds';
 }
 
 function normalizeValue(value: TimePickerValue, referenceDate: Date | undefined, ampm: boolean) {
@@ -357,18 +659,30 @@ function validateTime(
   return null;
 }
 
-function isPartDisabled(
-  current: Date | null,
-  view: TimePickerView,
-  nextPart: number,
-  shouldDisableTime: ((value: Date, view: TimePickerView) => boolean) | undefined,
-  minTime: Date | undefined,
-  maxTime: Date | undefined,
-) {
-  const next = new Date(current ?? new Date());
+function isClockPartDisabled({
+  current,
+  view,
+  nextPart,
+  ampm,
+  shouldDisableTime,
+  minTime,
+  maxTime,
+}: {
+  current: Date;
+  view: ClockView;
+  nextPart: number;
+  ampm: boolean;
+  shouldDisableTime: ((value: Date, view: TimePickerView) => boolean) | undefined;
+  minTime: Date | undefined;
+  maxTime: Date | undefined;
+}) {
+  const next = new Date(current);
   if (view === 'hours') next.setHours(nextPart);
+  if (view === 'hours' && ampm) {
+    next.setHours(to24Hour(nextPart, current.getHours() >= 12 ? 'pm' : 'am'));
+  }
   if (view === 'minutes') next.setMinutes(nextPart);
-  if (view === 'seconds') next.setSeconds(nextPart);
+  if (view === 'seconds') next.setSeconds(nextPart === 60 ? 0 : nextPart);
   return validateTime(next, { minTime, maxTime, shouldDisableTime }) != null;
 }
 
@@ -429,7 +743,8 @@ const TimePicker = Object.assign(TimePickerRoot, {
   Segment,
   Separator,
   Value,
+  Panel: TimePickerPanel,
 });
 
-export { TimePicker, Root, Segment, Separator, Value };
-export type { TimePickerProps };
+export { TimePicker, Root, Segment, Separator, Value, TimePickerPanel };
+export type { TimePickerPanelProps, TimePickerProps };

@@ -346,7 +346,7 @@ export function DateTimePickerStory() {
       label="Deployment window"
       defaultValue={new Date(2026, 1, 10, 14, 30)}
       minutesStep={15}
-      helperText="MUI-style date and time field."
+      helperText="Select a date, then choose the time."
     />
   );
 }
@@ -941,6 +941,7 @@ export function TimePickerStory() {
       defaultValue={new Date(2026, 1, 10, 10, 30)}
       ampm
       minutesStep={15}
+      helperText="1-12 clock with AM/PM, plus Cancel and OK actions."
     />
   );
 }

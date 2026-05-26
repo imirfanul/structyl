@@ -76,40 +76,36 @@ Root.displayName = 'Popover.Root';
 
 /* ─── Anchor ──────────────────────────────────────────────────────── */
 
-const Anchor = React.forwardRef<HTMLDivElement, PopoverAnchorProps>(
-  (props, forwardedRef) => {
-    const ctx = usePopoverContext('Popover.Anchor');
-    const { onCustomAnchorAdd, onCustomAnchorRemove } = ctx;
-    React.useEffect(() => {
-      onCustomAnchorAdd();
-      return () => onCustomAnchorRemove();
-    }, [onCustomAnchorAdd, onCustomAnchorRemove]);
-    return <Popper.Anchor {...props} ref={forwardedRef} />;
-  },
-);
+const Anchor = React.forwardRef<HTMLDivElement, PopoverAnchorProps>((props, forwardedRef) => {
+  const ctx = usePopoverContext('Popover.Anchor');
+  const { onCustomAnchorAdd, onCustomAnchorRemove } = ctx;
+  React.useEffect(() => {
+    onCustomAnchorAdd();
+    return () => onCustomAnchorRemove();
+  }, [onCustomAnchorAdd, onCustomAnchorRemove]);
+  return <Popper.Anchor {...props} ref={forwardedRef} />;
+});
 Anchor.displayName = 'Popover.Anchor';
 
 /* ─── Trigger ──────────────────────────────────────────────────────── */
 
-const Trigger = React.forwardRef<HTMLButtonElement, PopoverTriggerProps>(
-  (props, forwardedRef) => {
-    const ctx = usePopoverContext('Popover.Trigger');
-    const composedRef = useComposedRefs(forwardedRef, ctx.triggerRef);
-    const trigger = (
-      <Primitive.button
-        type="button"
-        aria-haspopup="dialog"
-        aria-expanded={ctx.open}
-        aria-controls={ctx.contentId}
-        data-state={ctx.open ? 'open' : 'closed'}
-        {...props}
-        ref={composedRef}
-        onClick={composeEventHandlers(props.onClick, ctx.onOpenToggle)}
-      />
-    );
-    return ctx.hasCustomAnchor ? trigger : <Popper.Anchor asChild>{trigger}</Popper.Anchor>;
-  },
-);
+const Trigger = React.forwardRef<HTMLButtonElement, PopoverTriggerProps>((props, forwardedRef) => {
+  const ctx = usePopoverContext('Popover.Trigger');
+  const composedRef = useComposedRefs(forwardedRef, ctx.triggerRef);
+  const trigger = (
+    <Primitive.button
+      type="button"
+      aria-haspopup="dialog"
+      aria-expanded={ctx.open}
+      aria-controls={ctx.contentId}
+      data-state={ctx.open ? 'open' : 'closed'}
+      {...props}
+      ref={composedRef}
+      onClick={composeEventHandlers(props.onClick, ctx.onOpenToggle)}
+    />
+  );
+  return ctx.hasCustomAnchor ? trigger : <Popper.Anchor asChild>{trigger}</Popper.Anchor>;
+});
 Trigger.displayName = 'Popover.Trigger';
 
 /* ─── Portal ──────────────────────────────────────────────────────── */
@@ -130,50 +126,48 @@ Portal.displayName = 'Popover.Portal';
 
 /* ─── Content ─────────────────────────────────────────────────────── */
 
-const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>(
-  (props, forwardedRef) => {
-    const portalCtx = React.useContext(PortalContext);
-    const ctx = usePopoverContext('Popover.Content');
-    const {
-      forceMount = portalCtx.forceMount,
-      onOpenAutoFocus,
-      onCloseAutoFocus,
-      onEscapeKeyDown,
-      onPointerDownOutside,
-      onFocusOutside,
-      onInteractOutside,
-      ...rest
-    } = props;
+const Content = React.forwardRef<HTMLDivElement, PopoverContentProps>((props, forwardedRef) => {
+  const portalCtx = React.useContext(PortalContext);
+  const ctx = usePopoverContext('Popover.Content');
+  const {
+    forceMount = portalCtx.forceMount,
+    onOpenAutoFocus,
+    onCloseAutoFocus,
+    onEscapeKeyDown,
+    onPointerDownOutside,
+    onFocusOutside,
+    onInteractOutside,
+    ...rest
+  } = props;
 
-    return (
-      <Presence present={forceMount || ctx.open}>
-        {ctx.modal ? (
-          <ContentModal
-            {...rest}
-            ref={forwardedRef}
-            onOpenAutoFocus={onOpenAutoFocus}
-            onCloseAutoFocus={onCloseAutoFocus}
-            onEscapeKeyDown={onEscapeKeyDown}
-            onPointerDownOutside={onPointerDownOutside}
-            onFocusOutside={onFocusOutside}
-            onInteractOutside={onInteractOutside}
-          />
-        ) : (
-          <ContentNonModal
-            {...rest}
-            ref={forwardedRef}
-            onOpenAutoFocus={onOpenAutoFocus}
-            onCloseAutoFocus={onCloseAutoFocus}
-            onEscapeKeyDown={onEscapeKeyDown}
-            onPointerDownOutside={onPointerDownOutside}
-            onFocusOutside={onFocusOutside}
-            onInteractOutside={onInteractOutside}
-          />
-        )}
-      </Presence>
-    );
-  },
-);
+  return (
+    <Presence present={forceMount || ctx.open}>
+      {ctx.modal ? (
+        <ContentModal
+          {...rest}
+          ref={forwardedRef}
+          onOpenAutoFocus={onOpenAutoFocus}
+          onCloseAutoFocus={onCloseAutoFocus}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+        />
+      ) : (
+        <ContentNonModal
+          {...rest}
+          ref={forwardedRef}
+          onOpenAutoFocus={onOpenAutoFocus}
+          onCloseAutoFocus={onCloseAutoFocus}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+        />
+      )}
+    </Presence>
+  );
+});
 Content.displayName = 'Popover.Content';
 
 const ContentModal = React.forwardRef<HTMLDivElement, PopoverContentProps>(
@@ -230,91 +224,97 @@ interface ContentImplProps extends PopoverContentProps {
   disableOutsidePointerEvents?: boolean;
 }
 
-const ContentImpl = React.forwardRef<HTMLDivElement, ContentImplProps>(
-  (props, forwardedRef) => {
-    const ctx = usePopoverContext('Popover.Content');
-    const {
-      trapFocus,
-      disableOutsidePointerEvents,
-      side,
-      sideOffset,
-      align,
-      alignOffset,
-      arrowPadding,
-      avoidCollisions,
-      collisionPadding,
-      onOpenAutoFocus,
-      onCloseAutoFocus,
-      onEscapeKeyDown,
-      onPointerDownOutside,
-      onFocusOutside,
-      onInteractOutside,
-      children,
-      ...rest
-    } = props;
+const ContentImpl = React.forwardRef<HTMLDivElement, ContentImplProps>((props, forwardedRef) => {
+  const ctx = usePopoverContext('Popover.Content');
+  const {
+    trapFocus,
+    disableOutsidePointerEvents,
+    side,
+    sideOffset,
+    align,
+    alignOffset,
+    arrowPadding,
+    avoidCollisions,
+    collisionBoundary,
+    collisionPadding,
+    strategy,
+    sticky,
+    hideWhenDetached,
+    updatePositionStrategy,
+    onOpenAutoFocus,
+    onCloseAutoFocus,
+    onEscapeKeyDown,
+    onPointerDownOutside,
+    onFocusOutside,
+    onInteractOutside,
+    children,
+    ...rest
+  } = props;
 
-    return (
-      <>
-        <FocusGuards />
-        <Popper.Content
-          side={side}
-          sideOffset={sideOffset}
-          align={align}
-          alignOffset={alignOffset}
-          arrowPadding={arrowPadding}
-          avoidCollisions={avoidCollisions}
-          collisionPadding={collisionPadding}
+  return (
+    <>
+      <FocusGuards />
+      <Popper.Content
+        side={side}
+        sideOffset={sideOffset}
+        align={align}
+        alignOffset={alignOffset}
+        arrowPadding={arrowPadding}
+        avoidCollisions={avoidCollisions}
+        collisionBoundary={collisionBoundary}
+        collisionPadding={collisionPadding}
+        strategy={strategy}
+        sticky={sticky}
+        hideWhenDetached={hideWhenDetached}
+        updatePositionStrategy={updatePositionStrategy}
+      >
+        <DismissableLayer
+          asChild
+          disableOutsidePointerEvents={disableOutsidePointerEvents}
+          onEscapeKeyDown={onEscapeKeyDown}
+          onPointerDownOutside={onPointerDownOutside}
+          onFocusOutside={onFocusOutside}
+          onInteractOutside={onInteractOutside}
+          onDismiss={() => ctx.onOpenChange(false)}
         >
-          <DismissableLayer
-            asChild
-            disableOutsidePointerEvents={disableOutsidePointerEvents}
-            onEscapeKeyDown={onEscapeKeyDown}
-            onPointerDownOutside={onPointerDownOutside}
-            onFocusOutside={onFocusOutside}
-            onInteractOutside={onInteractOutside}
-            onDismiss={() => ctx.onOpenChange(false)}
+          <FocusScope
+            loop
+            trapped={trapFocus}
+            onMountAutoFocus={onOpenAutoFocus}
+            onUnmountAutoFocus={onCloseAutoFocus}
+            style={{ display: 'contents' }}
           >
-            <FocusScope
-              loop
-              trapped={trapFocus}
-              onMountAutoFocus={onOpenAutoFocus}
-              onUnmountAutoFocus={onCloseAutoFocus}
-              style={{ display: 'contents' }}
+            <Primitive.div
+              role="dialog"
+              id={ctx.contentId}
+              data-state={ctx.open ? 'open' : 'closed'}
+              tabIndex={-1}
+              {...rest}
+              ref={forwardedRef}
             >
-              <Primitive.div
-                role="dialog"
-                id={ctx.contentId}
-                data-state={ctx.open ? 'open' : 'closed'}
-                tabIndex={-1}
-                {...rest}
-                ref={forwardedRef}
-              >
-                {children}
-              </Primitive.div>
-            </FocusScope>
-          </DismissableLayer>
-        </Popper.Content>
-      </>
-    );
-  },
-);
+              {children}
+            </Primitive.div>
+          </FocusScope>
+        </DismissableLayer>
+      </Popper.Content>
+    </>
+  );
+});
 ContentImpl.displayName = 'Popover.ContentImpl';
 
 /* ─── Close ────────────────────────────────────────────────────────── */
 
-const Close = React.forwardRef<HTMLButtonElement, PopoverCloseProps>(
-  (props, forwardedRef) => {
-    const ctx = usePopoverContext('Popover.Close');
-    return (
-      <Primitive.button
-        type="button"
-        {...props}
-        ref={forwardedRef}
-        onClick={composeEventHandlers(props.onClick, () => ctx.onOpenChange(false))}
-      />
-    );
-  },
-);
+const Close = React.forwardRef<HTMLButtonElement, PopoverCloseProps>((props, forwardedRef) => {
+  const ctx = usePopoverContext('Popover.Close');
+  return (
+    <Primitive.button
+      type="button"
+      {...props}
+      ref={forwardedRef}
+      onClick={composeEventHandlers(props.onClick, () => ctx.onOpenChange(false))}
+    />
+  );
+});
 Close.displayName = 'Popover.Close';
 
 /* ─── Arrow ────────────────────────────────────────────────────────── */

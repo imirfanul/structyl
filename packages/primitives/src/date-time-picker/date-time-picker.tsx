@@ -39,9 +39,15 @@ export type DateTimePickerViewRenderer = (params: {
 interface DateTimePickerContextValue {
   value: Date | undefined;
   onValueChange: (date: Date | undefined) => void;
+  onDateSelect: (date: Date) => void;
   onTimePartChange: (part: Partial<TimeValue>) => void;
+  onTimeValueChange: (date: Date) => void;
+  onTimeAccept: (date: Date) => void;
+  onTimeCancel: () => void;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  view: DateTimePickerView;
+  setView: (view: DateTimePickerView) => void;
   calendarProps: Pick<
     CalendarPrimitive.CalendarRootProps,
     | 'minDate'
@@ -211,8 +217,10 @@ const Root: React.FC<DateTimePickerRootProps> = ({
   localeText,
   view: viewProp,
   defaultView,
+  views,
   children,
 }) => {
+  const initialView = defaultView ?? openTo;
   const normalizedValue = valueProp === null ? undefined : valueProp;
   const normalizedDefaultValue = defaultValue === null ? undefined : defaultValue;
   const validationOptions = React.useMemo(
@@ -263,9 +271,9 @@ const Root: React.FC<DateTimePickerRootProps> = ({
     defaultProp: defaultSelectedSections,
     onChange: onSelectedSectionsChange,
   });
-  const [, setView] = useControllableState<DateTimePickerView>({
+  const [view = initialView, setView] = useControllableState<DateTimePickerView>({
     prop: viewProp,
-    defaultProp: defaultView ?? openTo,
+    defaultProp: initialView,
     onChange: onViewChange,
   });
 
@@ -282,30 +290,39 @@ const Root: React.FC<DateTimePickerRootProps> = ({
   const setOpen = React.useCallback(
     (nextOpen: boolean) => {
       setOpenState(nextOpen);
+      if (nextOpen) setView(initialView);
       onOpenChange?.(nextOpen);
       if (nextOpen) onOpen?.();
       else onClose?.();
     },
-    [onClose, onOpen, onOpenChange, setOpenState],
+    [initialView, onClose, onOpen, onOpenChange, setOpenState, setView],
   );
 
   const commitValue = React.useCallback(
-    (date: Date | undefined) => {
+    (
+      date: Date | undefined,
+      options: {
+        accept?: boolean;
+        close?: boolean;
+        selectedSection?: PickerSelectedSections;
+        view?: DateTimePickerView;
+      } = {},
+    ) => {
       if (readOnly || disabled) return;
       const nextValue = date ?? null;
       const nextError = validateDateTimeValue(nextValue, validationOptions);
       const context = createPickerChangeContext<DateTimeValidationError>(nextError, 'view');
       setValue(date);
-      setSelectedSections(date ? 'day' : null);
+      setSelectedSections(options.selectedSection ?? (date ? 'day' : null));
+      if (options.view) setView(options.view);
       onValueChange?.(date);
       onChange?.(nextValue, context);
-      if (closeOnSelect) {
+      if (options.accept) {
         onAccept?.(nextValue, context);
-        if (date) setOpen(false);
+        if (options.close && date) setOpen(false);
       }
     },
     [
-      closeOnSelect,
       disabled,
       onAccept,
       onChange,
@@ -314,22 +331,74 @@ const Root: React.FC<DateTimePickerRootProps> = ({
       setOpen,
       setSelectedSections,
       setValue,
+      setView,
       validationOptions,
     ],
+  );
+
+  const commitDatePart = React.useCallback(
+    (date: Date) => {
+      const baseTime = value ?? referenceDate ?? new Date();
+      const nextView = getFirstTimeView(views);
+      commitValue(mergeDateAndTime(date, baseTime), {
+        selectedSection: nextView,
+        view: nextView,
+      });
+    },
+    [commitValue, referenceDate, value, views],
+  );
+
+  const commitTimeValue = React.useCallback(
+    (
+      timeValue: Date,
+      options: {
+        accept?: boolean;
+        close?: boolean;
+      } = {},
+    ) => {
+      const baseDate = value ?? referenceDate ?? new Date();
+      const nextValue = mergeDateAndTime(baseDate, timeValue);
+      commitValue(nextValue, {
+        accept: options.accept,
+        close: options.close,
+        selectedSection: 'minutes',
+        view: 'minutes',
+      });
+    },
+    [commitValue, referenceDate, value],
+  );
+
+  const acceptTimeValue = React.useCallback(
+    (timeValue: Date) => {
+      commitTimeValue(timeValue, {
+        accept: true,
+        close: true,
+      });
+    },
+    [commitTimeValue],
   );
 
   return (
     <DateTimePickerProvider
       value={value}
       onValueChange={commitValue}
+      onDateSelect={commitDatePart}
       onTimePartChange={(part) => {
         const nextValue = applyTimePart(value, part, referenceDate ?? new Date());
-        commitValue(nextValue);
-        setSelectedSections(part.second != null ? 'seconds' : 'minutes');
-        setView(part.second != null ? 'seconds' : 'minutes');
+        commitValue(nextValue, {
+          accept: true,
+          close: closeOnSelect,
+          selectedSection: part.second != null ? 'seconds' : 'minutes',
+          view: part.second != null ? 'seconds' : 'minutes',
+        });
       }}
+      onTimeValueChange={commitTimeValue}
+      onTimeAccept={acceptTimeValue}
+      onTimeCancel={() => setOpen(false)}
       open={open}
       onOpenChange={setOpen}
+      view={view}
+      setView={setView}
       calendarProps={{
         minDate,
         maxDate,
@@ -389,7 +458,7 @@ const Calendar = React.forwardRef<
       selected={ctx.value}
       onSelect={(v) => {
         if (v instanceof Date) {
-          ctx.onValueChange(ctx.value ? mergeDateAndTime(v, ctx.value) : mergeDateAndTime(v, new Date()));
+          ctx.onDateSelect(v);
         }
       }}
       disabled={calendarDisabled || ctx.readOnly}
@@ -399,6 +468,65 @@ const Calendar = React.forwardRef<
   );
 });
 Calendar.displayName = 'DateTimePicker.Calendar';
+
+const DatePanel = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'div'>>(
+  (props, forwardedRef) => {
+    const ctx = useDateTimePickerContext('DateTimePicker.DatePanel');
+    if (!isDateView(ctx.view)) return null;
+    return <Primitive.div {...props} ref={forwardedRef} />;
+  },
+);
+DatePanel.displayName = 'DateTimePicker.DatePanel';
+
+export interface TimePanelRenderProps {
+  value: Date | undefined;
+  onChange: (value: Date) => void;
+  onAccept: (value: Date) => void;
+  onCancel: () => void;
+  view: DateTimePickerView;
+  setView: (view: DateTimePickerView) => void;
+}
+
+export interface TimePanelProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'children'> {
+  children?: React.ReactNode | ((props: TimePanelRenderProps) => React.ReactNode);
+}
+
+const TimePanel = React.forwardRef<HTMLDivElement, TimePanelProps>(
+  ({ children, ...props }, forwardedRef) => {
+    const ctx = useDateTimePickerContext('DateTimePicker.TimePanel');
+    if (!isTimeView(ctx.view)) return null;
+    return (
+      <Primitive.div {...props} ref={forwardedRef}>
+        {typeof children === 'function'
+          ? children({
+              value: ctx.value,
+              onChange: ctx.onTimeValueChange,
+              onAccept: ctx.onTimeAccept,
+              onCancel: ctx.onTimeCancel,
+              view: ctx.view,
+              setView: ctx.setView,
+            })
+          : children}
+      </Primitive.div>
+    );
+  },
+);
+TimePanel.displayName = 'DateTimePicker.TimePanel';
+
+const DateButton = React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<'button'>>(
+  (props, forwardedRef) => {
+    const ctx = useDateTimePickerContext('DateTimePicker.DateButton');
+    return (
+      <Primitive.button
+        type="button"
+        {...props}
+        ref={forwardedRef}
+        onClick={composeEventHandlers(props.onClick, () => ctx.setView('day'))}
+      />
+    );
+  },
+);
+DateButton.displayName = 'DateTimePicker.DateButton';
 
 type Segment = 'hour' | 'minute' | 'second' | 'period';
 
@@ -489,6 +617,18 @@ function formatSegment(segment: Segment, v: TimeValue | undefined, hour12: boole
   return '--';
 }
 
+function isDateView(view: DateTimePickerView): view is Exclude<DateTimePickerView, TimePickerView> {
+  return view === 'day' || view === 'month' || view === 'year';
+}
+
+function isTimeView(view: DateTimePickerView): view is TimePickerView {
+  return view === 'hours' || view === 'minutes' || view === 'seconds' || view === 'meridiem';
+}
+
+function getFirstTimeView(views: DateTimePickerView[] | undefined): TimePickerView {
+  return views?.find(isTimeView) ?? 'hours';
+}
+
 function formatDateTime(date: Date, format: string, locale: string | undefined, hour12: boolean) {
   const time = dateToTimeValue(date, hour12);
   return format.replace(/yyyy|YYYY|MMMM|MMM|MM|M|dd|DD|d|HH|H|hh|h|mm|m|ss|s|aa|a/g, (token) => {
@@ -519,6 +659,9 @@ export {
   Portal,
   Content,
   Calendar,
+  DatePanel,
+  TimePanel,
+  DateButton,
   SegmentField as Segment,
   Loading,
   Value,

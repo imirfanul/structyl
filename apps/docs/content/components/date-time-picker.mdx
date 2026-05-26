@@ -1,11 +1,11 @@
 ---
 title: DateTimePicker
-description: MUI-style date and time picker.
+description: MUI-style date and time picker with a date-first flow.
 ---
 
 # DateTimePicker
 
-MUI-style date and time picker with one value, shared validation and compound calendar/time composition.
+MUI-style date and time picker with one value, shared validation and a date-first flow. After the user picks a date, the popover swaps to the time picker so the time is selected as a separate step.
 
 ## Installation
 
@@ -28,6 +28,7 @@ export function Example() {
       maxDateTime={new Date(2026, 5, 30, 18, 0)}
       minutesStep={15}
       format="MM/dd/yyyy HH:mm"
+      helperText="Select a date first, then choose the time."
     />
   );
 }
@@ -35,8 +36,8 @@ export function Example() {
 
 ## API Reference
 
-Supports the MUI DateTimePicker-style prop surface: `value`, `defaultValue`, `onChange`, `onAccept`, `onError`, `open`, `views`, `view`, `openTo`, `minDateTime`, `maxDateTime`, `minDate`, `maxDate`, `minTime`, `maxTime`, `ampm`, `minutesStep`, `timeSteps`, validation callbacks, loading props, slots, slotProps and `sx`.
+Supports the MUI DateTimePicker-style prop surface: `value`, `defaultValue`, `onChange`, `onAccept`, `onError`, `open`, `views`, `view`, `openTo`, `minDateTime`, `maxDateTime`, `minDate`, `maxDate`, `minTime`, `maxTime`, `ampm`, `minutesStep`, `timeSteps`, validation callbacks, loading props, slots, slotProps and `sx`. The default styled picker shows the calendar first, then shows the time picker after date selection.
 
 ## Accessibility
 
-The calendar uses grid semantics and the time segments use spinbutton semantics with arrow-key adjustment.
+The calendar uses grid semantics. The default time panel uses analog clock number buttons with Cancel/OK actions, while the compound `DateTimePicker.Segment` primitive remains available for spinbutton-style custom layouts.

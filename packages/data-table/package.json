@@ -15,7 +15,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
@@ -26,20 +28,23 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@tanstack/react-table": "^8.20.5",
-    "@tanstack/react-virtual": "^3.10.8",
+    "@aura-ui/hooks": "workspace:*",
+    "@aura-ui/icons": "workspace:*",
     "@aura-ui/primitives": "workspace:*",
     "@aura-ui/styled": "workspace:*",
-    "@aura-ui/hooks": "workspace:*",
     "@aura-ui/utils": "workspace:*",
-    "@aura-ui/icons": "workspace:*"
+    "@tanstack/react-table": "^8.20.5",
+    "@tanstack/react-virtual": "^3.10.8",
+    "xlsx": "^0.18.5"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^16.0.1",
     "@types/react": "^19.0.0",
+    "jsdom": "^25.0.1",
     "react": "^19.0.0",
     "tsup": "^8.3.0",
     "typescript": "^5.6.3",

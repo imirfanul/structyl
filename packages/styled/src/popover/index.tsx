@@ -11,17 +11,21 @@ const Portal = PopoverPrimitive.Portal;
 const Close = PopoverPrimitive.Close;
 const Arrow = PopoverPrimitive.Arrow;
 
+type PopoverContentProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> & {
+  container?: Element | DocumentFragment | null;
+};
+
 const Content = React.forwardRef<
   React.ElementRef<typeof PopoverPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
->(({ className, align = 'center', sideOffset = 6, ...props }, ref) => (
-  <PopoverPrimitive.Portal>
+  PopoverContentProps
+>(({ className, align = 'center', sideOffset = 6, container, ...props }, ref) => (
+  <PopoverPrimitive.Portal container={container ?? undefined}>
     <PopoverPrimitive.Content
       ref={ref}
       align={align}
       sideOffset={sideOffset}
       className={cn(
-        'z-50 w-72 rounded-xl border border-border bg-popover/95 backdrop-blur-glass p-4 text-popover-foreground shadow-overlay outline-none',
+        'border-border bg-popover/95 backdrop-blur-glass text-popover-foreground shadow-overlay z-50 w-72 rounded-xl border p-4 outline-none',
         'origin-[var(--aura-ui-popper-transform-origin,center)]',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',

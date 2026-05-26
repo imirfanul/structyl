@@ -67,6 +67,7 @@ const SearchInput = React.forwardRef<
 SearchInput.displayName = 'Select.SearchInput';
 
 type SelectContentProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content> & {
+  container?: Element | DocumentFragment | null;
   options?: SelectOption[];
   optionHeight?: number;
   optionOverscan?: number;
@@ -90,11 +91,12 @@ const Content = React.forwardRef<
       optionEmptyMessage,
       renderOption,
       showCreateItem = true,
+      container,
       ...props
     },
     ref,
   ) => (
-    <SelectPrimitive.Portal>
+    <SelectPrimitive.Portal container={container ?? undefined}>
       <SelectPrimitive.Content
         ref={ref}
         position={position}

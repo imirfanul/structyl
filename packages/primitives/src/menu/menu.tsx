@@ -116,9 +116,9 @@ Root.displayName = 'Menu.Root';
 
 /* ─── Anchor ──────────────────────────────────────────────────────── */
 
-const Anchor = React.forwardRef<HTMLDivElement, MenuAnchorProps>(
-  (props, forwardedRef) => <Popper.Anchor {...props} ref={forwardedRef} />,
-);
+const Anchor = React.forwardRef<HTMLDivElement, MenuAnchorProps>((props, forwardedRef) => (
+  <Popper.Anchor {...props} ref={forwardedRef} />
+));
 Anchor.displayName = 'Menu.Anchor';
 
 /* ─── Portal ──────────────────────────────────────────────────────── */
@@ -154,182 +154,183 @@ const [MenuContentContextProvider, useMenuContentContext] =
 type GraceIntent = { area: Point[]; side: 'top' | 'right' | 'bottom' | 'left' };
 type Point = { x: number; y: number };
 
-const Content = React.forwardRef<HTMLDivElement, MenuContentProps>(
-  (props, forwardedRef) => {
-    const portalCtx = React.useContext(PortalContext);
-    const ctx = useMenuContext('Menu.Content');
-    const rootCtx = useMenuRootContext('Menu.Content');
-    const {
-      forceMount = portalCtx.forceMount,
-      loop = false,
-      onCloseAutoFocus,
-      onEscapeKeyDown,
-      onPointerDownOutside,
-      onFocusOutside,
-      onInteractOutside,
-      side,
-      sideOffset,
-      align,
-      alignOffset,
-      avoidCollisions,
-      collisionPadding,
-      ...contentProps
-    } = props;
+const Content = React.forwardRef<HTMLDivElement, MenuContentProps>((props, forwardedRef) => {
+  const portalCtx = React.useContext(PortalContext);
+  const ctx = useMenuContext('Menu.Content');
+  const rootCtx = useMenuRootContext('Menu.Content');
+  const {
+    forceMount = portalCtx.forceMount,
+    loop = false,
+    onCloseAutoFocus,
+    onEscapeKeyDown,
+    onPointerDownOutside,
+    onFocusOutside,
+    onInteractOutside,
+    side,
+    sideOffset,
+    align,
+    alignOffset,
+    avoidCollisions,
+    collisionBoundary,
+    collisionPadding,
+    strategy,
+    sticky,
+    hideWhenDetached,
+    updatePositionStrategy,
+    ...contentProps
+  } = props;
 
-    const composedRefs = useComposedRefs(forwardedRef, ctx.onContentChange);
-    const [currentItemId, setCurrentItemId] = React.useState<string | null>(null);
-    const contentRef = React.useRef<HTMLDivElement>(null);
-    const composedAllRefs = useComposedRefs(forwardedRef, contentRef, ctx.onContentChange);
-    const searchRef = React.useRef('');
-    const timerRef = React.useRef(0);
-    const pointerDirRef = React.useRef<'right' | 'left'>('right');
-    const lastPointerXRef = React.useRef(0);
-    const pointerGraceTimerRef = React.useRef(0);
-    const pointerGraceIntentRef = React.useRef<GraceIntent | null>(null);
+  const [currentItemId, setCurrentItemId] = React.useState<string | null>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const composedAllRefs = useComposedRefs(forwardedRef, contentRef, ctx.onContentChange);
+  const searchRef = React.useRef('');
+  const timerRef = React.useRef(0);
+  const pointerDirRef = React.useRef<'right' | 'left'>('right');
+  const lastPointerXRef = React.useRef(0);
+  const pointerGraceTimerRef = React.useRef(0);
+  const pointerGraceIntentRef = React.useRef<GraceIntent | null>(null);
 
-    useScrollLock(rootCtx.modal && ctx.open);
+  useScrollLock(rootCtx.modal && ctx.open);
 
-    const handleTypeaheadSearch = (key: string) => {
-      const search = searchRef.current + key;
-      const items = getOpenItems(contentRef.current);
-      const focusedItem = document.activeElement as HTMLElement | null;
-      const currentMatch = items.find((i) => i === focusedItem)?.textContent ?? '';
-      const values = items.map((i) => i.textContent || '');
-      const nextMatch = getNextMatch(values, search, currentMatch);
-      const newItem = items.find((i) => i.textContent === nextMatch);
-      function updateSearch(s: string) {
-        searchRef.current = s;
-        window.clearTimeout(timerRef.current);
-        if (s !== '') timerRef.current = window.setTimeout(() => updateSearch(''), 1000);
-      }
-      if (newItem) newItem.focus();
-      updateSearch(search);
-    };
+  const handleTypeaheadSearch = (key: string) => {
+    const search = searchRef.current + key;
+    const items = getOpenItems(contentRef.current);
+    const focusedItem = document.activeElement as HTMLElement | null;
+    const currentMatch = items.find((i) => i === focusedItem)?.textContent ?? '';
+    const values = items.map((i) => i.textContent || '');
+    const nextMatch = getNextMatch(values, search, currentMatch);
+    const newItem = items.find((i) => i.textContent === nextMatch);
+    function updateSearch(s: string) {
+      searchRef.current = s;
+      window.clearTimeout(timerRef.current);
+      if (s !== '') timerRef.current = window.setTimeout(() => updateSearch(''), 1000);
+    }
+    if (newItem) newItem.focus();
+    updateSearch(search);
+  };
 
-    React.useEffect(() => () => window.clearTimeout(timerRef.current), []);
+  React.useEffect(() => () => window.clearTimeout(timerRef.current), []);
 
-    return (
-      <MenuContentContextProvider
-        searchRef={searchRef}
-        onItemEnter={React.useCallback((event) => {
-          if (isPointerMovingToSubmenu(event, pointerGraceIntentRef.current)) {
-            event.preventDefault();
-          }
-        }, [])}
-        onItemLeave={React.useCallback((event) => {
-          if (isPointerMovingToSubmenu(event, pointerGraceIntentRef.current)) return;
-          contentRef.current?.focus();
-          setCurrentItemId(null);
-        }, [])}
-        onTriggerLeave={React.useCallback((event) => {
-          if (isPointerMovingToSubmenu(event, pointerGraceIntentRef.current)) {
-            event.preventDefault();
-          }
-        }, [])}
-        pointerGraceTimerRef={pointerGraceTimerRef}
-        onPointerGraceIntentChange={React.useCallback((intent) => {
-          pointerGraceIntentRef.current = intent;
-        }, [])}
-      >
-        <Presence present={forceMount || ctx.open}>
-          <Popper.Content
-            data-state={ctx.open ? 'open' : 'closed'}
-            side={side}
-            sideOffset={sideOffset}
-            align={align}
-            alignOffset={alignOffset}
-            avoidCollisions={avoidCollisions}
-            collisionPadding={collisionPadding}
+  return (
+    <MenuContentContextProvider
+      searchRef={searchRef}
+      onItemEnter={React.useCallback((event) => {
+        if (isPointerMovingToSubmenu(event, pointerGraceIntentRef.current)) {
+          event.preventDefault();
+        }
+      }, [])}
+      onItemLeave={React.useCallback((event) => {
+        if (isPointerMovingToSubmenu(event, pointerGraceIntentRef.current)) return;
+        contentRef.current?.focus();
+        setCurrentItemId(null);
+      }, [])}
+      onTriggerLeave={React.useCallback((event) => {
+        if (isPointerMovingToSubmenu(event, pointerGraceIntentRef.current)) {
+          event.preventDefault();
+        }
+      }, [])}
+      pointerGraceTimerRef={pointerGraceTimerRef}
+      onPointerGraceIntentChange={React.useCallback((intent) => {
+        pointerGraceIntentRef.current = intent;
+      }, [])}
+    >
+      <Presence present={forceMount || ctx.open}>
+        <Popper.Content
+          data-state={ctx.open ? 'open' : 'closed'}
+          side={side}
+          sideOffset={sideOffset}
+          align={align}
+          alignOffset={alignOffset}
+          avoidCollisions={avoidCollisions}
+          collisionBoundary={collisionBoundary}
+          collisionPadding={collisionPadding}
+          strategy={strategy}
+          sticky={sticky}
+          hideWhenDetached={hideWhenDetached}
+          updatePositionStrategy={updatePositionStrategy}
+        >
+          <FocusGuards />
+          <DismissableLayer
+            asChild
+            disableOutsidePointerEvents={rootCtx.modal && ctx.open}
+            onEscapeKeyDown={onEscapeKeyDown}
+            onPointerDownOutside={onPointerDownOutside}
+            onFocusOutside={onFocusOutside}
+            onInteractOutside={onInteractOutside}
+            onDismiss={() => rootCtx.onClose()}
           >
-            <FocusGuards />
-            <DismissableLayer
-              asChild
-              disableOutsidePointerEvents={rootCtx.modal && ctx.open}
-              onEscapeKeyDown={onEscapeKeyDown}
-              onPointerDownOutside={onPointerDownOutside}
-              onFocusOutside={onFocusOutside}
-              onInteractOutside={onInteractOutside}
-              onDismiss={() => rootCtx.onClose()}
+            <FocusScope
+              loop
+              trapped={rootCtx.modal}
+              onMountAutoFocus={(event) => {
+                event.preventDefault();
+                contentRef.current?.focus({ preventScroll: true });
+              }}
+              onUnmountAutoFocus={onCloseAutoFocus}
+              style={{ display: 'contents' }}
             >
-              <FocusScope
-                loop
-                trapped={rootCtx.modal}
-                onMountAutoFocus={(event) => {
-                  event.preventDefault();
-                  contentRef.current?.focus({ preventScroll: true });
-                }}
-                onUnmountAutoFocus={onCloseAutoFocus}
-                style={{ display: 'contents' }}
+              <RovingFocusGroup
+                asChild
+                dir={rootCtx.dir}
+                orientation="vertical"
+                loop={loop}
+                currentTabStopId={currentItemId}
+                onCurrentTabStopIdChange={setCurrentItemId}
               >
-                <RovingFocusGroup
-                  asChild
+                <Primitive.div
+                  role="menu"
+                  aria-orientation="vertical"
+                  data-state={ctx.open ? 'open' : 'closed'}
                   dir={rootCtx.dir}
-                  orientation="vertical"
-                  loop={loop}
-                  currentTabStopId={currentItemId}
-                  onCurrentTabStopIdChange={setCurrentItemId}
-                >
-                  <Primitive.div
-                    role="menu"
-                    aria-orientation="vertical"
-                    data-state={ctx.open ? 'open' : 'closed'}
-                    dir={rootCtx.dir}
-                    tabIndex={-1}
-                    {...contentProps}
-                    ref={composedAllRefs}
-                    onKeyDown={composeEventHandlers(contentProps.onKeyDown, (event) => {
+                  tabIndex={-1}
+                  {...contentProps}
+                  ref={composedAllRefs}
+                  onKeyDown={composeEventHandlers(contentProps.onKeyDown, (event) => {
+                    const target = event.target as HTMLElement;
+                    const isKeyDownInside = target.closest('[role="menu"]') === event.currentTarget;
+                    const isModifierKey = event.ctrlKey || event.altKey || event.metaKey;
+                    const isCharacterKey = event.key.length === 1;
+                    if (isKeyDownInside) {
+                      if (event.key === 'Tab') event.preventDefault();
+                      if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key);
+                    }
+                    if (event.target !== event.currentTarget) return;
+                    if (!FIRST_LAST_KEYS.includes(event.key)) return;
+                    event.preventDefault();
+                    const items = getOpenItems(event.currentTarget);
+                    if (LAST_KEYS.includes(event.key)) items.reverse();
+                    focusFirst(items);
+                  })}
+                  onBlur={composeEventHandlers(contentProps.onBlur, (event) => {
+                    if (!event.currentTarget.contains(event.target)) {
+                      window.clearTimeout(timerRef.current);
+                      searchRef.current = '';
+                    }
+                  })}
+                  onPointerMove={composeEventHandlers(
+                    contentProps.onPointerMove,
+                    whenMouse((event) => {
                       const target = event.target as HTMLElement;
-                      const isKeyDownInside =
-                        target.closest('[role="menu"]') === event.currentTarget;
-                      const isModifierKey = event.ctrlKey || event.altKey || event.metaKey;
-                      const isCharacterKey = event.key.length === 1;
-                      if (isKeyDownInside) {
-                        if (event.key === 'Tab') event.preventDefault();
-                        if (!isModifierKey && isCharacterKey) handleTypeaheadSearch(event.key);
+                      const pointerXHasChanged = lastPointerXRef.current !== event.clientX;
+                      if (event.currentTarget.contains(target) && pointerXHasChanged) {
+                        const newDir = event.clientX > lastPointerXRef.current ? 'right' : 'left';
+                        pointerDirRef.current = newDir;
+                        lastPointerXRef.current = event.clientX;
                       }
-                      if (event.target !== event.currentTarget) return;
-                      if (!FIRST_LAST_KEYS.includes(event.key)) return;
-                      event.preventDefault();
-                      const items = getOpenItems(event.currentTarget);
-                      if (LAST_KEYS.includes(event.key)) items.reverse();
-                      focusFirst(items);
-                    })}
-                    onBlur={composeEventHandlers(contentProps.onBlur, (event) => {
-                      if (!event.currentTarget.contains(event.target)) {
-                        window.clearTimeout(timerRef.current);
-                        searchRef.current = '';
-                      }
-                    })}
-                    onPointerMove={composeEventHandlers(
-                      contentProps.onPointerMove,
-                      whenMouse((event) => {
-                        const target = event.target as HTMLElement;
-                        const pointerXHasChanged = lastPointerXRef.current !== event.clientX;
-                        if (event.currentTarget.contains(target) && pointerXHasChanged) {
-                          const newDir = event.clientX > lastPointerXRef.current ? 'right' : 'left';
-                          pointerDirRef.current = newDir;
-                          lastPointerXRef.current = event.clientX;
-                        }
-                      }),
-                    )}
-                  />
-                </RovingFocusGroup>
-              </FocusScope>
-            </DismissableLayer>
-          </Popper.Content>
-        </Presence>
-      </MenuContentContextProvider>
-    );
-  },
-);
+                    }),
+                  )}
+                />
+              </RovingFocusGroup>
+            </FocusScope>
+          </DismissableLayer>
+        </Popper.Content>
+      </Presence>
+    </MenuContentContextProvider>
+  );
+});
 Content.displayName = 'Menu.Content';
 
 /* ─── Item ────────────────────────────────────────────────────────── */
-
-interface MenuItemContextValue {
-  disabled: boolean;
-  textValue?: string;
-}
 
 const Item = React.forwardRef<HTMLDivElement, MenuItemProps>((props, forwardedRef) => {
   const { disabled = false, onSelect, ...rest } = props;
@@ -341,7 +342,10 @@ const Item = React.forwardRef<HTMLDivElement, MenuItemProps>((props, forwardedRe
   const handleSelect = () => {
     const menuItem = itemRef.current;
     if (!disabled && menuItem) {
-      const itemSelectEvent = new CustomEvent('menu.itemSelect', { bubbles: true, cancelable: true });
+      const itemSelectEvent = new CustomEvent('menu.itemSelect', {
+        bubbles: true,
+        cancelable: true,
+      });
       menuItem.addEventListener('menu.itemSelect', (e) => onSelect?.(e as unknown as Event), {
         once: true,
       });
@@ -410,11 +414,9 @@ const Label = React.forwardRef<HTMLDivElement, MenuLabelProps>((props, forwarded
 ));
 Label.displayName = 'Menu.Label';
 
-const Separator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>(
-  (props, forwardedRef) => (
-    <Primitive.div role="separator" aria-orientation="horizontal" {...props} ref={forwardedRef} />
-  ),
-);
+const Separator = React.forwardRef<HTMLDivElement, MenuSeparatorProps>((props, forwardedRef) => (
+  <Primitive.div role="separator" aria-orientation="horizontal" {...props} ref={forwardedRef} />
+));
 Separator.displayName = 'Menu.Separator';
 
 /* ─── CheckboxItem / RadioGroup / RadioItem / ItemIndicator ─────────── */
@@ -460,41 +462,35 @@ const [MenuRadioGroupContextProvider, useMenuRadioGroupContext] =
     onValueChange: () => {},
   });
 
-const RadioGroup = React.forwardRef<HTMLDivElement, MenuRadioGroupProps>(
-  (props, forwardedRef) => {
-    const { value, onValueChange = () => {}, ...rest } = props;
-    return (
-      <MenuRadioGroupContextProvider value={value} onValueChange={onValueChange}>
-        <Group {...rest} ref={forwardedRef} />
-      </MenuRadioGroupContextProvider>
-    );
-  },
-);
+const RadioGroup = React.forwardRef<HTMLDivElement, MenuRadioGroupProps>((props, forwardedRef) => {
+  const { value, onValueChange = () => {}, ...rest } = props;
+  return (
+    <MenuRadioGroupContextProvider value={value} onValueChange={onValueChange}>
+      <Group {...rest} ref={forwardedRef} />
+    </MenuRadioGroupContextProvider>
+  );
+});
 RadioGroup.displayName = 'Menu.RadioGroup';
 
-const RadioItem = React.forwardRef<HTMLDivElement, MenuRadioItemProps>(
-  (props, forwardedRef) => {
-    const { value, onSelect, ...rest } = props;
-    const rg = useMenuRadioGroupContext('Menu.RadioItem');
-    const checked = value === rg.value;
-    return (
-      <ItemIndicatorContextProvider checked={checked}>
-        <Item
-          role="menuitemradio"
-          aria-checked={checked}
-          data-state={getCheckedState(checked)}
-          {...rest}
-          ref={forwardedRef}
-          onSelect={composeEventHandlers(
-            onSelect,
-            () => rg.onValueChange(value),
-            { checkForDefaultPrevented: false },
-          )}
-        />
-      </ItemIndicatorContextProvider>
-    );
-  },
-);
+const RadioItem = React.forwardRef<HTMLDivElement, MenuRadioItemProps>((props, forwardedRef) => {
+  const { value, onSelect, ...rest } = props;
+  const rg = useMenuRadioGroupContext('Menu.RadioItem');
+  const checked = value === rg.value;
+  return (
+    <ItemIndicatorContextProvider checked={checked}>
+      <Item
+        role="menuitemradio"
+        aria-checked={checked}
+        data-state={getCheckedState(checked)}
+        {...rest}
+        ref={forwardedRef}
+        onSelect={composeEventHandlers(onSelect, () => rg.onValueChange(value), {
+          checkForDefaultPrevented: false,
+        })}
+      />
+    </ItemIndicatorContextProvider>
+  );
+});
 RadioItem.displayName = 'Menu.RadioItem';
 
 const ItemIndicator = React.forwardRef<HTMLSpanElement, MenuItemIndicatorProps>(
@@ -503,11 +499,7 @@ const ItemIndicator = React.forwardRef<HTMLSpanElement, MenuItemIndicatorProps>(
     const ctx = useItemIndicatorContext('Menu.ItemIndicator');
     return (
       <Presence present={forceMount || ctx.checked === 'indeterminate' || ctx.checked === true}>
-        <Primitive.span
-          data-state={getCheckedState(ctx.checked)}
-          {...rest}
-          ref={forwardedRef}
-        />
+        <Primitive.span data-state={getCheckedState(ctx.checked)} {...rest} ref={forwardedRef} />
       </Presence>
     );
   },
@@ -561,87 +553,85 @@ const Sub: React.FC<{
 };
 Sub.displayName = 'Menu.Sub';
 
-const SubTrigger = React.forwardRef<HTMLDivElement, MenuItemProps>(
-  (props, forwardedRef) => {
-    const ctx = useMenuContext('Menu.SubTrigger');
-    const rootCtx = useMenuRootContext('Menu.SubTrigger');
-    const subCtx = useMenuSubContext('Menu.SubTrigger');
-    const contentCtx = useMenuContentContext('Menu.SubTrigger');
-    const composedRef = useComposedRefs(forwardedRef, subCtx.triggerRef);
-    const openTimerRef = React.useRef(0);
-    const clearOpenTimer = () => {
-      window.clearTimeout(openTimerRef.current);
-      openTimerRef.current = 0;
-    };
-    React.useEffect(() => clearOpenTimer, []);
-    return (
-      <Popper.Anchor asChild>
-        <Item
-          id={subCtx.triggerId}
-          aria-haspopup="menu"
-          aria-expanded={ctx.open}
-          aria-controls={subCtx.contentId}
-          data-state={ctx.open ? 'open' : 'closed'}
-          {...props}
-          ref={composedRef}
-          onClick={(event) => {
-            props.onClick?.(event);
-            if (props.disabled || event.defaultPrevented) return;
-            event.currentTarget.focus();
-            if (!ctx.open) ctx.onOpenChange(true);
-          }}
-          onPointerMove={composeEventHandlers(
-            props.onPointerMove,
-            whenMouse((event) => {
-              contentCtx.onItemEnter(event);
-              if (event.defaultPrevented) return;
-              if (!props.disabled && !ctx.open && !openTimerRef.current) {
-                openTimerRef.current = window.setTimeout(() => {
-                  ctx.onOpenChange(true);
-                  clearOpenTimer();
-                }, 100);
-              }
-            }),
-          )}
-          onPointerLeave={composeEventHandlers(
-            props.onPointerLeave,
-            whenMouse((event) => {
-              clearOpenTimer();
-              const contentRect = ctx.content?.getBoundingClientRect();
-              if (contentRect) {
-                const side = ctx.content!.dataset.side as 'top' | 'right' | 'bottom' | 'left';
-                contentCtx.onPointerGraceIntentChange({
-                  area: [
-                    { x: event.clientX + 1, y: event.clientY },
-                    { x: contentRect.left, y: contentRect.top },
-                    { x: contentRect.right, y: contentRect.top },
-                    { x: contentRect.right, y: contentRect.bottom },
-                    { x: contentRect.left, y: contentRect.bottom },
-                  ],
-                  side: side ?? 'right',
-                });
-                window.clearTimeout(contentCtx.pointerGraceTimerRef.current as unknown as number);
-              } else {
-                contentCtx.onTriggerLeave(event);
-                if (event.defaultPrevented) return;
-                contentCtx.onPointerGraceIntentChange(null);
-              }
-            }),
-          )}
-          onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
-            const isTypingAhead = contentCtx.searchRef.current !== '';
-            if (props.disabled || (isTypingAhead && event.key === ' ')) return;
-            if (SUB_OPEN_KEYS[rootCtx.dir].includes(event.key)) {
-              ctx.onOpenChange(true);
-              ctx.content?.focus();
-              event.preventDefault();
+const SubTrigger = React.forwardRef<HTMLDivElement, MenuItemProps>((props, forwardedRef) => {
+  const ctx = useMenuContext('Menu.SubTrigger');
+  const rootCtx = useMenuRootContext('Menu.SubTrigger');
+  const subCtx = useMenuSubContext('Menu.SubTrigger');
+  const contentCtx = useMenuContentContext('Menu.SubTrigger');
+  const composedRef = useComposedRefs(forwardedRef, subCtx.triggerRef);
+  const openTimerRef = React.useRef(0);
+  const clearOpenTimer = () => {
+    window.clearTimeout(openTimerRef.current);
+    openTimerRef.current = 0;
+  };
+  React.useEffect(() => clearOpenTimer, []);
+  return (
+    <Popper.Anchor asChild>
+      <Item
+        id={subCtx.triggerId}
+        aria-haspopup="menu"
+        aria-expanded={ctx.open}
+        aria-controls={subCtx.contentId}
+        data-state={ctx.open ? 'open' : 'closed'}
+        {...props}
+        ref={composedRef}
+        onClick={(event) => {
+          props.onClick?.(event);
+          if (props.disabled || event.defaultPrevented) return;
+          event.currentTarget.focus();
+          if (!ctx.open) ctx.onOpenChange(true);
+        }}
+        onPointerMove={composeEventHandlers(
+          props.onPointerMove,
+          whenMouse((event) => {
+            contentCtx.onItemEnter(event);
+            if (event.defaultPrevented) return;
+            if (!props.disabled && !ctx.open && !openTimerRef.current) {
+              openTimerRef.current = window.setTimeout(() => {
+                ctx.onOpenChange(true);
+                clearOpenTimer();
+              }, 100);
             }
-          })}
-        />
-      </Popper.Anchor>
-    );
-  },
-);
+          }),
+        )}
+        onPointerLeave={composeEventHandlers(
+          props.onPointerLeave,
+          whenMouse((event) => {
+            clearOpenTimer();
+            const contentRect = ctx.content?.getBoundingClientRect();
+            if (contentRect) {
+              const side = ctx.content!.dataset.side as 'top' | 'right' | 'bottom' | 'left';
+              contentCtx.onPointerGraceIntentChange({
+                area: [
+                  { x: event.clientX + 1, y: event.clientY },
+                  { x: contentRect.left, y: contentRect.top },
+                  { x: contentRect.right, y: contentRect.top },
+                  { x: contentRect.right, y: contentRect.bottom },
+                  { x: contentRect.left, y: contentRect.bottom },
+                ],
+                side: side ?? 'right',
+              });
+              window.clearTimeout(contentCtx.pointerGraceTimerRef.current as unknown as number);
+            } else {
+              contentCtx.onTriggerLeave(event);
+              if (event.defaultPrevented) return;
+              contentCtx.onPointerGraceIntentChange(null);
+            }
+          }),
+        )}
+        onKeyDown={composeEventHandlers(props.onKeyDown, (event) => {
+          const isTypingAhead = contentCtx.searchRef.current !== '';
+          if (props.disabled || (isTypingAhead && event.key === ' ')) return;
+          if (SUB_OPEN_KEYS[rootCtx.dir].includes(event.key)) {
+            ctx.onOpenChange(true);
+            ctx.content?.focus();
+            event.preventDefault();
+          }
+        })}
+      />
+    </Popper.Anchor>
+  );
+});
 SubTrigger.displayName = 'Menu.SubTrigger';
 
 const SubContent = React.forwardRef<HTMLDivElement, Omit<MenuContentProps, 'side' | 'align'>>(
@@ -712,7 +702,7 @@ function focusFirst(items: HTMLElement[]) {
 
 function getNextMatch(values: string[], search: string, currentMatch?: string) {
   const isRepeated = search.length > 1 && Array.from(search).every((c) => c === search[0]);
-  const normalized = isRepeated ? search[0] ?? '' : search;
+  const normalized = isRepeated ? (search[0] ?? '') : search;
   const currentMatchIndex = currentMatch ? values.indexOf(currentMatch) : -1;
   let wrapped = wrapArray(values, Math.max(currentMatchIndex, 0));
   const excludeCurrentMatch = normalized.length === 1;
@@ -729,10 +719,7 @@ function whenMouse<E extends React.PointerEvent>(handler: (e: E) => void) {
   return (event: E) => (event.pointerType === 'mouse' ? handler(event) : undefined);
 }
 
-function isPointerMovingToSubmenu(
-  event: React.PointerEvent,
-  intent: GraceIntent | null,
-): boolean {
+function isPointerMovingToSubmenu(event: React.PointerEvent, intent: GraceIntent | null): boolean {
   if (!intent) return false;
   const cursor = { x: event.clientX, y: event.clientY };
   return isPointInPolygon(cursor, intent.area);
