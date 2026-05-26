@@ -1,0 +1,764 @@
+'use client';
+
+import * as React from 'react';
+import { Copy, Check, Search, X } from '@aura-ui/icons';
+import { Button } from '@aura-ui/styled';
+import {
+  useBoolean, useToggle, useCounter, usePrevious,
+  useDebounce, useThrottle, useLocalStorage, useCopyToClipboard,
+  useMediaQuery, useDarkMode, useWindowSize, useClickOutside,
+  useHotkeys, useMount, useUnmount, useUpdateEffect, useId,
+} from '@aura-ui/hooks';
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Types
+───────────────────────────────────────────────────────────────────────────── */
+
+interface HookDef {
+  name: string;
+  category: string;
+  description: string;
+  signature: string;
+  params: Array<{ name: string; type: string; description: string }>;
+  returns: string;
+  demo: React.FC;
+  code: string;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Demo components
+───────────────────────────────────────────────────────────────────────────── */
+
+function UseBooleanDemo() {
+  const { value, on, off, toggle } = useBoolean(false);
+  return (
+    <div className="flex flex-col items-center gap-5">
+      <div className={`flex h-14 w-14 items-center justify-center rounded-2xl text-xs font-bold tracking-widest transition-all duration-200 ${value ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20' : 'bg-muted text-muted-foreground'}`}>
+        {value ? 'ON' : 'OFF'}
+      </div>
+      <div className="flex gap-2">
+        <DemoBtn variant="ghost" onClick={on}>on()</DemoBtn>
+        <DemoBtn variant="ghost" onClick={off}>off()</DemoBtn>
+        <DemoBtn onClick={toggle}>toggle()</DemoBtn>
+      </div>
+    </div>
+  );
+}
+
+function UseToggleDemo() {
+  const [value, toggle] = useToggle(false);
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <button
+        onClick={toggle}
+        className={`relative h-8 w-14 rounded-full border-2 transition-all duration-200 ${value ? 'border-primary bg-primary' : 'border-border bg-muted'}`}
+        role="switch"
+        aria-checked={value}
+      >
+        <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-bg shadow transition-transform duration-200 ${value ? 'translate-x-6' : 'translate-x-0'}`} />
+      </button>
+      <Code>value: {String(value)}</Code>
+    </div>
+  );
+}
+
+function UseCounterDemo() {
+  const { count, increment, decrement, reset } = useCounter(0);
+  return (
+    <div className="flex flex-col items-center gap-5">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-muted/30 font-mono text-3xl font-bold tabular-nums">
+        {count}
+      </div>
+      <div className="flex gap-2">
+        <DemoBtn variant="ghost" onClick={() => decrement()}>−1</DemoBtn>
+        <DemoBtn variant="ghost" onClick={reset}>reset</DemoBtn>
+        <DemoBtn onClick={() => increment()}>+1</DemoBtn>
+      </div>
+      <button onClick={() => increment(10)} className="text-[11px] text-muted-foreground transition-colors hover:text-fg">
+        increment(10)
+      </button>
+    </div>
+  );
+}
+
+function UsePreviousDemo() {
+  const { count, increment, decrement } = useCounter(0);
+  const prev = usePrevious(count);
+  return (
+    <div className="flex flex-col items-center gap-5">
+      <div className="grid grid-cols-2 gap-3 text-center">
+        <div className="rounded-xl border border-border bg-muted/20 px-5 py-3">
+          <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">Previous</p>
+          <p className="font-mono text-2xl font-bold text-muted-foreground">{prev ?? '—'}</p>
+        </div>
+        <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-3">
+          <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">Current</p>
+          <p className="font-mono text-2xl font-bold">{count}</p>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <DemoBtn variant="ghost" onClick={() => decrement()}>−1</DemoBtn>
+        <DemoBtn onClick={() => increment()}>+1</DemoBtn>
+      </div>
+    </div>
+  );
+}
+
+function UseDebounceDemo() {
+  const [input, setInput] = React.useState('');
+  const debounced = useDebounce(input, 500);
+  return (
+    <div className="w-full max-w-xs space-y-3">
+      <DemoInput value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type quickly…" />
+      <div className="space-y-1.5 rounded-xl border border-border bg-muted/10 p-3 font-mono text-xs">
+        <Row label="raw" value={input || '""'} />
+        <Row label="debounced (500ms)" value={debounced || '""'} accent />
+      </div>
+    </div>
+  );
+}
+
+function UseThrottleDemo() {
+  const [raw, setRaw] = React.useState(50);
+  const throttled = useThrottle(raw, 400);
+  return (
+    <div className="w-full max-w-xs space-y-4">
+      <input type="range" min={0} max={100} value={raw} onChange={(e) => setRaw(Number(e.target.value))} className="w-full accent-primary" />
+      <div className="space-y-1.5 rounded-xl border border-border bg-muted/10 p-3 font-mono text-xs">
+        <Row label="raw" value={String(raw)} />
+        <Row label="throttled (400ms)" value={String(throttled)} accent />
+      </div>
+    </div>
+  );
+}
+
+function UseLocalStorageDemo() {
+  const [name, setName, remove] = useLocalStorage('aura-hooks-demo', '');
+  return (
+    <div className="w-full max-w-xs space-y-3">
+      <DemoInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Type — it persists on refresh" />
+      <div className="flex items-center gap-2">
+        <Code className="flex-1 truncate">&quot;aura-hooks-demo&quot;: {name ? `"${name}"` : 'null'}</Code>
+        <button onClick={remove} className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">clear</button>
+      </div>
+    </div>
+  );
+}
+
+function UseCopyToClipboardDemo() {
+  const { copy, copied } = useCopyToClipboard();
+  const text = `import { useCopyToClipboard } from '@aura-ui/hooks';`;
+  return (
+    <div className="w-full max-w-sm space-y-3">
+      <Code className="truncate text-[10px]">{text}</Code>
+      <Button onClick={() => copy(text)} className="w-full gap-2">
+        {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+        {copied ? 'Copied to clipboard!' : 'Copy to clipboard'}
+      </Button>
+    </div>
+  );
+}
+
+function UseMediaQueryDemo() {
+  const sm  = useMediaQuery('(min-width: 640px)');
+  const md  = useMediaQuery('(min-width: 768px)');
+  const lg  = useMediaQuery('(min-width: 1024px)');
+  const rm  = useMediaQuery('(prefers-reduced-motion: reduce)');
+  return (
+    <div className="w-full max-w-xs space-y-1.5">
+      {([['sm ≥640px', sm], ['md ≥768px', md], ['lg ≥1024px', lg], ['reduced-motion', rm]] as [string, boolean][]).map(([label, match]) => (
+        <div key={label} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
+          <Code>{label}</Code>
+          <Badge active={match}>{match ? 'true' : 'false'}</Badge>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function UseDarkModeDemo() {
+  const dark = useDarkMode();
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <div className={`flex h-16 w-16 items-center justify-center rounded-2xl text-3xl transition-colors ${dark ? 'bg-slate-800' : 'bg-amber-50 border border-amber-200'}`}>
+        {dark ? '🌙' : '☀️'}
+      </div>
+      <Code>isDark: {String(dark)}</Code>
+      <p className="text-center text-[11px] text-muted-foreground">Change your OS color scheme to update</p>
+    </div>
+  );
+}
+
+function UseWindowSizeDemo() {
+  const { width, height } = useWindowSize();
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div className="grid grid-cols-2 gap-3">
+        {[['Width', width], ['Height', height]].map(([label, val]) => (
+          <div key={String(label)} className="rounded-xl border border-border bg-muted/20 px-6 py-4 text-center">
+            <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
+            <p className="font-mono text-2xl font-bold tabular-nums">{val}</p>
+            <p className="text-[10px] text-muted-foreground">px</p>
+          </div>
+        ))}
+      </div>
+      <p className="text-[11px] text-muted-foreground">Resize the window to see it update</p>
+    </div>
+  );
+}
+
+function UseClickOutsideDemo() {
+  const [active, setActive] = React.useState(false);
+  const [clicks, setClicks] = React.useState(0);
+  const ref = React.useRef<HTMLDivElement>(null);
+  useClickOutside(ref, () => { if (active) setClicks((c) => c + 1); });
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <Button size="sm" variant={active ? 'default' : 'outline'} onClick={() => setActive((v) => !v)}>
+        {active ? 'Watching…' : 'Start watching'}
+      </Button>
+      {active && (
+        <div ref={ref} className="flex h-24 w-48 items-center justify-center rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 text-sm text-muted-foreground">
+          Click outside me
+        </div>
+      )}
+      {clicks > 0 && <Code>outside clicks: <span className="text-primary">{clicks}</span></Code>}
+    </div>
+  );
+}
+
+function UseHotkeysDemo() {
+  const [log, setLog] = React.useState<string[]>([]);
+  const push = React.useCallback((msg: string) => {
+    setLog((p) => [`${new Date().toLocaleTimeString()} — ${msg}`, ...p].slice(0, 5));
+  }, []);
+  useHotkeys('shift+a', () => push('Shift + A'));
+  useHotkeys('ctrl+k', () => push('Ctrl + K'));
+  useHotkeys('mod+shift+p', () => push('Mod + Shift + P'));
+  return (
+    <div className="w-full max-w-xs space-y-3">
+      <div className="flex flex-wrap gap-1.5">
+        {['Shift + A', 'Ctrl + K', 'Mod + Shift + P'].map((k) => (
+          <kbd key={k} className="rounded-md border border-border bg-muted px-2 py-0.5 font-mono text-[11px]">{k}</kbd>
+        ))}
+      </div>
+      <div className="min-h-[72px] rounded-xl border border-border bg-muted/10 p-3">
+        {log.length === 0
+          ? <p className="text-[11px] italic text-muted-foreground">Press a combo above…</p>
+          : log.map((e, i) => (
+              <p key={i} className={`font-mono text-[11px] ${i === 0 ? 'text-primary' : 'text-muted-foreground'}`}>{e}</p>
+            ))
+        }
+      </div>
+    </div>
+  );
+}
+
+function UseMountDemo() {
+  const [mounted, setMounted] = React.useState(false);
+  const [time, setTime] = React.useState<string | null>(null);
+  function Inner() {
+    useMount(() => setTime(new Date().toLocaleTimeString()));
+    return <Code>mounted at {time}</Code>;
+  }
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Button size="sm" variant={mounted ? 'outline' : 'default'} onClick={() => setMounted((v) => !v)}>
+        {mounted ? 'Unmount' : 'Mount'} component
+      </Button>
+      {mounted && <Inner />}
+    </div>
+  );
+}
+
+function UseUnmountDemo() {
+  const [show, setShow] = React.useState(false);
+  const [last, setLast] = React.useState<string | null>(null);
+  function Child() {
+    useUnmount(() => setLast(new Date().toLocaleTimeString()));
+    return <div className="rounded-xl border border-border bg-muted/20 px-4 py-3 text-sm text-muted-foreground">Mounted — press Unmount</div>;
+  }
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <Button size="sm" onClick={() => setShow((v) => !v)} variant={show ? 'outline' : 'default'}>
+        {show ? 'Unmount' : 'Mount'} component
+      </Button>
+      {show && <Child />}
+      {last && <Code>last unmount: <span className="text-primary">{last}</span></Code>}
+    </div>
+  );
+}
+
+function UseUpdateEffectDemo() {
+  const [input, setInput] = React.useState('');
+  const [count, setCount] = React.useState(0);
+  useUpdateEffect(() => { setCount((c) => c + 1); }, [input]);
+  return (
+    <div className="w-full max-w-xs space-y-3">
+      <DemoInput value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type to trigger updates…" />
+      <div className="flex items-center justify-between rounded-xl border border-border bg-muted/10 px-4 py-2.5">
+        <span className="text-[12px] text-muted-foreground">Updates fired (mount skipped)</span>
+        <span className="font-mono font-bold text-primary">{count}</span>
+      </div>
+    </div>
+  );
+}
+
+function UseIdDemo() {
+  const a = useId('input');
+  const b = useId('label');
+  const c = useId();
+  return (
+    <div className="w-full max-w-xs space-y-2">
+      {[['useId("input")', a], ['useId("label")', b], ['useId()', c]].map(([label, val]) => (
+        <div key={String(label)} className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
+          <Code>{label}</Code>
+          <span className="font-mono text-[11px] text-primary">{val}</span>
+        </div>
+      ))}
+      <p className="text-[11px] text-muted-foreground">Stable across re-renders · SSR-safe</p>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Small shared demo primitives
+───────────────────────────────────────────────────────────────────────────── */
+
+function DemoBtn({ children, onClick, variant = 'default' }: { children: React.ReactNode; onClick?: () => void; variant?: 'default' | 'ghost' }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors ${
+        variant === 'ghost'
+          ? 'border border-border text-muted-foreground hover:bg-muted hover:text-fg'
+          : 'bg-primary text-primary-foreground hover:bg-primary/90'
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function DemoInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <input
+      {...props}
+      className="h-9 w-full rounded-xl border border-border/70 bg-muted/20 px-3 text-sm outline-none placeholder:text-muted-foreground/50 focus-visible:border-ring/50 focus-visible:ring-2 focus-visible:ring-ring/20 transition-shadow"
+    />
+  );
+}
+
+function Code({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return <code className={`rounded-lg border border-border/50 bg-muted/30 px-2.5 py-1 font-mono text-[11px] text-muted-foreground ${className}`}>{children}</code>;
+}
+
+function Row({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-muted-foreground">{label}</span>
+      <span className={accent ? 'text-primary' : 'text-fg'}>{value}</span>
+    </div>
+  );
+}
+
+function Badge({ children, active }: { children: React.ReactNode; active: boolean }) {
+  return (
+    <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${active ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>
+      {children}
+    </span>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Hook registry
+───────────────────────────────────────────────────────────────────────────── */
+
+const HOOKS: HookDef[] = [
+  {
+    name: 'useBoolean', category: 'State',
+    description: 'Boolean state with named semantic setters: on, off, toggle.',
+    signature: '(initial?: boolean) => { value, on, off, toggle, set }',
+    params: [{ name: 'initial', type: 'boolean', description: 'Starting value. Defaults to false.' }],
+    returns: '{ value: boolean, on, off, toggle, set }',
+    demo: UseBooleanDemo,
+    code: `import { useBoolean } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const { value, on, off, toggle } = useBoolean(false);\n  return (\n    <>\n      <p>Value: {String(value)}</p>\n      <button onClick={on}>On</button>\n      <button onClick={off}>Off</button>\n      <button onClick={toggle}>Toggle</button>\n    </>\n  );\n}`,
+  },
+  {
+    name: 'useToggle', category: 'State',
+    description: 'Boolean state with a single toggle function and optional value setter.',
+    signature: '(initial?: boolean) => [boolean, toggle, setValue]',
+    params: [{ name: 'initial', type: 'boolean', description: 'Starting value. Defaults to false.' }],
+    returns: '[value: boolean, toggle: () => void, setValue: Dispatch<boolean>]',
+    demo: UseToggleDemo,
+    code: `import { useToggle } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const [on, toggle] = useToggle(false);\n  return <button onClick={toggle}>{on ? 'On' : 'Off'}</button>;\n}`,
+  },
+  {
+    name: 'useCounter', category: 'State',
+    description: 'Numeric counter with increment, decrement, reset, and custom step support.',
+    signature: '(initial?: number) => { count, increment, decrement, reset, set }',
+    params: [{ name: 'initial', type: 'number', description: 'Starting count. Defaults to 0.' }],
+    returns: '{ count: number, increment(by?), decrement(by?), reset, set }',
+    demo: UseCounterDemo,
+    code: `import { useCounter } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const { count, increment, decrement, reset } = useCounter(0);\n  return (\n    <>\n      <span>{count}</span>\n      <button onClick={() => increment()}>+1</button>\n      <button onClick={() => increment(10)}>+10</button>\n      <button onClick={() => decrement()}>-1</button>\n      <button onClick={reset}>reset</button>\n    </>\n  );\n}`,
+  },
+  {
+    name: 'usePrevious', category: 'State',
+    description: 'Captures the value from the previous render. Useful for comparing changes.',
+    signature: '<T>(value: T) => T | undefined',
+    params: [{ name: 'value', type: 'T', description: 'The value to track across renders.' }],
+    returns: 'T | undefined — undefined on the first render.',
+    demo: UsePreviousDemo,
+    code: `import { usePrevious } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const [count, setCount] = useState(0);\n  const previous = usePrevious(count);\n  return <p>Previous: {previous} → Current: {count}</p>;\n}`,
+  },
+  {
+    name: 'useDebounce', category: 'Performance',
+    description: 'Delays updating a value until after a quiet period. Ideal for search inputs and API calls.',
+    signature: '<T>(value: T, delay?: number) => T',
+    params: [
+      { name: 'value', type: 'T', description: 'The rapidly changing value.' },
+      { name: 'delay', type: 'number', description: 'Quiet period in ms. Defaults to 300.' },
+    ],
+    returns: 'T — the debounced value.',
+    demo: UseDebounceDemo,
+    code: `import { useDebounce } from '@aura-ui/hooks';\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const debounced = useDebounce(query, 500);\n\n  useEffect(() => {\n    if (debounced) fetchResults(debounced);\n  }, [debounced]);\n\n  return <input value={query} onChange={e => setQuery(e.target.value)} />;\n}`,
+  },
+  {
+    name: 'useThrottle', category: 'Performance',
+    description: 'Limits how often a value updates to at most once per interval.',
+    signature: '<T>(value: T, delay?: number) => T',
+    params: [
+      { name: 'value', type: 'T', description: 'The rapidly changing value.' },
+      { name: 'delay', type: 'number', description: 'Minimum ms between updates. Defaults to 300.' },
+    ],
+    returns: 'T — the throttled value.',
+    demo: UseThrottleDemo,
+    code: `import { useThrottle } from '@aura-ui/hooks';\n\nfunction Scroller() {\n  const [y, setY] = useState(0);\n  const throttledY = useThrottle(y, 100);\n  // ...\n  return <p>Scroll: {throttledY}px</p>;\n}`,
+  },
+  {
+    name: 'useLocalStorage', category: 'Browser',
+    description: 'State that persists in localStorage and syncs across browser tabs automatically.',
+    signature: '<T>(key: string, initial: T) => [T, setValue, remove]',
+    params: [
+      { name: 'key', type: 'string', description: 'The localStorage key.' },
+      { name: 'initial', type: 'T', description: 'Fallback when key is absent.' },
+    ],
+    returns: '[value: T, setValue, remove: () => void]',
+    demo: UseLocalStorageDemo,
+    code: `import { useLocalStorage } from '@aura-ui/hooks';\n\nfunction Settings() {\n  const [theme, setTheme, clear] = useLocalStorage('theme', 'light');\n  return (\n    <>\n      <p>Theme: {theme}</p>\n      <button onClick={() => setTheme('dark')}>Dark</button>\n      <button onClick={clear}>Clear</button>\n    </>\n  );\n}`,
+  },
+  {
+    name: 'useCopyToClipboard', category: 'Browser',
+    description: 'Copies text to the clipboard. Returns a timed copied state that auto-resets after 2s.',
+    signature: '() => { copy, copied, reset }',
+    params: [],
+    returns: '{ copy: (text) => Promise<boolean>, copied: boolean, reset: () => void }',
+    demo: UseCopyToClipboardDemo,
+    code: `import { useCopyToClipboard } from '@aura-ui/hooks';\n\nfunction CopyBtn({ text }) {\n  const { copy, copied } = useCopyToClipboard();\n  return (\n    <button onClick={() => copy(text)}>\n      {copied ? '✓ Copied!' : 'Copy'}\n    </button>\n  );\n}`,
+  },
+  {
+    name: 'useMediaQuery', category: 'Browser',
+    description: 'Tracks any CSS media query and returns a boolean. SSR-safe with a configurable default.',
+    signature: '(query: string, defaultValue?: boolean) => boolean',
+    params: [
+      { name: 'query', type: 'string', description: 'A valid CSS media query.' },
+      { name: 'defaultValue', type: 'boolean', description: 'Value returned during SSR. Defaults to false.' },
+    ],
+    returns: 'boolean',
+    demo: UseMediaQueryDemo,
+    code: `import { useMediaQuery } from '@aura-ui/hooks';\n\nfunction Layout() {\n  const isMobile = useMediaQuery('(max-width: 767px)');\n  return isMobile ? <MobileNav /> : <DesktopNav />;\n}`,
+  },
+  {
+    name: 'useDarkMode', category: 'Browser',
+    description: 'Returns true when the system prefers a dark color scheme.',
+    signature: '() => boolean',
+    params: [],
+    returns: 'boolean',
+    demo: UseDarkModeDemo,
+    code: `import { useDarkMode } from '@aura-ui/hooks';\n\nfunction Icon() {\n  const dark = useDarkMode();\n  return <span>{dark ? '🌙' : '☀️'}</span>;\n}`,
+  },
+  {
+    name: 'useWindowSize', category: 'Browser',
+    description: 'Tracks the live viewport dimensions. SSR-safe (defaults to 0 × 0).',
+    signature: '() => { width: number, height: number }',
+    params: [],
+    returns: '{ width: number, height: number }',
+    demo: UseWindowSizeDemo,
+    code: `import { useWindowSize } from '@aura-ui/hooks';\n\nfunction Viewport() {\n  const { width, height } = useWindowSize();\n  return <p>{width} × {height}px</p>;\n}`,
+  },
+  {
+    name: 'useClickOutside', category: 'DOM',
+    description: 'Fires a callback when a pointer event lands outside the referenced element. Listens to mousedown and touchstart.',
+    signature: '<T extends HTMLElement>(ref, handler, enabled?) => void',
+    params: [
+      { name: 'ref', type: 'RefObject<T>', description: 'Ref attached to the element to watch.' },
+      { name: 'handler', type: '(e: MouseEvent | TouchEvent) => void', description: 'Called on outside click.' },
+      { name: 'enabled', type: 'boolean', description: 'Whether to listen. Defaults to true.' },
+    ],
+    returns: 'void',
+    demo: UseClickOutsideDemo,
+    code: `import { useClickOutside } from '@aura-ui/hooks';\n\nfunction Dropdown() {\n  const [open, setOpen] = useState(false);\n  const ref = useRef<HTMLDivElement>(null);\n  useClickOutside(ref, () => setOpen(false));\n\n  return (\n    <div ref={ref}>\n      <button onClick={() => setOpen(true)}>Open</button>\n      {open && <Menu />}\n    </div>\n  );\n}`,
+  },
+  {
+    name: 'useHotkeys', category: 'Keyboard',
+    description: 'Binds keyboard shortcut combinations. Supports mod (Ctrl on Windows, Cmd on Mac), shift, alt.',
+    signature: '(keys: string, handler, options?) => void',
+    params: [
+      { name: 'keys', type: 'string', description: 'Combo string, e.g. "mod+k" or "ctrl+shift+s".' },
+      { name: 'handler', type: '(e: KeyboardEvent) => void', description: 'Called when the combo fires.' },
+      { name: 'options.enableOnFormTags', type: 'boolean', description: 'Allow firing in inputs. Default false.' },
+      { name: 'options.preventDefault', type: 'boolean', description: 'Prevent default action. Default true.' },
+    ],
+    returns: 'void',
+    demo: UseHotkeysDemo,
+    code: `import { useHotkeys } from '@aura-ui/hooks';\n\nfunction CommandPalette() {\n  const [open, setOpen] = useState(false);\n  useHotkeys('mod+k', () => setOpen(true));\n  useHotkeys('escape', () => setOpen(false));\n  return open ? <Palette /> : null;\n}`,
+  },
+  {
+    name: 'useMount', category: 'Lifecycle',
+    description: 'Runs a callback exactly once when the component mounts.',
+    signature: '(callback: () => void) => void',
+    params: [{ name: 'callback', type: '() => void', description: 'Function to run on mount.' }],
+    returns: 'void',
+    demo: UseMountDemo,
+    code: `import { useMount } from '@aura-ui/hooks';\n\nfunction Page() {\n  useMount(() => {\n    trackPageView(window.location.pathname);\n  });\n  return <div>...</div>;\n}`,
+  },
+  {
+    name: 'useUnmount', category: 'Lifecycle',
+    description: 'Runs a callback on unmount. Uses a stable ref internally — safe to pass fresh closures.',
+    signature: '(callback: () => void) => void',
+    params: [{ name: 'callback', type: '() => void', description: 'Cleanup function.' }],
+    returns: 'void',
+    demo: UseUnmountDemo,
+    code: `import { useMount, useUnmount } from '@aura-ui/hooks';\n\nfunction Timer() {\n  const id = useRef<number>();\n  useMount(() => { id.current = setInterval(tick, 1000); });\n  useUnmount(() => { clearInterval(id.current); });\n}`,
+  },
+  {
+    name: 'useUpdateEffect', category: 'Lifecycle',
+    description: 'Like useEffect but skips the initial mount — only runs on subsequent dependency changes.',
+    signature: '(effect: EffectCallback, deps?: DependencyList) => void',
+    params: [
+      { name: 'effect', type: 'EffectCallback', description: 'Effect to run on updates.' },
+      { name: 'deps', type: 'DependencyList', description: 'Dependency array, same as useEffect.' },
+    ],
+    returns: 'void',
+    demo: UseUpdateEffectDemo,
+    code: `import { useUpdateEffect } from '@aura-ui/hooks';\n\nfunction Results({ query }: { query: string }) {\n  useUpdateEffect(() => {\n    // Only runs when query changes — NOT on initial mount\n    fetchResults(query);\n  }, [query]);\n}`,
+  },
+  {
+    name: 'useId', category: 'Utility',
+    description: 'Generates a stable unique ID. Thin SSR-safe wrapper around React.useId with optional prefix.',
+    signature: '(prefix?: string) => string',
+    params: [{ name: 'prefix', type: 'string', description: 'Optional string prepended to the ID.' }],
+    returns: 'string — a stable unique ID.',
+    demo: UseIdDemo,
+    code: `import { useId } from '@aura-ui/hooks';\n\nfunction Field({ label }: { label: string }) {\n  const id = useId('field');\n  return (\n    <>\n      <label htmlFor={id}>{label}</label>\n      <input id={id} />\n    </>\n  );\n}`,
+  },
+];
+
+const CATS = ['All', ...new Set(HOOKS.map((h) => h.category))];
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Code block
+───────────────────────────────────────────────────────────────────────────── */
+
+function CodeBlock({ code }: { code: string }) {
+  const [copied, setCopied] = React.useState(false);
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* */ }
+  };
+  return (
+    <div className="overflow-hidden rounded-xl border border-border">
+      <div className="flex items-center justify-between border-b border-border/50 bg-muted/20 px-3.5 py-2">
+        <span className="font-mono text-[11px] font-medium text-muted-foreground">tsx</span>
+        <button onClick={copy} className="flex items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">
+          {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
+          {copied ? 'Copied' : 'Copy'}
+        </button>
+      </div>
+      <pre className="overflow-x-auto bg-muted/10 px-4 py-3.5 font-mono text-[12px] leading-relaxed text-fg">
+        <code>{code}</code>
+      </pre>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Hook card
+───────────────────────────────────────────────────────────────────────────── */
+
+function HookCard({ hook }: { hook: HookDef }) {
+  const [tab, setTab] = React.useState<'preview' | 'code'>('preview');
+  const Demo = hook.demo;
+
+  return (
+    <article className="overflow-hidden rounded-2xl border border-border bg-bg transition-shadow hover:shadow-sm">
+      {/* Header */}
+      <div className="px-5 pt-5 pb-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="font-mono text-[15px] font-semibold tracking-tight">{hook.name}</h2>
+              <span className="rounded-full border border-border/60 bg-muted/40 px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                {hook.category}
+              </span>
+            </div>
+            <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{hook.description}</p>
+          </div>
+        </div>
+        {/* Signature */}
+        <div className="mt-3 overflow-x-auto rounded-lg border border-border/50 bg-muted/20 px-3.5 py-2">
+          <code className="whitespace-nowrap font-mono text-[12px] text-fg">{hook.signature}</code>
+        </div>
+      </div>
+
+      {/* Tab bar */}
+      <div className="flex border-y border-border/50 bg-muted/10">
+        {(['preview', 'code'] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`relative px-5 py-2.5 text-[12px] font-medium capitalize transition-colors ${
+              tab === t ? 'text-fg' : 'text-muted-foreground hover:text-fg'
+            }`}
+          >
+            {tab === t && <span className="absolute bottom-0 left-3 right-3 h-px rounded-full bg-primary" />}
+            {t}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab body */}
+      {tab === 'preview' ? (
+        <div className="flex min-h-[180px] items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#374151_1px,transparent_1px)] bg-[size:16px_16px] p-8">
+          <div className="rounded-2xl border border-border bg-bg px-8 py-6 shadow-sm">
+            <Demo />
+          </div>
+        </div>
+      ) : (
+        <div className="p-4">
+          <CodeBlock code={hook.code} />
+        </div>
+      )}
+
+      {/* Params */}
+      {hook.params.length > 0 && (
+        <div className="border-t border-border/50 px-5 py-4">
+          <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
+            Parameters
+          </p>
+          <div className="overflow-hidden rounded-xl border border-border/60 divide-y divide-border/40">
+            {hook.params.map((p) => (
+              <div key={p.name} className="grid grid-cols-[auto_1fr] gap-x-4 px-4 py-2.5">
+                <code className="font-mono text-[12px] font-medium text-primary">{p.name}</code>
+                <span className="text-[12px] text-muted-foreground">{p.description}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Returns */}
+      <div className="border-t border-border/50 bg-muted/10 px-5 py-3">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">Returns </span>
+        <code className="ml-1 font-mono text-[11px] text-fg">{hook.returns}</code>
+      </div>
+    </article>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Page
+───────────────────────────────────────────────────────────────────────────── */
+
+export default function HooksPage() {
+  const [cat, setCat] = React.useState('All');
+  const [query, setQuery] = React.useState('');
+
+  // Pre-fill search from URL param (e.g. ?q=useDebounce from global search)
+  React.useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q) setQuery(q);
+  }, []);
+
+  const filtered = React.useMemo(
+    () => HOOKS.filter((h) =>
+      (cat === 'All' || h.category === cat) &&
+      h.name.toLowerCase().includes(query.toLowerCase()),
+    ),
+    [cat, query],
+  );
+
+  return (
+    <div className="mx-auto max-w-3xl">
+
+      {/* Page header */}
+      <div className="mb-8 border-b border-border/40 pb-6">
+        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@aura-ui/hooks</p>
+        <h1 className="text-[28px] font-semibold tracking-tight">Hooks</h1>
+        <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+          {HOOKS.length} reusable, SSR-safe, tree-shakeable React hooks. Zero dependencies. Import only what you use.
+        </p>
+        <div className="mt-4 flex items-center gap-2">
+          <code className="rounded-lg border border-border bg-muted/30 px-3 py-1.5 font-mono text-[12px] text-muted-foreground">
+            pnpm add @aura-ui/hooks
+          </code>
+        </div>
+      </div>
+
+      {/* ── Sticky filters ──────────────────────────────────────────────── */}
+      <div className="sticky top-[52px] z-20 -mx-6 mb-6 border-b border-border/50 bg-bg/95 px-6 pb-3 pt-3 backdrop-blur-md md:-mx-10 md:px-10 lg:-mx-14 lg:px-14">
+        {/* Search */}
+        <div className="relative mb-2.5">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={`Search ${HOOKS.length} hooks…`}
+            className="h-9 w-full max-w-xs rounded-xl border border-border/70 bg-muted/20 pl-9 pr-8 text-sm outline-none placeholder:text-muted-foreground/50 focus-visible:border-ring/50 focus-visible:ring-2 focus-visible:ring-ring/20 transition-shadow"
+          />
+          {query && (
+            <button onClick={() => setQuery('')} className="absolute left-[calc(16.5rem-1.75rem)] top-1/2 -translate-y-1/2 text-muted-foreground hover:text-fg">
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* Category chips */}
+        <div className="flex flex-wrap gap-1.5">
+          {CATS.map((c) => {
+            const count = c === 'All' ? HOOKS.length : HOOKS.filter((h) => h.category === c).length;
+            return (
+              <button
+                key={c}
+                onClick={() => setCat(c)}
+                className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-medium transition-colors ${
+                  cat === c
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border/60 text-muted-foreground hover:border-border hover:text-fg'
+                }`}
+              >
+                {c}
+                <span className={`rounded-full px-1 text-[9px] font-semibold ${cat === c ? 'bg-white/20' : 'bg-muted text-muted-foreground'}`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Hook cards */}
+      {filtered.length === 0 ? (
+        <div className="flex flex-col items-center py-20 text-center">
+          <p className="text-sm font-medium">No hooks found</p>
+          <Button variant="ghost" size="sm" className="mt-3" onClick={() => { setQuery(''); setCat('All'); }}>
+            Clear filters
+          </Button>
+        </div>
+      ) : (
+        <div className="space-y-5">
+          {filtered.map((h) => <HookCard key={h.name} hook={h} />)}
+        </div>
+      )}
+    </div>
+  );
+}
