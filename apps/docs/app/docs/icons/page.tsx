@@ -245,7 +245,8 @@ export default function IconsPage() {
 
   // Pre-fill search from URL param (e.g. ?q=arrow from global search)
   React.useEffect(() => {
-    const q = new URLSearchParams(window.location.search).get('q');
+    if (typeof window === 'undefined') return;
+    const q = new window.URLSearchParams(window.location.search).get('q');
     if (q) setQuery(q);
   }, []);
 

@@ -3,38 +3,83 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Sparkles, Search, X, BookOpen, Zap, Accessibility, LayoutGrid, Code2, Package, Sun, Moon, ChevronRight } from '@aura-ui/icons';
+import {
+  Sparkles,
+  Search,
+  X,
+  BookOpen,
+  Zap,
+  Accessibility,
+  LayoutGrid,
+  Code2,
+  Package,
+  Sun,
+  Moon,
+  ChevronRight,
+  Palette,
+  History,
+  Keyboard,
+  Clock,
+} from '@aura-ui/icons';
 import { useTheme } from '@aura-ui/themes';
 import { COMPONENTS, CATEGORIES, HOOKS } from '../../lib/registry';
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Navigation structure
-───────────────────────────────────────────────────────────────────────────── */
+/* ── Navigation structure ────────────────────────────────────────────── */
 
 const OVERVIEW = [
-  { slug: 'introduction',   title: 'Introduction',    href: '/docs/introduction',   icon: BookOpen },
-  { slug: 'getting-started',title: 'Getting started', href: '/docs/getting-started',icon: Zap },
-  { slug: 'accessibility',  title: 'Accessibility',   href: '/docs/accessibility',  icon: Accessibility },
-  { slug: 'icons',          title: 'Icons',           href: '/docs/icons',          icon: LayoutGrid },
-  { slug: 'hooks',          title: 'Hooks',           href: '/docs/hooks',          icon: Code2 },
-  { slug: 'packages',       title: 'Packages',        href: '/docs/packages',       icon: Package },
+  { slug: 'introduction',    title: 'Introduction',    href: '/docs/introduction',    icon: BookOpen },
+  { slug: 'getting-started', title: 'Getting started', href: '/docs/getting-started', icon: Zap },
+  { slug: 'accessibility',   title: 'Accessibility',   href: '/docs/accessibility',   icon: Accessibility },
+  { slug: 'icons',           title: 'Icons',           href: '/docs/icons',           icon: LayoutGrid },
+  { slug: 'hooks',           title: 'Hooks',           href: '/docs/hooks',           icon: Code2 },
+  { slug: 'packages',        title: 'Packages',        href: '/docs/packages',        icon: Package },
 ];
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Layout
-───────────────────────────────────────────────────────────────────────────── */
+const RESOURCES = [
+  { slug: 'design-tokens',      title: 'Design tokens',      href: '/docs/design-tokens',      icon: Palette },
+  { slug: 'changelog',          title: 'Changelog',          href: '/docs/changelog',           icon: History },
+  { slug: 'keyboard-shortcuts', title: 'Keyboard shortcuts', href: '/docs/keyboard-shortcuts',  icon: Keyboard },
+];
+
+type RecentItem = { slug: string; name: string };
+
+/* ── Layout ──────────────────────────────────────────────────────────── */
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { resolvedMode, setMode } = useTheme();
   const [query, setQuery] = React.useState('');
   const [paletteOpen, setPaletteOpen] = React.useState(false);
+  const [recentlyViewed, setRecentlyViewed] = React.useState<RecentItem[]>([]);
 
   const filtered = COMPONENTS.filter((c) =>
     c.name.toLowerCase().includes(query.toLowerCase()),
   );
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + '/');
+  // Load recently viewed from localStorage on mount
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    try {
+      const stored = JSON.parse(window.localStorage.getItem('aura-recently-viewed') ?? '[]') as RecentItem[];
+      setRecentlyViewed(stored);
+    } catch { /* ignore */ }
+  }, []);
+
+  // Track component page visits
+  React.useEffect(() => {
+    const match = pathname.match(/^\/docs\/([^/]+)$/);
+    if (!match) return;
+    const slug = match[1];
+    if (!slug) return;
+    const component = COMPONENTS.find((c) => c.slug === slug);
+    if (!component) return;
+    setRecentlyViewed((prev) => {
+      const filtered = prev.filter((item) => item.slug !== slug);
+      const next = [{ slug, name: component.name }, ...filtered].slice(0, 5);
+      try { window.localStorage.setItem('aura-recently-viewed', JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  }, [pathname]);
 
   // Global ⌘K shortcut
   React.useEffect(() => {
@@ -51,7 +96,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   return (
     <div className="min-h-screen bg-bg text-fg">
 
-      {/* ── Top nav ─────────────────────────────────────────────────────── */}
+      {/* ── Top nav ───────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-bg/80 backdrop-blur-md">
         <div className="mx-auto flex h-[52px] max-w-[1440px] items-center gap-6 px-5">
 
@@ -63,15 +108,15 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             <span className="text-[13px] font-semibold tracking-tight">aura-ui</span>
           </Link>
 
-          <span className="text-border/80 hidden text-lg md:block">/</span>
+          <span className="hidden text-lg text-border/80 md:block">/</span>
 
           {/* Nav links */}
           <nav className="hidden items-center gap-1 md:flex">
             {[
-              { label: 'Docs',     href: '/docs' },
-              { label: 'Themes',   href: '/themes' },
-              { label: 'Icons',    href: '/docs/icons' },
-              { label: 'Hooks',    href: '/docs/hooks' },
+              { label: 'Docs',   href: '/docs' },
+              { label: 'Themes', href: '/themes' },
+              { label: 'Icons',  href: '/docs/icons' },
+              { label: 'Hooks',  href: '/docs/hooks' },
             ].map(({ label, href }) => {
               const active = pathname === href || (href !== '/docs' && pathname.startsWith(href));
               return (
@@ -117,29 +162,27 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               aria-label="Toggle theme"
               className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg"
             >
-              {resolvedMode === 'dark'
-                ? <Sun className="h-4 w-4" />
-                : <Moon className="h-4 w-4" />}
+              {resolvedMode === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
           </div>
         </div>
       </header>
 
-      {/* ── Body grid ───────────────────────────────────────────────────── */}
+      {/* ── Body grid ─────────────────────────────────────────────── */}
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 md:grid-cols-[240px_1fr]">
 
-        {/* ── Sidebar ─────────────────────────────────────────────────── */}
+        {/* ── Sidebar ───────────────────────────────────────────── */}
         <aside className="sticky top-[52px] hidden h-[calc(100vh-52px)] overflow-y-auto border-r border-border/50 md:flex md:flex-col">
 
           {/* Search */}
-          <div className="px-3 pt-5 pb-3">
+          <div className="px-3 pb-3 pt-5">
             <div className="relative">
               <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search…"
-                className="h-8 w-full rounded-lg border border-border/70 bg-muted/30 pl-8 pr-7 text-[12.5px] outline-none placeholder:text-muted-foreground/60 focus-visible:border-ring/40 focus-visible:ring-2 focus-visible:ring-ring/20 transition-shadow"
+                className="h-8 w-full rounded-lg border border-border/70 bg-muted/30 pl-8 pr-7 text-[12.5px] outline-none placeholder:text-muted-foreground/60 transition-shadow focus-visible:border-ring/40 focus-visible:ring-2 focus-visible:ring-ring/20"
               />
               {query && (
                 <button
@@ -157,18 +200,26 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
             {/* Overview */}
             <SidebarSection label="Overview">
-              {OVERVIEW.map(({ href, title, icon: Icon }) => {
-                const active = pathname === href;
-                return (
-                  <SidebarItem key={href} href={href} active={active}>
-                    <Icon className="h-3.5 w-3.5 shrink-0" />
-                    {title}
-                  </SidebarItem>
-                );
-              })}
+              {OVERVIEW.map(({ href, title, icon: Icon }) => (
+                <SidebarItem key={href} href={href} active={pathname === href}>
+                  <Icon className="h-3.5 w-3.5 shrink-0" />
+                  {title}
+                </SidebarItem>
+              ))}
             </SidebarSection>
 
-            {/* Divider */}
+            <div className="my-2 border-t border-border/40" />
+
+            {/* Resources */}
+            <SidebarSection label="Resources">
+              {RESOURCES.map(({ href, title, icon: Icon }) => (
+                <SidebarItem key={href} href={href} active={pathname === href}>
+                  <Icon className="h-3.5 w-3.5 shrink-0" />
+                  {title}
+                </SidebarItem>
+              ))}
+            </SidebarSection>
+
             <div className="my-2 border-t border-border/40" />
 
             {/* Component categories */}
@@ -188,6 +239,24 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                 </SidebarSection>
               );
             })}
+
+            {/* Recently viewed */}
+            {recentlyViewed.length > 0 && !query && (
+              <>
+                <div className="my-2 border-t border-border/40" />
+                <SidebarSection label="Recently viewed">
+                  {recentlyViewed.map(({ slug, name }) => {
+                    const href = `/docs/${slug}`;
+                    return (
+                      <SidebarItem key={slug} href={href} active={pathname === href}>
+                        <Clock className="h-3 w-3 shrink-0 opacity-50" />
+                        {name}
+                      </SidebarItem>
+                    );
+                  })}
+                </SidebarSection>
+              </>
+            )}
           </nav>
 
           {/* Install badge */}
@@ -198,26 +267,25 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </div>
         </aside>
 
-        {/* ── Page content ─────────────────────────────────────────────── */}
+        {/* ── Page content ─────────────────────────────────────── */}
         <main className="min-w-0 px-6 py-10 md:px-10 lg:px-14">{children}</main>
       </div>
 
-      {/* ── Command palette ──────────────────────────────────────────────── */}
+      {/* ── Command palette ──────────────────────────────────────── */}
       {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} />}
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Command palette
-───────────────────────────────────────────────────────────────────────────── */
+/* ── Command palette ─────────────────────────────────────────────────── */
 
 const QUICK_LINKS = [
-  { label: 'Getting started', href: '/docs/getting-started', tag: 'docs' },
-  { label: 'Components',      href: '/docs',                 tag: 'docs' },
-  { label: 'Icons',           href: '/docs/icons',           tag: 'icons' },
-  { label: 'Hooks',           href: '/docs/hooks',           tag: 'hooks' },
-  { label: 'Themes playground', href: '/themes',             tag: 'themes' },
+  { label: 'Getting started',    href: '/docs/getting-started',      tag: 'docs' },
+  { label: 'Components',         href: '/docs',                      tag: 'docs' },
+  { label: 'Icons',              href: '/docs/icons',                tag: 'icons' },
+  { label: 'Hooks',              href: '/docs/hooks',                tag: 'hooks' },
+  { label: 'Design tokens',      href: '/docs/design-tokens',        tag: 'docs' },
+  { label: 'Themes playground',  href: '/themes',                    tag: 'themes' },
 ];
 
 type ResultType = 'component' | 'hook' | 'icon';
@@ -275,13 +343,9 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
 
   return (
     <>
-      {/* Backdrop */}
       <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-
-      {/* Panel */}
       <div className="fixed left-1/2 top-[12%] z-50 w-full max-w-xl -translate-x-1/2 overflow-hidden rounded-2xl border border-border bg-bg shadow-2xl">
 
-        {/* Search input */}
         <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
@@ -301,7 +365,6 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
           </kbd>
         </div>
 
-        {/* Body */}
         {query.trim() ? (
           results.length > 0 ? (
             <ul className="max-h-[380px] overflow-y-auto py-1.5">
@@ -331,7 +394,6 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
             </p>
           )
         ) : (
-          /* Empty state — quick links */
           <div className="py-2">
             <p className="px-4 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">
               Quick links
@@ -362,7 +424,6 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
           </div>
         )}
 
-        {/* Footer */}
         <div className="flex items-center gap-5 border-t border-border bg-muted/20 px-4 py-2">
           {[['↑↓', 'navigate'], ['↵', 'open'], ['esc', 'close']].map(([key, label]) => (
             <span key={label} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
@@ -376,9 +437,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Sidebar primitives
-───────────────────────────────────────────────────────────────────────────── */
+/* ── Sidebar primitives ──────────────────────────────────────────────── */
 
 function SidebarSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (

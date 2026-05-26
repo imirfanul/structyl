@@ -8,6 +8,8 @@ import {
   useDebounce, useThrottle, useLocalStorage, useCopyToClipboard,
   useMediaQuery, useDarkMode, useWindowSize, useClickOutside,
   useHotkeys, useMount, useUnmount, useUpdateEffect, useId,
+  useControllableState, useComposedRefs, useCallbackRef, useLatest,
+  useEventListener, useKeyPress, useIsomorphicLayoutEffect,
 } from '@aura-ui/hooks';
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -321,6 +323,154 @@ function UseIdDemo() {
   );
 }
 
+function UseControllableStateDemo() {
+  const [controlled, setControlled] = React.useState(false);
+  const [external, setExternal] = React.useState('Hello');
+  const [val, setVal] = useControllableState<string>({
+    prop: controlled ? external : undefined,
+    defaultProp: 'uncontrolled',
+    onChange: setExternal,
+  });
+  return (
+    <div className="flex w-full max-w-xs flex-col gap-4">
+      <div className="flex items-center gap-2 text-[11px]">
+        <span className={`rounded-full px-2 py-0.5 font-semibold ${!controlled ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>Uncontrolled</span>
+        <span className="text-muted-foreground">vs</span>
+        <span className={`rounded-full px-2 py-0.5 font-semibold ${controlled ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>Controlled</span>
+        <button onClick={() => setControlled(c => !c)} className="ml-auto text-[10px] text-primary hover:underline underline-offset-2">Switch</button>
+      </div>
+      <DemoInput value={val ?? ''} onChange={e => setVal(e.target.value)} placeholder="Type something…" />
+      <Code>value = &quot;{val}&quot;</Code>
+    </div>
+  );
+}
+
+function UseComposedRefsDemo() {
+  const ref1 = React.useRef<HTMLDivElement>(null);
+  const ref2 = React.useRef<HTMLDivElement>(null);
+  const composed = useComposedRefs(ref1, ref2);
+  const [clicks, setClicks] = React.useState(0);
+  return (
+    <div className="flex w-full max-w-xs flex-col items-center gap-4">
+      <div
+        ref={composed}
+        onClick={() => setClicks(c => c + 1)}
+        className="w-full cursor-pointer rounded-xl border-2 border-dashed border-border bg-muted/20 px-4 py-5 text-center text-sm text-muted-foreground transition-colors hover:border-primary/50"
+      >
+        Click me — two refs composed here
+      </div>
+      <div className="w-full space-y-1">
+        <Code>ref1 attached: {String(ref1.current !== null)}</Code>
+        <Code>ref2 attached: {String(ref2.current !== null)}</Code>
+        <Code>Same node: {String(ref1.current === ref2.current)} · clicks: {clicks}</Code>
+      </div>
+    </div>
+  );
+}
+
+function UseCallbackRefDemo() {
+  const [count, setCount] = React.useState(0);
+  const [log, setLog] = React.useState<string[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const stableLog = useCallbackRef((): any => {
+    setLog(prev => [`count was ${count}`, ...prev].slice(0, 3));
+  });
+  return (
+    <div className="flex w-full max-w-xs flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <DemoBtn onClick={() => setCount(c => c + 1)}>Increment ({count})</DemoBtn>
+        <DemoBtn onClick={() => stableLog()} variant="ghost">Log count</DemoBtn>
+      </div>
+      {log.length === 0
+        ? <p className="text-[11px] text-muted-foreground">Increment then log — always sees the latest count</p>
+        : <div className="space-y-1">{log.map((l, i) => <Code key={i}>{l}</Code>)}</div>}
+    </div>
+  );
+}
+
+function UseLatestDemo() {
+  const [count, setCount] = React.useState(0);
+  const [msg, setMsg] = React.useState('Press "Read ref" to see the latest value');
+  const latestCount = useLatest(count);
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div className="flex items-center gap-3">
+        <DemoBtn onClick={() => setCount(c => c - 1)}>−</DemoBtn>
+        <span className="w-10 text-center font-mono text-xl font-semibold">{count}</span>
+        <DemoBtn onClick={() => setCount(c => c + 1)}>+</DemoBtn>
+      </div>
+      <DemoBtn onClick={() => setMsg(`latestCount.current = ${latestCount.current}`)} variant="ghost">
+        Read ref
+      </DemoBtn>
+      <Code>{msg}</Code>
+    </div>
+  );
+}
+
+function UseEventListenerDemo() {
+  const [keys, setKeys] = React.useState<string[]>([]);
+  useEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key.length === 1 && !e.metaKey && !e.ctrlKey) {
+      setKeys(prev => [e.key.toUpperCase(), ...prev].slice(0, 6));
+    }
+  });
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <p className="text-[11px] text-muted-foreground">Press any letter key on your keyboard</p>
+      <div className="flex min-h-[36px] flex-wrap justify-center gap-1.5">
+        {keys.length === 0
+          ? <Code>waiting…</Code>
+          : keys.map((k, i) => (
+            <kbd key={i} className="rounded-md border border-border bg-muted px-2.5 py-1 font-mono text-sm font-semibold">{k}</kbd>
+          ))}
+      </div>
+    </div>
+  );
+}
+
+function UseKeyPressDemo() {
+  const [count, setCount] = React.useState(0);
+  const [flash, setFlash] = React.useState<'up' | 'down' | null>(null);
+  const trigger = (dir: 'up' | 'down') => {
+    setCount(c => dir === 'up' ? c + 1 : c - 1);
+    setFlash(dir);
+    setTimeout(() => setFlash(null), 180);
+  };
+  useKeyPress('ArrowUp', () => trigger('up'));
+  useKeyPress('ArrowDown', () => trigger('down'));
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div className={`flex h-20 w-20 items-center justify-center rounded-2xl border-2 font-mono text-3xl font-bold transition-all duration-150 ${
+        flash === 'up' ? 'scale-110 border-emerald-400 bg-emerald-400/10 text-emerald-500'
+        : flash === 'down' ? 'scale-110 border-red-400 bg-red-400/10 text-red-500'
+        : 'border-border text-fg'
+      }`}>
+        {count}
+      </div>
+      <p className="text-[11px] text-muted-foreground">Press ↑ or ↓ arrow keys</p>
+    </div>
+  );
+}
+
+function UseIsomorphicLayoutEffectDemo() {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [size, setSize] = React.useState({ w: 0, h: 0 });
+  useIsomorphicLayoutEffect(() => {
+    if (!ref.current) return;
+    const { width, height } = ref.current.getBoundingClientRect();
+    setSize({ w: Math.round(width), h: Math.round(height) });
+  }, []);
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <div ref={ref} className="rounded-xl border border-border bg-muted/30 px-8 py-5 text-sm text-muted-foreground">
+        Measured element
+      </div>
+      <Code>{size.w} × {size.h}px — read before first paint</Code>
+      <p className="text-[11px] text-muted-foreground">useLayoutEffect on client · useEffect on server</p>
+    </div>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────────────────────
    Small shared demo primitives
 ───────────────────────────────────────────────────────────────────────────── */
@@ -552,6 +702,83 @@ const HOOKS: HookDef[] = [
     demo: UseIdDemo,
     code: `import { useId } from '@aura-ui/hooks';\n\nfunction Field({ label }: { label: string }) {\n  const id = useId('field');\n  return (\n    <>\n      <label htmlFor={id}>{label}</label>\n      <input id={id} />\n    </>\n  );\n}`,
   },
+  {
+    name: 'useControllableState', category: 'State',
+    description: 'Bridges controlled and uncontrolled state. Lets a component accept an optional value prop without duplicating internal state logic.',
+    signature: '<T>({ prop, defaultProp, onChange }) => [T | undefined, setter]',
+    params: [
+      { name: 'prop', type: 'T | undefined', description: 'External controlled value. Undefined means uncontrolled.' },
+      { name: 'defaultProp', type: 'T | undefined', description: 'Initial value for uncontrolled mode.' },
+      { name: 'onChange', type: '(value: T) => void', description: 'Called whenever the value changes.' },
+    ],
+    returns: '[value: T | undefined, setValue]',
+    demo: UseControllableStateDemo,
+    code: `import { useControllableState } from '@aura-ui/hooks';\n\nfunction Tabs({ value, defaultValue, onValueChange }) {\n  const [activeTab, setActiveTab] = useControllableState({\n    prop: value,\n    defaultProp: defaultValue,\n    onChange: onValueChange,\n  });\n  return <div>{/* renders tabs */}</div>;\n}`,
+  },
+  {
+    name: 'useComposedRefs', category: 'Utility',
+    description: 'Merges multiple refs into a single callback ref. Essential when forwarding an external ref while keeping an internal one.',
+    signature: '<T>(...refs: Ref<T>[]) => RefCallback<T>',
+    params: [{ name: '...refs', type: 'Ref<T>[]', description: 'Any mix of callback refs and object refs to merge.' }],
+    returns: 'RefCallback<T> — assign to the ref prop of any element.',
+    demo: UseComposedRefsDemo,
+    code: `import { useComposedRefs } from '@aura-ui/hooks';\n\nconst Input = React.forwardRef<HTMLInputElement>((props, forwardedRef) => {\n  const internalRef = useRef<HTMLInputElement>(null);\n  const composed = useComposedRefs(internalRef, forwardedRef);\n\n  useEffect(() => {\n    internalRef.current?.focus();\n  }, []);\n\n  return <input ref={composed} {...props} />;\n});`,
+  },
+  {
+    name: 'useCallbackRef', category: 'Utility',
+    description: 'Returns a stable function identity that always calls the latest version of the callback. Eliminates stale-closure bugs without adding the callback to effect deps.',
+    signature: '<T extends Fn>(callback: T | undefined) => T',
+    params: [{ name: 'callback', type: 'T | undefined', description: 'The fresh callback to stabilize.' }],
+    returns: 'T — a stable reference that never changes identity.',
+    demo: UseCallbackRefDemo,
+    code: `import { useCallbackRef } from '@aura-ui/hooks';\n\nfunction Component({ onChange }) {\n  // stableOnChange is always the same reference\n  // but always calls the latest onChange\n  const stableOnChange = useCallbackRef(onChange);\n\n  useEffect(() => {\n    document.addEventListener('click', stableOnChange);\n    return () => document.removeEventListener('click', stableOnChange);\n  }, [stableOnChange]); // deps array never causes re-runs\n}`,
+  },
+  {
+    name: 'useLatest', category: 'Utility',
+    description: 'A ref whose .current always holds the latest value. Use inside intervals, timeouts, or event handlers to avoid reading stale closures.',
+    signature: '<T>(value: T) => { readonly current: T }',
+    params: [{ name: 'value', type: 'T', description: 'The value to keep perpetually current.' }],
+    returns: '{ readonly current: T } — a ref that is always up to date.',
+    demo: UseLatestDemo,
+    code: `import { useLatest } from '@aura-ui/hooks';\n\nfunction Timer({ onTick }) {\n  const latestOnTick = useLatest(onTick);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      latestOnTick.current(); // always the freshest\n    }, 1000);\n    return () => clearInterval(id);\n  }, []); // empty deps — no stale closure\n}`,
+  },
+  {
+    name: 'useEventListener', category: 'DOM',
+    description: 'Declarative addEventListener with automatic cleanup. Attaches to window by default, or any element via the optional third argument.',
+    signature: '(event, handler, element?) => void',
+    params: [
+      { name: 'event', type: 'string', description: 'DOM event name (e.g. "keydown", "scroll", "resize").' },
+      { name: 'handler', type: '(e: Event) => void', description: 'Event handler. Stabilized internally.' },
+      { name: 'element', type: 'Window | Document | HTMLElement | null', description: 'Target. Defaults to window.' },
+    ],
+    returns: 'void',
+    demo: UseEventListenerDemo,
+    code: `import { useEventListener } from '@aura-ui/hooks';\n\nfunction Tracker() {\n  // window-level\n  useEventListener('resize', () => measure());\n\n  // element-level\n  const ref = useRef<HTMLDivElement>(null);\n  useEventListener('scroll', onScroll, ref.current);\n}`,
+  },
+  {
+    name: 'useKeyPress', category: 'Keyboard',
+    description: 'Fires a handler whenever a specific key is pressed. Thin wrapper around useEventListener — auto-cleans up on unmount.',
+    signature: '(key: string, handler: (e: KeyboardEvent) => void) => void',
+    params: [
+      { name: 'key', type: 'string', description: 'Key value to watch (e.g. "Enter", "ArrowUp", "Escape").' },
+      { name: 'handler', type: '(e: KeyboardEvent) => void', description: 'Called when the key is pressed.' },
+    ],
+    returns: 'void',
+    demo: UseKeyPressDemo,
+    code: `import { useKeyPress } from '@aura-ui/hooks';\n\nfunction Modal({ onClose }) {\n  useKeyPress('Escape', onClose);\n  useKeyPress('Enter', handleSubmit);\n  return <dialog>...</dialog>;\n}`,
+  },
+  {
+    name: 'useIsomorphicLayoutEffect', category: 'Lifecycle',
+    description: 'SSR-safe useLayoutEffect. Uses useLayoutEffect in the browser (runs synchronously before paint) and falls back to useEffect on the server — no hydration warnings.',
+    signature: '(effect: EffectCallback, deps?: DependencyList) => void',
+    params: [
+      { name: 'effect', type: 'EffectCallback', description: 'Effect to run. Synchronous before paint on the client.' },
+      { name: 'deps', type: 'DependencyList', description: 'Dependency array, same as useEffect.' },
+    ],
+    returns: 'void',
+    demo: UseIsomorphicLayoutEffectDemo,
+    code: `import { useIsomorphicLayoutEffect } from '@aura-ui/hooks';\n\nfunction Measured({ children }) {\n  const ref = useRef<HTMLDivElement>(null);\n  const [rect, setRect] = useState<DOMRect>();\n\n  // No SSR warning; synchronous on client\n  useIsomorphicLayoutEffect(() => {\n    setRect(ref.current?.getBoundingClientRect());\n  }, []);\n\n  return <div ref={ref}>{children}</div>;\n}`,
+  },
 ];
 
 const CATS = ['All', ...new Set(HOOKS.map((h) => h.category))];
@@ -675,7 +902,8 @@ export default function HooksPage() {
 
   // Pre-fill search from URL param (e.g. ?q=useDebounce from global search)
   React.useEffect(() => {
-    const q = new URLSearchParams(window.location.search).get('q');
+    if (typeof window === 'undefined') return;
+    const q = new window.URLSearchParams(window.location.search).get('q');
     if (q) setQuery(q);
   }, []);
 
