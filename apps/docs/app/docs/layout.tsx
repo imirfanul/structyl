@@ -39,6 +39,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           <nav className="hidden gap-5 text-sm md:flex">
             <Link href="/docs" className="font-medium text-fg">Documentation</Link>
             <Link href="/themes" className="text-muted-foreground hover:text-fg transition-colors">Themes</Link>
+            <Link href="/icons" className="text-muted-foreground hover:text-fg transition-colors">Icons</Link>
             <Link href="/docs/hooks" className="text-muted-foreground hover:text-fg transition-colors">Hooks</Link>
             <Link href="/docs/packages" className="text-muted-foreground hover:text-fg transition-colors">Packages</Link>
           </nav>
