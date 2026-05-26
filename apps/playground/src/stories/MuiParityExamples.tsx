@@ -264,12 +264,44 @@ export function MuiSvgIconExamplesStory() {
 
 export function MuiChartExamplesStory() {
   return (
-    <StorySurface title="Chart" description="Simple built-in bar and line chart snapshots.">
+    <StorySurface title="Chart" description="Bar and line charts using the compound Chart.* API.">
       <ExamplePanel title="Bar chart">
-        <Chart data={[4, 10, 7, 14, 9, 12]} type="bar" title="Tickets" className="w-80" />
+        <Chart.Root
+          data={[
+            { label: 'Mon', value: 4 },
+            { label: 'Tue', value: 10 },
+            { label: 'Wed', value: 7 },
+            { label: 'Thu', value: 14 },
+            { label: 'Fri', value: 9 },
+            { label: 'Sat', value: 12 },
+          ]}
+          height={200}
+        >
+          <Chart.Grid />
+          <Chart.XAxis dataKey="label" />
+          <Chart.YAxis />
+          <Chart.Bar dataKey="value" name="Tickets" />
+          <Chart.Tooltip />
+        </Chart.Root>
       </ExamplePanel>
       <ExamplePanel title="Line chart">
-        <Chart data={[2, 6, 5, 11, 8, 15]} type="line" title="Revenue" className="w-80" />
+        <Chart.Root
+          data={[
+            { label: 'Mon', value: 2 },
+            { label: 'Tue', value: 6 },
+            { label: 'Wed', value: 5 },
+            { label: 'Thu', value: 11 },
+            { label: 'Fri', value: 8 },
+            { label: 'Sat', value: 15 },
+          ]}
+          height={200}
+        >
+          <Chart.Grid />
+          <Chart.XAxis dataKey="label" />
+          <Chart.YAxis />
+          <Chart.Line dataKey="value" name="Revenue" curve="catmullRom" />
+          <Chart.Tooltip />
+        </Chart.Root>
       </ExamplePanel>
     </StorySurface>
   );

@@ -86,3 +86,6 @@ export * as Editable from './editable';
 export * as TagsInput from './tags-input';
 export * as Mentions from './mentions';
 export * from './copy-button';
+
+// Charts
+export * as Chart from './chart';

@@ -738,7 +738,18 @@ export function MuiParityStory() {
                   </Table.Row>
                 </Table.Body>
               </Table.Root>
-              <Chart data={[3, 8, 5, 12, 9]} type="line" title="Activity" />
+              <Chart.Root
+                data={[
+                  { label: 'Mon', value: 3 },
+                  { label: 'Tue', value: 8 },
+                  { label: 'Wed', value: 5 },
+                  { label: 'Thu', value: 12 },
+                  { label: 'Fri', value: 9 },
+                ]}
+                height={160}
+              >
+                <Chart.Line dataKey="value" name="Activity" curve="catmullRom" />
+              </Chart.Root>
             </Stack>
           </Paper>
         </Grid>

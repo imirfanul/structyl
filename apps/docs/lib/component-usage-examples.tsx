@@ -75,6 +75,7 @@ import {
   Toolbar,
   Tooltip,
   Tree,
+  Chart,
 } from '@aura-ui/styled';
 import {
   DataTable,
@@ -561,7 +562,7 @@ function DataTableColumnManagementExample() {
       <p className="text-muted-foreground text-xs">
         <strong>Resize:</strong> drag the ▕ handle at column edges. <strong>Double-click</strong> a handle to auto-fit.{' '}
         <strong>Reorder:</strong> drag column headers. <strong>Pin:</strong> open column ⋮ menu → Pin left / right.{' '}
-        <strong>Lock:</strong> locked columns (currently: Name) can't be resized, reordered, or hidden.
+        <strong>Lock:</strong> locked columns (currently: Name) cannot be resized, reordered, or hidden.
       </p>
       <DataTable<DocUser>
         columns={docColumns}
@@ -1040,6 +1041,725 @@ function MentionsPeopleExample() {
         </div>
       </Mentions.Suggestions>
     </Mentions.Root>
+  );
+}
+
+/* ── Chart example data ─────────────────────────────────────────────── */
+
+const chartMonthlyData = [
+  { month: 'Jan', revenue: 4200, cost: 2800, profit: 1400 },
+  { month: 'Feb', revenue: 5800, cost: 3100, profit: 2700 },
+  { month: 'Mar', revenue: 3900, cost: 2600, profit: 1300 },
+  { month: 'Apr', revenue: 7100, cost: 4200, profit: 2900 },
+  { month: 'May', revenue: 6400, cost: 3800, profit: 2600 },
+  { month: 'Jun', revenue: 8300, cost: 4900, profit: 3400 },
+];
+
+const chartMultiLineData = [
+  { month: 'Jan', alice: 82, bob: 60, carol: 70 },
+  { month: 'Feb', alice: 75, bob: 68, carol: 78 },
+  { month: 'Mar', alice: 88, bob: 72, carol: 65 },
+  { month: 'Apr', alice: 91, bob: 80, carol: 84 },
+  { month: 'May', alice: 79, bob: 75, carol: 90 },
+  { month: 'Jun', alice: 95, bob: 88, carol: 83 },
+];
+
+const chartPieData = [
+  { category: 'Direct',   value: 3200 },
+  { category: 'Organic',  value: 2100 },
+  { category: 'Referral', value: 1400 },
+  { category: 'Social',   value: 980 },
+  { category: 'Email',    value: 620 },
+];
+
+const chartScatterData = [
+  { x: 10, y: 20 }, { x: 25, y: 40 }, { x: 18, y: 15 }, { x: 35, y: 55 },
+  { x: 42, y: 30 }, { x: 50, y: 65 }, { x: 28, y: 48 }, { x: 15, y: 35 },
+  { x: 60, y: 72 }, { x: 45, y: 58 }, { x: 32, y: 25 }, { x: 55, y: 80 },
+];
+
+const chartRadarData = [
+  { subject: 'Speed',     alice: 80, bob: 60 },
+  { subject: 'Strength',  alice: 60, bob: 90 },
+  { subject: 'Endurance', alice: 70, bob: 75 },
+  { subject: 'Agility',   alice: 85, bob: 55 },
+  { subject: 'Skill',     alice: 90, bob: 70 },
+];
+
+const chartHeatData: Array<{ day: string; hour: string; count: number }> = (() => {
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  const hours = ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm'];
+  const rows: Array<{ day: string; hour: string; count: number }> = [];
+  days.forEach((day, di) => {
+    hours.forEach((hour, hi) => {
+      rows.push({ day, hour, count: Math.round(5 + Math.abs(Math.sin(di * 3 + hi) * 45)) });
+    });
+  });
+  return rows;
+})();
+
+const chartTreemapData = [
+  {
+    name: 'Equities',
+    value: 4200,
+    children: [
+      { name: 'Tech', value: 1800 },
+      { name: 'Health', value: 1100 },
+      { name: 'Finance', value: 1300 },
+    ],
+  },
+  {
+    name: 'Fixed Income',
+    value: 2800,
+    children: [
+      { name: 'Govt', value: 1600 },
+      { name: 'Corp', value: 1200 },
+    ],
+  },
+  { name: 'Real Estate', value: 1400 },
+  { name: 'Commodities', value: 800 },
+  { name: 'Cash', value: 400 },
+];
+
+const chartFunnelData = [
+  { name: 'Visitors',  value: 10000 },
+  { name: 'Leads',     value: 6500 },
+  { name: 'Prospects', value: 3800 },
+  { name: 'Customers', value: 1200 },
+];
+
+const chartCandlestickData = [
+  { date: 'Mon', open: 100, high: 115, low: 95,  close: 112 },
+  { date: 'Tue', open: 112, high: 120, low: 108, close: 106 },
+  { date: 'Wed', open: 106, high: 118, low: 100, close: 115 },
+  { date: 'Thu', open: 115, high: 122, low: 110, close: 118 },
+  { date: 'Fri', open: 118, high: 125, low: 113, close: 121 },
+  { date: 'Mon', open: 121, high: 128, low: 115, close: 117 },
+  { date: 'Tue', open: 117, high: 122, low: 110, close: 111 },
+  { date: 'Wed', open: 111, high: 119, low: 108, close: 116 },
+];
+
+const chartSparkLineData = [12, 45, 28, 60, 35, 72, 48, 55, 40, 68];
+
+const chartRangeBarData = [
+  { month: 'Jan', low: 10, high: 30 },
+  { month: 'Feb', low: 15, high: 45 },
+  { month: 'Mar', low: 8,  high: 35 },
+  { month: 'Apr', low: 20, high: 55 },
+  { month: 'May', low: 18, high: 50 },
+  { month: 'Jun', low: 25, high: 65 },
+];
+
+const chartRadialBarData = [
+  { name: 'Task A', completion: 85 },
+  { name: 'Task B', completion: 62 },
+  { name: 'Task C', completion: 41 },
+  { name: 'Task D', completion: 78 },
+];
+
+const chartWaterfallData = [
+  { name: 'Q1 Start',  value: 120 },
+  { name: 'Sales',     value: 45  },
+  { name: 'Returns',   value: -18 },
+  { name: 'Marketing', value: -25 },
+  { name: 'Savings',   value: 15  },
+  { name: 'Q2 End',    value: 0   },
+];
+
+const chartSankeyNodes = [{ id: 'A' }, { id: 'B' }, { id: 'C' }, { id: 'D' }, { id: 'E' }];
+
+const chartSankeyLinks = [
+  { source: 'A', target: 'B', value: 30 },
+  { source: 'A', target: 'C', value: 20 },
+  { source: 'B', target: 'D', value: 25 },
+  { source: 'C', target: 'D', value: 15 },
+  { source: 'B', target: 'E', value: 5  },
+  { source: 'C', target: 'E', value: 5  },
+];
+
+const chartPyramidData = [
+  { name: 'Awareness', value: 10000 },
+  { name: 'Interest',  value: 6500  },
+  { name: 'Decision',  value: 3200  },
+  { name: 'Action',    value: 1800  },
+];
+
+const chartGanttTasks = [
+  { id: '1', name: 'Design',      start: 0,  end: 5  },
+  { id: '2', name: 'Development', start: 3,  end: 12 },
+  { id: '3', name: 'Testing',     start: 10, end: 15 },
+  { id: '4', name: 'Launch',      start: 14, end: 16 },
+];
+
+const chartHistogramData = [
+  14, 22, 8, 45, 31, 67, 52, 19, 73, 38, 61, 27, 84, 43, 16,
+  55, 29, 71, 48, 63, 36, 90, 24, 57, 82, 41, 68, 13, 77, 34,
+  60, 49, 23, 86, 39, 54, 18, 72, 46, 65,
+];
+
+const chartBoxplotData = [
+  { name: 'Q1 Sales', min: 12, q1: 28, median: 42, q3: 58, max: 74 },
+  { name: 'Q2 Sales', min: 18, q1: 35, median: 50, q3: 65, max: 80 },
+  { name: 'Q3 Sales', min: 25, q1: 40, median: 55, q3: 70, max: 88 },
+  { name: 'Q4 Sales', min: 30, q1: 48, median: 62, q3: 78, max: 95 },
+];
+
+const chartChordMatrix = [
+  [0,  12, 8,  5 ],
+  [12, 0,  15, 3 ],
+  [8,  15, 0,  10],
+  [5,  3,  10, 0 ],
+];
+
+const chartChordLabels = ['A', 'B', 'C', 'D'];
+
+const chartSunburstData = {
+  name: 'Root',
+  children: [
+    {
+      name: 'Tech',
+      children: [
+        { name: 'Frontend', value: 800 },
+        { name: 'Backend',  value: 1200 },
+        { name: 'DevOps',   value: 600 },
+      ],
+    },
+    {
+      name: 'Sales',
+      children: [
+        { name: 'Direct',   value: 1500 },
+        { name: 'Partners', value: 900 },
+      ],
+    },
+    {
+      name: 'Marketing',
+      children: [
+        { name: 'Digital', value: 700 },
+        { name: 'Events',  value: 400 },
+      ],
+    },
+  ],
+};
+
+const chartRadialLineData = [
+  { month: 'Jan', value: 42 },
+  { month: 'Feb', value: 58 },
+  { month: 'Mar', value: 35 },
+  { month: 'Apr', value: 71 },
+  { month: 'May', value: 64 },
+  { month: 'Jun', value: 83 },
+  { month: 'Jul', value: 91 },
+  { month: 'Aug', value: 76 },
+  { month: 'Sep', value: 55 },
+  { month: 'Oct', value: 68 },
+  { month: 'Nov', value: 49 },
+  { month: 'Dec', value: 60 },
+];
+
+const chartRangeAreaData = [
+  { month: 'Jan', low: 2,  high: 8  },
+  { month: 'Feb', low: 4,  high: 11 },
+  { month: 'Mar', low: 8,  high: 16 },
+  { month: 'Apr', low: 12, high: 21 },
+  { month: 'May', low: 16, high: 26 },
+  { month: 'Jun', low: 20, high: 30 },
+  { month: 'Jul', low: 22, high: 32 },
+  { month: 'Aug', low: 21, high: 31 },
+  { month: 'Sep', low: 17, high: 26 },
+  { month: 'Oct', low: 12, high: 20 },
+  { month: 'Nov', low: 7,  high: 13 },
+  { month: 'Dec', low: 3,  high: 9  },
+];
+
+const chartAreaFillData = [
+  { month: 'Jan', delta: 12  },
+  { month: 'Feb', delta: -5  },
+  { month: 'Mar', delta: 18  },
+  { month: 'Apr', delta: -12 },
+  { month: 'May', delta: 25  },
+  { month: 'Jun', delta: -8  },
+  { month: 'Jul', delta: 30  },
+  { month: 'Aug', delta: -3  },
+];
+
+/* ── Chart example components ───────────────────────────────────────── */
+
+function ChartBarExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartMonthlyData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Bar dataKey="revenue" name="Revenue" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartMultiSeriesExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartMonthlyData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Bar dataKey="revenue" name="Revenue" />
+        <Chart.Bar dataKey="cost" name="Cost" />
+        <Chart.Line dataKey="profit" name="Profit" curve="catmullRom" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartAreaExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartMonthlyData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Area dataKey="revenue" name="Revenue" fillOpacity={0.25} stackId="a" />
+        <Chart.Area dataKey="cost" name="Cost" fillOpacity={0.2} stackId="a" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartLineExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartMultiLineData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Line dataKey="alice" name="Alice" curve="catmullRom" />
+        <Chart.Line dataKey="bob" name="Bob" curve="catmullRom" color="hsl(var(--chart-2))" />
+        <Chart.Line dataKey="carol" name="Carol" curve="catmullRom" color="hsl(var(--chart-3))" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartPieExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.PieRoot data={chartPieData} width={360} height={360}>
+        <Chart.Pie dataKey="value" nameKey="category" innerRadius={80} padAngle={0.02} cornerRadius={4} />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.PieRoot>
+    </div>
+  );
+}
+
+function ChartScatterExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartScatterData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="x" />
+        <Chart.YAxis />
+        <Chart.Scatter xKey="x" yKey="y" name="Products" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartRadarExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.RadarRoot data={chartRadarData} width={360} height={360}>
+        <Chart.PolarGrid />
+        <Chart.PolarAngleAxis dataKey="subject" />
+        <Chart.Radar dataKey="alice" name="Alice" fillOpacity={0.25} />
+        <Chart.Radar dataKey="bob" name="Bob" color="hsl(var(--chart-2))" fillOpacity={0.2} />
+        <Chart.Legend />
+      </Chart.RadarRoot>
+    </div>
+  );
+}
+
+function ChartHeatmapExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Heatmap
+        data={chartHeatData}
+        xKey="day"
+        yKey="hour"
+        valueKey="count"
+        width={500}
+        height={280}
+      />
+    </div>
+  );
+}
+
+function ChartTreemapExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Treemap data={chartTreemapData} width={500} height={350} />
+    </div>
+  );
+}
+
+function ChartFunnelExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.Funnel data={chartFunnelData} width={400} height={300} />
+    </div>
+  );
+}
+
+function ChartGaugeExample() {
+  return (
+    <div className="flex flex-wrap items-end justify-center gap-4">
+      <Chart.Gauge value={72}  min={0} max={100} width={200} height={150} label="CPU Load" />
+      <Chart.Gauge value={45}  min={0} max={100} width={200} height={150} label="Memory" />
+      <Chart.Gauge value={88}  min={0} max={100} width={200} height={150} label="Disk I/O" />
+    </div>
+  );
+}
+
+function ChartCandlestickExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Candlestick
+        data={chartCandlestickData}
+        width={600}
+        height={300}
+        bullColor="hsl(var(--chart-2))"
+        bearColor="hsl(var(--chart-5))"
+      />
+    </div>
+  );
+}
+
+function ChartSparkLineExample() {
+  return (
+    <div className="flex flex-col gap-3 p-2">
+      <div className="flex items-center gap-4">
+        <span className="w-24 text-sm font-medium">Line</span>
+        <Chart.SparkLine data={chartSparkLineData} type="line" width={120} height={36} />
+      </div>
+      <div className="flex items-center gap-4">
+        <span className="w-24 text-sm font-medium">Bar</span>
+        <Chart.SparkLine
+          data={chartSparkLineData}
+          type="bar"
+          width={120}
+          height={36}
+          color="hsl(var(--chart-2))"
+        />
+      </div>
+    </div>
+  );
+}
+
+function ChartRangeBarExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartRangeBarData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.RangeBar lowKey="low" highKey="high" name="Temp range (°C)" color="hsl(var(--chart-1))" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartReferenceLineExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartMonthlyData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Bar dataKey="revenue" name="Revenue" />
+        <Chart.ReferenceLine y={6000} label="Target" stroke="hsl(var(--chart-3))" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartReferenceAreaExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartMonthlyData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Bar dataKey="revenue" name="Revenue" />
+        <Chart.ReferenceArea y1={5000} y2={7000} fill="#22c55e" fillOpacity={0.1} />
+        <Chart.ReferenceLine y={5000} label="Min" stroke="#22c55e" strokeDasharray="4 2" />
+        <Chart.ReferenceLine y={7000} label="Max" stroke="#22c55e" strokeDasharray="4 2" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartRadialBarExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.RadialBarRoot data={chartRadialBarData} width={360} height={360}>
+        <Chart.RadialBar dataKey="completion" nameKey="name" />
+      </Chart.RadialBarRoot>
+    </div>
+  );
+}
+
+function ChartWaterfallExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Waterfall data={chartWaterfallData} width={520} height={300} />
+    </div>
+  );
+}
+
+function ChartSankeyExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Sankey nodes={chartSankeyNodes} links={chartSankeyLinks} width={520} height={300} />
+    </div>
+  );
+}
+
+function ChartPyramidExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.Pyramid data={chartPyramidData} width={400} height={300} />
+    </div>
+  );
+}
+
+function ChartGanttExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Gantt tasks={chartGanttTasks} width={600} height={220} />
+    </div>
+  );
+}
+
+function ChartHistogramExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Histogram data={chartHistogramData} bins={8} width={520} height={300} showGrid />
+    </div>
+  );
+}
+
+function ChartBoxplotExample() {
+  return (
+    <div className="overflow-x-auto">
+      <Chart.Boxplot data={chartBoxplotData} width={520} height={300} />
+    </div>
+  );
+}
+
+function ChartChordExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.Chord
+        data={chartChordMatrix}
+        labels={chartChordLabels}
+        width={380}
+        height={380}
+      />
+    </div>
+  );
+}
+
+function ChartSunburstExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.Sunburst data={chartSunburstData} width={380} height={380} />
+    </div>
+  );
+}
+
+function ChartLinearGaugeExample() {
+  return (
+    <div className="flex flex-col gap-4 p-4">
+      <Chart.LinearGauge
+        value={25}
+        showLabel
+        colorStops={[[33, '#ef4444'], [66, '#f59e0b'], [100, '#22c55e']]}
+        label="Low (25%)"
+      />
+      <Chart.LinearGauge
+        value={55}
+        showLabel
+        colorStops={[[33, '#ef4444'], [66, '#f59e0b'], [100, '#22c55e']]}
+        label="Mid (55%)"
+      />
+      <Chart.LinearGauge
+        value={85}
+        showLabel
+        colorStops={[[33, '#ef4444'], [66, '#f59e0b'], [100, '#22c55e']]}
+        label="High (85%)"
+      />
+    </div>
+  );
+}
+
+function ChartRadialLineExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.RadialLineRoot data={chartRadialLineData} width={340} height={340}>
+        <Chart.RadialLine dataKey="value" nameKey="month" closePath area fillOpacity={0.25} />
+      </Chart.RadialLineRoot>
+    </div>
+  );
+}
+
+function ChartRangeAreaExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartRangeAreaData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.RangeArea lowKey="low" highKey="high" name="Temperature (°C)" color="hsl(var(--chart-1))" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartGaugeCompositionExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.GaugeContainer
+        value={65}
+        min={0}
+        max={100}
+        width={240}
+        height={200}
+        accessibilityLabel="Score: 65 of 100"
+      >
+        <Chart.GaugeReferenceArc />
+        <Chart.GaugeValueArc color="hsl(var(--chart-1))" />
+        <Chart.GaugePointer />
+      </Chart.GaugeContainer>
+    </div>
+  );
+}
+
+function ChartSemiCirclePieExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.PieRoot data={chartPieData} width={360} height={220}>
+        <Chart.Pie
+          dataKey="value"
+          nameKey="category"
+          startAngle={-90}
+          endAngle={90}
+        />
+        <Chart.Tooltip />
+      </Chart.PieRoot>
+    </div>
+  );
+}
+
+function ChartPieArcLabelExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.PieRoot data={chartPieData} width={360} height={360}>
+        <Chart.Pie
+          dataKey="value"
+          nameKey="category"
+          arcLabel="percentage"
+          arcLabelMinAngle={10}
+        />
+        <Chart.Tooltip />
+      </Chart.PieRoot>
+    </div>
+  );
+}
+
+function ChartPieCenterLabelExample() {
+  return (
+    <div className="flex justify-center">
+      <Chart.PieRoot data={chartPieData} width={360} height={360}>
+        <Chart.Pie
+          dataKey="value"
+          nameKey="category"
+          innerRadius={80}
+          padAngle={0.02}
+          cornerRadius={4}
+        />
+        <Chart.PieCenterLabel>
+          <div className="text-center">
+            <div className="text-2xl font-bold">8,300</div>
+            <div className="text-xs text-muted-foreground">Total</div>
+          </div>
+        </Chart.PieCenterLabel>
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.PieRoot>
+    </div>
+  );
+}
+
+function ChartBarWithLabelsExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartMonthlyData} height={340}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Bar dataKey="revenue" name="Revenue" showLabel labelPosition="outside" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartAreaFillByValueExample() {
+  return (
+    <div className="w-full max-w-2xl">
+      <Chart.Root data={chartAreaFillData} height={300}>
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Area dataKey="delta" name="Delta" fillByValue fillOpacity={0.4} />
+        <Chart.Tooltip />
+      </Chart.Root>
+    </div>
+  );
+}
+
+function ChartFunnelVariantsExample() {
+  return (
+    <div className="flex flex-wrap justify-center gap-8">
+      <div>
+        <p className="mb-2 text-center text-sm font-medium">Outlined</p>
+        <Chart.Funnel data={chartFunnelData} width={280} height={240} variant="outlined" />
+      </div>
+      <div>
+        <p className="mb-2 text-center text-sm font-medium">Bump curve</p>
+        <Chart.Funnel data={chartFunnelData} width={280} height={240} curve="bump" />
+      </div>
+    </div>
   );
 }
 
@@ -3716,6 +4436,651 @@ const slots: DataTableSlots<User> = {
 };
 
 <DataTable columns={columns} data={[]} enableGlobalSearch slots={slots} />`,
+    },
+  ],
+
+  chart: [
+    {
+      title: 'Bar chart',
+      description:
+        'A vertical bar chart with grid lines, labelled axes and an interactive tooltip. The chart is responsive — omit the width prop to let it fill its container.',
+      preview: () => <ChartBarExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { month: 'Jan', revenue: 4200 },
+  { month: 'Feb', revenue: 5800 },
+  { month: 'Mar', revenue: 3900 },
+  { month: 'Apr', revenue: 7100 },
+  { month: 'May', revenue: 6400 },
+  { month: 'Jun', revenue: 8300 },
+];
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Multi-series (Bar + Line)',
+      description:
+        'Combine Chart.Bar and Chart.Line inside the same Chart.Root to overlay series with different mark types. The stacked bars use the same stackId.',
+      preview: () => <ChartMultiSeriesExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  <Chart.Bar dataKey="cost" name="Cost" />
+  <Chart.Line dataKey="profit" name="Profit" curve="catmullRom" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Area (stacked)',
+      description:
+        'Chart.Area with a shared stackId renders a stacked area chart. fillOpacity controls the fill transparency independently per series.',
+      preview: () => <ChartAreaExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Area dataKey="revenue" name="Revenue" fillOpacity={0.25} stackId="a" />
+  <Chart.Area dataKey="cost" name="Cost" fillOpacity={0.2} stackId="a" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Pie / Donut',
+      description:
+        'Wrap Chart.Pie in Chart.PieRoot. Set innerRadius > 0 to make a donut chart. padAngle and cornerRadius add spacing and rounded corners between segments.',
+      preview: () => <ChartPieExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { category: 'Direct',   value: 3200 },
+  { category: 'Organic',  value: 2100 },
+  { category: 'Referral', value: 1400 },
+  { category: 'Social',   value: 980 },
+  { category: 'Email',    value: 620 },
+];
+
+<Chart.PieRoot data={data} width={360} height={360}>
+  <Chart.Pie
+    dataKey="value"
+    nameKey="category"
+    innerRadius={80}
+    padAngle={0.02}
+    cornerRadius={4}
+  />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.PieRoot>`,
+    },
+    {
+      title: 'Line (multi-series)',
+      description:
+        'Multiple Chart.Line components inside one Chart.Root. Each series picks the next color from the palette automatically, or accepts an explicit color prop.',
+      preview: () => <ChartLineExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Line dataKey="alice" name="Alice" curve="catmullRom" />
+  <Chart.Line dataKey="bob"   name="Bob"   curve="catmullRom" color="hsl(var(--chart-2))" />
+  <Chart.Line dataKey="carol" name="Carol" curve="catmullRom" color="hsl(var(--chart-3))" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Scatter plot',
+      description:
+        'Chart.Scatter maps xKey to the horizontal axis and yKey to the vertical axis. Multiple series are supported inside one Chart.Root.',
+      preview: () => <ChartScatterExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="x" />
+  <Chart.YAxis />
+  <Chart.Scatter xKey="x" yKey="y" name="Products" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Radar / Spider',
+      description:
+        'Chart.RadarRoot with PolarGrid, PolarAngleAxis and one or more Radar series. Each row in data represents one axis spoke.',
+      preview: () => <ChartRadarExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { subject: 'Speed',     alice: 80, bob: 60 },
+  { subject: 'Strength',  alice: 60, bob: 90 },
+  { subject: 'Endurance', alice: 70, bob: 75 },
+  { subject: 'Agility',   alice: 85, bob: 55 },
+  { subject: 'Skill',     alice: 90, bob: 70 },
+];
+
+<Chart.RadarRoot data={data} width={360} height={360}>
+  <Chart.PolarGrid />
+  <Chart.PolarAngleAxis dataKey="subject" />
+  <Chart.Radar dataKey="alice" name="Alice" fillOpacity={0.25} />
+  <Chart.Radar dataKey="bob" name="Bob" color="hsl(var(--chart-2))" fillOpacity={0.2} />
+  <Chart.Legend />
+</Chart.RadarRoot>`,
+    },
+    {
+      title: 'Heatmap',
+      description:
+        'Chart.Heatmap renders a grid of colored cells. Provide xKey, yKey and valueKey to map your data. Width and height are explicit.',
+      preview: () => <ChartHeatmapExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+// data: Array<{ day: string; hour: string; count: number }>
+<Chart.Heatmap
+  data={data}
+  xKey="day"
+  yKey="hour"
+  valueKey="count"
+  width={500}
+  height={280}
+/>`,
+    },
+    {
+      title: 'Treemap',
+      description:
+        'Chart.Treemap uses the squarify algorithm. Top-level items may contain a children array for nested groups. Omit children for a flat treemap.',
+      preview: () => <ChartTreemapExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  {
+    name: 'Equities',
+    value: 4200,
+    children: [
+      { name: 'Tech',    value: 1800 },
+      { name: 'Health',  value: 1100 },
+      { name: 'Finance', value: 1300 },
+    ],
+  },
+  { name: 'Fixed Income', value: 2800 },
+  { name: 'Real Estate',  value: 1400 },
+  { name: 'Commodities',  value: 800 },
+];
+
+<Chart.Treemap data={data} width={500} height={350} />`,
+    },
+    {
+      title: 'Funnel',
+      description:
+        'Chart.Funnel renders a top-down funnel. Each stage needs a name and value. Stages are rendered in the order provided.',
+      preview: () => <ChartFunnelExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { name: 'Visitors',  value: 10000 },
+  { name: 'Leads',     value: 6500 },
+  { name: 'Prospects', value: 3800 },
+  { name: 'Customers', value: 1200 },
+];
+
+<Chart.Funnel data={data} width={400} height={300} />`,
+    },
+    {
+      title: 'Gauge',
+      description:
+        'Chart.Gauge renders a half-circle arc gauge. Use the label prop to annotate the center. Combine multiple gauges side by side for a dashboard widget.',
+      preview: () => <ChartGaugeExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<div className="flex gap-4">
+  <Chart.Gauge value={72} min={0} max={100} width={200} height={150} label="CPU Load" />
+  <Chart.Gauge value={45} min={0} max={100} width={200} height={150} label="Memory" />
+  <Chart.Gauge value={88} min={0} max={100} width={200} height={150} label="Disk I/O" />
+</div>`,
+    },
+    {
+      title: 'Candlestick (OHLC)',
+      description:
+        'Chart.Candlestick expects data with open, high, low and close fields. Use upColor / downColor to customise bullish and bearish candle fills.',
+      preview: () => <ChartCandlestickExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { date: 'Mon', open: 100, high: 115, low: 95,  close: 112 },
+  { date: 'Tue', open: 112, high: 120, low: 108, close: 106 },
+  { date: 'Wed', open: 106, high: 118, low: 100, close: 115 },
+  { date: 'Thu', open: 115, high: 122, low: 110, close: 118 },
+  { date: 'Fri', open: 118, high: 125, low: 113, close: 121 },
+];
+
+<Chart.Candlestick
+  data={data}
+  width={600}
+  height={300}
+  bullColor="hsl(var(--chart-2))"
+  bearColor="hsl(var(--chart-5))"
+/>`,
+    },
+    {
+      title: 'SparkLine',
+      description:
+        'Chart.SparkLine is a standalone mini-chart designed to fit inside table cells, cards or KPI widgets. Use type="line" (default) or type="bar". Width and height are explicit.',
+      preview: () => <ChartSparkLineExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [12, 45, 28, 60, 35, 72, 48, 55, 40, 68];
+
+// Line sparkline
+<Chart.SparkLine data={data} type="line" width={120} height={36} />
+
+// Bar sparkline with custom color
+<Chart.SparkLine data={data} type="bar" width={120} height={36} color="hsl(var(--chart-2))" />`,
+    },
+    {
+      title: 'RangeBar',
+      description:
+        'Chart.RangeBar renders floating bars that span from lowKey to highKey. Use it for temperature ranges, confidence intervals or availability windows.',
+      preview: () => <ChartRangeBarExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { month: 'Jan', low: 10, high: 30 },
+  { month: 'Feb', low: 15, high: 45 },
+  { month: 'Mar', low: 8,  high: 35 },
+  { month: 'Apr', low: 20, high: 55 },
+];
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.RangeBar lowKey="low" highKey="high" name="Temp range (°C)" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'ReferenceLine',
+      description:
+        'Chart.ReferenceLine draws a horizontal (y) or vertical (x) rule across the plot area. Use it to mark thresholds, averages or target values.',
+      preview: () => <ChartReferenceLineExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  <Chart.ReferenceLine y={6000} label="Target" stroke="hsl(var(--chart-3))" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'ReferenceArea',
+      description:
+        'Chart.ReferenceArea shades a rectangular region of the chart bounded by y1/y2 (or x1/x2). Combine with ReferenceLine to highlight acceptable ranges.',
+      preview: () => <ChartReferenceAreaExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  <Chart.ReferenceArea y1={5000} y2={7000} fill="#22c55e" fillOpacity={0.1} />
+  <Chart.ReferenceLine y={5000} label="Min" stroke="#22c55e" strokeDasharray="4 2" />
+  <Chart.ReferenceLine y={7000} label="Max" stroke="#22c55e" strokeDasharray="4 2" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Radial bar',
+      description:
+        'Wrap Chart.RadialBar in Chart.RadialBarRoot. Each row in data becomes a concentric arc ring. Provide dataKey for arc length and nameKey for labels.',
+      preview: () => <ChartRadialBarExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { name: 'Task A', completion: 85 },
+  { name: 'Task B', completion: 62 },
+  { name: 'Task C', completion: 41 },
+  { name: 'Task D', completion: 78 },
+];
+
+<Chart.RadialBarRoot data={data} width={360} height={360}>
+  <Chart.RadialBar dataKey="completion" nameKey="name" />
+</Chart.RadialBarRoot>`,
+    },
+    {
+      title: 'Waterfall',
+      description:
+        'Chart.Waterfall renders a bridge / waterfall chart where each bar starts from the running total of the previous bars. Negative values are styled differently.',
+      preview: () => <ChartWaterfallExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { name: 'Q1 Start',  value: 120 },
+  { name: 'Sales',     value: 45  },
+  { name: 'Returns',   value: -18 },
+  { name: 'Marketing', value: -25 },
+  { name: 'Savings',   value: 15  },
+  { name: 'Q2 End',    value: 0   },
+];
+
+<Chart.Waterfall data={data} width={520} height={300} />`,
+    },
+    {
+      title: 'Sankey',
+      description:
+        'Chart.Sankey visualises flow between nodes using proportional-width links. Provide a nodes array (id + optional color) and a links array (source, target, value).',
+      preview: () => <ChartSankeyExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const nodes = [{ id: 'A' }, { id: 'B' }, { id: 'C' }, { id: 'D' }, { id: 'E' }];
+
+const links = [
+  { source: 'A', target: 'B', value: 30 },
+  { source: 'A', target: 'C', value: 20 },
+  { source: 'B', target: 'D', value: 25 },
+  { source: 'C', target: 'D', value: 15 },
+  { source: 'B', target: 'E', value: 5  },
+  { source: 'C', target: 'E', value: 5  },
+];
+
+<Chart.Sankey nodes={nodes} links={links} width={520} height={300} />`,
+    },
+    {
+      title: 'Pyramid',
+      description:
+        'Chart.Pyramid is an inverted funnel — the widest segment is at the bottom. Use it for hierarchical data or population pyramids where the largest value is the base.',
+      preview: () => <ChartPyramidExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { name: 'Awareness', value: 10000 },
+  { name: 'Interest',  value: 6500  },
+  { name: 'Decision',  value: 3200  },
+  { name: 'Action',    value: 1800  },
+];
+
+<Chart.Pyramid data={data} width={400} height={300} />`,
+    },
+    {
+      title: 'Gantt',
+      description:
+        'Chart.Gantt renders a horizontal timeline where each task bar spans from start to end on a numeric time axis. Add a group field to visually cluster related tasks.',
+      preview: () => <ChartGanttExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const tasks = [
+  { id: '1', name: 'Design',      start: 0,  end: 5  },
+  { id: '2', name: 'Development', start: 3,  end: 12 },
+  { id: '3', name: 'Testing',     start: 10, end: 15 },
+  { id: '4', name: 'Launch',      start: 14, end: 16 },
+];
+
+<Chart.Gantt tasks={tasks} width={600} height={220} />`,
+    },
+    {
+      title: 'Histogram',
+      description:
+        'Chart.Histogram bins a flat array of numbers into equal-width buckets and renders them as a bar chart. Use bins to control the number of buckets.',
+      preview: () => <ChartHistogramExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [14, 22, 8, 45, 31, 67, 52, 19, 73, 38, 61, 27, 84, 43, 16, 55, 29, 71, 48, 63];
+
+<Chart.Histogram data={data} bins={8} width={520} height={300} showGrid />`,
+    },
+    {
+      title: 'Boxplot',
+      description:
+        'Chart.Boxplot renders standard box-and-whisker plots. Each entry needs min, q1, median, q3 and max. Add an outliers array for individual outlier dots.',
+      preview: () => <ChartBoxplotExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { name: 'Q1 Sales', min: 12, q1: 28, median: 42, q3: 58, max: 74 },
+  { name: 'Q2 Sales', min: 18, q1: 35, median: 50, q3: 65, max: 80 },
+  { name: 'Q3 Sales', min: 25, q1: 40, median: 55, q3: 70, max: 88 },
+  { name: 'Q4 Sales', min: 30, q1: 48, median: 62, q3: 78, max: 95 },
+];
+
+<Chart.Boxplot data={data} width={520} height={300} />`,
+    },
+    {
+      title: 'Chord diagram',
+      description:
+        'Chart.Chord visualises relationships between groups using a square matrix. Each cell [i][j] is the flow strength from group i to group j.',
+      preview: () => <ChartChordExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const matrix = [
+  [0,  12, 8,  5 ],
+  [12, 0,  15, 3 ],
+  [8,  15, 0,  10],
+  [5,  3,  10, 0 ],
+];
+
+<Chart.Chord data={matrix} labels={['A', 'B', 'C', 'D']} width={400} height={400} />`,
+    },
+    {
+      title: 'Sunburst',
+      description:
+        'Chart.Sunburst renders a multi-level donut chart. Pass a nested data tree — each node can have a value (leaf) or children (branch). Click a segment to zoom in.',
+      preview: () => <ChartSunburstExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = {
+  name: 'Root',
+  children: [
+    {
+      name: 'Tech',
+      children: [
+        { name: 'Frontend', value: 800 },
+        { name: 'Backend',  value: 1200 },
+      ],
+    },
+    {
+      name: 'Sales',
+      children: [
+        { name: 'Direct',   value: 1500 },
+        { name: 'Partners', value: 900 },
+      ],
+    },
+  ],
+};
+
+<Chart.Sunburst data={data} width={400} height={400} />`,
+    },
+    {
+      title: 'Linear gauge',
+      description:
+        'Chart.LinearGauge is a horizontal progress-bar style gauge. Use colorStops to apply a traffic-light palette — each stop is [percentage, color].',
+      preview: () => <ChartLinearGaugeExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+// Traffic-light color stops: [percentageThreshold, color]
+<Chart.LinearGauge
+  value={85}
+  showLabel
+  colorStops={[
+    [33, '#ef4444'],
+    [66, '#f59e0b'],
+    [100, '#22c55e'],
+  ]}
+  label="High (85%)"
+/>`,
+    },
+    {
+      title: 'Radial line',
+      description:
+        'Chart.RadialLineRoot + Chart.RadialLine plots data on a circular axis — useful for cyclic data like months or weekdays. Use closePath and area for a spider-web fill.',
+      preview: () => <ChartRadialLineExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { month: 'Jan', value: 42 }, { month: 'Feb', value: 58 },
+  { month: 'Mar', value: 35 }, { month: 'Apr', value: 71 },
+  { month: 'May', value: 64 }, { month: 'Jun', value: 83 },
+  { month: 'Jul', value: 91 }, { month: 'Aug', value: 76 },
+];
+
+<Chart.RadialLineRoot data={data} width={340} height={340}>
+  <Chart.RadialLine dataKey="value" nameKey="month" closePath area fillOpacity={0.25} />
+</Chart.RadialLineRoot>`,
+    },
+    {
+      title: 'Range area',
+      description:
+        'Chart.RangeArea fills the band between a low and high series. Use it for confidence intervals, temperature ranges, or min/max envelopes.',
+      preview: () => <ChartRangeAreaExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { month: 'Jan', low: 2,  high: 8  },
+  { month: 'Feb', low: 4,  high: 11 },
+  { month: 'Mar', low: 8,  high: 16 },
+  { month: 'Apr', low: 12, high: 21 },
+];
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.RangeArea lowKey="low" highKey="high" name="Temperature (°C)" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Gauge composition',
+      description:
+        'Compose a gauge from GaugeContainer + GaugeReferenceArc + GaugeValueArc + GaugePointer for full control over colors, thickness and pointer style.',
+      preview: () => <ChartGaugeCompositionExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.GaugeContainer value={65} min={0} max={100} width={240} height={200}>
+  <Chart.GaugeReferenceArc />
+  <Chart.GaugeValueArc color="hsl(var(--chart-1))" />
+  <Chart.GaugePointer />
+</Chart.GaugeContainer>`,
+    },
+    {
+      title: 'Semi-circle pie',
+      description:
+        'Restrict the arc sweep with startAngle and endAngle to produce a semi-circle pie. Any angular range is supported — not just a full 360°.',
+      preview: () => <ChartSemiCirclePieExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.PieRoot data={data} width={360} height={220}>
+  <Chart.Pie
+    dataKey="value"
+    nameKey="category"
+    startAngle={-90}
+    endAngle={90}
+  />
+  <Chart.Tooltip />
+</Chart.PieRoot>`,
+    },
+    {
+      title: 'Pie arc labels',
+      description:
+        'Set arcLabel="percentage" to render the percentage of total directly on each arc segment. Use arcLabelMinAngle to suppress labels on tiny slices.',
+      preview: () => <ChartPieArcLabelExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.PieRoot data={data} width={360} height={360}>
+  <Chart.Pie
+    dataKey="value"
+    nameKey="category"
+    arcLabel="percentage"
+    arcLabelMinAngle={10}
+  />
+  <Chart.Tooltip />
+</Chart.PieRoot>`,
+    },
+    {
+      title: 'Pie center label',
+      description:
+        'Combine a donut (innerRadius > 0) with Chart.PieCenterLabel to render arbitrary content — text, icons or KPI values — in the hollow center.',
+      preview: () => <ChartPieCenterLabelExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.PieRoot data={data} width={360} height={360}>
+  <Chart.Pie dataKey="value" nameKey="category" innerRadius={80} padAngle={0.02} cornerRadius={4} />
+  <Chart.PieCenterLabel>
+    <div className="text-center">
+      <div className="text-2xl font-bold">8,300</div>
+      <div className="text-xs text-muted-foreground">Total</div>
+    </div>
+  </Chart.PieCenterLabel>
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.PieRoot>`,
+    },
+    {
+      title: 'Bar with labels',
+      description:
+        'Enable showLabel on Chart.Bar to print the value on every bar. Use labelPosition="outside" to place the label above the bar, inside to place it within.',
+      preview: () => <ChartBarWithLabelsExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={340}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" showLabel labelPosition="outside" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
+    },
+    {
+      title: 'Area fill by value',
+      description:
+        'Set fillByValue on Chart.Area to automatically use the chart-1 color above zero and the chart-3 color below zero — useful for P&L or delta charts.',
+      preview: () => <ChartAreaFillByValueExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+// data has negative values
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Area dataKey="delta" name="Delta" fillByValue fillOpacity={0.4} />
+  <Chart.Tooltip />
+</Chart.Root>`,
+    },
+    {
+      title: 'Funnel variants',
+      description:
+        'Chart.Funnel supports a variant prop (filled / outlined) and a curve prop (linear / bump / step). Combine them for different visual styles.',
+      preview: () => <ChartFunnelVariantsExample />,
+      code: `import { Chart } from '@aura-ui/styled';
+
+// Outlined funnel
+<Chart.Funnel data={data} width={300} height={240} variant="outlined" />
+
+// Bump-curve funnel
+<Chart.Funnel data={data} width={300} height={240} curve="bump" />`,
     },
   ],
 };

@@ -1,0 +1,1282 @@
+---
+title: Chart
+description: A comprehensive custom SVG chart library with 30+ chart types — no external charting dependency. Bar, line, area, pie/donut, scatter, bubble, radar, heatmap, treemap, funnel, gauge, candlestick, sparkline, waterfall, sankey, chord, sunburst, boxplot, histogram, gantt and more.
+---
+
+# Chart
+
+A comprehensive custom SVG chart library built entirely on SVG primitives — no Recharts, no Chart.js, no D3. All 30+ chart types share the same CSS variable color system, `accessibilityMode` for colorblind-friendly pattern fills, and a consistent `Chart.*` compound API.
+
+## Installation
+
+```bash
+npx aura-ui add chart
+```
+
+## Basic Usage
+
+```tsx
+import { Chart } from '@aura-ui/styled';
+
+const data = [
+  { month: 'Jan', revenue: 4200 },
+  { month: 'Feb', revenue: 5800 },
+  { month: 'Mar', revenue: 3900 },
+  { month: 'Apr', revenue: 7100 },
+  { month: 'May', revenue: 6400 },
+  { month: 'Jun', revenue: 8300 },
+];
+
+export function RevenueChart() {
+  return (
+    <Chart.Root data={data} height={300}>
+      <Chart.Grid />
+      <Chart.XAxis dataKey="month" />
+      <Chart.YAxis />
+      <Chart.Bar dataKey="revenue" name="Revenue" />
+      <Chart.Tooltip />
+      <Chart.Legend />
+    </Chart.Root>
+  );
+}
+```
+
+<ComponentPreview slug="chart" example="bar" />
+
+## Chart Types
+
+### Bar Chart
+
+A vertical bar chart. Set `orientation="horizontal"` on `Chart.Bar` for a horizontal layout. Use `stackId` on multiple bars to stack them.
+
+```tsx
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  <Chart.Bar dataKey="cost" name="Cost" stackId="a" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>
+```
+
+<ComponentPreview slug="chart" example="bar" />
+
+### Multi-Series (Bar + Line)
+
+Combine `Chart.Bar` and `Chart.Line` inside the same `Chart.Root` to overlay series with different mark types.
+
+```tsx
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  <Chart.Line dataKey="profit" name="Profit" curve="catmullRom" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>
+```
+
+<ComponentPreview slug="chart" example="multi-series" />
+
+### Area Chart
+
+Use `Chart.Area` for filled areas. Set `stackId` on multiple areas to create a stacked area chart. `fillOpacity` controls the fill transparency. Use `fillByValue` for a gradient fill that switches color when the value crosses zero.
+
+```tsx
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Area dataKey="revenue" name="Revenue" fillOpacity={0.25} stackId="a" />
+  <Chart.Area dataKey="cost" name="Cost" fillOpacity={0.2} stackId="a" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>
+```
+
+<ComponentPreview slug="chart" example="area" />
+
+### Line Chart
+
+Use `Chart.Line` alone for a pure line chart. Supports `curve`, `dot`/`showDot`, `markShape`, `strokeDasharray`, and `connectNulls`.
+
+```tsx
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Line dataKey="alice" name="Alice" curve="catmullRom" />
+  <Chart.Line dataKey="bob" name="Bob" curve="catmullRom" color="hsl(var(--chart-2))" />
+  <Chart.Line dataKey="carol" name="Carol" curve="catmullRom" color="hsl(var(--chart-3))" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>
+```
+
+<ComponentPreview slug="chart" example="line" />
+
+### Pie / Donut Chart
+
+Wrap `Chart.Pie` in `Chart.PieRoot`. Set `innerRadius` greater than 0 to make a donut. Use `arcLabel` to render value labels directly on slices. Use `Chart.PieCenterLabel` to place content in the donut hole.
+
+```tsx
+const data = [
+  { category: 'Direct',   value: 3200 },
+  { category: 'Organic',  value: 2100 },
+  { category: 'Referral', value: 1400 },
+  { category: 'Social',   value: 980 },
+  { category: 'Email',    value: 620 },
+];
+
+<Chart.PieRoot data={data} width={360} height={360}>
+  <Chart.Pie dataKey="value" nameKey="category" innerRadius={80} arcLabel="percentage" />
+  <Chart.PieCenterLabel>
+    <text textAnchor="middle" dy="0.35em" fontSize={24} fontWeight={600}>8,300</text>
+    <text textAnchor="middle" dy="1.5em" fontSize={12} fill="currentColor" opacity={0.6}>Total</text>
+  </Chart.PieCenterLabel>
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.PieRoot>
+```
+
+<ComponentPreview slug="chart" example="pie" />
+
+### Scatter Plot
+
+Use `Chart.Scatter` with `xKey` and `yKey` for a scatter plot. Multiple scatter series can share the same root. Set `markerShape` to change the point style.
+
+```tsx
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="x" />
+  <Chart.YAxis />
+  <Chart.Scatter xKey="x" yKey="y" name="Cluster A" />
+  <Chart.Scatter xKey="x2" yKey="y2" name="Cluster B" color="hsl(var(--chart-2))" markerShape="diamond" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>
+```
+
+<ComponentPreview slug="chart" example="scatter" />
+
+### Bubble Chart
+
+`Chart.Bubble` extends scatter with a `sizeKey` that maps a numeric field to the circle radius. Use `minRadius`/`maxRadius` to control the size range.
+
+```tsx
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="x" />
+  <Chart.YAxis />
+  <Chart.Bubble xKey="x" yKey="y" sizeKey="z" name="Products" minRadius={4} maxRadius={30} />
+  <Chart.Tooltip />
+</Chart.Root>
+```
+
+### Radar / Spider Chart
+
+Use `Chart.RadarRoot` with `Chart.PolarGrid`, `Chart.PolarAngleAxis` and one or more `Chart.Radar` series. Each row of `data` represents one axis.
+
+```tsx
+const data = [
+  { subject: 'Speed',     alice: 80, bob: 60 },
+  { subject: 'Strength',  alice: 60, bob: 90 },
+  { subject: 'Endurance', alice: 70, bob: 75 },
+  { subject: 'Agility',   alice: 85, bob: 55 },
+  { subject: 'Skill',     alice: 90, bob: 70 },
+];
+
+<Chart.RadarRoot data={data} width={360} height={360}>
+  <Chart.PolarGrid />
+  <Chart.PolarAngleAxis dataKey="subject" />
+  <Chart.Radar dataKey="alice" name="Alice" fillOpacity={0.25} />
+  <Chart.Radar dataKey="bob" name="Bob" color="hsl(var(--chart-2))" fillOpacity={0.2} />
+  <Chart.Legend />
+</Chart.RadarRoot>
+```
+
+<ComponentPreview slug="chart" example="radar" />
+
+### Heatmap
+
+`Chart.Heatmap` renders a grid of colored cells. Provide `xKey`, `yKey` and `valueKey` to map your data. Use `colorRange` to override the low→high gradient.
+
+```tsx
+const data = [
+  { day: 'Mon', hour: '9am',  count: 12 },
+  { day: 'Mon', hour: '10am', count: 28 },
+  // ...
+];
+
+<Chart.Heatmap
+  data={data}
+  xKey="day"
+  yKey="hour"
+  valueKey="count"
+  width={500}
+  height={280}
+  colorRange={['hsl(var(--chart-1) / 0.1)', 'hsl(var(--chart-1))']}
+/>
+```
+
+<ComponentPreview slug="chart" example="heatmap" />
+
+### Treemap
+
+`Chart.Treemap` uses the squarify algorithm. Data is hierarchical: top-level items may contain a `children` array. Omit children for a flat treemap.
+
+```tsx
+const data = [
+  { name: 'Category A', value: 800, children: [
+    { name: 'A1', value: 400 },
+    { name: 'A2', value: 400 },
+  ]},
+  { name: 'Category B', value: 600 },
+  { name: 'Category C', value: 300 },
+];
+
+<Chart.Treemap data={data} width={500} height={350} />
+```
+
+<ComponentPreview slug="chart" example="treemap" />
+
+### Funnel
+
+`Chart.Funnel` renders a top-down funnel chart. Each entry needs a `name` and `value`. Use `curve` to switch between straight trapezoids (`'linear'`), S-curve bezier sides (`'bump'`), or step drops. Use `variant="outlined"` for a transparent stroke-only style.
+
+```tsx
+const data = [
+  { name: 'Visitors',  value: 10000 },
+  { name: 'Leads',     value: 6500 },
+  { name: 'Prospects', value: 3800 },
+  { name: 'Customers', value: 1200 },
+];
+
+<Chart.Funnel data={data} width={400} height={300} curve="bump" />
+```
+
+<ComponentPreview slug="chart" example="funnel" />
+
+### Gauge (simple)
+
+`Chart.Gauge` renders a half-circle gauge arc. Use `startAngle`/`endAngle` to control the arc sweep, `colorStops` for multi-color fills, and `label` to annotate the center.
+
+```tsx
+<Chart.Gauge
+  value={72}
+  min={0}
+  max={100}
+  width={240}
+  height={180}
+  label="CPU Load"
+  colorStops={[[50, 'hsl(var(--chart-2))'], [80, 'hsl(var(--chart-3))'], [100, 'hsl(var(--chart-5))']]}
+/>
+```
+
+<ComponentPreview slug="chart" example="gauge" />
+
+### Gauge (composed)
+
+Use `Chart.GaugeContainer` + `Chart.GaugeReferenceArc` + `Chart.GaugeValueArc` + `Chart.GaugePointer` for full control over each layer.
+
+```tsx
+<Chart.GaugeContainer value={65} min={0} max={100} width={240} height={200} thickness={20}>
+  <Chart.GaugeReferenceArc color="hsl(var(--muted))" />
+  <Chart.GaugeValueArc color="hsl(var(--chart-1))" />
+  <Chart.GaugePointer color="hsl(var(--foreground))" length={0.7} />
+</Chart.GaugeContainer>
+```
+
+### Linear Gauge
+
+`Chart.LinearGauge` is a horizontal progress-bar-style gauge. Useful for dashboard KPIs alongside text.
+
+```tsx
+<Chart.LinearGauge
+  value={68}
+  min={0}
+  max={100}
+  width={300}
+  height={20}
+  showLabel
+  label={(v) => `${v}%`}
+  cornerRadius={4}
+  colorStops={[[100, 'hsl(var(--chart-1))']]}
+/>
+```
+
+### SparkLine
+
+`Chart.SparkLine` is a self-contained mini chart that takes a flat array of numbers. Use `type="bar"` for bar sparklines. Supports hover highlight and tooltip.
+
+```tsx
+<Chart.SparkLine
+  data={[4, 6, 3, 8, 5, 9, 7]}
+  width={120}
+  height={40}
+  area
+  showHighlight
+  showTooltip
+/>
+
+{/* Bar variant */}
+<Chart.SparkLine
+  data={[4, 6, 3, 8, 5, 9, 7]}
+  type="bar"
+  width={120}
+  height={40}
+  color="hsl(var(--chart-2))"
+/>
+```
+
+### Range Bar
+
+`Chart.RangeBar` renders a bar spanning from `lowKey` to `highKey` for each data point — useful for confidence intervals, date ranges, or min/max ranges.
+
+```tsx
+const data = [
+  { month: 'Jan', low: 2, high: 8 },
+  { month: 'Feb', low: 4, high: 12 },
+  { month: 'Mar', low: 1, high: 9 },
+];
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.RangeBar lowKey="low" highKey="high" name="Temperature Range" radius={2} />
+  <Chart.Tooltip />
+</Chart.Root>
+```
+
+### Range Area
+
+`Chart.RangeArea` fills between two data keys. Combine with `Chart.Line` on the same keys for a confidence band.
+
+```tsx
+const data = [
+  { month: 'Jan', low: 2, high: 8, median: 5 },
+  { month: 'Feb', low: 4, high: 12, median: 8 },
+];
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.RangeArea lowKey="low" highKey="high" fillOpacity={0.2} />
+  <Chart.Line dataKey="median" name="Median" color="hsl(var(--chart-1))" />
+  <Chart.Tooltip />
+</Chart.Root>
+```
+
+### Reference Line / Reference Area
+
+Use `Chart.ReferenceLine` to draw a horizontal or vertical guide. Use `Chart.ReferenceArea` to shade a band between two values.
+
+```tsx
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  {/* Horizontal threshold line */}
+  <Chart.ReferenceLine y={6000} label="Target" stroke="hsl(var(--chart-5))" strokeDasharray="4 2" />
+  {/* Vertical event marker */}
+  <Chart.ReferenceLine x="Apr" label="Launch" stroke="hsl(var(--chart-3))" />
+  {/* Shaded zone */}
+  <Chart.ReferenceArea y1={5000} y2={8000} fill="hsl(var(--chart-2))" fillOpacity={0.1} />
+  <Chart.Tooltip />
+</Chart.Root>
+```
+
+### Radial Bar
+
+`Chart.RadialBarRoot` wraps `Chart.RadialBar` to render concentric arc bars — often used for comparison dashboards.
+
+```tsx
+const data = [
+  { category: 'Design',      score: 82 },
+  { category: 'Development', score: 67 },
+  { category: 'Marketing',   score: 91 },
+];
+
+<Chart.RadialBarRoot data={data} width={360} height={360}>
+  <Chart.RadialBar dataKey="score" nameKey="category" innerRadius={0.3} outerRadius={0.9} />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.RadialBarRoot>
+```
+
+### Radial Line
+
+`Chart.RadialLineRoot` wraps `Chart.RadialLine` for a polar line chart — data is plotted along a circular axis. Use `closePath` to connect the last point back to the first.
+
+```tsx
+const data = [
+  { axis: 'Jan', temp: 4 },
+  { axis: 'Feb', temp: 6 },
+  { axis: 'Mar', temp: 11 },
+  { axis: 'Apr', temp: 16 },
+  { axis: 'May', temp: 21 },
+  { axis: 'Jun', temp: 25 },
+];
+
+<Chart.RadialLineRoot data={data} width={360} height={360}>
+  <Chart.PolarGrid />
+  <Chart.PolarAngleAxis dataKey="axis" />
+  <Chart.RadialLine dataKey="temp" name="Temperature" closePath area fillOpacity={0.2} curve="catmullRom" />
+  <Chart.Legend />
+</Chart.RadialLineRoot>
+```
+
+### Waterfall Chart
+
+`Chart.Waterfall` renders a running-total waterfall with automatic positive/negative coloring. The final bar shows the cumulative total.
+
+```tsx
+const data = [
+  { name: 'Revenue',    value: 12000 },
+  { name: 'COGS',       value: -4500 },
+  { name: 'Gross',      value: 0 },     // total bar
+  { name: 'OpEx',       value: -2800 },
+  { name: 'Net Profit', value: 0 },
+];
+
+<Chart.Waterfall data={data} width={600} height={300} />
+```
+
+### Sankey Diagram
+
+`Chart.Sankey` renders a flow diagram. Nodes are positioned automatically using the specified alignment strategy.
+
+```tsx
+const nodes = [
+  { id: 'visits' },
+  { id: 'carts' },
+  { id: 'orders' },
+  { id: 'bounce' },
+];
+
+const links = [
+  { source: 'visits', target: 'carts',  value: 3200 },
+  { source: 'visits', target: 'bounce', value: 6800 },
+  { source: 'carts',  target: 'orders', value: 1100 },
+  { source: 'carts',  target: 'bounce', value: 2100 },
+];
+
+<Chart.Sankey
+  nodes={nodes}
+  links={links}
+  width={600}
+  height={400}
+  nodeAlignment="justify"
+  showLinkValues
+/>
+```
+
+### Pyramid Chart
+
+`Chart.Pyramid` is an inverted funnel — segments grow from top to bottom in ascending value order. Useful for hierarchical population data.
+
+```tsx
+const data = [
+  { name: 'Executive',  value: 5 },
+  { name: 'Manager',    value: 25 },
+  { name: 'Individual', value: 120 },
+  { name: 'Intern',     value: 40 },
+];
+
+<Chart.Pyramid data={data} width={400} height={300} labelPosition="inside" />
+```
+
+### Gantt Chart
+
+`Chart.Gantt` renders a timeline chart. Each task has a numeric `start` and `end` (e.g., timestamps or offsets). Use `group` to color-code rows.
+
+```tsx
+const tasks = [
+  { id: '1', name: 'Discovery',   start: 0,  end: 5,  group: 'Phase 1' },
+  { id: '2', name: 'Design',      start: 4,  end: 12, group: 'Phase 1' },
+  { id: '3', name: 'Development', start: 10, end: 28, group: 'Phase 2' },
+  { id: '4', name: 'QA',          start: 24, end: 32, group: 'Phase 2' },
+  { id: '5', name: 'Launch',      start: 30, end: 34, group: 'Phase 3' },
+];
+
+<Chart.Gantt tasks={tasks} width={700} height={300} />
+```
+
+### Histogram
+
+`Chart.Histogram` accepts a flat `data` array of numbers and bins them automatically. Set `bins` to control bucket count.
+
+```tsx
+const scores = [42, 55, 61, 63, 67, 70, 72, 75, 78, 80, 82, 85, 88, 91, 95];
+
+<Chart.Histogram data={scores} bins={6} width={500} height={300} showGrid />
+```
+
+### Boxplot
+
+`Chart.Boxplot` renders standard box-and-whisker plots. Supply pre-computed statistics (`min`, `q1`, `median`, `q3`, `max`) plus optional `outliers`. Set `orientation="horizontal"` for a horizontal layout.
+
+```tsx
+const data = [
+  { name: 'Group A', min: 10, q1: 25, median: 40, q3: 55, max: 70, outliers: [5, 80] },
+  { name: 'Group B', min: 15, q1: 30, median: 45, q3: 65, max: 80 },
+  { name: 'Group C', min: 5,  q1: 20, median: 35, q3: 50, max: 75, outliers: [2, 90] },
+];
+
+<Chart.Boxplot data={data} width={500} height={300} />
+<Chart.Boxplot data={data} width={500} height={300} orientation="horizontal" />
+```
+
+### Sunburst Chart
+
+`Chart.Sunburst` renders a hierarchical pie chart. The root node is at the center; children radiate outward as concentric rings. Click a node to drill down.
+
+```tsx
+const data = {
+  name: 'root',
+  children: [
+    { name: 'Group A', value: 400, children: [
+      { name: 'A1', value: 200 },
+      { name: 'A2', value: 200 },
+    ]},
+    { name: 'Group B', value: 300 },
+    { name: 'Group C', value: 200 },
+  ],
+};
+
+<Chart.Sunburst
+  data={data}
+  width={400}
+  height={400}
+  innerRadius={40}
+  onNodeClick={(node) => console.log(node.name)}
+/>
+```
+
+### Chord Diagram
+
+`Chart.Chord` visualizes a square matrix of flows between N groups. `data[i][j]` is the flow from group `i` to group `j`.
+
+```tsx
+const labels = ['Design', 'Dev', 'Marketing', 'Sales'];
+const data = [
+  [0,   120, 80,  60],
+  [120, 0,   200, 90],
+  [80,  200, 0,   150],
+  [60,  90,  150, 0],
+];
+
+<Chart.Chord
+  data={data}
+  labels={labels}
+  width={500}
+  height={500}
+  padAngle={0.02}
+/>
+```
+
+### Candlestick (OHLC)
+
+`Chart.Candlestick` expects data with `open`, `high`, `low` and `close` fields alongside a `date` label. Use `bullColor` and `bearColor` to customize candle fills.
+
+```tsx
+const data = [
+  { date: 'Mon', open: 100, high: 115, low: 95,  close: 112 },
+  { date: 'Tue', open: 112, high: 120, low: 108, close: 106 },
+  { date: 'Wed', open: 106, high: 118, low: 100, close: 115 },
+  { date: 'Thu', open: 115, high: 122, low: 110, close: 118 },
+  { date: 'Fri', open: 118, high: 125, low: 113, close: 121 },
+];
+
+<Chart.Candlestick
+  data={data}
+  width={600}
+  height={300}
+  bullColor="hsl(var(--chart-2))"
+  bearColor="hsl(var(--chart-5))"
+/>
+```
+
+<ComponentPreview slug="chart" example="candlestick" />
+
+---
+
+## API Reference
+
+### Chart.Root
+
+The cartesian chart container. All bar, line, area, scatter, bubble, range bar, and reference elements live inside `Chart.Root`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `Record<string, unknown>[]` | — | Required. Array of data objects. |
+| `height` | `number` | `300` | SVG height in pixels. |
+| `width` | `number` | — | SVG width. Omit for responsive (ResizeObserver). |
+| `margin` | `{ top, right, bottom, left }` | `{ top:10, right:10, bottom:30, left:40 }` | Inner margin for axes. |
+| `accessibilityLabel` | `string` | — | Sets `aria-label` on the SVG element. |
+| `accessibilityMode` | `boolean` | `false` | Adds pattern fills for colorblind accessibility. |
+| `className` | `string` | — | Class name on the wrapper element. |
+| `children` | `ReactNode` | — | Chart series and overlay components. |
+
+### Chart.Bar
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Required. Field name in `data`. |
+| `name` | `string` | — | Display name in legend and tooltip. |
+| `color` | `string` | palette | Override fill color. |
+| `stackId` | `string` | — | Bars with the same `stackId` are stacked. |
+| `radius` | `number` | `2` | Corner radius in pixels. |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Bar direction. |
+| `showLabel` | `boolean` | `false` | Render a value label on each bar. |
+| `labelPosition` | `'inside' \| 'outside' \| 'center'` | `'outside'` | Label placement relative to the bar. |
+| `labelFormatter` | `(value: number) => string` | — | Custom label text formatter. |
+| `highlightScope` | `HighlightScope` | — | Fade/highlight on hover (see below). |
+| `onClick` | `(entry, index) => void` | — | Click handler per bar rect. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.Line
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Required. Field name in `data`. |
+| `name` | `string` | — | Display name in legend and tooltip. |
+| `color` | `string` | palette | Override stroke color. |
+| `curve` | `CurveType` | `'linear'` | Line interpolation — see Curve types below. |
+| `dot` / `showDot` | `boolean` | `true` | Show dots at data points (either prop works). |
+| `dotRadius` | `number` | `3` | Dot radius in pixels. |
+| `markShape` | `'circle' \| 'square' \| 'diamond' \| 'cross' \| 'star' \| 'triangle'` | `'circle'` | Shape rendered at each data point. |
+| `connectNulls` | `boolean` | `false` | Skip null/undefined values without breaking the line. |
+| `strokeWidth` | `number` | `2` | Line stroke width. |
+| `strokeDasharray` | `string` | — | SVG stroke-dasharray (e.g. `"4 2"`). |
+| `highlightScope` | `HighlightScope` | — | Fade/highlight on hover. |
+| `onClick` | `(entry, index) => void` | — | Click handler per dot. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.Area
+
+All props from `Chart.Line`, plus:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `fillOpacity` | `number` | `0.2` | Fill transparency (0–1). |
+| `stackId` | `string` | — | Areas with the same `stackId` are stacked. |
+| `baseline` | `number \| 'auto'` | `'auto'` | Y value for the area bottom edge. |
+| `fillByValue` | `boolean` | `false` | Gradient fill: above-zero uses chart-1, below uses chart-3. |
+| `highlightScope` | `HighlightScope` | — | Fade/highlight on hover. |
+
+### Chart.Scatter
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `xKey` | `string` | — | Required. Field for the x axis. |
+| `yKey` | `string` | — | Required. Field for the y axis. |
+| `name` | `string` | — | Display name in legend and tooltip. |
+| `color` | `string` | palette | Override fill color. |
+| `radius` | `number` | `5` | Point radius in pixels. |
+| `markerShape` | `'circle' \| 'square' \| 'diamond' \| 'cross' \| 'triangle'` | `'circle'` | Shape at each point. |
+| `highlightScope` | `HighlightScope` | — | Fade/highlight on hover. |
+| `onClick` | `(entry, index) => void` | — | Click handler per point. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.Bubble
+
+All props from `Chart.Scatter`, plus:
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `sizeKey` | `string` | — | Required. Numeric field mapped to circle radius. |
+| `minRadius` | `number` | `4` | Minimum rendered bubble radius. |
+| `maxRadius` | `number` | `40` | Maximum rendered bubble radius. |
+
+### Chart.RangeBar
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `lowKey` | `string` | — | Required. Data key for the low value. |
+| `highKey` | `string` | — | Required. Data key for the high value. |
+| `color` | `string` | palette | Override fill color. |
+| `name` | `string` | — | Legend/tooltip label. |
+| `radius` | `number` | `2` | Corner radius. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.RangeArea
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `lowKey` | `string` | — | Required. Data key for the lower bound. |
+| `highKey` | `string` | — | Required. Data key for the upper bound. |
+| `color` | `string` | palette | Override fill color. |
+| `name` | `string` | — | Legend/tooltip label. |
+| `fillOpacity` | `number` | `0.2` | Fill transparency. |
+| `curve` | `CurveType` | `'linear'` | Edge interpolation. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.ReferenceLine
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `y` | `number` | — | Horizontal line at this y value. |
+| `x` | `string \| number` | — | Vertical line at this x category/value. |
+| `label` | `string` | — | Label text rendered near the line. |
+| `stroke` | `string` | `'currentColor'` | Line stroke color. |
+| `strokeDasharray` | `string` | — | Dash pattern. |
+| `className` | `string` | — | Class on the line element. |
+
+### Chart.ReferenceArea
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `y1` | `number` | — | Low y bound. |
+| `y2` | `number` | — | High y bound. |
+| `x1` | `string \| number` | — | Left x bound. |
+| `x2` | `string \| number` | — | Right x bound. |
+| `fill` | `string` | `'currentColor'` | Fill color. |
+| `fillOpacity` | `number` | `0.1` | Fill opacity. |
+| `className` | `string` | — | Class on the rect element. |
+
+### Chart.PieRoot
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `Record<string, unknown>[]` | — | Required. |
+| `width` | `number` | `360` | SVG width. |
+| `height` | `number` | `360` | SVG height. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Pie
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Required. Numeric value field. |
+| `nameKey` | `string` | — | Label field for segments. |
+| `innerRadius` | `number` | `0` | Inner radius in pixels (> 0 = donut). |
+| `outerRadius` | `number` | auto | Outer radius (defaults to 80% of half the smaller dimension). |
+| `padAngle` | `number` | — | Gap between segments in radians. |
+| `cornerRadius` | `number` | — | Rounded segment corners. |
+| `colors` | `string[]` | palette | Per-segment color overrides. |
+| `startAngle` | `number` | `-90` | Start angle in degrees (from 12 o'clock, clockwise). |
+| `endAngle` | `number` | `270` | End angle in degrees. |
+| `arcLabel` | `'value' \| 'percentage' \| function` | — | Label rendered on each slice. |
+| `arcLabelMinAngle` | `number` | `5` | Minimum arc degrees before a label is drawn. |
+| `onClick` | `(entry, index) => void` | — | Click handler per slice. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.PieCenterLabel
+
+Renders content in the center of a donut chart. Must be a child of `Chart.PieRoot`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | — | Required. SVG elements rendered at center. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.RadarRoot
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `Record<string, unknown>[]` | — | Required. One row per axis. |
+| `width` | `number` | `360` | SVG width. |
+| `height` | `number` | `360` | SVG height. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Radar
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Required. Numeric value field to plot. |
+| `name` | `string` | — | Display name in legend. |
+| `color` | `string` | palette | Override stroke/fill color. |
+| `fillOpacity` | `number` | `0.25` | Fill transparency. |
+| `fillArea` | `boolean` | `true` | Fill the radar polygon. |
+| `showMark` / `dot` | `boolean` | `true` | Show dot marks at each data point. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.RadialBarRoot
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `Record<string, unknown>[]` | — | Required. |
+| `width` | `number` | `360` | SVG width. |
+| `height` | `number` | `360` | SVG height. |
+| `gap` | `number` | `4` | Gap between concentric bars in pixels. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.RadialBar
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Required. Numeric field controlling arc sweep. |
+| `nameKey` | `string` | — | Key for slice labels in legend/tooltip. |
+| `colors` | `string[]` | palette | Per-bar color overrides. |
+| `innerRadius` | `number` | `0.3` | Inner radius as a fraction of min(w, h)/2. |
+| `outerRadius` | `number` | `0.9` | Outer radius as a fraction of min(w, h)/2. |
+| `layout` | `'vertical' \| 'horizontal'` | `'vertical'` | `'vertical'`: radius encodes value. `'horizontal'`: angle encodes value. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.RadialLineRoot
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `Record<string, unknown>[]` | — | Required. |
+| `width` | `number` | `360` | SVG width. |
+| `height` | `number` | `360` | SVG height. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.RadialLine
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Required. Numeric field for radial values. |
+| `nameKey` | `string` | — | Key for axis labels. |
+| `color` | `string` | palette | Override stroke/fill color. |
+| `curve` | `CurveType` | `'linear'` | Interpolation along the radial path. |
+| `closePath` | `boolean` | `true` | Connect last point back to first. |
+| `area` | `boolean` | `false` | Fill the enclosed area. |
+| `fillOpacity` | `number` | `0.2` | Fill transparency when `area` is true. |
+| `dot` | `boolean` | `true` | Show mark at each data point. |
+| `dotRadius` | `number` | `3` | Dot radius in pixels. |
+| `strokeWidth` | `number` | `2` | Line stroke width. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.Heatmap
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `Record<string, unknown>[]` | — | Required. |
+| `xKey` | `string` | — | Required. Horizontal axis field. |
+| `yKey` | `string` | — | Required. Vertical axis field. |
+| `valueKey` | `string` | — | Required. Numeric intensity field. |
+| `colorRange` | `[string, string]` | `['#dbeafe', '#1d4ed8']` | Low→high color gradient. |
+| `width` | `number` | `500` | SVG width. |
+| `height` | `number` | `280` | SVG height. |
+| `margin` | `ChartMargin` | — | Axis margins. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Treemap
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `TreemapNode[]` | — | Required. Hierarchical data (`name`, `value`, optional `children`). |
+| `width` | `number` | `500` | SVG width. |
+| `height` | `number` | `350` | SVG height. |
+| `padding` | `number` | `2` | Padding between nodes in pixels. |
+| `colors` | `string[]` | palette | Color palette override. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `onNodeClick` | `(node: TreemapNode) => void` | — | Click handler per node. |
+| `className` | `string` | — | Class on the SVG wrapper. |
+
+### Chart.Funnel
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `FunnelEntry[]` | — | Required. Each item needs `name` and `value`. |
+| `width` | `number` | `400` | SVG width. |
+| `height` | `number` | `300` | SVG height. |
+| `labelPosition` | `'top' \| 'center' \| 'inside' \| 'outside'` | `'center'` | Label placement. |
+| `variant` | `'filled' \| 'outlined'` | `'filled'` | Solid fill or stroke-only. |
+| `curve` | `'linear' \| 'bump' \| 'step'` | `'linear'` | Edge interpolation. |
+| `gap` | `number` | `0` | Pixel gap between segments. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `onSegmentClick` | `(entry, index) => void` | — | Click handler per segment. |
+| `className` | `string` | — | Class on the SVG wrapper. |
+
+### Chart.Gauge
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` | — | Required. Current value. |
+| `min` | `number` | `0` | Minimum value. |
+| `max` | `number` | `100` | Maximum value. |
+| `startAngle` | `number` | `-135` | Start angle in degrees (clockwise from top). |
+| `endAngle` | `number` | `135` | End angle in degrees. |
+| `thickness` | `number` | `0.15` | Arc thickness as a fraction of radius. |
+| `colorStops` | `[number, string][]` | — | Threshold color stops: `[[pct, color], ...]`. |
+| `showLabel` | `boolean` | `true` | Show numeric value label in center. |
+| `label` | `string \| function` | — | Custom center label or function `(value, min, max) => string`. |
+| `width` | `number` | `240` | SVG width. |
+| `height` | `number` | `180` | SVG height. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.GaugeContainer
+
+Root for composed gauges. Provides `GaugeContext` to `GaugeValueArc`, `GaugeReferenceArc`, and `GaugePointer`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` | — | Required. Current value. |
+| `min` | `number` | `0` | Minimum value. |
+| `max` | `number` | `100` | Maximum value. |
+| `startAngle` | `number` | `-135` | Start angle in degrees (clockwise from top). |
+| `endAngle` | `number` | `135` | End angle in degrees. |
+| `width` | `number` | `240` | SVG width. |
+| `height` | `number` | `200` | SVG height. |
+| `thickness` | `number` | `20` | Arc thickness in pixels. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.GaugeValueArc
+
+The filled arc showing the current value. Must be inside `Chart.GaugeContainer`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `color` | `string` | `hsl(var(--chart-1))` | Fill color. |
+| `colorStops` | `[number, string][]` | — | Threshold color stops. |
+| `className` | `string` | — | Class on the path element. |
+
+### Chart.GaugeReferenceArc
+
+The background track arc. Must be inside `Chart.GaugeContainer`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `color` | `string` | `hsl(var(--muted))` | Track fill color. |
+| `className` | `string` | — | Class on the path element. |
+
+### Chart.GaugePointer
+
+Needle pointer for the gauge. Must be inside `Chart.GaugeContainer`.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `color` | `string` | `hsl(var(--foreground))` | Needle color. |
+| `length` | `number` | `0.75` | Needle length as a fraction of the inner radius. |
+| `width` | `number` | `4` | Needle base width in pixels. |
+| `className` | `string` | — | Class on the group element. |
+
+### Chart.LinearGauge
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `value` | `number` | — | Required. Current value. |
+| `min` | `number` | `0` | Minimum value. |
+| `max` | `number` | `100` | Maximum value. |
+| `width` | `number` | `300` | SVG width. |
+| `height` | `number` | `20` | SVG height. |
+| `thickness` | `number` | — | Track height (defaults to `height`). |
+| `colorStops` | `[number, string][]` | — | Threshold color stops. |
+| `showLabel` | `boolean` | `false` | Show a value label. |
+| `label` | `string \| function` | — | Custom label or `(v, min, max) => string`. |
+| `cornerRadius` | `number` | `0` | Track and fill corner radius. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.SparkLine
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `number[]` | — | Required. Array of numeric values. |
+| `type` | `'line' \| 'bar'` | `'line'` | Sparkline style. |
+| `width` | `number` | `120` | SVG width. |
+| `height` | `number` | `40` | SVG height. |
+| `color` | `string` | `hsl(var(--chart-1))` | Stroke/fill color. |
+| `strokeWidth` | `number` | `1.5` | Line stroke width (line mode). |
+| `area` | `boolean` | `false` | Fill area under the line. |
+| `showTooltip` | `boolean` | `false` | Floating value label on hover. |
+| `showHighlight` | `boolean` | `false` | Highlight nearest data point on hover. |
+| `yMin` | `number` | auto | Fixed y-axis minimum. |
+| `yMax` | `number` | auto | Fixed y-axis maximum. |
+| `className` | `string` | — | Class on the SVG element. |
+
+### Chart.Waterfall
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `WaterfallEntry[]` | — | Required. Each entry: `{ name, value }`. Entries with `value: 0` become running-total bars. |
+| `width` | `number` | `600` | SVG width. |
+| `height` | `number` | `300` | SVG height. |
+| `margin` | `ChartMargin` | — | Axis margins. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Sankey
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `nodes` | `SankeyNode[]` | — | Required. Each node: `{ id, color? }`. |
+| `links` | `SankeyLink[]` | — | Required. Each link: `{ source, target, value }`. |
+| `width` | `number` | `600` | SVG width. |
+| `height` | `number` | `400` | SVG height. |
+| `nodePadding` | `number` | `8` | Vertical padding between nodes in the same column. |
+| `nodeWidth` | `number` | `16` | Width of each node rectangle. |
+| `nodeAlignment` | `'left' \| 'right' \| 'justify' \| 'center'` | `'justify'` | Column alignment strategy. |
+| `showLinkValues` | `boolean` | `false` | Render value labels on link bands. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Pyramid
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `{ name, value, color? }[]` | — | Required. Stages in any order (smallest at top). |
+| `width` | `number` | `400` | SVG width. |
+| `height` | `number` | `300` | SVG height. |
+| `labelPosition` | `'top' \| 'center' \| 'inside' \| 'outside'` | `'center'` | Label placement. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `onSegmentClick` | `(entry, index) => void` | — | Click handler per segment. |
+| `className` | `string` | — | Class on the SVG wrapper. |
+
+### Chart.Gantt
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `tasks` | `GanttTask[]` | — | Required. Each task: `{ id, name, start, end, color?, group? }`. |
+| `width` | `number` | `700` | SVG width. |
+| `height` | `number` | `300` | SVG height. |
+| `margin` | `ChartMargin` | — | Axis margins. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Histogram
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `number[]` | — | Required. Flat array of values to bin. |
+| `bins` | `number` | `10` | Number of bins. |
+| `color` | `string` | `hsl(var(--chart-1))` | Bar fill color. |
+| `width` | `number` | `500` | SVG width. |
+| `height` | `number` | `300` | SVG height. |
+| `margin` | `ChartMargin` | — | Axis margins. |
+| `showGrid` | `boolean` | `true` | Show horizontal grid lines. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Boxplot
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `BoxplotEntry[]` | — | Required. Pre-computed statistics per group. |
+| `width` | `number` | `500` | SVG width. |
+| `height` | `number` | `300` | SVG height. |
+| `margin` | `ChartMargin` | — | Axis margins. |
+| `orientation` | `'vertical' \| 'horizontal'` | `'vertical'` | Box direction. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+**`BoxplotEntry` shape:**
+
+```ts
+interface BoxplotEntry {
+  name: string;
+  min: number;
+  q1: number;
+  median: number;
+  q3: number;
+  max: number;
+  color?: string;
+  outliers?: number[];
+}
+```
+
+### Chart.Sunburst
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `SunburstNode` | — | Required. Root node with optional recursive `children`. |
+| `width` | `number` | `400` | SVG width. |
+| `height` | `number` | `400` | SVG height. |
+| `innerRadius` | `number` | `0` | Radius of the center hole. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `onNodeClick` | `(node: SunburstNode) => void` | — | Click handler per arc. |
+| `className` | `string` | — | Class on the SVG wrapper. |
+
+### Chart.Chord
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `number[][]` | — | Required. Square N×N matrix of flow values. |
+| `labels` | `string[]` | — | Required. Label for each group. |
+| `colors` | `string[]` | palette | Color palette override. |
+| `width` | `number` | `500` | SVG width. |
+| `height` | `number` | `500` | SVG height. |
+| `padAngle` | `number` | `0.02` | Gap between groups in radians. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the SVG wrapper. |
+
+### Chart.Candlestick
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `data` | `OhlcEntry[]` | — | Required. Objects with `date`, `open`, `high`, `low`, `close`. |
+| `width` | `number` | `600` | SVG width. |
+| `height` | `number` | `300` | SVG height. |
+| `margin` | `ChartMargin` | — | Axis margins. |
+| `bullColor` | `string` | `hsl(var(--chart-2))` | Color for bullish (close ≥ open) candles. |
+| `bearColor` | `string` | `hsl(var(--chart-5))` | Color for bearish (close < open) candles. |
+| `accessibilityLabel` | `string` | — | `aria-label` on the SVG. |
+| `className` | `string` | — | Class on the wrapper. |
+
+### Chart.Tooltip
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `content` | `(state: TooltipState) => ReactNode` | built-in | Fully replace the tooltip renderer. |
+| `className` | `string` | — | Class on the tooltip wrapper. |
+| `background` | `string` | — | Override tooltip background color. |
+| `border` | `string` | — | Override border color. |
+| `borderRadius` | `number` | — | Override border radius in px. |
+| `boxShadow` | `string` | — | Override box shadow. |
+| `fontSize` | `number` | — | Override font size in px. |
+
+### Chart.Legend
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `position` | `'top' \| 'bottom' \| 'left' \| 'right'` | `'bottom'` | Where to render the legend relative to the chart. |
+| `content` | `(entries: ChartLegendEntry[]) => ReactNode` | built-in | Fully replace legend rendering. |
+| `renderEntry` | `(entry, index) => ReactNode` | built-in | Customize each legend item while keeping the layout. |
+| `iconType` | `'square' \| 'circle' \| 'line'` | `'square'` | Icon shape. |
+| `iconSize` | `number` | `12` | Icon size in pixels. |
+| `className` | `string` | — | Class on the legend wrapper. |
+
+### Chart.XAxis
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Field for axis labels and band positioning. |
+| `label` | `string` | — | Axis label text. |
+| `tickCount` | `number` | `5` | Approximate number of ticks. |
+| `tickFormatter` | `(value: unknown) => string` | — | Custom tick label formatter. |
+| `hideLine` | `boolean` | `false` | Hide the axis baseline. |
+| `hideTicks` | `boolean` | `false` | Hide tick marks. |
+| `scale` | `'linear' \| 'log' \| 'band'` | `'band'` | Axis scale type. |
+| `className` | `string` | — | Class on the axis group. |
+
+### Chart.YAxis
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `label` | `string` | — | Axis label text. |
+| `tickCount` | `number` | `5` | Approximate number of ticks. |
+| `tickFormatter` | `(value: unknown) => string` | — | Custom tick label formatter. |
+| `domain` | `[number \| 'auto', number \| 'auto']` | auto | Override `[min, max]` domain. |
+| `hideLine` | `boolean` | `false` | Hide the axis baseline. |
+| `hideTicks` | `boolean` | `false` | Hide tick marks. |
+| `className` | `string` | — | Class on the axis group. |
+
+### Chart.Grid
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `horizontal` | `boolean` | `true` | Show horizontal guide lines. |
+| `vertical` | `boolean` | `false` | Show vertical guide lines. |
+| `strokeDasharray` | `string` | `'4 4'` | Dash pattern for lines. |
+| `className` | `string` | — | Class on the grid group. |
+
+### Chart.PolarGrid
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `rings` | `number` | `4` | Number of concentric rings. |
+| `shape` | `'circular' \| 'sharp'` | `'sharp'` | Ring style — polygon or concentric circles. |
+| `className` | `string` | — | Class on the grid group. |
+
+### Chart.PolarAngleAxis
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `dataKey` | `string` | — | Required. Field for axis spoke labels. |
+| `className` | `string` | — | Class on the axis group. |
+
+---
+
+## Curve Types
+
+The `CurveType` union is accepted by `Chart.Line`, `Chart.Area`, `Chart.RangeArea`, and `Chart.RadialLine`:
+
+| Value | Description |
+|---|---|
+| `'linear'` | Straight line segments between points (default). |
+| `'catmullRom'` | Smooth Catmull-Rom spline. Good for organic curves. |
+| `'step'` | Horizontal step at the midpoint between points. |
+| `'stepBefore'` | Vertical first, then horizontal. |
+| `'stepAfter'` | Horizontal first, then vertical. |
+| `'monotoneX'` | Fritsch-Carlson monotone cubic — never overshoots data extremes. |
+| `'natural'` | Natural cubic spline. Falls back to catmullRom for ≥ 20 points. |
+| `'bumpX'` | Horizontal S-curve bezier between points (great for flow diagrams). |
+
+---
+
+## Highlight Scope
+
+Pass a `HighlightScope` object to any series with a `highlightScope` prop to control hover behavior:
+
+```ts
+interface HighlightScope {
+  highlight?: 'none' | 'item' | 'series';
+  fade?: 'none' | 'series' | 'global';
+}
+```
+
+| Option | Description |
+|---|---|
+| `highlight: 'none'` | No opacity change on hover. |
+| `highlight: 'item'` | Only the hovered data point is fully opaque. |
+| `highlight: 'series'` | The entire hovered series is fully opaque. |
+| `fade: 'none'` | Other items keep their normal opacity. |
+| `fade: 'series'` | Non-active series in the same chart are faded. |
+| `fade: 'global'` | All non-active series and items across the chart are faded. |
+
+```tsx
+<Chart.Bar
+  dataKey="revenue"
+  highlightScope={{ highlight: 'item', fade: 'global' }}
+/>
+```
+
+---
+
+## Theming
+
+All colors come from CSS custom properties. Define them in your global stylesheet or inside `@aura-ui/themes`:
+
+```css
+:root {
+  --chart-1: 220 70% 50%;   /* primary series */
+  --chart-2: 160 60% 45%;   /* secondary series */
+  --chart-3: 30  80% 55%;   /* tertiary series */
+  --chart-4: 280 65% 60%;   /* quaternary */
+  --chart-5: 0   72% 51%;   /* quinary / destructive */
+}
+```
+
+Each variable is in HSL channel format (no `hsl()` wrapper). Components wrap them as `hsl(var(--chart-N))`.
+
+To override a single series color, pass the `color` prop directly:
+
+```tsx
+<Chart.Bar dataKey="revenue" color="hsl(var(--chart-3))" />
+```
+
+---
+
+## Accessibility
+
+- Every chart root accepts an `accessibilityLabel` prop that sets `aria-label` on the SVG.
+- Set `accessibilityMode` on `Chart.Root` to swap palette fills for SVG pattern fills, providing colorblind-safe differentiation.
+- All interactive elements (`Bar`, `Pie`, `Treemap`, `Funnel`, `Pyramid`, `Sunburst`, `Scatter`) support keyboard focus (`tabIndex={0}`, `role="button"`) and respond to Enter / Space.
+- Tooltips are rendered in a `role="tooltip"` element outside the SVG and are announced by screen readers.
+
+```tsx
+<Chart.Root
+  data={data}
+  height={300}
+  accessibilityLabel="Monthly revenue for Q1–Q2 2026"
+  accessibilityMode
+>
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+</Chart.Root>
+```

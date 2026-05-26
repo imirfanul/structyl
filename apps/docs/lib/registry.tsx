@@ -516,13 +516,123 @@ const materialApi: Record<string, ApiPart[]> = {
   ],
   chart: [
     {
-      name: 'Chart',
-      description: 'Small SVG chart.',
+      name: 'Chart.Root',
+      description: 'Cartesian chart container. Compose Bar, Line, Area, Scatter and Bubble inside.',
       props: [
-        { name: 'data', type: 'number[]', description: 'Data points.' },
-        { name: 'type', type: "'bar' | 'line'", default: "'bar'", description: 'Chart mode.' },
-        { name: 'title', type: 'string', description: 'Accessible chart title.' },
-        materialClassNameProp,
+        { name: 'data', type: 'Record<string, unknown>[]', description: 'Array of data objects.' },
+        { name: 'height', type: 'number', default: '300', description: 'SVG height in pixels.' },
+        { name: 'width', type: 'number', description: 'SVG width. Omit for responsive layout.' },
+        { name: 'margin', type: '{ top, right, bottom, left }', default: '{ top:10, right:10, bottom:30, left:40 }', description: 'Inner margin for axes.' },
+        { name: 'accessibilityLabel', type: 'string', description: 'Sets aria-label on the SVG.' },
+        { name: 'accessibilityMode', type: 'boolean', default: 'false', description: 'Enables pattern fills for colorblind accessibility.' },
+      ],
+    },
+    {
+      name: 'Chart.Bar',
+      description: 'Vertical (or horizontal) bar series inside Chart.Root.',
+      props: [
+        { name: 'dataKey', type: 'string', description: 'Required. Field name in data.' },
+        { name: 'name', type: 'string', description: 'Display name in legend and tooltip.' },
+        { name: 'color', type: 'string', description: 'Override color.' },
+        { name: 'stackId', type: 'string', description: 'Bars with the same stackId are stacked.' },
+        { name: 'radius', type: 'number', default: '2', description: 'Corner radius.' },
+        { name: 'orientation', type: "'vertical' | 'horizontal'", default: "'vertical'", description: 'Bar direction.' },
+      ],
+    },
+    {
+      name: 'Chart.Line',
+      description: 'Line series inside Chart.Root.',
+      props: [
+        { name: 'dataKey', type: 'string', description: 'Required. Field name in data.' },
+        { name: 'name', type: 'string', description: 'Display name.' },
+        { name: 'color', type: 'string', description: 'Override color.' },
+        { name: 'curve', type: "'linear' | 'catmullRom' | 'step'", default: "'linear'", description: 'Line interpolation.' },
+        { name: 'dot', type: 'boolean', default: 'true', description: 'Show data point dots.' },
+        { name: 'strokeWidth', type: 'number', default: '2', description: 'Line stroke width.' },
+      ],
+    },
+    {
+      name: 'Chart.Area',
+      description: 'Filled area series inside Chart.Root. Accepts all Chart.Line props plus fillOpacity and stackId.',
+      props: [
+        { name: 'dataKey', type: 'string', description: 'Required. Field name in data.' },
+        { name: 'fillOpacity', type: 'number', default: '0.2', description: 'Fill transparency (0–1).' },
+        { name: 'stackId', type: 'string', description: 'Areas with the same stackId are stacked.' },
+      ],
+    },
+    {
+      name: 'Chart.Pie / Chart.PieRoot',
+      description: 'Pie or donut chart. Wrap Chart.Pie in Chart.PieRoot.',
+      props: [
+        { name: 'dataKey', type: 'string', description: 'Required. Numeric value field.' },
+        { name: 'nameKey', type: 'string', description: 'Label field for segments.' },
+        { name: 'innerRadius', type: 'number', default: '0', description: 'Inner radius (> 0 = donut).' },
+        { name: 'padAngle', type: 'number', description: 'Gap between segments in radians.' },
+        { name: 'cornerRadius', type: 'number', description: 'Rounded segment corners.' },
+        { name: 'colors', type: 'string[]', description: 'Per-segment color overrides.' },
+      ],
+    },
+    {
+      name: 'Chart.Radar / Chart.RadarRoot',
+      description: 'Radar/spider chart. Wrap Chart.Radar(s) in Chart.RadarRoot.',
+      props: [
+        { name: 'dataKey', type: 'string', description: 'Required. Numeric value field to plot.' },
+        { name: 'name', type: 'string', description: 'Display name.' },
+        { name: 'color', type: 'string', description: 'Override color.' },
+        { name: 'fillOpacity', type: 'number', default: '0.25', description: 'Fill transparency.' },
+      ],
+    },
+    {
+      name: 'Chart.Heatmap',
+      description: 'Standalone heatmap grid. xKey, yKey and valueKey map data fields to cells.',
+      props: [
+        { name: 'data', type: 'Record<string, unknown>[]', description: 'Required.' },
+        { name: 'xKey', type: 'string', description: 'Required. Horizontal axis field.' },
+        { name: 'yKey', type: 'string', description: 'Required. Vertical axis field.' },
+        { name: 'valueKey', type: 'string', description: 'Required. Numeric intensity field.' },
+        { name: 'width', type: 'number', default: '500', description: 'SVG width.' },
+        { name: 'height', type: 'number', default: '280', description: 'SVG height.' },
+      ],
+    },
+    {
+      name: 'Chart.Treemap',
+      description: 'Standalone treemap using the squarify algorithm. Supports nested children.',
+      props: [
+        { name: 'data', type: 'TreemapNode[]', description: 'Required. Hierarchical data with name, value and optional children.' },
+        { name: 'width', type: 'number', default: '500', description: 'SVG width.' },
+        { name: 'height', type: 'number', default: '350', description: 'SVG height.' },
+      ],
+    },
+    {
+      name: 'Chart.Funnel',
+      description: 'Standalone funnel chart rendered top-down.',
+      props: [
+        { name: 'data', type: '{ name: string; value: number }[]', description: 'Required. Stages in descending order.' },
+        { name: 'width', type: 'number', default: '400', description: 'SVG width.' },
+        { name: 'height', type: 'number', default: '300', description: 'SVG height.' },
+      ],
+    },
+    {
+      name: 'Chart.Gauge',
+      description: 'Standalone half-circle arc gauge.',
+      props: [
+        { name: 'value', type: 'number', description: 'Required. Current value.' },
+        { name: 'min', type: 'number', default: '0', description: 'Minimum value.' },
+        { name: 'max', type: 'number', default: '100', description: 'Maximum value.' },
+        { name: 'width', type: 'number', default: '240', description: 'SVG width.' },
+        { name: 'height', type: 'number', default: '180', description: 'SVG height.' },
+        { name: 'label', type: 'string', description: 'Text shown in center of arc.' },
+      ],
+    },
+    {
+      name: 'Chart.Candlestick',
+      description: 'Standalone OHLC candlestick chart.',
+      props: [
+        { name: 'data', type: 'OhlcEntry[]', description: 'Required. Objects with open, high, low, close.' },
+        { name: 'width', type: 'number', default: '600', description: 'SVG width.' },
+        { name: 'height', type: 'number', default: '300', description: 'SVG height.' },
+        { name: 'bullColor', type: 'string', default: 'hsl(var(--chart-2))', description: 'Color for bullish (close > open) candles.' },
+        { name: 'bearColor', type: 'string', default: 'hsl(var(--chart-5))', description: 'Color for bearish (close < open) candles.' },
       ],
     },
   ],
@@ -1384,10 +1494,35 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
     slug: 'chart',
     name: 'Chart',
     category: 'Data',
-    description: 'A lightweight SVG chart primitive for simple line and bar charts.',
-    features: ['Line and bar modes.', 'No charting dependency.'],
-    preview: () => <Chart data={[3, 8, 5, 12, 9]} type="line" title="Activity" className="w-72" />,
-    code: `import { Chart } from '@aura-ui/styled';\n\n<Chart data={[3, 8, 5, 12, 9]} type="line" />`,
+    description: 'A comprehensive custom SVG chart library with 45+ components — bar, line, area, pie/donut, scatter, bubble, radar, heatmap, treemap, funnel, gauge, candlestick, radial bar, radial line, sankey, waterfall, gantt, boxplot, sunburst, chord, histogram, and more. No external charting dependency.',
+    features: [
+      '20+ chart types with 45+ composable components.',
+      'Every chart type has multiple variants (stacked, horizontal, arc labels, fill-by-value, etc.).',
+      'Fully responsive cartesian charts via ResizeObserver.',
+      'CSS variable color system (--chart-1 through --chart-5).',
+      'Colorblind-safe accessibilityMode with SVG pattern fills.',
+      'Compound Chart.* API — composable and tree-shakeable.',
+      'No Recharts, Chart.js or D3 dependency — pure SVG.',
+    ],
+    preview: () => (
+      <Chart.Root
+        data={[
+          { month: 'Jan', revenue: 4200 },
+          { month: 'Feb', revenue: 5800 },
+          { month: 'Mar', revenue: 3900 },
+          { month: 'Apr', revenue: 7100 },
+          { month: 'May', revenue: 6400 },
+        ]}
+        height={180}
+      >
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Bar dataKey="revenue" name="Revenue" />
+        <Chart.Tooltip />
+      </Chart.Root>
+    ),
+    code: `import { Chart } from '@aura-ui/styled';\n\n<Chart.Root data={data} height={300}>\n  <Chart.Grid />\n  <Chart.XAxis dataKey="month" />\n  <Chart.YAxis />\n  <Chart.Bar dataKey="revenue" name="Revenue" />\n  <Chart.Tooltip />\n  <Chart.Legend />\n</Chart.Root>`,
   },
   {
     slug: 'chip',
@@ -2023,29 +2158,7 @@ const materialExamples: Record<string, ComponentExample[]> = {
 </Button>`,
     },
   ],
-  chart: [
-    {
-      title: 'Bar chart',
-      description: 'Use bar mode for compact comparisons.',
-      preview: () => (
-        <Chart data={[4, 10, 7, 14, 9, 12]} type="bar" title="Tickets" className="w-80" />
-      ),
-      code: `import { Chart } from '@aura-ui/styled';
-
-<Chart data={[4, 10, 7, 14, 9, 12]} type="bar" title="Tickets" />`,
-    },
-    {
-      title: 'Line chart',
-      description:
-        'Use line mode for trend snapshots when a full charting dependency is unnecessary.',
-      preview: () => (
-        <Chart data={[2, 6, 5, 11, 8, 15]} type="line" title="Revenue" className="w-80" />
-      ),
-      code: `import { Chart } from '@aura-ui/styled';
-
-<Chart data={[2, 6, 5, 11, 8, 15]} type="line" title="Revenue" />`,
-    },
-  ],
+  chart: [],
   chip: [
     {
       title: 'Variants',
@@ -3146,16 +3259,40 @@ const materialPropExamples: Record<string, ComponentExample> = {
 </SvgIcon>`,
   },
   chart: {
-    title: 'Modes',
-    description: 'Chart supports line and bar snapshots with an accessible title.',
+    title: 'Bar + Line combined',
+    description: 'Combine Chart.Bar and Chart.Line inside Chart.Root. Each series picks from the CSS variable palette automatically.',
     preview: () => (
-      <Stack spacing="sm" className="w-80">
-        <Chart data={[2, 5, 3, 8]} type="bar" title="Bar chart" />
-        <Chart data={[2, 5, 3, 8]} type="line" title="Line chart" />
-      </Stack>
+      <Chart.Root
+        data={[
+          { month: 'Jan', revenue: 4200, profit: 1400 },
+          { month: 'Feb', revenue: 5800, profit: 2700 },
+          { month: 'Mar', revenue: 3900, profit: 1300 },
+          { month: 'Apr', revenue: 7100, profit: 2900 },
+          { month: 'May', revenue: 6400, profit: 2600 },
+          { month: 'Jun', revenue: 8300, profit: 3400 },
+        ]}
+        height={240}
+      >
+        <Chart.Grid />
+        <Chart.XAxis dataKey="month" />
+        <Chart.YAxis />
+        <Chart.Bar dataKey="revenue" name="Revenue" />
+        <Chart.Line dataKey="profit" name="Profit" curve="catmullRom" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+      </Chart.Root>
     ),
-    code: `<Chart data={[2, 5, 3, 8]} type="bar" title="Tickets" />
-<Chart data={[2, 5, 3, 8]} type="line" title="Revenue" />`,
+    code: `import { Chart } from '@aura-ui/styled';
+
+<Chart.Root data={data} height={300}>
+  <Chart.Grid />
+  <Chart.XAxis dataKey="month" />
+  <Chart.YAxis />
+  <Chart.Bar dataKey="revenue" name="Revenue" />
+  <Chart.Line dataKey="profit" name="Profit" curve="catmullRom" />
+  <Chart.Tooltip />
+  <Chart.Legend />
+</Chart.Root>`,
   },
   chip: {
     title: 'Variants, colors and slots',
