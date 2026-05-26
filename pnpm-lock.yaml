@@ -68,6 +68,9 @@ importers:
       '@aura-ui/data-table':
         specifier: workspace:*
         version: link:../../packages/data-table
+      '@aura-ui/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@aura-ui/icons':
         specifier: workspace:*
         version: link:../../packages/icons

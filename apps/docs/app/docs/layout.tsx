@@ -40,7 +40,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             <Link href="/docs" className="font-medium text-fg">Documentation</Link>
             <Link href="/themes" className="text-muted-foreground hover:text-fg transition-colors">Themes</Link>
             <Link href="/icons" className="text-muted-foreground hover:text-fg transition-colors">Icons</Link>
-            <Link href="/docs/hooks" className="text-muted-foreground hover:text-fg transition-colors">Hooks</Link>
+            <Link href="/hooks" className="text-muted-foreground hover:text-fg transition-colors">Hooks</Link>
             <Link href="/docs/packages" className="text-muted-foreground hover:text-fg transition-colors">Packages</Link>
           </nav>
           <div className="ml-auto flex items-center gap-2">
