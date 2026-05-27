@@ -34,6 +34,28 @@ const TrendBadge: React.FC<TrendBadgeProps> = ({ value, direction = 'neutral', c
   </span>
 );
 
+// ── Color map for highlight tint ──────────────────────────────────────────────
+
+type StatColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';
+
+const highlightClasses: Record<StatColor, string> = {
+  primary:   'border-primary/30 bg-primary/5',
+  secondary: 'border-secondary/30 bg-secondary/5',
+  error:     'border-destructive/30 bg-destructive/5',
+  warning:   'border-warning/30 bg-warning/5',
+  info:      'border-info/30 bg-info/5',
+  success:   'border-success/30 bg-success/5',
+};
+
+const iconColorClasses: Record<StatColor, string> = {
+  primary:   'text-primary',
+  secondary: 'text-secondary-dark',
+  error:     'text-destructive',
+  warning:   'text-warning',
+  info:      'text-info',
+  success:   'text-success',
+};
+
 // ── Stat ──────────────────────────────────────────────────────────────────────
 
 export interface StatProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -44,43 +66,54 @@ export interface StatProps extends React.HTMLAttributes<HTMLDivElement> {
   trendDirection?: TrendDirection;
   trendLabel?: string;
   icon?: React.ReactNode;
-  /** Visual emphasis */
+  /** Semantic color for the card tint and icon */
+  color?: StatColor;
+  /** @deprecated Use color instead */
   highlight?: boolean;
 }
 
 const Stat = React.forwardRef<HTMLDivElement, StatProps>(
-  ({ className, label, value, description, trend, trendDirection, trendLabel, icon, highlight, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        'flex flex-col gap-1 rounded-xl border border-border bg-card p-5',
-        highlight && 'border-primary/30 bg-primary/5',
-        className,
-      )}
-      {...props}
-    >
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        {icon && (
-          <span className="text-muted-foreground [&_svg]:size-4" aria-hidden>
-            {icon}
-          </span>
+  ({ className, label, value, description, trend, trendDirection, trendLabel, icon, color, highlight, ...props }, ref) => {
+    const resolvedColor: StatColor | undefined = color ?? (highlight ? 'primary' : undefined);
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'flex flex-col gap-1 rounded-xl border border-border bg-card p-5',
+          resolvedColor && highlightClasses[resolvedColor],
+          className,
         )}
+        {...props}
+      >
+        <div className="flex items-center justify-between">
+          <p className="text-sm font-medium text-muted-foreground">{label}</p>
+          {icon && (
+            <span
+              className={cn(
+                '[&_svg]:size-4',
+                resolvedColor ? iconColorClasses[resolvedColor] : 'text-muted-foreground',
+              )}
+              aria-hidden
+            >
+              {icon}
+            </span>
+          )}
+        </div>
+        <p className="text-2xl font-bold tracking-tight text-fg">{value}</p>
+        <div className="flex items-center gap-2">
+          {trend !== undefined && (
+            <TrendBadge value={trend} direction={trendDirection} />
+          )}
+          {description && (
+            <p className="text-xs text-muted-foreground">{description}</p>
+          )}
+          {trendLabel && (
+            <p className="text-xs text-muted-foreground">{trendLabel}</p>
+          )}
+        </div>
       </div>
-      <p className="text-2xl font-bold tracking-tight text-fg">{value}</p>
-      <div className="flex items-center gap-2">
-        {trend !== undefined && (
-          <TrendBadge value={trend} direction={trendDirection} />
-        )}
-        {description && (
-          <p className="text-xs text-muted-foreground">{description}</p>
-        )}
-        {trendLabel && (
-          <p className="text-xs text-muted-foreground">{trendLabel}</p>
-        )}
-      </div>
-    </div>
-  ),
+    );
+  },
 );
 Stat.displayName = 'Stat';
 

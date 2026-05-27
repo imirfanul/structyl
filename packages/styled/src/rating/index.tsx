@@ -62,6 +62,8 @@ export interface RatingProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   gap?: string;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   color?: 'yellow' | 'orange' | 'red' | 'primary';
+  /** Returns an accessible label string for a given value, e.g. (v) => `${v} stars` */
+  getLabelText?: (value: number) => string;
 }
 
 const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
@@ -82,6 +84,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
       required,
       name,
       style,
+      getLabelText,
       ...props
     },
     ref,
@@ -106,7 +109,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
         aria-valuemin={0}
         aria-valuemax={max}
         aria-valuenow={value}
-        aria-valuetext={`${value} out of ${max}`}
+        aria-valuetext={getLabelText ? getLabelText(value) : `${value} out of ${max}`}
         aria-disabled={disabled || undefined}
         aria-readonly={readOnly || undefined}
         aria-required={required || undefined}

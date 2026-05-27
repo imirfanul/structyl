@@ -305,6 +305,7 @@ const ACCENT_PRESETS = [
 ];
 
 const THEME_PRESETS = [
+  { name: 'Aura',    primary: '#5754a3', destructive: '#d32f2f', success: '#2e7d32', warning: '#ed6c02', info: '#0288d1', radius: '0.5rem' },
   { name: 'Indigo',  primary: '#6366f1', destructive: '#ef4444', success: '#10b981', warning: '#f59e0b', info: '#06b6d4', radius: '0.5rem' },
   { name: 'Ocean',   primary: '#0284c7', destructive: '#dc2626', success: '#059669', warning: '#d97706', info: '#0891b2', radius: '0.5rem' },
   { name: 'Rose',    primary: '#e11d48', destructive: '#dc2626', success: '#16a34a', warning: '#d97706', info: '#0284c7', radius: '0.75rem' },
@@ -1377,6 +1378,61 @@ const THEME_CARD_CONFIG: Record<string, { preview: () => React.ReactNode; height
             </div>
           </div>
         ))}
+      </div>
+    ),
+  },
+  stat: {
+    height: 220,
+    preview: () => (
+      <div className="grid w-full grid-cols-3 gap-2">
+        {[
+          { label: 'Revenue', value: '$42.8k', badge: '+12%', cardCls: 'border-primary/30 bg-primary/5', dir: 'up' },
+          { label: 'Errors', value: '14', badge: '+3', cardCls: 'border-destructive/30 bg-destructive/5', dir: 'down' },
+          { label: 'Uptime', value: '99.9%', badge: 'stable', cardCls: 'border-success/30 bg-success/5', dir: 'up' },
+        ].map(({ label, value, badge, cardCls, dir }) => (
+          <div key={label} className={`flex flex-col gap-1 rounded-xl border p-3 ${cardCls}`}>
+            <p className="text-[9px] font-medium text-muted-foreground">{label}</p>
+            <p className="text-[16px] font-bold tracking-tight text-fg">{value}</p>
+            <span className={`inline-flex w-fit items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[8px] font-medium ${dir === 'up' ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive'}`}>
+              {dir === 'up' ? '↑' : '↓'} {badge}
+            </span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  typography: {
+    height: 200,
+    preview: () => (
+      <div className="w-full space-y-2 p-1">
+        <p className="text-[22px] font-bold leading-tight tracking-tight text-fg">Display heading</p>
+        <p className="text-[16px] font-semibold text-fg">Section title</p>
+        <p className="text-[13px] text-fg/80">Body text — the default paragraph style used for prose content.</p>
+        <p className="text-[11px] text-muted-foreground">Subtitle — secondary information and metadata.</p>
+        <p className="text-[9px] uppercase tracking-widest text-muted-foreground/70">OVERLINE LABEL</p>
+        <p className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-fg/80 inline-block">code snippet</p>
+      </div>
+    ),
+  },
+  popconfirm: {
+    height: 200,
+    preview: () => (
+      <div className="flex w-full items-center justify-center" style={{ height: 180 }}>
+        <div className="w-64 overflow-hidden rounded-xl border border-border bg-card shadow-lg">
+          <div className="p-3.5">
+            <div className="flex items-start gap-2">
+              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center text-warning">⚠</span>
+              <div>
+                <p className="text-[11px] font-semibold text-fg">Delete this record?</p>
+                <p className="mt-0.5 text-[9px] leading-relaxed text-muted-foreground">This action cannot be undone.</p>
+              </div>
+            </div>
+            <div className="mt-3 flex justify-end gap-2">
+              <div className="rounded-lg border border-border px-3 py-1 text-[9px] text-muted-foreground">Cancel</div>
+              <div className="rounded-lg bg-destructive px-3 py-1 text-[9px] font-medium text-destructive-foreground">Delete</div>
+            </div>
+          </div>
+        </div>
       </div>
     ),
   },

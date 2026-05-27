@@ -15,15 +15,44 @@ export const alertVariants = tv({
       success: 'border-success/50 bg-success/5 text-success',
       warning: 'border-warning/50 bg-warning/5 text-warning',
       info: 'border-info/50 bg-info/5 text-info',
+      error: 'border-destructive/50 bg-destructive/5 text-destructive',
+    },
+    color: {
+      primary: '',
+      secondary: '',
+      error: '',
+      warning: '',
+      info: '',
+      success: '',
+      default: '',
+    },
+    filled: {
+      true: '',
     },
   },
+  compoundVariants: [
+    // standard color variants
+    { color: 'error', class: 'border-destructive/50 bg-error-alert-bg text-destructive' },
+    { color: 'warning', class: 'border-warning/50 bg-warning-alert-bg text-warning' },
+    { color: 'info', class: 'border-info/50 bg-info-alert-bg text-info' },
+    { color: 'success', class: 'border-success/50 bg-success-alert-bg text-success' },
+    { color: 'primary', class: 'border-primary/50 bg-primary/5 text-primary' },
+    { color: 'secondary', class: 'border-secondary/50 bg-secondary/5 text-secondary-dark' },
+    // filled variants
+    { color: 'error', filled: true, class: 'border-transparent bg-destructive text-destructive-foreground' },
+    { color: 'warning', filled: true, class: 'border-transparent bg-warning text-warning-foreground' },
+    { color: 'info', filled: true, class: 'border-transparent bg-info text-info-foreground' },
+    { color: 'success', filled: true, class: 'border-transparent bg-success text-success-foreground' },
+    { color: 'primary', filled: true, class: 'border-transparent bg-primary text-primary-foreground' },
+    { color: 'secondary', filled: true, class: 'border-transparent bg-secondary text-secondary-foreground' },
+  ],
   defaultVariants: { variant: 'default' },
 });
 
 // ── Root (supports controlled closeable) ─────────────────────────────────────
 
 export interface AlertRootProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'>,
     VariantProps<typeof alertVariants> {
   /** Consumed by the convenience <Alert> wrapper; destructured so it never reaches the DOM. */
   onClose?: () => void;
@@ -31,8 +60,8 @@ export interface AlertRootProps
 
 const Root = React.forwardRef<HTMLDivElement, AlertRootProps>(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ({ className, variant, onClose: _onClose, ...props }, ref) => (
-    <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props} />
+  ({ className, variant, color, filled, onClose: _onClose, ...props }, ref) => (
+    <div ref={ref} role="alert" className={cn(alertVariants({ variant, color, filled }), className)} {...props} />
   ),
 );
 Root.displayName = 'Alert.Root';
@@ -117,8 +146,8 @@ export interface AlertProps extends Omit<AlertRootProps, 'title'> {
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ icon, title, description, closeable, onClose, variant, className, children, ...props }, ref) => (
-    <Root ref={ref} variant={variant} className={cn('flex', className)} {...props}>
+  ({ icon, title, description, closeable, onClose, variant, color, filled, className, children, ...props }, ref) => (
+    <Root ref={ref} variant={variant} color={color} filled={filled} className={cn('flex', className)} {...props}>
       {icon && <Icon>{icon}</Icon>}
       <Content>
         {title && <Title>{title}</Title>}

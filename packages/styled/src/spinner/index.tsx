@@ -17,10 +17,12 @@ export const spinnerVariants = tv({
     },
     color: {
       primary: 'text-primary',
-      secondary: 'text-secondary-foreground',
+      secondary: 'text-secondary-dark',
       success: 'text-success',
       warning: 'text-warning',
       destructive: 'text-destructive',
+      error: 'text-destructive',
+      info: 'text-info',
       muted: 'text-muted-foreground',
       inherit: 'text-current',
     },
@@ -33,7 +35,7 @@ export const spinnerVariants = tv({
 export interface SpinnerProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: 'border' | 'dots' | 'pulse' | 'bars';
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'destructive' | 'muted' | 'inherit';
+  color?: 'primary' | 'secondary' | 'success' | 'warning' | 'destructive' | 'error' | 'info' | 'muted' | 'inherit';
   label?: string;
 }
 

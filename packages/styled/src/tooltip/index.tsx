@@ -21,9 +21,12 @@ export const tooltipContentVariants = tv({
       default: 'bg-fg/90 text-bg backdrop-blur-sm',
       dark: 'bg-gray-900 text-gray-100',
       light: 'bg-bg text-fg border border-border shadow-lg',
+      primary: 'bg-primary text-primary-foreground',
+      secondary: 'bg-secondary text-secondary-foreground',
       info: 'bg-info text-info-foreground',
       warning: 'bg-warning text-warning-foreground',
       error: 'bg-destructive text-destructive-foreground',
+      success: 'bg-success text-success-foreground',
     },
   },
   defaultVariants: { variant: 'default' },
@@ -65,6 +68,12 @@ const Content = React.forwardRef<
             'fill-fg/90',
             variant === 'light' && 'fill-border',
             variant === 'dark' && 'fill-gray-900',
+            variant === 'primary' && 'fill-primary',
+            variant === 'secondary' && 'fill-secondary',
+            variant === 'info' && 'fill-info',
+            variant === 'warning' && 'fill-warning',
+            variant === 'error' && 'fill-destructive',
+            variant === 'success' && 'fill-success',
           )}
           width={8}
           height={4}

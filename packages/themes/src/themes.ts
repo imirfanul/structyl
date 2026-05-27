@@ -1,4 +1,93 @@
 import type { ThemeConfig } from './types';
+import {
+  sharedSemanticLight,
+  sharedSemanticDark,
+  auraSubTokensLight,
+  auraSubTokensDark,
+} from './palette';
+
+// ── Helper: build per-theme primary/secondary sub-tokens ─────────────────────
+
+function primarySubTokensLight(
+  lightRgb: string,
+  darkRgb: string,
+  contrastRgb: string,
+  darkBgRgb: string,
+  mainRgb: string,
+): Record<string, string> {
+  return {
+    'primary-light': lightRgb,
+    'primary-dark': darkRgb,
+    'primary-contrast': contrastRgb,
+    'primary-dark-bg': darkBgRgb,
+    'primary-state-contained': `rgba(${mainRgb.split(' ').join(', ')}, 0.3)`,
+    'primary-state-outlined': `rgba(${mainRgb.split(' ').join(', ')}, 0.1)`,
+    'primary-state-resting': `rgba(${mainRgb.split(' ').join(', ')}, 0.5)`,
+    'primary-shade-12': `rgba(${darkRgb.split(' ').join(', ')}, 0.12)`,
+    'primary-shade-16': `rgba(${darkRgb.split(' ').join(', ')}, 0.16)`,
+  };
+}
+
+function secondarySubTokensLight(
+  lightRgb: string,
+  darkRgb: string,
+  contrastRgb: string,
+  darkBgRgb: string,
+  mainRgb: string,
+): Record<string, string> {
+  return {
+    'secondary-light': lightRgb,
+    'secondary-dark': darkRgb,
+    'secondary-contrast': contrastRgb,
+    'secondary-dark-bg': darkBgRgb,
+    'secondary-state-contained': `rgba(${mainRgb.split(' ').join(', ')}, 0.3)`,
+    'secondary-state-outlined': `rgba(${mainRgb.split(' ').join(', ')}, 0.1)`,
+    'secondary-state-resting': `rgba(${mainRgb.split(' ').join(', ')}, 0.5)`,
+    'secondary-shade-12': `rgba(${mainRgb.split(' ').join(', ')}, 0.12)`,
+    'secondary-shade-16': `rgba(${mainRgb.split(' ').join(', ')}, 0.16)`,
+  };
+}
+
+// RGB channel format required: values must be space-separated (e.g. "15 23 41"), not comma-separated,
+// because they are interpolated into rgba() as `rgba(${rgb.split(' ').join(', ')}, alpha)`.
+function textSurfaceTokens(fgRgb: string, bgRgb: string, paperRgb: string, infoRgb: string, snackbarRgb: string): Record<string, string> {
+  return {
+    text: fgRgb,
+    'text-secondary': `rgba(${fgRgb.split(' ').join(', ')}, 0.6)`,
+    'text-disabled': `rgba(${fgRgb.split(' ').join(', ')}, 0.38)`,
+    'text-info': infoRgb,
+    'text-fill': fgRgb,
+    'text-shade-12': `rgba(${fgRgb.split(' ').join(', ')}, 0.12)`,
+    'text-shade-16': `rgba(${fgRgb.split(' ').join(', ')}, 0.16)`,
+    surface: bgRgb,
+    'surface-paper': paperRgb,
+    divider: `rgba(${fgRgb.split(' ').join(', ')}, 0.23)`,
+    'outlined-border': `rgba(${fgRgb.split(' ').join(', ')}, 0.12)`,
+    'input-line': `rgba(${fgRgb.split(' ').join(', ')}, 0.42)`,
+    'action-active': `rgba(${fgRgb.split(' ').join(', ')}, 0.54)`,
+    'action-hover': `rgba(${fgRgb.split(' ').join(', ')}, 0.05)`,
+    'action-selected': `rgba(${fgRgb.split(' ').join(', ')}, 0.08)`,
+    'action-disabled': `rgba(${fgRgb.split(' ').join(', ')}, 0.26)`,
+    'action-disabled-bg': `rgba(${fgRgb.split(' ').join(', ')}, 0.12)`,
+    'action-focus': `rgba(${fgRgb.split(' ').join(', ')}, 0.12)`,
+    'snackbar-bg': snackbarRgb,
+    'map-grid': '255 255 255',
+  };
+}
+
+function tableTokens({ topHeader, header, row, colBorder, border }: {
+  topHeader: string; header: string; row: string; colBorder: string; border: string;
+}): Record<string, string> {
+  return {
+    'table-top-header': topHeader,
+    'table-header': header,
+    'table-row': row,
+    'table-col-border': colBorder,
+    'table-border': border,
+  };
+}
+
+// ── Slate ────────────────────────────────────────────────────────────────────
 
 const slate: ThemeConfig = {
   light: {
@@ -32,6 +121,14 @@ const slate: ThemeConfig = {
     ring: '222 47% 11%',
     overlay: '222 47% 11%',
     shadow: '222 47% 11%',
+    // New sub-tokens — primary: '222 47% 11%' ≈ RGB(15, 23, 41)
+    ...primarySubTokensLight('124 149 208', '7 10 19', '255 255 255', '11 15 26', '15 23 41'),
+    // secondary: '210 40% 96%' ≈ RGB(237, 241, 247)
+    ...secondarySubTokensLight('245 248 252', '180 196 220', '15 23 41', '200 210 225', '201 212 228'),
+    // fg ≈ RGB(15, 23, 41); bg = white; info = sky blue
+    ...textSurfaceTokens('15 23 41', '255 255 255', '255 255 255', '14 165 233', '15 23 41'),
+    ...tableTokens({ topHeader: '238 242 255', header: '241 245 249', row: '255 255 255', colBorder: '250 250 250', border: 'rgba(214, 219, 228, 1)' }),
+    ...sharedSemanticLight,
   },
   dark: {
     bg: '222 47% 6%',
@@ -64,8 +161,19 @@ const slate: ThemeConfig = {
     ring: '213 27% 84%',
     overlay: '0 0% 0%',
     shadow: '0 0% 0%',
+    // primary dark: '210 40% 98%' ≈ RGB(248, 251, 254)
+    ...primarySubTokensLight('210 220 235', '255 255 255', '15 23 41', '25 35 55', '248 251 254'),
+    // secondary dark: '217 33% 17%' ≈ RGB(29, 40, 58)
+    ...secondarySubTokensLight('22 30 45', '44 60 87', '248 251 254', '35 50 72', '29 40 58'),
+    // fg dark ≈ RGB(248, 251, 254)
+    ...textSurfaceTokens('248 251 254', '8 11 22', '12 16 30', '56 189 248', '248 251 254'),
+    ...tableTokens({ topHeader: '17 25 41', header: '22 31 51', row: '12 16 30', colBorder: '8 11 22', border: 'rgba(51, 65, 86, 1)' }),
+    ...sharedSemanticDark,
+    'map-grid': '248 251 254',
   },
 };
+
+// ── Zinc ─────────────────────────────────────────────────────────────────────
 
 const zinc: ThemeConfig = {
   light: {
@@ -99,6 +207,14 @@ const zinc: ThemeConfig = {
     ring: '240 10% 4%',
     overlay: '240 10% 4%',
     shadow: '240 10% 4%',
+    // primary: '240 6% 10%' ≈ RGB(24, 24, 27)
+    ...primarySubTokensLight('158 158 164', '10 10 11', '255 255 255', '18 18 22', '24 24 27'),
+    // secondary: '240 5% 96%' ≈ RGB(245, 245, 246)
+    ...secondarySubTokensLight('248 248 249', '186 186 191', '24 24 27', '196 196 201', '186 186 191'),
+    // fg ≈ RGB(10, 10, 11)
+    ...textSurfaceTokens('10 10 11', '255 255 255', '255 255 255', '14 165 233', '10 10 11'),
+    ...tableTokens({ topHeader: '240 240 244', header: '244 244 245', row: '255 255 255', colBorder: '250 250 250', border: 'rgba(228, 228, 231, 1)' }),
+    ...sharedSemanticLight,
   },
   dark: {
     bg: '240 10% 6%',
@@ -131,8 +247,19 @@ const zinc: ThemeConfig = {
     ring: '240 5% 84%',
     overlay: '0 0% 0%',
     shadow: '0 0% 0%',
+    // primary dark: '0 0% 98%' ≈ RGB(250, 250, 250)
+    ...primarySubTokensLight('200 200 202', '255 255 255', '10 10 11', '20 20 24', '250 250 250'),
+    // secondary dark: '240 4% 16%' ≈ RGB(38, 38, 42)
+    ...secondarySubTokensLight('30 30 34', '52 52 58', '250 250 250', '44 44 49', '38 38 42'),
+    // fg dark ≈ RGB(250, 250, 250)
+    ...textSurfaceTokens('250 250 250', '14 14 17', '19 19 22', '56 189 248', '250 250 250'),
+    ...tableTokens({ topHeader: '22 22 26', header: '28 28 32', row: '19 19 22', colBorder: '14 14 17', border: 'rgba(63, 63, 70, 1)' }),
+    ...sharedSemanticDark,
+    'map-grid': '250 250 250',
   },
 };
+
+// ── Rose ─────────────────────────────────────────────────────────────────────
 
 const rose: ThemeConfig = {
   light: {
@@ -166,6 +293,14 @@ const rose: ThemeConfig = {
     ring: '347 77% 50%',
     overlay: '240 10% 4%',
     shadow: '347 60% 30%',
+    // primary: '347 77% 50%' ≈ RGB(226, 29, 72)
+    ...primarySubTokensLight('237 120 145', '135 18 43', '255 255 255', '107 14 34', '226 29 72'),
+    // secondary: same as zinc secondary
+    ...secondarySubTokensLight('248 248 249', '186 186 191', '10 10 11', '196 196 201', '186 186 191'),
+    // fg ≈ RGB(10, 10, 11)
+    ...textSurfaceTokens('10 10 11', '255 255 255', '255 255 255', '14 165 233', '10 10 11'),
+    ...tableTokens({ topHeader: '255 241 242', header: '255 245 246', row: '255 255 255', colBorder: '250 250 250', border: 'rgba(244, 227, 229, 1)' }),
+    ...sharedSemanticLight,
   },
   dark: {
     bg: '20 14% 5%',
@@ -198,7 +333,88 @@ const rose: ThemeConfig = {
     ring: '347 77% 50%',
     overlay: '0 0% 0%',
     shadow: '0 0% 0%',
+    // primary rose same in dark: '347 77% 50%' ≈ RGB(226, 29, 72)
+    ...primarySubTokensLight('237 120 145', '135 18 43', '255 255 255', '107 14 34', '226 29 72'),
+    // secondary dark: '240 4% 16%' ≈ RGB(38, 38, 42)
+    ...secondarySubTokensLight('30 30 34', '52 52 58', '242 242 242', '44 44 49', '38 38 42'),
+    // fg ≈ RGB(242, 242, 242) ('0 0% 95%')
+    ...textSurfaceTokens('242 242 242', '14 12 10', '22 20 17', '56 189 248', '242 242 242'),
+    ...tableTokens({ topHeader: '28 20 20', header: '36 28 28', row: '22 20 17', colBorder: '14 12 10', border: 'rgba(70, 55, 55, 1)' }),
+    ...sharedSemanticDark,
+    'map-grid': '242 242 242',
   },
 };
 
-export const defaultThemes: Record<string, ThemeConfig> = { slate, zinc, rose };
+// ── Aura ─────────────────────────────────────────────────────────────────────
+// Full MUI-inspired palette with exact colorsLight/colorsDark values
+
+const aura: ThemeConfig = {
+  light: {
+    bg: '0 0% 98%',
+    fg: '217 11% 18%',
+    card: '0 0% 100%',
+    'card-fg': '217 11% 18%',
+    popover: '0 0% 100%',
+    'popover-fg': '217 11% 18%',
+    primary: '242 32% 48%',
+    'primary-fg': '0 0% 100%',
+    'primary-hover': '242 32% 55%',
+    'primary-active': '245 67% 24%',
+    secondary: '217 100% 57%',
+    'secondary-fg': '0 0% 100%',
+    muted: '0 0% 96%',
+    'muted-fg': '0 0% 62%',
+    accent: '253 80% 94%',
+    'accent-fg': '253 76% 67%',
+    destructive: '340 71% 55%',
+    'destructive-fg': '0 0% 100%',
+    success: '123 57% 53%',
+    'success-fg': '0 0% 100%',
+    warning: '17 100% 54%',
+    'warning-fg': '0 0% 100%',
+    info: '253 76% 67%',
+    'info-fg': '0 0% 100%',
+    border: '240 2% 90%',
+    'border-strong': '0 0% 78%',
+    input: '240 2% 90%',
+    ring: '242 32% 48%',
+    overlay: '217 11% 18%',
+    shadow: '217 11% 18%',
+    ...auraSubTokensLight,
+  },
+  dark: {
+    bg: '217 11% 18%',
+    fg: '0 0% 100%',
+    card: '216 10% 20%',
+    'card-fg': '0 0% 100%',
+    popover: '216 10% 20%',
+    'popover-fg': '0 0% 100%',
+    primary: '243 85% 87%',
+    'primary-fg': '245 67% 24%',
+    'primary-hover': '243 85% 80%',
+    'primary-active': '243 85% 91%',
+    secondary: '225 87% 84%',
+    'secondary-fg': '215 100% 22%',
+    muted: '217 12% 26%',
+    'muted-fg': '207 12% 63%',
+    accent: '217 13% 28%',
+    'accent-fg': '243 85% 87%',
+    destructive: '348 75% 83%',
+    'destructive-fg': '334 100% 28%',
+    success: '109 65% 64%',
+    'success-fg': '127 100% 16%',
+    warning: '17 79% 79%',
+    'warning-fg': '18 100% 26%',
+    info: '243 85% 87%',
+    'info-fg': '247 58% 44%',
+    border: '0 0% 32%',
+    'border-strong': '0 0% 39%',
+    input: '217 12% 26%',
+    ring: '243 85% 87%',
+    overlay: '0 0% 0%',
+    shadow: '0 0% 0%',
+    ...auraSubTokensDark,
+  },
+};
+
+export const defaultThemes: Record<string, ThemeConfig> = { slate, zinc, rose, aura };

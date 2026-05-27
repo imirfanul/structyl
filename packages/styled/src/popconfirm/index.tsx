@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { Popover as PopoverPrimitive } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
-import { buttonVariants } from '../button';
+import { buttonVariants, type ButtonProps } from '../button';
 
 // ── Popconfirm ────────────────────────────────────────────────────────────────
 
@@ -13,8 +13,13 @@ export interface PopconfirmProps {
   description?: React.ReactNode;
   confirmLabel?: string;
   cancelLabel?: string;
-  /** Variant of the confirm button */
-  confirmVariant?: 'default' | 'destructive' | 'success';
+  /**
+   * Variant of the confirm button. Uses MUI-style naming:
+   * use `"outlined"` (not `"outline"`) for the bordered style.
+   */
+  confirmVariant?: ButtonProps['variant'];
+  /** Color of the confirm button when using contained/outlined/text variants */
+  confirmColor?: ButtonProps['color'];
   onConfirm?: () => void;
   onCancel?: () => void;
   /** Controlled open state */
@@ -34,6 +39,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
   confirmLabel = 'Confirm',
   cancelLabel = 'Cancel',
   confirmVariant = 'default',
+  confirmColor,
   onConfirm,
   onCancel,
   open: openProp,
@@ -111,7 +117,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
               type="button"
               onClick={handleConfirm}
               disabled={loading}
-              className={cn(buttonVariants({ variant: confirmVariant, size: 'sm' }))}
+              className={cn(buttonVariants({ variant: confirmVariant, color: confirmColor, size: 'sm' }))}
             >
               {loading ? (
                 <span className="inline-flex items-center gap-1.5">

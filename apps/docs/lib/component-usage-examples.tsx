@@ -76,6 +76,10 @@ import {
   Tooltip,
   Tree,
   Chart,
+  Typography,
+  Stat,
+  StatGroup,
+  Popconfirm,
 } from '@aura-ui/styled';
 import {
   DataTable,
@@ -1884,6 +1888,32 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
 <Button size="icon" aria-label="Open settings"><Settings /></Button>
 <Button disabled>Disabled</Button>`,
     },
+    {
+      title: 'Color palette',
+      description: 'Use the color prop with contained, outlined, and text variants for semantic intent.',
+      preview: () => (
+        <div className="grid gap-3">
+          <div className="flex flex-wrap gap-2">
+            {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+              <Button key={c} variant="contained" color={c} size="sm">{c}</Button>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+              <Button key={c} variant="outlined" color={c} size="sm">{c}</Button>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+              <Button key={c} variant="text" color={c} size="sm">{c}</Button>
+            ))}
+          </div>
+        </div>
+      ),
+      code: `<Button variant="contained" color="primary">primary</Button>
+<Button variant="outlined" color="error">error</Button>
+<Button variant="text" color="success">success</Button>`,
+    },
   ],
   dialog: [
     {
@@ -2052,6 +2082,32 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   </Tooltip.Root>
 </Tooltip.Provider>`,
     },
+    {
+      title: 'Semantic variants',
+      description: 'Tooltip supports themed color variants for contextual hints.',
+      preview: () => (
+        <Tooltip.Provider>
+          <div className="flex flex-wrap gap-2">
+            {(['default', 'dark', 'light', 'primary', 'success', 'warning', 'error', 'info'] as const).map((v) => (
+              <Tooltip.Root key={v}>
+                <Tooltip.Trigger asChild>
+                  <Button size="sm" variant="outline">{v}</Button>
+                </Tooltip.Trigger>
+                <Tooltip.Content variant={v} arrow>{v} tooltip</Tooltip.Content>
+              </Tooltip.Root>
+            ))}
+          </div>
+        </Tooltip.Provider>
+      ),
+      code: `<Tooltip.Provider>
+  <Tooltip.Root>
+    <Tooltip.Trigger asChild>
+      <Button size="sm" variant="outline">success</Button>
+    </Tooltip.Trigger>
+    <Tooltip.Content variant="success" arrow>success tooltip</Tooltip.Content>
+  </Tooltip.Root>
+</Tooltip.Provider>`,
+    },
   ],
   select: [
     {
@@ -2148,6 +2204,20 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   <Switch defaultChecked name="autoMerge" />
 </label>`,
     },
+    {
+      title: 'Semantic colors',
+      description: 'Switch accepts a color prop to match the semantic context of the toggle.',
+      preview: () => (
+        <div className="flex flex-wrap gap-4">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <Switch key={c} defaultChecked color={c} aria-label={c} />
+          ))}
+        </div>
+      ),
+      code: `<Switch defaultChecked color="primary" />
+<Switch defaultChecked color="success" />
+<Switch defaultChecked color="error" />`,
+    },
   ],
   checkbox: [
     {
@@ -2173,6 +2243,22 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
 <Checkbox />
 <Checkbox defaultChecked="indeterminate" />
 <Checkbox disabled />`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Use the color prop to visually reinforce the meaning of each checkbox option.',
+      preview: () => (
+        <div className="flex flex-wrap gap-4">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <label key={c} className="flex items-center gap-2 text-sm">
+              <Checkbox defaultChecked color={c} /> {c}
+            </label>
+          ))}
+        </div>
+      ),
+      code: `<Checkbox defaultChecked color="primary" />
+<Checkbox defaultChecked color="success" />
+<Checkbox defaultChecked color="error" />`,
     },
   ],
   accordion: [
@@ -2251,6 +2337,28 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   <Tabs.Content value="profile"><Input defaultValue="Ada Lovelace" /></Tabs.Content>
 </Tabs.Root>`,
     },
+    {
+      title: 'Semantic colors',
+      description: 'Pass color to Tabs.Root to use a semantic accent for the active indicator.',
+      preview: () => (
+        <div className="grid gap-4">
+          {(['primary', 'success', 'error', 'warning'] as const).map((c) => (
+            <Tabs.Root key={c} defaultValue="a" color={c} className="w-full max-w-sm">
+              <Tabs.List>
+                <Tabs.Trigger value="a">Alpha</Tabs.Trigger>
+                <Tabs.Trigger value="b">Beta</Tabs.Trigger>
+              </Tabs.List>
+            </Tabs.Root>
+          ))}
+        </div>
+      ),
+      code: `<Tabs.Root defaultValue="a" color="success">
+  <Tabs.List>
+    <Tabs.Trigger value="a">Alpha</Tabs.Trigger>
+    <Tabs.Trigger value="b">Beta</Tabs.Trigger>
+  </Tabs.List>
+</Tabs.Root>`,
+    },
   ],
   slider: [
     {
@@ -2269,6 +2377,20 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       ),
       code: `<Slider defaultValue={[25, 75]} step={5} minStepsBetweenThumbs={2} />
 <Slider orientation="vertical" defaultValue={[40]} />`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Color prop tints the slider track and thumb to match semantic intent.',
+      preview: () => (
+        <div className="grid w-full max-w-md gap-4">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <Slider key={c} defaultValue={[50]} color={c} aria-label={c} />
+          ))}
+        </div>
+      ),
+      code: `<Slider defaultValue={[50]} color="primary" />
+<Slider defaultValue={[50]} color="success" />
+<Slider defaultValue={[50]} color="error" />`,
     },
   ],
   avatar: [
@@ -2315,6 +2437,26 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
 <Badge variant="success">Healthy</Badge>
 <Badge variant="warning">Review</Badge>
 <Badge variant="destructive">Blocked</Badge>`,
+    },
+    {
+      title: 'Color prop',
+      description: 'The color prop applies semantic tints to both filled and outline shapes.',
+      preview: () => (
+        <div className="grid gap-2">
+          <div className="flex flex-wrap gap-2">
+            {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+              <Badge key={c} color={c}>{c}</Badge>
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+              <Badge key={c} variant="outline" color={c}>{c}</Badge>
+            ))}
+          </div>
+        </div>
+      ),
+      code: `<Badge color="primary">primary</Badge>
+<Badge variant="outline" color="success">success</Badge>`,
     },
   ],
   card: [
@@ -2385,6 +2527,19 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   <Alert.Description>Production updated without errors.</Alert.Description>
 </Alert.Root>`,
     },
+    {
+      title: 'Filled alerts with color prop',
+      description: 'Add filled and color props together for solid-background alert styles.',
+      preview: () => (
+        <div className="grid w-full max-w-lg gap-3">
+          {(['primary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <Alert key={c} filled color={c} title={c} description={`This is a ${c} filled alert.`} />
+          ))}
+        </div>
+      ),
+      code: `<Alert filled color="primary" title="Primary" description="This is a primary filled alert." />
+<Alert filled color="error" title="Error" description="Something went wrong." />`,
+    },
   ],
   input: [
     {
@@ -2423,6 +2578,20 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       code: `<Progress value={32} />
 <Progress value={76} getValueLabel={(value) => \`\${value}% synced\`} />
 <Progress value={null} />`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Color prop applies semantic tints to the progress bar fill.',
+      preview: () => (
+        <div className="grid w-full max-w-md gap-3">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <Progress key={c} value={65} color={c} aria-label={c} />
+          ))}
+        </div>
+      ),
+      code: `<Progress value={65} color="primary" />
+<Progress value={65} color="success" />
+<Progress value={65} color="error" />`,
     },
   ],
   toast: [
@@ -2485,6 +2654,20 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
 <Spinner label="Loading content" />
 <Spinner size="lg" label="Loading page section" />
 <Spinner size="xl" label="Loading full page" />`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Color prop applies semantic tints to the spinner for contextual loading states.',
+      preview: () => (
+        <div className="flex flex-wrap items-center gap-4">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <Spinner key={c} color={c} label={`${c} loading`} />
+          ))}
+        </div>
+      ),
+      code: `<Spinner color="primary" label="Loading" />
+<Spinner color="success" label="Processing" />
+<Spinner color="error" label="Failing" />`,
     },
   ],
   separator: [
@@ -2576,6 +2759,19 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
 <Toggle size="sm">Small</Toggle>
 <Toggle disabled>Disabled</Toggle>`,
     },
+    {
+      title: 'Semantic colors',
+      description: 'Color prop sets the pressed-state background and text for semantic toggles.',
+      preview: () => (
+        <div className="flex flex-wrap gap-2">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <Toggle key={c} defaultPressed color={c} size="sm">{c}</Toggle>
+          ))}
+        </div>
+      ),
+      code: `<Toggle defaultPressed color="primary">primary</Toggle>
+<Toggle defaultPressed color="success">success</Toggle>`,
+    },
   ],
   'toggle-group': [
     {
@@ -2642,6 +2838,23 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
     <RadioGroup.Item value="team" />
     <span>Team plan</span>
   </label>
+</RadioGroup.Root>`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Color prop on RadioGroup.Item sets the checked-state indicator color.',
+      preview: () => (
+        <RadioGroup.Root defaultValue="primary" aria-label="Color options" className="flex flex-wrap gap-4">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <label key={c} className="flex items-center gap-2 text-sm">
+              <RadioGroup.Item value={c} color={c} /> {c}
+            </label>
+          ))}
+        </RadioGroup.Root>
+      ),
+      code: `<RadioGroup.Root defaultValue="primary">
+  <label><RadioGroup.Item value="primary" color="primary" /> primary</label>
+  <label><RadioGroup.Item value="success" color="success" /> success</label>
 </RadioGroup.Root>`,
     },
   ],
@@ -2726,6 +2939,20 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       code: `<CircularProgress value={null} />
 <CircularProgress value={25} size={44} />
 <CircularProgress value={68} size={56} strokeWidth={6} />`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Color prop sets the fill color of the circular progress arc.',
+      preview: () => (
+        <div className="flex flex-wrap items-center gap-4">
+          {(['primary', 'secondary', 'error', 'warning', 'info', 'success'] as const).map((c) => (
+            <CircularProgress key={c} value={70} size={48} color={c} label={`${c} progress`} />
+          ))}
+        </div>
+      ),
+      code: `<CircularProgress value={70} color="primary" />
+<CircularProgress value={70} color="success" />
+<CircularProgress value={70} color="error" />`,
     },
   ],
   meter: [
@@ -2905,6 +3132,28 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   <Stepper.Step index={0}><Stepper.Title>Plan</Stepper.Title></Stepper.Step>
   <Stepper.Separator />
   <Stepper.Step index={1}><Stepper.Title>Billing</Stepper.Title></Stepper.Step>
+</Stepper.Root>`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Color prop sets the completed and active step indicator color.',
+      preview: () => (
+        <div className="grid gap-4">
+          {(['primary', 'success', 'error', 'warning'] as const).map((c) => (
+            <Stepper.Root key={c} activeStep={1} color={c} className="w-full max-w-xs">
+              <Stepper.Step index={0}><Stepper.Title>{c}</Stepper.Title></Stepper.Step>
+              <Stepper.Separator />
+              <Stepper.Step index={1}><Stepper.Title>Active</Stepper.Title></Stepper.Step>
+              <Stepper.Separator />
+              <Stepper.Step index={2}><Stepper.Title>Next</Stepper.Title></Stepper.Step>
+            </Stepper.Root>
+          ))}
+        </div>
+      ),
+      code: `<Stepper.Root activeStep={1} color="success">
+  <Stepper.Step index={0}><Stepper.Title>Done</Stepper.Title></Stepper.Step>
+  <Stepper.Separator />
+  <Stepper.Step index={1}><Stepper.Title>Active</Stepper.Title></Stepper.Step>
 </Stepper.Root>`,
     },
   ],
@@ -5081,6 +5330,206 @@ const data = [
 
 // Bump-curve funnel
 <Chart.Funnel data={data} width={300} height={240} curve="bump" />`,
+    },
+  ],
+
+  typography: [
+    {
+      title: 'Heading and body variants',
+      description: 'Typography supports 24 named variants with automatic element mapping.',
+      preview: () => (
+        <div className="grid gap-2 w-full max-w-lg">
+          <Typography variant="h1">h1 Heading</Typography>
+          <Typography variant="h2">h2 Heading</Typography>
+          <Typography variant="h3">h3 Heading</Typography>
+          <Typography variant="h4">h4 Heading</Typography>
+          <Typography variant="h5">h5 Heading</Typography>
+          <Typography variant="h6">h6 Heading</Typography>
+          <Typography variant="subtitle1">subtitle1 — secondary info</Typography>
+          <Typography variant="subtitle2">subtitle2 — label-weight text</Typography>
+          <Typography variant="body1">body1 — the default paragraph style</Typography>
+          <Typography variant="body2">body2 — smaller body copy</Typography>
+          <Typography variant="caption">caption — metadata and timestamps</Typography>
+          <Typography variant="overline">overline — section category</Typography>
+        </div>
+      ),
+      code: `<Typography variant="h1">h1 Heading</Typography>
+<Typography variant="body1">body1 — default paragraph style</Typography>
+<Typography variant="caption">caption</Typography>
+<Typography variant="overline">overline</Typography>`,
+    },
+    {
+      title: 'Semantic colors',
+      description: 'Use the color prop to apply semantic text colors inline.',
+      preview: () => (
+        <div className="grid gap-2">
+          {(['inherit', 'primary', 'secondary', 'error', 'warning', 'info', 'success', 'disabled'] as const).map((c) => (
+            <Typography key={c} variant="body1" color={c}>
+              color=&quot;{c}&quot; — The quick brown fox jumps over the lazy dog.
+            </Typography>
+          ))}
+        </div>
+      ),
+      code: `<Typography color="primary">Primary text</Typography>
+<Typography color="success">Success text</Typography>
+<Typography color="error">Error text</Typography>
+<Typography color="disabled">Disabled text</Typography>`,
+    },
+    {
+      title: 'Utility props',
+      description: 'gutterBottom, noWrap, truncate, and paragraph control spacing and overflow.',
+      preview: () => (
+        <div className="grid gap-3 w-full max-w-sm">
+          <Typography variant="h4" gutterBottom>gutterBottom adds margin below</Typography>
+          <Typography variant="body1" noWrap className="max-w-xs">
+            noWrap — This very long line of text will not wrap to the next line even though the container is narrow
+          </Typography>
+          <Typography variant="body1" truncate className="max-w-xs">
+            truncate — This very long line of text will be cut off with an ellipsis when it overflows
+          </Typography>
+          <Typography variant="body1" paragraph>
+            paragraph — Adds a bottom margin like a paragraph element would have.
+          </Typography>
+        </div>
+      ),
+      code: `<Typography variant="h4" gutterBottom>Heading with gap</Typography>
+<Typography variant="body1" noWrap>Single-line overflow text</Typography>
+<Typography variant="body1" truncate>Truncated text with ellipsis</Typography>`,
+    },
+  ],
+
+  stat: [
+    {
+      title: 'KPI card group',
+      description: 'StatGroup lays out Stat cards in a responsive grid. Each card shows label, value, trend and description.',
+      preview: () => (
+        <StatGroup columns={3} className="w-full max-w-2xl">
+          <Stat
+            label="Monthly Revenue"
+            value="$42,800"
+            trend="+12%"
+            trendDirection="up"
+            description="vs last month"
+          />
+          <Stat
+            label="Active Users"
+            value="3,291"
+            trend="-4%"
+            trendDirection="down"
+            description="vs last week"
+          />
+          <Stat
+            label="Uptime"
+            value="99.9%"
+            trend="stable"
+            trendDirection="neutral"
+            description="last 30 days"
+          />
+        </StatGroup>
+      ),
+      code: `<StatGroup columns={3}>
+  <Stat
+    label="Monthly Revenue"
+    value="$42,800"
+    trend="+12%"
+    trendDirection="up"
+    description="vs last month"
+  />
+  <Stat
+    label="Active Users"
+    value="3,291"
+    trend="-4%"
+    trendDirection="down"
+    description="vs last week"
+  />
+</StatGroup>`,
+    },
+    {
+      title: 'Semantic color tints',
+      description: 'The color prop tints the card border and background and colors the icon.',
+      preview: () => (
+        <StatGroup columns={3} className="w-full max-w-2xl">
+          {([
+            { color: 'primary', label: 'Revenue', value: '$42,800', trend: '+12%', trendDirection: 'up' },
+            { color: 'success', label: 'Uptime', value: '99.9%', trend: 'stable', trendDirection: 'neutral' },
+            { color: 'error', label: 'Errors', value: '14', trend: '+3', trendDirection: 'down' },
+            { color: 'warning', label: 'Warnings', value: '28', trend: '+5', trendDirection: 'down' },
+            { color: 'info', label: 'Requests', value: '82k', trend: '+8%', trendDirection: 'up' },
+            { color: 'secondary', label: 'Sessions', value: '1,204', trend: '+2%', trendDirection: 'up' },
+          ] as const).map((s) => (
+            <Stat
+              key={s.color}
+              label={s.label}
+              value={s.value}
+              trend={s.trend}
+              trendDirection={s.trendDirection}
+              color={s.color}
+            />
+          ))}
+        </StatGroup>
+      ),
+      code: `<Stat label="Revenue" value="$42,800" trend="+12%" trendDirection="up" color="primary" />
+<Stat label="Errors" value="14" trend="+3" trendDirection="down" color="error" />
+<Stat label="Uptime" value="99.9%" trend="stable" trendDirection="neutral" color="success" />`,
+    },
+  ],
+
+  popconfirm: [
+    {
+      title: 'Delete confirmation',
+      description: 'Popconfirm wraps any trigger and shows an inline confirmation before a destructive action.',
+      preview: () => (
+        <div className="flex flex-wrap gap-3">
+          <Popconfirm
+            title="Delete this record?"
+            description="This action cannot be undone."
+            confirmLabel="Delete"
+            confirmVariant="contained"
+            confirmColor="error"
+            onConfirm={() => {}}
+          >
+            <Button variant="destructive" size="sm">Delete record</Button>
+          </Popconfirm>
+          <Popconfirm
+            title="Archive project?"
+            confirmLabel="Archive"
+            onConfirm={() => {}}
+          >
+            <Button variant="outline" size="sm">Archive</Button>
+          </Popconfirm>
+        </div>
+      ),
+      code: `<Popconfirm
+  title="Delete this record?"
+  description="This action cannot be undone."
+  confirmLabel="Delete"
+  confirmVariant="contained"
+  confirmColor="error"
+  onConfirm={handleDelete}
+>
+  <Button variant="destructive">Delete record</Button>
+</Popconfirm>`,
+    },
+    {
+      title: 'Positioning',
+      description: 'Use side and align props to control where the confirmation popover appears.',
+      preview: () => (
+        <div className="flex flex-wrap gap-3">
+          {(['top', 'right', 'bottom', 'left'] as const).map((side) => (
+            <Popconfirm
+              key={side}
+              title={`Confirm (${side})?`}
+              side={side}
+              onConfirm={() => {}}
+            >
+              <Button variant="outline" size="sm">{side}</Button>
+            </Popconfirm>
+          ))}
+        </div>
+      ),
+      code: `<Popconfirm title="Confirm?" side="right" onConfirm={handleConfirm}>
+  <Button>Right side</Button>
+</Popconfirm>`,
     },
   ],
 };

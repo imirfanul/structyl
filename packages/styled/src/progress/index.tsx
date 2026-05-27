@@ -26,8 +26,9 @@ const colorMap: Record<string, string> = {
   success: 'bg-success',
   warning: 'bg-warning',
   destructive: 'bg-destructive',
+  error: 'bg-destructive',
   info: 'bg-info',
-  secondary: 'bg-secondary-foreground',
+  secondary: 'bg-secondary-dark',
 };
 
 // ── Progress ──────────────────────────────────────────────────────────────────
@@ -35,7 +36,7 @@ const colorMap: Record<string, string> = {
 export interface ProgressProps
   extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>,
     VariantProps<typeof progressTrackVariants> {
-  color?: 'primary' | 'success' | 'warning' | 'destructive' | 'info' | 'secondary';
+  color?: 'primary' | 'success' | 'warning' | 'destructive' | 'error' | 'info' | 'secondary';
   /** Stripe pattern on the indicator */
   striped?: boolean;
   /** Animate the stripes (requires striped=true or stands alone) */

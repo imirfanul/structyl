@@ -5606,7 +5606,7 @@ function normalizeColumnDefs<TData, TValue>(
 /* ─── Toolbar button ───────────────────────────────────────────────── */
 
 export interface DataTableToolbarButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'color'> {
   tooltip?: string;
 }
 

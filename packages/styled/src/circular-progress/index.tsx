@@ -3,16 +3,29 @@
 import * as React from 'react';
 import { cn } from '@aura-ui/utils';
 
+type CircularProgressColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success' | 'inherit';
+
+const colorClassMap: Record<CircularProgressColor, string> = {
+  primary: 'text-primary',
+  secondary: 'text-secondary-dark',
+  error: 'text-destructive',
+  warning: 'text-warning',
+  info: 'text-info',
+  success: 'text-success',
+  inherit: 'text-current',
+};
+
 interface CircularProgressProps extends React.SVGAttributes<SVGSVGElement> {
   value?: number | null;
   max?: number;
   size?: number;
   strokeWidth?: number;
   label?: string;
+  color?: CircularProgressColor;
 }
 
 const CircularProgress = React.forwardRef<SVGSVGElement, CircularProgressProps>(
-  ({ className, value, max = 100, size = 40, strokeWidth = 4, label = 'Loading', ...props }, ref) => {
+  ({ className, value, max = 100, size = 40, strokeWidth = 4, label = 'Loading', color = 'primary', ...props }, ref) => {
     const isIndeterminate = value == null;
     const radius = (size - strokeWidth) / 2;
     const circumference = 2 * Math.PI * radius;
@@ -29,7 +42,7 @@ const CircularProgress = React.forwardRef<SVGSVGElement, CircularProgressProps>(
         width={size}
         height={size}
         viewBox={`0 0 ${size} ${size}`}
-        className={cn('text-primary', isIndeterminate && 'animate-spin', className)}
+        className={cn(colorClassMap[color], isIndeterminate && 'animate-spin', className)}
         {...props}
       >
         <circle

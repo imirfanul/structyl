@@ -782,7 +782,7 @@ const ButtonGroup = React.forwardRef<
 );
 ButtonGroup.displayName = 'ButtonGroup';
 
-interface FloatingActionButtonProps extends Omit<ButtonProps, 'size' | 'variant'> {
+interface FloatingActionButtonProps extends Omit<ButtonProps, 'size' | 'variant' | 'color'> {
   extended?: boolean;
   variant?: 'circular' | 'extended';
   color?: MaterialColor;

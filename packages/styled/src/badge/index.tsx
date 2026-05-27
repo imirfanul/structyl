@@ -21,6 +21,16 @@ export const badgeVariants = tv({
       success: 'bg-success text-success-foreground hover:bg-success/80 border-transparent',
       warning: 'bg-warning text-warning-foreground hover:bg-warning/80 border-transparent',
       info: 'bg-info text-info-foreground hover:bg-info/80 border-transparent',
+      error: 'bg-destructive text-destructive-foreground hover:bg-destructive/80 border-transparent',
+    },
+    color: {
+      primary: '',
+      secondary: '',
+      error: '',
+      warning: '',
+      info: '',
+      success: '',
+      default: '',
     },
     size: {
       sm: 'px-2 py-0 text-[10px]',
@@ -28,6 +38,22 @@ export const badgeVariants = tv({
       lg: 'px-3 py-1 text-sm',
     },
   },
+  compoundVariants: [
+    // filled (default shape) × color
+    { variant: 'default', color: 'primary', class: 'bg-primary text-primary-foreground border-transparent' },
+    { variant: 'default', color: 'secondary', class: 'bg-secondary text-secondary-foreground border-transparent' },
+    { variant: 'default', color: 'error', class: 'bg-destructive text-destructive-foreground border-transparent' },
+    { variant: 'default', color: 'warning', class: 'bg-warning text-warning-foreground border-transparent' },
+    { variant: 'default', color: 'info', class: 'bg-info text-info-foreground border-transparent' },
+    { variant: 'default', color: 'success', class: 'bg-success text-success-foreground border-transparent' },
+    // outline × color
+    { variant: 'outline', color: 'primary', class: 'text-primary border-primary' },
+    { variant: 'outline', color: 'secondary', class: 'text-secondary-dark border-secondary' },
+    { variant: 'outline', color: 'error', class: 'text-destructive border-destructive' },
+    { variant: 'outline', color: 'warning', class: 'text-warning border-warning' },
+    { variant: 'outline', color: 'info', class: 'text-info border-info' },
+    { variant: 'outline', color: 'success', class: 'text-success border-success' },
+  ],
   defaultVariants: { variant: 'default', size: 'md' },
 });
 
@@ -44,6 +70,16 @@ export const dotBadgeVariants = tv({
       success: 'bg-success/10 text-success border-success/20',
       warning: 'bg-warning/10 text-warning border-warning/20',
       info: 'bg-info/10 text-info border-info/20',
+      error: 'bg-destructive/10 text-destructive border-destructive/20',
+    },
+    color: {
+      primary: '',
+      secondary: '',
+      error: '',
+      warning: '',
+      info: '',
+      success: '',
+      default: '',
     },
     size: {
       sm: 'px-2 py-0 text-[10px]',
@@ -51,13 +87,23 @@ export const dotBadgeVariants = tv({
       lg: 'px-3 py-1 text-sm',
     },
   },
+  compoundVariants: [
+    { variant: 'default', color: 'primary', class: 'bg-primary/10 text-primary border-primary/20' },
+    { variant: 'default', color: 'secondary', class: 'bg-secondary/10 text-secondary-dark border-secondary/20' },
+    { variant: 'default', color: 'error', class: 'bg-destructive/10 text-destructive border-destructive/20' },
+    { variant: 'default', color: 'warning', class: 'bg-warning/10 text-warning border-warning/20' },
+    { variant: 'default', color: 'info', class: 'bg-info/10 text-info border-info/20' },
+    { variant: 'default', color: 'success', class: 'bg-success/10 text-success border-success/20' },
+  ],
   defaultVariants: { variant: 'default', size: 'md' },
 });
 
 const dotColorMap: Record<string, string> = {
   default: 'bg-primary',
-  secondary: 'bg-secondary-foreground',
+  primary: 'bg-primary',
+  secondary: 'bg-secondary-dark',
   destructive: 'bg-destructive',
+  error: 'bg-destructive',
   outline: 'bg-fg',
   success: 'bg-success',
   warning: 'bg-warning',
@@ -67,7 +113,7 @@ const dotColorMap: Record<string, string> = {
 // ── Badge ─────────────────────────────────────────────────────────────────────
 
 interface BadgeProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
+  extends Omit<React.HTMLAttributes<HTMLSpanElement>, 'color'>,
     VariantProps<typeof badgeVariants> {
   asChild?: boolean;
   /** Render a status dot before label text */
@@ -80,17 +126,18 @@ interface BadgeProps
 }
 
 const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
-  ({ className, variant = 'default', size, asChild, dot, icon, removable, onRemove, children, ...props }, ref) => {
+  ({ className, variant = 'default', color, size, asChild, dot, icon, removable, onRemove, children, ...props }, ref) => {
     const Comp = asChild ? Slot : 'span';
+    const dotKey = (color ?? variant) as string;
 
     if (dot) {
       return (
         <Comp
           ref={ref}
-          className={cn(dotBadgeVariants({ variant: variant ?? 'default', size }), className)}
+          className={cn(dotBadgeVariants({ variant: variant ?? 'default', color, size }), className)}
           {...props}
         >
-          <span className={cn('size-1.5 rounded-full', dotColorMap[variant ?? 'default'])} aria-hidden />
+          <span className={cn('size-1.5 rounded-full', dotColorMap[dotKey] ?? 'bg-primary')} aria-hidden />
           {children}
           {removable && (
             <button
@@ -111,7 +158,7 @@ const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
     return (
       <Comp
         ref={ref}
-        className={cn(badgeVariants({ variant, size }), className)}
+        className={cn(badgeVariants({ variant, color, size }), className)}
         {...props}
       >
         {icon && <span className="inline-flex [&_svg]:size-3" aria-hidden>{icon}</span>}

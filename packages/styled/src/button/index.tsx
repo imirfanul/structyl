@@ -18,6 +18,7 @@ export const buttonVariants = tv({
   ],
   variants: {
     variant: {
+      // ── Legacy / convenience variants (no color prop needed) ──────────────
       default: [
         'bg-primary text-primary-foreground shadow-button',
         'hover:bg-primary-hover hover:shadow-md',
@@ -50,6 +51,30 @@ export const buttonVariants = tv({
         'hover:brightness-110 hover:shadow-md',
         'active:brightness-95',
       ],
+      // ── MUI-style semantic variants (pair with color prop) ────────────────
+      contained: [
+        'shadow-button',
+        'hover:shadow-md',
+        'active:shadow-button-active',
+      ],
+      outlined: [
+        'border bg-transparent',
+        'active:scale-[0.97]',
+      ],
+      text: [
+        'bg-transparent shadow-none',
+        'active:scale-[0.97]',
+      ],
+    },
+    color: {
+      primary: '',
+      secondary: '',
+      error: '',
+      warning: '',
+      info: '',
+      success: '',
+      default: '',
+      inherit: 'text-inherit',
     },
     size: {
       default: 'h-9 px-4 py-2',
@@ -62,6 +87,193 @@ export const buttonVariants = tv({
       'icon-xl': 'size-12 rounded-lg',
     },
   },
+  compoundVariants: [
+    // ── contained × color ─────────────────────────────────────────────────
+    {
+      variant: 'contained',
+      color: 'primary',
+      class: [
+        'bg-primary text-primary-foreground',
+        'hover:bg-primary-state-contained',
+      ],
+    },
+    {
+      variant: 'contained',
+      color: 'secondary',
+      class: [
+        'bg-secondary text-secondary-foreground',
+        'hover:bg-secondary-state-contained',
+      ],
+    },
+    {
+      variant: 'contained',
+      color: 'error',
+      class: [
+        'bg-destructive text-destructive-foreground',
+        'hover:bg-error-state-contained',
+      ],
+    },
+    {
+      variant: 'contained',
+      color: 'warning',
+      class: [
+        'bg-warning text-warning-foreground',
+        'hover:bg-warning-state-contained',
+      ],
+    },
+    {
+      variant: 'contained',
+      color: 'info',
+      class: [
+        'bg-info text-info-foreground',
+        'hover:bg-info-state-contained',
+      ],
+    },
+    {
+      variant: 'contained',
+      color: 'success',
+      class: [
+        'bg-success text-success-foreground',
+        'hover:bg-success-state-contained',
+      ],
+    },
+    {
+      variant: 'contained',
+      color: 'default',
+      class: [
+        'bg-muted text-fg',
+        'hover:bg-muted/80',
+      ],
+    },
+    // ── outlined × color ──────────────────────────────────────────────────
+    {
+      variant: 'outlined',
+      color: 'primary',
+      class: [
+        'border-primary text-primary',
+        'hover:bg-primary-state-outlined',
+        'active:bg-primary-state-resting',
+      ],
+    },
+    {
+      variant: 'outlined',
+      color: 'secondary',
+      class: [
+        'border-secondary text-secondary-dark',
+        'hover:bg-secondary-state-outlined',
+        'active:bg-secondary-state-resting',
+      ],
+    },
+    {
+      variant: 'outlined',
+      color: 'error',
+      class: [
+        'border-destructive text-destructive',
+        'hover:bg-error-state-outlined',
+        'active:bg-error-state-resting',
+      ],
+    },
+    {
+      variant: 'outlined',
+      color: 'warning',
+      class: [
+        'border-warning text-warning',
+        'hover:bg-warning-state-outlined',
+        'active:bg-warning-state-resting',
+      ],
+    },
+    {
+      variant: 'outlined',
+      color: 'info',
+      class: [
+        'border-info text-info',
+        'hover:bg-info-state-outlined',
+        'active:bg-info-state-resting',
+      ],
+    },
+    {
+      variant: 'outlined',
+      color: 'success',
+      class: [
+        'border-success text-success',
+        'hover:bg-success-state-outlined',
+        'active:bg-success-state-resting',
+      ],
+    },
+    {
+      variant: 'outlined',
+      color: 'default',
+      class: [
+        'border-border text-fg',
+        'hover:bg-accent hover:text-accent-foreground',
+        'active:bg-accent/80',
+      ],
+    },
+    // ── text × color ──────────────────────────────────────────────────────
+    {
+      variant: 'text',
+      color: 'primary',
+      class: [
+        'text-primary',
+        'hover:bg-primary-state-outlined',
+        'active:bg-primary-state-resting',
+      ],
+    },
+    {
+      variant: 'text',
+      color: 'secondary',
+      class: [
+        'text-secondary-dark',
+        'hover:bg-secondary-state-outlined',
+        'active:bg-secondary-state-resting',
+      ],
+    },
+    {
+      variant: 'text',
+      color: 'error',
+      class: [
+        'text-destructive',
+        'hover:bg-error-state-outlined',
+        'active:bg-error-state-resting',
+      ],
+    },
+    {
+      variant: 'text',
+      color: 'warning',
+      class: [
+        'text-warning',
+        'hover:bg-warning-state-outlined',
+        'active:bg-warning-state-resting',
+      ],
+    },
+    {
+      variant: 'text',
+      color: 'info',
+      class: [
+        'text-info',
+        'hover:bg-info-state-outlined',
+        'active:bg-info-state-resting',
+      ],
+    },
+    {
+      variant: 'text',
+      color: 'success',
+      class: [
+        'text-success',
+        'hover:bg-success-state-outlined',
+        'active:bg-success-state-resting',
+      ],
+    },
+    {
+      variant: 'text',
+      color: 'default',
+      class: [
+        'text-fg',
+        'hover:bg-accent hover:text-accent-foreground',
+        'active:bg-accent/80',
+      ],
+    },
+  ],
   defaultVariants: { variant: 'default', size: 'default' },
 });
 
@@ -87,7 +299,7 @@ const ButtonSpinner = ({ className }: { className?: string }) => (
 // ── Button ───────────────────────────────────────────────────────────────────
 
 export interface ButtonProps
-  extends React.ComponentPropsWithoutRef<'button'>,
+  extends Omit<React.ComponentPropsWithoutRef<'button'>, 'color'>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   /** Shows a spinner and disables the button */
@@ -102,7 +314,7 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, loading = false, loadingText, leftIcon, rightIcon, disabled, children, ...props },
+    { className, variant, size, color, asChild = false, loading = false, loadingText, leftIcon, rightIcon, disabled, children, ...props },
     ref,
   ) => {
     const isDisabled = disabled || loading;
@@ -111,7 +323,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       return (
         <Slot
           ref={ref}
-          className={cn(buttonVariants({ variant, size }), className)}
+          className={cn(buttonVariants({ variant, size, color }), className)}
           aria-disabled={isDisabled || undefined}
           data-loading={loading ? '' : undefined}
           {...props}
@@ -125,7 +337,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         type="button"
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={cn(buttonVariants({ variant, size, color }), className)}
         disabled={isDisabled}
         data-loading={loading ? '' : undefined}
         {...props}

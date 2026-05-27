@@ -5,6 +5,17 @@ import { Switch as SwitchPrimitive, type SwitchProps as SwitchPrimitiveProps } f
 import { cn } from '@aura-ui/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
+type SwitchColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';
+
+const checkedBgMap: Record<SwitchColor, string> = {
+  primary: 'data-[state=checked]:bg-primary',
+  secondary: 'data-[state=checked]:bg-secondary',
+  error: 'data-[state=checked]:bg-destructive',
+  warning: 'data-[state=checked]:bg-warning',
+  info: 'data-[state=checked]:bg-info',
+  success: 'data-[state=checked]:bg-success',
+};
+
 export const switchVariants = tv({
   base: [
     'peer group/switch inline-flex shrink-0 cursor-pointer items-center rounded-full p-0.5',
@@ -13,7 +24,7 @@ export const switchVariants = tv({
     'shadow-inner',
     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg',
     'disabled:cursor-not-allowed disabled:opacity-50',
-    'data-[state=checked]:bg-primary data-[state=unchecked]:bg-muted',
+    'data-[state=unchecked]:bg-muted',
     'active:scale-[0.97] active:transition-transform active:duration-instant',
   ],
   variants: {
@@ -43,13 +54,15 @@ const thumbVariants = tv({
   defaultVariants: { size: 'md' },
 });
 
-export interface SwitchProps extends SwitchPrimitiveProps, VariantProps<typeof switchVariants> {}
+export interface SwitchProps extends SwitchPrimitiveProps, VariantProps<typeof switchVariants> {
+  color?: SwitchColor;
+}
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
-  ({ className, size, ...props }, ref) => (
+  ({ className, size, color = 'primary', ...props }, ref) => (
     <SwitchPrimitive
       ref={ref}
-      className={cn(switchVariants({ size }), className)}
+      className={cn(switchVariants({ size }), checkedBgMap[color], className)}
       {...props}
     >
       <span

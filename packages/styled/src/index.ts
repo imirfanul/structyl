@@ -27,7 +27,8 @@ export * from './aspect-ratio';
 export * as Avatar from './avatar';
 export type { AvatarRootProps, AvatarImageProps, AvatarFallbackProps, ImageLoadingStatus } from '@aura-ui/primitives';
 export * from './progress';
-export * as Skeleton from './skeleton';
+export { Skeleton, Group as SkeletonGroup } from './skeleton';
+export type { SkeletonProps, SkeletonGroupProps } from './skeleton';
 export * from './badge';
 export * as Card from './card';
 export type { CardRootProps, CardSectionProps } from '@aura-ui/primitives';
@@ -331,3 +332,42 @@ export type { RatingProps } from './rating';
 
 export { Popconfirm } from './popconfirm';
 export type { PopconfirmProps } from './popconfirm';
+
+export { Typography } from './typography';
+export type { TypographyProps, TypographyVariant, TypographyColor } from './typography';
+
+// ── Material component individual re-exports ─────────────────────────────────
+// These live in ./material but the registry and docs import them by name.
+// Note: ButtonGroup, Chart, Table, Timeline, Rating, Typography are already
+// exported individually above; do not re-export them here.
+export {
+  Link,
+  Box,
+  Container,
+  Stack,
+  Grid,
+  Paper,
+  SvgIcon,
+  Chip,
+  FloatingActionButton,
+  Fab,
+  Autocomplete,
+  TransferList,
+  ImageList,
+  List,
+  Backdrop,
+  Snackbar,
+  AppBar,
+  BottomNavigation,
+  SpeedDial,
+  Masonry,
+  ClickAwayListener,
+  NoSsr,
+  Popper,
+  TextareaAutosize,
+  Transition,
+  CssBaseline,
+  Modal,
+  Portal as MaterialPortal,
+  InitColorSchemeScript,
+} from './material';
