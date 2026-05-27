@@ -22,7 +22,7 @@ const menuPanelCls = [
 ];
 
 const menuItemCls = [
-  'relative flex cursor-default select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none',
+  'relative flex cursor-pointer select-none items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-none',
   'transition-colors duration-instant',
   'focus:bg-accent focus:text-accent-foreground',
   'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',

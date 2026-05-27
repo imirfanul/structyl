@@ -16,7 +16,7 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     <CheckboxPrimitive
       ref={ref}
       className={cn(
-        'peer size-4 shrink-0 rounded-[5px] border border-border-strong bg-bg shadow-xs',
+        'peer size-4 shrink-0 cursor-pointer rounded-[5px] border border-border-strong bg-bg shadow-xs',
         'transition-[background-color,border-color,box-shadow,transform] duration-snappy ease-spring',
         'hover:border-primary/60',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2 focus-visible:ring-offset-bg',

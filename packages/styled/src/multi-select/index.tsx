@@ -10,7 +10,7 @@ const Root = MultiSelectPrimitive.Root;
 const Group = MultiSelectPrimitive.Group;
 
 const itemClassName = cn(
-  'relative flex w-full cursor-default select-none items-center gap-2 rounded-md py-1.5 pl-2 pr-8 text-sm outline-none',
+  'relative flex w-full cursor-pointer select-none items-center gap-2 rounded-md py-1.5 pl-2 pr-8 text-sm outline-none',
   'duration-instant transition-colors',
   'focus:bg-accent focus:text-accent-foreground',
   'data-[state=checked]:font-medium',

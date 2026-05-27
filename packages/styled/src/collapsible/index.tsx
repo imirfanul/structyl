@@ -13,7 +13,7 @@ const Trigger = React.forwardRef<
   <CollapsiblePrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex items-center justify-between font-medium transition-all',
+      'flex cursor-pointer items-center justify-between font-medium transition-all',
       '[&[data-state=open]>svg]:rotate-180',
       className,
     )}

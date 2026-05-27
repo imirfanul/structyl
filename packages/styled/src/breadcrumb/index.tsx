@@ -40,7 +40,7 @@ const Link = React.forwardRef<HTMLAnchorElement, BreadcrumbLinkProps>(
   ({ asChild, className, ...props }, ref) => {
     const Comp = asChild ? Slot : 'a';
     return (
-      <Comp ref={ref} className={cn('hover:text-fg transition-colors', className)} {...props} />
+      <Comp ref={ref} className={cn('cursor-pointer hover:text-fg transition-colors', className)} {...props} />
     );
   },
 );

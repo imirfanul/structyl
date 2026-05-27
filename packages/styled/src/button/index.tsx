@@ -1,13 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@aura-ui/core';
+import { Slot } from '@aura-ui/core';
 import { cn } from '@aura-ui/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 export const buttonVariants = tv({
   base: [
-    'relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium',
+    'relative inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium',
     'select-none isolate',
     'transition-[transform,background-color,border-color,color,box-shadow,opacity] duration-150 ease-spring',
     'will-change-transform',
@@ -40,34 +40,144 @@ export const buttonVariants = tv({
       ],
       ghost: ['text-fg', 'hover:bg-accent hover:text-accent-foreground', 'active:bg-accent/80'],
       link: ['text-primary underline-offset-4', 'hover:underline active:scale-100'],
+      success: [
+        'bg-success text-success-foreground shadow-button',
+        'hover:brightness-110 hover:shadow-md',
+        'active:brightness-95',
+      ],
+      warning: [
+        'bg-warning text-warning-foreground shadow-button',
+        'hover:brightness-110 hover:shadow-md',
+        'active:brightness-95',
+      ],
     },
     size: {
       default: 'h-9 px-4 py-2',
       sm: 'h-8 rounded-md px-3 text-xs',
       lg: 'h-11 rounded-lg px-6 text-base',
+      xl: 'h-12 rounded-lg px-8 text-base',
       icon: 'size-9 rounded-md',
       'icon-sm': 'size-8 rounded-md',
       'icon-lg': 'size-11 rounded-lg',
+      'icon-xl': 'size-12 rounded-lg',
     },
   },
   defaultVariants: { variant: 'default', size: 'default' },
 });
 
+// ── Spinner (inline) ─────────────────────────────────────────────────────────
+
+const ButtonSpinner = ({ className }: { className?: string }) => (
+  <svg
+    className={cn('animate-spin', className)}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    aria-hidden
+  >
+    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+    />
+  </svg>
+);
+
+// ── Button ───────────────────────────────────────────────────────────────────
+
 export interface ButtonProps
   extends React.ComponentPropsWithoutRef<'button'>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  /** Shows a spinner and disables the button */
+  loading?: boolean;
+  /** Text shown next to spinner when loading. Defaults to children. */
+  loadingText?: string;
+  /** Icon rendered before children */
+  leftIcon?: React.ReactNode;
+  /** Icon rendered after children */
+  rightIcon?: React.ReactNode;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => (
-    <Primitive.button
+  (
+    { className, variant, size, asChild = false, loading = false, loadingText, leftIcon, rightIcon, disabled, children, ...props },
+    ref,
+  ) => {
+    const isDisabled = disabled || loading;
+
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref}
+          className={cn(buttonVariants({ variant, size }), className)}
+          aria-disabled={isDisabled || undefined}
+          data-loading={loading ? '' : undefined}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
+    return (
+      <button
+        ref={ref}
+        type="button"
+        className={cn(buttonVariants({ variant, size }), className)}
+        disabled={isDisabled}
+        data-loading={loading ? '' : undefined}
+        {...props}
+      >
+        {loading ? (
+          <>
+            <ButtonSpinner className="size-4" />
+            {loadingText ?? children}
+          </>
+        ) : (
+          <>
+            {leftIcon && <span className="inline-flex shrink-0">{leftIcon}</span>}
+            {children}
+            {rightIcon && <span className="inline-flex shrink-0">{rightIcon}</span>}
+          </>
+        )}
+      </button>
+    );
+  },
+);
+Button.displayName = 'Button';
+
+// ── ButtonGroup ──────────────────────────────────────────────────────────────
+
+export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Collapses shared borders between buttons */
+  attached?: boolean;
+  orientation?: 'horizontal' | 'vertical';
+}
+
+const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
+  ({ className, attached = false, orientation = 'horizontal', ...props }, ref) => (
+    <div
       ref={ref}
-      className={cn(buttonVariants({ variant, size }), className)}
+      role="group"
+      data-orientation={orientation}
+      className={cn(
+        'inline-flex',
+        orientation === 'vertical' ? 'flex-col' : 'flex-row',
+        attached && [
+          orientation === 'horizontal'
+            ? '[&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none [&>*:not(:first-child)]:-ml-px'
+            : '[&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none [&>*:not(:first-child)]:-mt-px',
+          '[&>*:focus-visible]:z-10 [&>*:hover]:z-10 [&>*]:relative',
+        ],
+        !attached && (orientation === 'horizontal' ? 'gap-2' : 'gap-2 flex-col'),
+        className,
+      )}
       {...props}
     />
   ),
 );
-Button.displayName = 'Button';
+ButtonGroup.displayName = 'ButtonGroup';
 
-export { Button };
+export { Button, ButtonGroup, ButtonSpinner };

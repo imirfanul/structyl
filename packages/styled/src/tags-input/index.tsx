@@ -42,7 +42,7 @@ const Tag: React.FC<{ index: number; tag: string }> = ({ index, tag }) => (
       {tag}
       <button
         type="button"
-        className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-sm hover:bg-fg/10"
+        className="inline-flex h-3.5 w-3.5 cursor-pointer items-center justify-center rounded-sm hover:bg-fg/10"
         aria-label={`Remove ${tag}`}
       >
         <X className="h-3 w-3" />

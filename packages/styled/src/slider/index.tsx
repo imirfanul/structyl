@@ -46,7 +46,7 @@ const Slider = React.forwardRef<HTMLSpanElement, SliderProps>(
           <SliderPrimitive.Thumb
             key={i}
             className={cn(
-              'block h-4 w-4 rounded-full border border-primary/50 bg-bg shadow transition-colors',
+              'block h-4 w-4 cursor-pointer rounded-full border border-primary/50 bg-bg shadow transition-colors',
               'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
               'disabled:pointer-events-none disabled:opacity-50',
             )}

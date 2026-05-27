@@ -1,36 +1,39 @@
+'use client';
+
 import * as React from 'react';
 import { useControllableState } from '@aura-ui/hooks';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   value?: string;
   defaultValue?: string;
+  /** Visual size variant */
+  size?: 'sm' | 'md' | 'lg';
+  /** Marks the input as invalid for ARIA */
+  invalid?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
-  const { value: valueProp, defaultValue, onChange, ...rest } = props;
+  const { value: valueProp, defaultValue, onChange, invalid, size: _size, ...rest } = props;
 
   const [value, setValue] = useControllableState({
     prop: valueProp,
     defaultProp: defaultValue,
     onChange: (v) => {
       if (onChange) {
-        const synthetic = {
-          target: { value: v },
-        } as unknown as React.ChangeEvent<HTMLInputElement>;
-        // call original onChange with synthetic event when possible
-        // If caller expects event, they will receive one; otherwise their handler can accept the value via v
-        // This keeps API compatible with controlled/uncontrolled patterns.
-        try {
-          (onChange as any)(synthetic);
-        } catch {
-          // ignore
-        }
+        const synthetic = { target: { value: v } } as unknown as React.ChangeEvent<HTMLInputElement>;
+        try { (onChange as any)(synthetic); } catch { /* ignore */ }
       }
     },
   });
 
   return (
-    <input ref={ref} value={value ?? ''} onChange={(e) => setValue(e.target.value)} {...rest} />
+    <input
+      ref={ref}
+      value={value ?? ''}
+      aria-invalid={invalid || undefined}
+      onChange={(e) => setValue(e.target.value)}
+      {...rest}
+    />
   );
 });
 

@@ -27,13 +27,13 @@ export * from './aspect-ratio';
 export * as Avatar from './avatar';
 export type { AvatarRootProps, AvatarImageProps, AvatarFallbackProps, ImageLoadingStatus } from '@aura-ui/primitives';
 export * from './progress';
-export * from './skeleton';
+export * as Skeleton from './skeleton';
 export * from './badge';
 export * as Card from './card';
 export type { CardRootProps, CardSectionProps } from '@aura-ui/primitives';
 export * from './spinner';
-export * as Alert from './alert';
-export type { AlertRootProps } from './alert';
+export { Alert, Root as AlertRoot, Icon as AlertIcon, Content as AlertContent, Title as AlertTitle, Description as AlertDescription, Close as AlertClose, alertVariants } from './alert';
+export type { AlertRootProps, AlertProps, AlertCloseProps } from './alert';
 
 // Phase C form basics
 export * from './input';
@@ -88,6 +88,8 @@ export type { TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps }
 export * as Breadcrumb from './breadcrumb';
 export type { BreadcrumbProps } from '@aura-ui/primitives';
 export * as Pagination from './pagination';
+export { SmartPagination } from './pagination';
+export type { SmartPaginationProps } from './pagination';
 export type { PaginationProps } from '@aura-ui/primitives';
 export * as Stepper from './stepper';
 export type { StepperProps, StepperButtonProps } from '@aura-ui/primitives';
@@ -254,7 +256,7 @@ export type {
   CommandItemProps,
   CommandGroupProps,
 } from '@aura-ui/primitives';
-export * from './material';
+export * as Material from './material';
 
 // Phase G: specialty form
 export * as OneTimePasswordField from './one-time-password-field';
@@ -304,3 +306,28 @@ export * from './copy-button';
 
 // Charts
 export * as Chart from './chart';
+
+// New components
+export * as Table from './table';
+export type { TableProps, TableRowProps, TableHeadProps } from './table';
+
+export { Callout } from './callout';
+export type { CalloutProps } from './callout';
+
+export { EmptyState } from './empty-state';
+export type { EmptyStateProps } from './empty-state';
+
+export { Kbd, KeyCombo } from './kbd';
+export type { KbdProps, KeyComboProps } from './kbd';
+
+export { Stat, StatGroup, TrendBadge } from './stat';
+export type { StatProps, StatGroupProps, TrendDirection } from './stat';
+
+export * as Timeline from './timeline';
+export type { TimelineProps, TimelineItemProps } from './timeline';
+
+export { Rating } from './rating';
+export type { RatingProps } from './rating';
+
+export { Popconfirm } from './popconfirm';
+export type { PopconfirmProps } from './popconfirm';

@@ -4,6 +4,12 @@
  * Headless, accessible React primitives. Behavior without styling.
  */
 
+export * from './button';
+export type { ButtonProps } from './button';
+
+export * from './rating';
+export type { RatingProps } from './rating';
+
 export * as Dialog from './dialog';
 export type * from './dialog/dialog.types';
 
@@ -115,7 +121,24 @@ export type {
 } from './multi-select/multi-select';
 
 export * as Material from './material';
-export * from './material';
+export type {
+  RatingProps as AuraRatingProps,
+  ChartProps as AuraChartProps,
+  BackdropProps as AuraBackdropProps,
+  SnackbarProps as AuraSnackbarProps,
+  SnackbarOrigin as AuraSnackbarOrigin,
+  ModalProps as AuraModalProps,
+  BottomNavigationRootProps as AuraBottomNavigationRootProps,
+  BottomNavigationItemProps as AuraBottomNavigationItemProps,
+  SpeedDialRootProps as AuraSpeedDialRootProps,
+  SpeedDialTriggerProps as AuraSpeedDialTriggerProps,
+  ClickAwayListenerProps as AuraClickAwayListenerProps,
+  TextareaAutosizeProps as AuraTextareaAutosizeProps,
+  TransitionProps as AuraTransitionProps,
+  InitColorSchemeScriptProps as AuraInitColorSchemeScriptProps,
+  TransferListProps as AuraTransferListProps,
+  TransferListOption as AuraTransferListOption,
+} from './material';
 
 export * as Combobox from './combobox';
 export type {

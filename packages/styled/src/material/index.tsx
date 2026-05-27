@@ -4,9 +4,9 @@ import * as React from 'react';
 import { Check, ChevronsRight, ChevronsLeft, Plus, X } from '@aura-ui/icons';
 import { Material as MaterialPrimitive } from '@aura-ui/primitives';
 import type {
-  RatingProps as PrimitiveRatingProps,
-  SnackbarProps as PrimitiveSnackbarProps,
-  TransferListProps as PrimitiveTransferListProps,
+  AuraRatingProps as PrimitiveRatingProps,
+  AuraSnackbarProps as PrimitiveSnackbarProps,
+  AuraTransferListProps as PrimitiveTransferListProps,
 } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
 import { buttonVariants, type ButtonProps } from '../button';

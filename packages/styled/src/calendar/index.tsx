@@ -36,7 +36,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 date={date}
                 isOutsideMonth={isOutsideMonth}
                 className={cn(
-                  'h-8 w-8 rounded-md text-sm font-normal',
+                  'h-8 w-8 cursor-pointer rounded-md text-sm font-normal',
                   'hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring',
                   'data-[state=selected]:bg-primary data-[state=selected]:text-primary-foreground',
                   'data-[today]:font-semibold',

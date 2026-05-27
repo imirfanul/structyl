@@ -251,10 +251,20 @@ const preset = {
           from: { transform: 'translateX(0)', opacity: '1' },
           to: { transform: 'translateX(calc(100% + 1rem))', opacity: '0' },
         },
-        // Shimmer (for loading states)
+        // Shimmer sweep — translateX so the after::pseudo-element slides across
         shimmer: {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
+          '0%':   { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(100%)' },
+        },
+        // Striped progress bar animation
+        'progress-stripes': {
+          '0%':   { backgroundPosition: '1rem 0' },
+          '100%': { backgroundPosition: '0 0' },
+        },
+        // Bars spinner — scales each bar up/down
+        bars: {
+          '0%':   { transform: 'scaleY(0.4)' },
+          '100%': { transform: 'scaleY(1.0)' },
         },
       },
       animation: {
@@ -265,11 +275,13 @@ const preset = {
         'collapsible-down': 'collapsible-down 220ms cubic-bezier(0.22, 1, 0.36, 1)',
         'collapsible-up': 'collapsible-up 180ms cubic-bezier(0.4, 0, 0.2, 1)',
         'progress-indeterminate': 'progress-indeterminate 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'progress-stripes': 'progress-stripes 1s linear infinite',
         'skeleton-pulse': 'skeleton-pulse 1.5s ease-in-out infinite',
         'spring-press': 'spring-press 180ms cubic-bezier(0.34, 1.56, 0.64, 1)',
         'toast-in': 'toast-in 220ms cubic-bezier(0.16, 1, 0.3, 1)',
         'toast-out': 'toast-out 180ms cubic-bezier(0.4, 0, 1, 1)',
-        shimmer: 'shimmer 2s linear infinite',
+        shimmer: 'shimmer 1.5s ease-in-out infinite',
+        bars: 'bars 1s ease-in-out infinite alternate',
       },
     },
   },
