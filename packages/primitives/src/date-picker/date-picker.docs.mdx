@@ -1,0 +1,60 @@
+# DatePicker (Primitive)
+
+Headless date-picker built on `Popover` + `Calendar` primitives. Supports controlled/uncontrolled state, validation, loading, and compound composition.
+
+## Parts
+
+| Part | Element | Notes |
+|---|---|---|
+| `Root` | — | State provider. Wraps `Popover.Root`. |
+| `Trigger` | `button` | Delegates to `Popover.Trigger`. |
+| `Anchor` | — | Optional anchor override (`Popover.Anchor`). |
+| `Portal` | — | Portal target (`Popover.Portal`). |
+| `Content` | `div` | Popover content pane. |
+| `Calendar` | `div` | Wires `Calendar.Root` with `mode="single"` + shared context state. |
+| `Value` | — | Renders the formatted selected date; shows placeholder when empty. |
+| `Loading` | — | Renders `renderLoading()` or `localeText.loading` when `loading` is true. |
+
+## State
+
+Supports both **controlled** (`value` + `onChange`) and **uncontrolled** (`defaultValue`) modes via `useControllableState`.
+
+```tsx
+// Uncontrolled
+<DatePicker.Root defaultValue={new Date()}>…</DatePicker.Root>
+
+// Controlled
+<DatePicker.Root value={date} onChange={(d) => setDate(d)}>…</DatePicker.Root>
+```
+
+## Validation
+
+The following props trigger `onError` when the current value violates a constraint:
+
+| Prop | Error key |
+|---|---|
+| `minDate` | `"minDate"` |
+| `maxDate` | `"maxDate"` |
+| `disablePast` | `"disablePast"` |
+| `disableFuture` | `"disableFuture"` |
+| `shouldDisableDate` | `"shouldDisableDate"` |
+| `shouldDisableMonth` | `"shouldDisableMonth"` |
+| `shouldDisableYear` | `"shouldDisableYear"` |
+
+## Callbacks
+
+| Callback | When fired |
+|---|---|
+| `onChange(date, context)` | Every value change |
+| `onAccept(date, context)` | After a valid date is committed |
+| `onError(error, value)` | When validation state changes |
+| `onOpenChange(open)` | Popover open/close |
+| `onOpen()` | Popover opened |
+| `onClose()` | Popover closed |
+
+## Accessibility
+
+- Calendar follows the [ARIA Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/)
+- Day buttons are individually labelled via `aria-label`
+- Popover close on `Escape`
+- Full keyboard navigation via the underlying `Calendar` primitive

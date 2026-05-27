@@ -1,0 +1,68 @@
+# TimePicker (Primitive)
+
+Headless time-picker with spinbutton segments. Supports 12/24-hour mode, optional seconds, controlled/uncontrolled state, and validation.
+
+## Parts
+
+| Part | Element | Notes |
+|---|---|---|
+| `Root` | `div` | State provider and group container (`role="group"`). Supports `asChild`. |
+| `Segment` | `span` | Spinbutton for `hour`, `minute`, `second`, or `period`. Arrow-key navigation built in. |
+| `Value` | — | Formatted display of the current time; shows placeholder when empty. |
+
+## State
+
+Accepts `Date`, or a `TimeValue` object `{ hour, minute, second, period }`.
+
+```tsx
+// Uncontrolled with Date
+<TimePicker.Root defaultValue={new Date()}>…</TimePicker.Root>
+
+// Uncontrolled with TimeValue
+<TimePicker.Root defaultValue={{ hour: 9, minute: 30, second: 0, period: 'am' }} hour12>
+  …
+</TimePicker.Root>
+
+// Controlled
+<TimePicker.Root value={time} onChange={(d) => setTime(d)}>…</TimePicker.Root>
+```
+
+## Segment keyboard navigation
+
+Each `Segment` has `role="spinbutton"` and responds to:
+
+| Key | Action |
+|---|---|
+| `ArrowUp` | Increment value (wraps at boundaries) |
+| `ArrowDown` | Decrement value (wraps at boundaries) |
+| `Tab` | Move to next interactive element |
+
+## Validation
+
+| Prop | Error key |
+|---|---|
+| `minTime` | `"minTime"` |
+| `maxTime` | `"maxTime"` |
+| `disablePast` | `"disablePast"` |
+| `disableFuture` | `"disableFuture"` |
+| `shouldDisableTime` | `"shouldDisableTime"` |
+| `minutesStep` | `"minutesStep"` |
+
+## Props marked as reserved
+
+Several props are accepted in the type signature (for MUI API compatibility) but are not yet wired to behaviour. They are noted with `@reserved` in `time-picker.types.ts`:
+
+- `ampmInClock` — analog clock AM/PM placement
+- `orientation` — clock layout orientation
+- `views` / `viewRenderers` — custom view components
+- `timezone` — IANA timezone string
+- `locale` — formatting locale
+- `slots` / `slotProps` / `sx` — slot-based composition
+
+These will be implemented when the styled analog-clock panel is extended.
+
+## Accessibility
+
+- `Root` renders `role="group"`
+- Each `Segment` renders `role="spinbutton"` with `aria-label` and `aria-valuetext`
+- Non-interactive separators should be marked `aria-hidden`

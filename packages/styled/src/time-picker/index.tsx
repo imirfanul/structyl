@@ -126,7 +126,7 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
       }
     }, [activeView, clockViews]);
 
-    const updatePart = (part: ClockView | 'period', amount: number | Meridiem) => {
+    const updatePart = (part: ClockView | 'period', amount: number | Meridiem, advance = true) => {
       const next = new Date(currentValue);
       if (part === 'hours' && typeof amount === 'number') {
         next.setHours(ampm ? to24Hour(amount, next.getHours() >= 12 ? 'pm' : 'am') : amount);
@@ -139,9 +139,13 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
       }
       next.setMilliseconds(0);
       onChange?.(next);
-      if (part !== 'period') {
+      if (advance && part !== 'period') {
         const nextView = getAdjacentClockView(clockViews, part, 1);
-        if (nextView) setActiveView(nextView);
+        if (nextView) {
+          setActiveView(nextView);
+        } else {
+          onAccept?.(next);
+        }
       }
     };
 
@@ -161,6 +165,39 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
     const previousView = getAdjacentClockView(clockViews, activeView, -1);
     const nextView = getAdjacentClockView(clockViews, activeView, 1);
     const hasSeconds = clockViews.includes('seconds');
+    const pointerIsDown = React.useRef(false);
+    const getValueFromPointer = React.useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        let deg = Math.atan2(x, -y) * (180 / Math.PI);
+        if (deg < 0) deg += 360;
+        if (activeView === 'hours') {
+          if (ampm) {
+            const h = Math.round(deg / 30) % 12;
+            return h === 0 ? 12 : h;
+          }
+          // 24h mode: inner ring (0, 13–23) vs outer ring (1–12)
+          // threshold at ~77px, midpoint between r=62 (inner) and r=92 (outer)
+          const dist = Math.hypot(x, y);
+          const isInner = dist < rect.width * 0.344;
+          const h12 = Math.round(deg / 30) % 12;
+          return isInner ? (h12 === 0 ? 0 : h12 + 12) : (h12 === 0 ? 12 : h12);
+        }
+        const raw = Math.round(deg / 6) % 60;
+        if (activeView === 'minutes') {
+          if (minuteStep <= 1) return raw;
+          return (Math.round(raw / minuteStep) * minuteStep) % 60;
+        }
+        // seconds: value 60 represents 0s at the 12-o'clock position
+        if (raw === 0) return 60;
+        if (secondStep <= 1) return raw;
+        const snapped = Math.round(raw / secondStep) * secondStep;
+        return snapped === 0 ? 60 : snapped;
+      },
+      [activeView, ampm, minuteStep, secondStep],
+    );
 
     return (
       <div
@@ -228,8 +265,10 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
                   aria-label={item === 'am' ? 'AM' : 'PM'}
                   aria-pressed={period === item}
                   className={cn(
-                    'rounded px-1 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-                    period === item ? 'text-primary' : 'text-popover-foreground',
+                    'rounded px-2 py-0.5 text-left text-sm font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+                    period === item
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
                   )}
                   onClick={() => updatePart('period', item)}
                 >
@@ -263,7 +302,26 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
         <div
           role="group"
           aria-label={`${getClockViewLabel(activeView)} clock`}
-          className="relative mx-auto mt-1 h-56 w-56 rounded-full bg-muted/30"
+          className="relative mx-auto mt-1 h-56 w-56 cursor-pointer select-none rounded-full bg-muted/30"
+          onPointerDown={(e) => {
+            e.preventDefault();
+            pointerIsDown.current = true;
+            e.currentTarget.setPointerCapture(e.pointerId);
+            updatePart(activeView, getValueFromPointer(e), false);
+          }}
+          onPointerMove={(e) => {
+            if (!pointerIsDown.current) return;
+            updatePart(activeView, getValueFromPointer(e), false);
+          }}
+          onPointerUp={() => {
+            if (!pointerIsDown.current) return;
+            pointerIsDown.current = false;
+            const next = getAdjacentClockView(clockViews, activeView, 1);
+            if (next) setActiveView(next);
+          }}
+          onPointerCancel={() => {
+            pointerIsDown.current = false;
+          }}
         >
           <div
             aria-hidden="true"
@@ -278,7 +336,8 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
             className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary"
           />
           {clockValues.map((item) => {
-            const disabled = isClockPartDisabled({
+            const isSelected = item === selectedPart;
+            const disabled = !isSelected && isClockPartDisabled({
               current: currentValue,
               view: activeView,
               nextPart: item,
@@ -286,12 +345,14 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
               shouldDisableTime,
               minTime,
               maxTime,
+              minuteStep,
+              secondStep,
             });
             if (disabled && skipDisabled) return null;
             return (
               <ClockNumber
                 key={item}
-                active={item === selectedPart}
+                active={isSelected}
                 ampm={ampm}
                 className={columnClassName}
                 disabled={disabled}
@@ -420,7 +481,7 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
       <Popover.Root open={open} onOpenChange={setOpen}>
         <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
           {label ? (
-            <label className="text-sm font-medium text-foreground" htmlFor={triggerId}>
+            <label className="text-sm font-medium text-foreground" htmlFor={triggerId} suppressHydrationWarning>
               {label}
               {required ? <span aria-hidden="true"> *</span> : null}
             </label>
@@ -434,6 +495,7 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
               aria-invalid={error || undefined}
               aria-describedby={helperId}
               aria-label={labelText ?? 'Choose time'}
+              suppressHydrationWarning
               className={cn(
                 buttonVariants({ variant: 'outline' }),
                 'w-[220px] justify-start text-left font-normal',
@@ -449,6 +511,7 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
             <p
               id={helperId}
               className={cn('text-xs text-muted-foreground', error && 'text-destructive')}
+              suppressHydrationWarning
             >
               {helperText}
             </p>
@@ -577,8 +640,14 @@ function getClockValues(
   if (view === 'hours') {
     return range(options.ampm ? 1 : 0, options.ampm ? 12 : 23, options.hourStep);
   }
-  if (view === 'minutes') return range(0, 59, options.minuteStep);
-  return range(options.secondStep, 60, options.secondStep);
+  if (view === 'minutes') {
+    // All 60 positions so the user can click any minute.
+    // Non-step values are disabled via isClockPartDisabled.
+    // Non-label values (not divisible by 5) render as tiny invisible dots.
+    return range(0, 59, 1);
+  }
+  // Seconds: all 60 positions (1-60 where 60 maps to 0s at the 12-o'clock position).
+  return range(1, 60, 1);
 }
 
 function getClockAngle(view: ClockView, value: number) {
@@ -600,9 +669,9 @@ function getClockPosition(angle: number, radius: number) {
   };
 }
 
-function shouldShowClockLabel(view: ClockView, value: number, ampm: boolean) {
-  if (view === 'hours') return ampm || value % 2 === 0 || value === 23;
-  return value % 5 === 0;
+function shouldShowClockLabel(view: ClockView, value: number, _ampm: boolean) {
+  if (view === 'hours') return true; // all hours always visible
+  return value % 5 === 0; // label at every 5-min/sec mark
 }
 
 function formatClockValue(view: ClockView, value: number, ampm: boolean) {
@@ -667,6 +736,8 @@ function isClockPartDisabled({
   shouldDisableTime,
   minTime,
   maxTime,
+  minuteStep,
+  secondStep,
 }: {
   current: Date;
   view: ClockView;
@@ -675,7 +746,16 @@ function isClockPartDisabled({
   shouldDisableTime: ((value: Date, view: TimePickerView) => boolean) | undefined;
   minTime: Date | undefined;
   maxTime: Date | undefined;
+  minuteStep: number;
+  secondStep: number;
 }) {
+  // Disable clock positions that don't align with the configured step.
+  if (view === 'minutes' && minuteStep > 1 && nextPart % minuteStep !== 0) return true;
+  if (view === 'seconds') {
+    const sec = nextPart === 60 ? 0 : nextPart;
+    if (secondStep > 1 && sec !== 0 && sec % secondStep !== 0) return true;
+  }
+
   const next = new Date(current);
   if (view === 'hours') next.setHours(nextPart);
   if (view === 'hours' && ampm) {
@@ -701,7 +781,9 @@ function toTimeValue(value: Date, ampm: boolean) {
 
 function formatTime(value: Date, format: TimePickerFormat, locale: string | undefined, ampm: boolean) {
   if (typeof format !== 'string') {
-    return new Intl.DateTimeFormat(locale, format).format(value);
+    // When ampm=false, force 24h output regardless of locale default
+    const intlOptions = ampm ? format : { ...format, hour12: false };
+    return new Intl.DateTimeFormat(locale, intlOptions).format(value);
   }
   const timeValue = toTimeValue(value, ampm);
   return format.replace(/HH|H|hh|h|mm|m|ss|s|aa|a/g, (token) => {

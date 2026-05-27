@@ -302,7 +302,7 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
       >
         <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
           {label ? (
-            <label className="text-sm font-medium text-foreground" htmlFor={triggerId}>
+            <label className="text-sm font-medium text-foreground" htmlFor={triggerId} suppressHydrationWarning>
               {label}
               {required ? <span aria-hidden="true"> *</span> : null}
             </label>
@@ -316,6 +316,7 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
             aria-describedby={helperId}
             aria-label={labelText ?? 'Choose date and time'}
             className={triggerClassName}
+            suppressHydrationWarning
           >
             <DateTimePickerPrimitive.Value
               locale={locale}
@@ -327,6 +328,7 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
             <p
               id={helperId}
               className={cn('text-xs text-muted-foreground', error && 'text-destructive')}
+              suppressHydrationWarning
             >
               {helperText}
             </p>

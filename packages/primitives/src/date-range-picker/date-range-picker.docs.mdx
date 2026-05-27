@@ -1,0 +1,83 @@
+# DateRangePicker (Primitive)
+
+Headless date-range-picker built on `Popover` + `Calendar` (range mode). Supports controlled/uncontrolled state, validation, range-position management, shortcut buttons, and loading.
+
+## Parts
+
+| Part | Element | Notes |
+|---|---|---|
+| `Root` | — | State provider. Wraps `Popover.Root`. |
+| `Trigger` | `button` | Delegates to `Popover.Trigger`. |
+| `Anchor` | — | Optional anchor override. |
+| `Portal` | — | Portal target. |
+| `Content` | `div` | Popover content pane. |
+| `Calendar` | `div` | Wires `Calendar.Root` with `mode="range"` + shared context. |
+| `Shortcuts` | `div` | Renders shortcut buttons. Defaults to built-in shortcuts. |
+| `Value` | — | Renders formatted `from – to` range; shows partial or placeholder. |
+| `Loading` | — | Renders `renderLoading()` when `loading` is true. |
+
+## Value shapes
+
+`value` / `defaultValue` accepts any of:
+
+```ts
+// Object form
+{ from?: Date; to?: Date }
+
+// Tuple form
+[Date | null, Date | null]
+
+null | undefined
+```
+
+`onChange` always emits a `[Date | null, Date | null]` tuple.
+
+## State
+
+```tsx
+// Uncontrolled
+<DateRangePicker.Root defaultValue={{ from: new Date() }}>…</DateRangePicker.Root>
+
+// Controlled (tuple)
+<DateRangePicker.Root value={[start, end]} onChange={([s, e]) => …}>…</DateRangePicker.Root>
+```
+
+## Range position
+
+When a user clicks the first day, the picker auto-advances `rangePosition` from `"start"` to `"end"`. The position can also be controlled:
+
+```tsx
+<DateRangePicker.Root
+  rangePosition={pos}
+  onRangePositionChange={(p) => setPos(p)}
+>…</DateRangePicker.Root>
+```
+
+## Shortcuts
+
+```tsx
+<DateRangePicker.Shortcuts
+  shortcuts={[
+    { label: 'Last 7 days', getValue: (today) => [addDays(today, -6), today] },
+  ]}
+/>
+```
+
+`getDefaultDateRangePickerShortcuts()` returns the built-in set (Today, Yesterday, Last 7/30 days, This/Last month).
+
+## Validation
+
+| Prop | Error key |
+|---|---|
+| `minDate` | `"minDate"` |
+| `maxDate` | `"maxDate"` |
+| `disablePast` | `"disablePast"` |
+| `disableFuture` | `"disableFuture"` |
+| `shouldDisableDate` | `"shouldDisableDate"` |
+| from > to | `"invalidRange"` |
+
+## Accessibility
+
+- Calendar follows the [ARIA Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/)
+- Shortcut buttons are standard `<button>` elements with text labels
+- Popover closes on `Escape`

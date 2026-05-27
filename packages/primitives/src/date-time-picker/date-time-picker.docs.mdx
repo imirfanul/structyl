@@ -1,0 +1,79 @@
+# DateTimePicker (Primitive)
+
+Headless date-time-picker with a two-stage flow: first pick a date (calendar view), then pick a time (time view). Built on `Popover` + `Calendar`.
+
+## Parts
+
+| Part | Element | Notes |
+|---|---|---|
+| `Root` | — | State provider. Wraps `Popover.Root`. |
+| `Trigger` | `button` | Opens the popover. |
+| `Anchor` | — | Optional anchor. |
+| `Portal` | — | Portal target. |
+| `Content` | `div` | Popover content. |
+| `Calendar` | `div` | Wires `Calendar.Root` with `mode="single"`. Only rendered in date views. |
+| `DatePanel` | `div` | Renders its children only when the current view is a date view (`day`, `month`, `year`). |
+| `TimePanel` | `div` | Renders only when the current view is a time view (`hours`, `minutes`, `seconds`, `meridiem`). Accepts a render-prop children for access to time state. |
+| `DateButton` | `button` | Switches view back to `"day"` on click. Use for "Change date" navigation. |
+| `Segment` | `span` | Spinbutton for inline time editing (`hour`, `minute`, `second`, `period`). |
+| `Value` | — | Formatted date-time display. |
+| `Loading` | — | Renders `renderLoading()` when `loading` is true. |
+
+## Two-stage flow
+
+The default flow:
+1. Picker opens showing the calendar (`view="day"`)
+2. User clicks a date → view advances to `"hours"` via `onDateSelect`
+3. User selects hour → view advances to `"minutes"`
+4. After minutes are set, `onAccept` fires and the popover closes
+
+```tsx
+<DateTimePicker.DatePanel>
+  <DateTimePicker.Calendar />
+</DateTimePicker.DatePanel>
+
+<DateTimePicker.TimePanel>
+  {({ value, onChange, onAccept, onCancel, view, setView }) => (
+    <MyClockComponent … />
+  )}
+</DateTimePicker.TimePanel>
+```
+
+## State
+
+```tsx
+// Uncontrolled
+<DateTimePicker.Root defaultValue={new Date()}>…</DateTimePicker.Root>
+
+// Controlled
+<DateTimePicker.Root value={dt} onChange={(d) => setDt(d)}>…</DateTimePicker.Root>
+```
+
+## View control
+
+```tsx
+// Start directly on time view
+<DateTimePicker.Root openTo="hours" views={['hours', 'minutes']}>…</DateTimePicker.Root>
+```
+
+## Validation
+
+| Prop | Error key |
+|---|---|
+| `minDate` | `"minDate"` |
+| `maxDate` | `"maxDate"` |
+| `minDateTime` | `"minDateTime"` |
+| `maxDateTime` | `"maxDateTime"` |
+| `minTime` | `"minTime"` |
+| `maxTime` | `"maxTime"` |
+| `disablePast` | `"disablePast"` |
+| `disableFuture` | `"disableFuture"` |
+| `shouldDisableDate` | `"shouldDisableDate"` |
+| `shouldDisableTime` | `"shouldDisableTime"` |
+
+## Accessibility
+
+- Calendar follows the [ARIA Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/)
+- Time `Segment` parts render `role="spinbutton"` with `aria-label` and `aria-valuetext`
+- `DateButton` is a standard focusable `<button>`
+- Popover closes on `Escape`

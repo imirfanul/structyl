@@ -175,36 +175,40 @@ const Root = React.forwardRef<HTMLDivElement, TimePickerRootProps>(
       views,
       ...rest
     } = props;
-    void [
-      ampmInClock,
-      autoFocus,
-      desktopModeMediaQuery,
-      disableOpenPicker,
-      format,
-      formatDensity,
-      inputRef,
-      keepOpenDuringFieldFocus,
-      label,
-      locale,
-      localeText,
-      name,
-      onClose,
-      onOpen,
-      open,
-      defaultOpen,
-      onOpenChange,
-      orientation,
-      readOnlyInput,
-      reduceAnimations,
-      skipDisabled,
-      slotProps,
-      slots,
-      sx,
-      thresholdToRenderTimeInASingleColumn,
-      timezone,
-      viewRenderers,
-      views,
-    ];
+    // These props are part of the public API surface (MUI parity) but are not yet
+    // consumed by the headless primitive. They will be wired up as the styled
+    // analog-clock panel and locale/timezone layers are built out. Destructuring
+    // them here prevents "unused variable" warnings without silently discarding them.
+    void ([
+      ampmInClock,      // analog clock: AM/PM indicator placement
+      autoFocus,        // future: auto-focus the first segment on mount
+      desktopModeMediaQuery, // future: responsive layout switching
+      disableOpenPicker, // future: hide the popover trigger icon
+      format,           // future: format string for the field display value
+      formatDensity,    // future: spacing density for format separators
+      inputRef,         // future: ref forwarded to the hidden input
+      keepOpenDuringFieldFocus, // future: keep popover open while segments are focused
+      label,            // future: visible field label
+      locale,           // future: Intl locale for segment formatting
+      localeText,       // future: i18n overrides for UI strings
+      name,             // future: hidden input name for form submission
+      onClose,          // future: callback when popover closes
+      onOpen,           // future: callback when popover opens
+      open,             // future: controlled open state
+      defaultOpen,      // future: default open state
+      onOpenChange,     // future: controlled open change
+      orientation,      // future: clock layout (landscape / portrait)
+      readOnlyInput,    // future: make the field text non-editable
+      reduceAnimations, // future: disable CSS transitions
+      skipDisabled,     // future: skip disabled time options on arrow nav
+      slotProps,        // future: per-slot prop overrides
+      slots,            // future: slot component overrides
+      sx,               // future: MUI system sx prop
+      thresholdToRenderTimeInASingleColumn, // future: single-column clock threshold
+      timezone,         // future: IANA timezone string
+      viewRenderers,    // future: custom view render functions
+      views,            // future: restrict visible clock views
+    ] satisfies unknown[]);
     const isHour12 = ampm ?? hour12 ?? false;
     const normalizedValue = normalizeTimePickerValue(valueProp, referenceDate, isHour12);
     const normalizedDefaultValue = normalizeTimePickerValue(defaultValue, referenceDate, isHour12);
