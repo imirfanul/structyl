@@ -1595,7 +1595,7 @@ export default function ThemesPlayground() {
     const hash = window.location.hash.slice(1);
     if (!hash) return;
     try {
-      const st: Partial<ThemeSnap> = JSON.parse(atob(hash));
+      const st: Partial<ThemeSnap> = JSON.parse(window.atob(hash));
       if (st.primary) setPrimary(st.primary);
       if (st.destructive) setDestructive(st.destructive);
       if (st.success) setSuccess(st.success);
@@ -1659,7 +1659,7 @@ export default function ThemesPlayground() {
 
   const shareUrl = async () => {
     if (typeof window === 'undefined') return;
-    const encoded = btoa(JSON.stringify(getSnap()));
+    const encoded = window.btoa(JSON.stringify(getSnap()));
     const url = `${window.location.origin}${window.location.pathname}#${encoded}`;
     try { await navigator.clipboard.writeText(url); setSharedCopied(true); setTimeout(() => setSharedCopied(false), 2500); } catch { /* ignore */ }
   };

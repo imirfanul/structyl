@@ -1,2 +1,2 @@
 export * from './time-picker';
-export type * from './time-picker.types';
+export type { TimePickerSegment, TimePickerValueProps } from './time-picker.types';

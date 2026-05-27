@@ -64,8 +64,7 @@ Every stateful primitive supports both modes via `useControllableState`:
 ```
 aura-ui/
 ├── apps/
-│   ├── docs/             # Next.js docs site
-│   └── playground/       # Storybook + dev playground
+│   └── docs/             # Next.js docs site (previews, examples, API reference)
 ├── packages/
 │   ├── core/             # Internal utilities (Slot, Primitive, createContext)
 │   ├── hooks/            # Reusable React hooks
@@ -187,7 +186,6 @@ pnpm install
 pnpm build       # Build all packages once
 pnpm dev         # Watch mode for all packages
 pnpm docs        # Run docs site
-pnpm storybook   # Run Storybook
 ```
 
 ### Adding a new component
@@ -197,7 +195,7 @@ pnpm storybook   # Run Storybook
 4. Scaffold using the template (see `docs/COMPONENT_TEMPLATE.md`)
 5. Implement headless primitive first
 6. Add styled wrapper
-7. Write tests, stories, docs
+7. Write tests, add examples to the registry, docs
 8. Add changeset: `pnpm changeset`
 9. Open PR
 
@@ -264,7 +262,8 @@ When refactoring:
 - Update docs
 
 When debugging:
-- Reproduce in the playground first
+
+- Reproduce in the docs site or via a failing test
 - Add a failing test, then fix
 - Never disable a test to make CI pass
 

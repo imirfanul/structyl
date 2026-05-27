@@ -30,10 +30,7 @@
     "changeset": "changeset",
     "version": "changeset version",
     "release": "turbo run build && changeset publish",
-    "storybook": "turbo run storybook",
-    "build-storybook": "turbo run build-storybook",
     "docs": "turbo run dev --filter=docs",
-    "playground": "turbo run dev --filter=playground",
     "size": "size-limit",
     "size:why": "size-limit --why"
   },

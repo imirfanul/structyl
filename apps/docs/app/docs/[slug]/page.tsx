@@ -730,17 +730,20 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     lang: 'ts',
     exports: ['useBoolean', 'useToggle', 'useCounter', 'usePrevious', 'useDebounce', 'useThrottle', 'useLocalStorage', 'useCopyToClipboard', 'useMediaQuery', 'useDarkMode', 'useWindowSize', 'useClickOutside', 'useEventListener', 'useKeyPress', 'useHotkeys', 'useMount', 'useUnmount', 'useUpdateEffect', 'useId', 'useLatest', 'useCallbackRef', 'useComposedRefs', 'useControllableState', 'useIsomorphicLayoutEffect'],
     preview: () => {
-      const [n, setN] = React.useState(0);
-      return (
-        <div className="flex flex-col items-center gap-3">
-          <div className="flex items-center gap-3">
-            <button onClick={() => setN(c => c - 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">−</button>
-            <span className="w-12 text-center font-mono text-2xl font-bold">{n}</span>
-            <button onClick={() => setN(c => c + 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">+</button>
+      function CounterDemo() {
+        const [n, setN] = React.useState(0);
+        return (
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex items-center gap-3">
+              <button onClick={() => setN(c => c - 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">−</button>
+              <span className="w-12 text-center font-mono text-2xl font-bold">{n}</span>
+              <button onClick={() => setN(c => c + 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">+</button>
+            </div>
+            <p className="text-[11px] text-muted-foreground">Live — useCounter hook</p>
           </div>
-          <p className="text-[11px] text-muted-foreground">Live — useCounter hook</p>
-        </div>
-      );
+        );
+      }
+      return <CounterDemo />;
     },
   },
   '@aura-ui/utils': {

@@ -97,7 +97,7 @@ import {
   Transition,
   CssBaseline,
 } from '@aura-ui/styled';
-import { DataTable, type DataTableColumn, type DataTableColumnDef, type DataTableFilterGroup } from '@aura-ui/data-table';
+import { DataTable, type DataTableColumnDef, type DataTableFilterGroup } from '@aura-ui/data-table';
 import { componentUsageExamples } from './component-usage-examples';
 
 /* ── Types ──────────────────────────────────────────────────────────── */
@@ -3771,6 +3771,34 @@ export default function Demo() {
     </div>
   );
 }`,
+    examples: [
+      {
+        title: 'Sizes',
+        description: 'Four sizes — sm, default, lg, and icon — plus a disabled state.',
+        preview: () => (
+          <div className="flex flex-wrap items-center gap-2">
+            <Button size="sm">Small</Button>
+            <Button>Default</Button>
+            <Button size="lg">Large</Button>
+            <Button size="icon" aria-label="Settings">⚙</Button>
+            <Button disabled>Disabled</Button>
+          </div>
+        ),
+        code: `import { Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button size="sm">Small</Button>
+      <Button>Default</Button>
+      <Button size="lg">Large</Button>
+      <Button size="icon" aria-label="Settings">⚙</Button>
+      <Button disabled>Disabled</Button>
+    </div>
+  );
+}`,
+      },
+    ],
     api: [
       {
         name: 'Button',
@@ -3931,6 +3959,66 @@ export default function Demo() {
         ],
       },
     ],
+    examples: [
+      {
+        title: 'Controlled',
+        description: 'Manage open state externally to programmatically open or close the dialog.',
+        preview: () => {
+          function ControlledDialog() {
+            const [open, setOpen] = React.useState(false);
+            return (
+              <div className="flex items-center gap-3">
+                <Button onClick={() => setOpen(true)}>Open dialog</Button>
+                <span className="text-muted-foreground text-xs">
+                  State: {open ? 'open' : 'closed'}
+                </span>
+                <Dialog.Root open={open} onOpenChange={setOpen}>
+                  <Dialog.Portal>
+                    <Dialog.Overlay />
+                    <Dialog.Content>
+                      <Dialog.Header>
+                        <Dialog.Title>Controlled dialog</Dialog.Title>
+                        <Dialog.Description>Open state is managed externally.</Dialog.Description>
+                      </Dialog.Header>
+                      <Dialog.Footer>
+                        <Dialog.Close asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </Dialog.Close>
+                        <Button onClick={() => setOpen(false)}>Confirm</Button>
+                      </Dialog.Footer>
+                    </Dialog.Content>
+                  </Dialog.Portal>
+                </Dialog.Root>
+              </div>
+            );
+          }
+          return <ControlledDialog />;
+        },
+        code: `import { Dialog, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <>
+      <Button onClick={() => setOpen(true)}>Open dialog</Button>
+      <Dialog.Root open={open} onOpenChange={setOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay />
+          <Dialog.Content>
+            <Dialog.Title>Controlled dialog</Dialog.Title>
+            <Dialog.Description>Open state is managed externally.</Dialog.Description>
+            <Dialog.Footer>
+              <Dialog.Close asChild><Button variant="outline">Cancel</Button></Dialog.Close>
+              <Button onClick={() => setOpen(false)}>Confirm</Button>
+            </Dialog.Footer>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    </>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'Space', description: 'Opens/closes the dialog from the trigger.' },
       { key: 'Enter', description: 'Opens/closes the dialog from the trigger.' },
@@ -3993,6 +4081,66 @@ export default function Demo() {
     </DropdownMenu.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'With checkboxes and radio items',
+        description: 'Toggle options and select an exclusive value inside a dropdown.',
+        preview: () => {
+          function RichDropdown() {
+            const [autoDeploy, setAutoDeploy] = React.useState(true);
+            const [env, setEnv] = React.useState('production');
+            return (
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild>
+                  <Button variant="outline">Settings</Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content className="w-52">
+                  <DropdownMenu.Label>Deploy settings</DropdownMenu.Label>
+                  <DropdownMenu.Separator />
+                  <DropdownMenu.CheckboxItem
+                    checked={autoDeploy}
+                    onCheckedChange={setAutoDeploy}
+                  >
+                    Auto deploy
+                  </DropdownMenu.CheckboxItem>
+                  <DropdownMenu.Separator />
+                  <DropdownMenu.RadioGroup value={env} onValueChange={setEnv}>
+                    <DropdownMenu.RadioItem value="staging">Staging</DropdownMenu.RadioItem>
+                    <DropdownMenu.RadioItem value="production">Production</DropdownMenu.RadioItem>
+                  </DropdownMenu.RadioGroup>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            );
+          }
+          return <RichDropdown />;
+        },
+        code: `import { DropdownMenu, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [autoDeploy, setAutoDeploy] = React.useState(true);
+  const [env, setEnv] = React.useState('production');
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild>
+        <Button variant="outline">Settings</Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content className="w-52">
+        <DropdownMenu.Label>Deploy settings</DropdownMenu.Label>
+        <DropdownMenu.Separator />
+        <DropdownMenu.CheckboxItem checked={autoDeploy} onCheckedChange={setAutoDeploy}>
+          Auto deploy
+        </DropdownMenu.CheckboxItem>
+        <DropdownMenu.Separator />
+        <DropdownMenu.RadioGroup value={env} onValueChange={setEnv}>
+          <DropdownMenu.RadioItem value="staging">Staging</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value="production">Production</DropdownMenu.RadioItem>
+        </DropdownMenu.RadioGroup>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'Space / Enter', description: 'Opens the menu and focuses the first item.' },
       { key: 'ArrowDown / ArrowUp', description: 'Moves focus between items.' },
@@ -4042,6 +4190,51 @@ export default function Demo() {
     </Popover.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'With form fields',
+        description: 'Use a Popover to surface an inline settings panel near its trigger.',
+        preview: () => (
+          <Popover.Root>
+            <Popover.Trigger asChild>
+              <Button variant="outline">Team settings</Button>
+            </Popover.Trigger>
+            <Popover.Content className="w-72">
+              <div className="grid gap-3">
+                <p className="text-sm font-medium">Team settings</p>
+                <div className="grid gap-1.5">
+                  <Label htmlFor="pop-name">Team name</Label>
+                  <Input id="pop-name" defaultValue="Design Systems" />
+                </div>
+                <div className="flex items-center justify-between gap-3 text-sm">
+                  Public workspace
+                  <Switch defaultChecked />
+                </div>
+              </div>
+            </Popover.Content>
+          </Popover.Root>
+        ),
+        code: `import { Popover, Button, Label, Input, Switch } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Popover.Root>
+      <Popover.Trigger asChild>
+        <Button variant="outline">Team settings</Button>
+      </Popover.Trigger>
+      <Popover.Content className="w-72">
+        <p className="text-sm font-medium">Team settings</p>
+        <Label htmlFor="name">Team name</Label>
+        <Input id="name" defaultValue="Design Systems" />
+        <div className="flex items-center justify-between text-sm">
+          Public workspace <Switch defaultChecked />
+        </div>
+      </Popover.Content>
+    </Popover.Root>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'Space / Enter', description: 'Opens / closes the popover.' },
       { key: 'Tab', description: 'Moves focus to the next focusable element.' },
@@ -4084,6 +4277,44 @@ export default function Demo() {
     </Tooltip.Provider>
   );
 }`,
+    examples: [
+      {
+        title: 'Delayed open',
+        description: 'Control open/close delays at the Provider level to reduce visual noise.',
+        preview: () => (
+          <Tooltip.Provider delayDuration={800} skipDelayDuration={300}>
+            <div className="flex gap-2">
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <Button variant="outline" size="sm">Hover (800ms delay)</Button>
+                </Tooltip.Trigger>
+                <Tooltip.Content side="bottom">Opens after 800ms</Tooltip.Content>
+              </Tooltip.Root>
+              <Tooltip.Root>
+                <Tooltip.Trigger asChild>
+                  <Button variant="outline" size="sm">Hover quickly</Button>
+                </Tooltip.Trigger>
+                <Tooltip.Content side="bottom">Skip delay: 300ms</Tooltip.Content>
+              </Tooltip.Root>
+            </div>
+          </Tooltip.Provider>
+        ),
+        code: `import { Tooltip, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Tooltip.Provider delayDuration={800} skipDelayDuration={300}>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>
+          <Button variant="outline">Hover me</Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content side="bottom">Opens after 800ms</Tooltip.Content>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  );
+}`,
+      },
+    ],
     keyboard: [{ key: 'Esc', description: 'Closes the tooltip.' }],
   },
   {
@@ -4126,6 +4357,65 @@ export default function Demo() {
     </Select.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'Controlled with groups',
+        description: 'Group related options under labelled sections and control the value.',
+        preview: () => {
+          function SelectDemo() {
+            const [val, setVal] = React.useState('');
+            return (
+              <div className="grid gap-2">
+                <Select.Root value={val} onValueChange={setVal}>
+                  <Select.Trigger className="w-[220px]">
+                    <Select.Value placeholder="Assign to team" />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Group>
+                      <Select.Label>Engineering</Select.Label>
+                      <Select.Item value="frontend">Frontend</Select.Item>
+                      <Select.Item value="backend">Backend</Select.Item>
+                    </Select.Group>
+                    <Select.Separator />
+                    <Select.Group>
+                      <Select.Label>Product</Select.Label>
+                      <Select.Item value="design">Design</Select.Item>
+                      <Select.Item value="research">Research</Select.Item>
+                    </Select.Group>
+                  </Select.Content>
+                </Select.Root>
+                {val && <p className="text-muted-foreground text-xs">Selected: {val}</p>}
+              </div>
+            );
+          }
+          return <SelectDemo />;
+        },
+        code: `import { Select } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [val, setVal] = React.useState('');
+  return (
+    <Select.Root value={val} onValueChange={setVal}>
+      <Select.Trigger className="w-[220px]">
+        <Select.Value placeholder="Assign to team" />
+      </Select.Trigger>
+      <Select.Content>
+        <Select.Group>
+          <Select.Label>Engineering</Select.Label>
+          <Select.Item value="frontend">Frontend</Select.Item>
+          <Select.Item value="backend">Backend</Select.Item>
+        </Select.Group>
+        <Select.Separator />
+        <Select.Group>
+          <Select.Label>Product</Select.Label>
+          <Select.Item value="design">Design</Select.Item>
+        </Select.Group>
+      </Select.Content>
+    </Select.Root>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'Space / Enter', description: 'Opens the select / selects the focused item.' },
       { key: 'ArrowDown / ArrowUp', description: 'Moves focus between options.' },
@@ -4177,6 +4467,57 @@ export default function Demo() {
     </MultiSelect.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'Controlled with max selection',
+        description: 'Track selected values externally and cap the selection count.',
+        preview: () => {
+          const options = [
+            { value: 'react', label: 'React' },
+            { value: 'vue', label: 'Vue' },
+            { value: 'svelte', label: 'Svelte' },
+            { value: 'solid', label: 'Solid' },
+          ];
+          function MultiSelectDemo() {
+            const [values, setValues] = React.useState<string[]>(['react']);
+            return (
+              <div className="grid gap-2">
+                <MultiSelect.Root value={values} onValueChange={setValues}>
+                  <MultiSelect.Trigger className="w-[260px]">
+                    <MultiSelect.Value placeholder="Pick up to 2 frameworks" options={options} />
+                  </MultiSelect.Trigger>
+                  <MultiSelect.Content options={options} />
+                </MultiSelect.Root>
+                <p className="text-muted-foreground text-xs">
+                  Selected: {values.join(', ') || 'none'}
+                </p>
+              </div>
+            );
+          }
+          return <MultiSelectDemo />;
+        },
+        code: `import { MultiSelect } from '@aura-ui/styled';
+
+const options = [
+  { value: 'react', label: 'React' },
+  { value: 'vue', label: 'Vue' },
+  { value: 'svelte', label: 'Svelte' },
+  { value: 'solid', label: 'Solid' },
+];
+
+export default function Demo() {
+  const [values, setValues] = React.useState(['react']);
+  return (
+    <MultiSelect.Root value={values} onValueChange={setValues} max={2}>
+      <MultiSelect.Trigger className="w-[260px]">
+        <MultiSelect.Value placeholder="Pick up to 2" options={options} />
+      </MultiSelect.Trigger>
+      <MultiSelect.Content options={options} />
+    </MultiSelect.Root>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'Space / Enter', description: 'Opens the multi-select / toggles the focused item.' },
       { key: 'ArrowDown / ArrowUp', description: 'Moves focus between options.' },
@@ -4210,6 +4551,44 @@ export default function Demo() {
     </div>
   );
 }`,
+    examples: [
+      {
+        title: 'Controlled toggle',
+        description: 'Track the checked state externally to drive other UI.',
+        preview: () => {
+          function SwitchDemo() {
+            const [enabled, setEnabled] = React.useState(false);
+            return (
+              <div className="grid gap-2">
+                <div className="flex items-center gap-2">
+                  <Switch
+                    id="s-notifications"
+                    checked={enabled}
+                    onCheckedChange={setEnabled}
+                  />
+                  <Label htmlFor="s-notifications">Email notifications</Label>
+                </div>
+                <p className="text-muted-foreground text-xs">
+                  Status: {enabled ? 'enabled' : 'disabled'}
+                </p>
+              </div>
+            );
+          }
+          return <SwitchDemo />;
+        },
+        code: `import { Switch, Label } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [enabled, setEnabled] = React.useState(false);
+  return (
+    <div className="flex items-center gap-2">
+      <Switch id="notifications" checked={enabled} onCheckedChange={setEnabled} />
+      <Label htmlFor="notifications">Email notifications</Label>
+    </div>
+  );
+}`,
+      },
+    ],
     keyboard: [{ key: 'Space / Enter', description: 'Toggles the switch.' }],
   },
   {
@@ -4240,6 +4619,69 @@ export default function Demo() {
     </div>
   );
 }`,
+    examples: [
+      {
+        title: 'Indeterminate state',
+        description: 'Use the indeterminate state for a "select all" parent checkbox.',
+        preview: () => {
+          function CheckboxDemo() {
+            const [items, setItems] = React.useState([false, true, false]);
+            const allChecked = items.every(Boolean);
+            const someChecked = items.some(Boolean);
+            const parentState = allChecked ? true : someChecked ? 'indeterminate' : false;
+            return (
+              <div className="grid gap-2">
+                <div className="flex items-center gap-2">
+                  <Checkbox
+                    id="parent"
+                    checked={parentState}
+                    onCheckedChange={(v) => setItems(items.map(() => !!v))}
+                  />
+                  <Label htmlFor="parent">Select all</Label>
+                </div>
+                {items.map((checked, i) => (
+                  <div key={i} className="ml-5 flex items-center gap-2">
+                    <Checkbox
+                      id={`item-${i}`}
+                      checked={checked}
+                      onCheckedChange={(v) =>
+                        setItems(items.map((c, j) => (j === i ? !!v : c)))
+                      }
+                    />
+                    <Label htmlFor={`item-${i}`}>Option {i + 1}</Label>
+                  </div>
+                ))}
+              </div>
+            );
+          }
+          return <CheckboxDemo />;
+        },
+        code: `import { Checkbox, Label } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [items, setItems] = React.useState([false, true, false]);
+  const allChecked = items.every(Boolean);
+  const someChecked = items.some(Boolean);
+  const parentState = allChecked ? true : someChecked ? 'indeterminate' : false;
+  return (
+    <div className="grid gap-2">
+      <div className="flex items-center gap-2">
+        <Checkbox id="parent" checked={parentState}
+          onCheckedChange={(v) => setItems(items.map(() => !!v))} />
+        <Label htmlFor="parent">Select all</Label>
+      </div>
+      {items.map((checked, i) => (
+        <div key={i} className="ml-5 flex items-center gap-2">
+          <Checkbox id={\`item-\${i}\`} checked={checked}
+            onCheckedChange={(v) => setItems(items.map((c, j) => j === i ? !!v : c))} />
+          <Label htmlFor={\`item-\${i}\`}>Option {i + 1}</Label>
+        </div>
+      ))}
+    </div>
+  );
+}`,
+      },
+    ],
     keyboard: [{ key: 'Space', description: 'Toggles the checkbox.' }],
   },
   {
@@ -4281,6 +4723,46 @@ export default function Demo() {
     </Accordion.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'Multiple panels',
+        description: 'Allow several panels to be open simultaneously.',
+        preview: () => (
+          <Accordion.Root type="multiple" className="w-full max-w-sm">
+            {[
+              { value: 'accessibility', label: 'Accessibility', body: 'Keyboard navigation and ARIA state are built in.' },
+              { value: 'theming', label: 'Theming', body: 'Styles are composed from CSS-variable-backed Tailwind tokens.' },
+              { value: 'composition', label: 'Composition', body: 'Use asChild to compose triggers with your own elements.' },
+            ].map((item) => (
+              <Accordion.Item key={item.value} value={item.value}>
+                <Accordion.Trigger>{item.label}</Accordion.Trigger>
+                <Accordion.Content className="text-sm text-muted-foreground">{item.body}</Accordion.Content>
+              </Accordion.Item>
+            ))}
+          </Accordion.Root>
+        ),
+        code: `import { Accordion } from '@aura-ui/styled';
+
+const items = [
+  { value: 'accessibility', label: 'Accessibility', body: 'Keyboard navigation and ARIA state are built in.' },
+  { value: 'theming', label: 'Theming', body: 'Styles are composed from CSS-variable-backed Tailwind tokens.' },
+  { value: 'composition', label: 'Composition', body: 'Use asChild to compose triggers with your own elements.' },
+];
+
+export default function Demo() {
+  return (
+    <Accordion.Root type="multiple">
+      {items.map((item) => (
+        <Accordion.Item key={item.value} value={item.value}>
+          <Accordion.Trigger>{item.label}</Accordion.Trigger>
+          <Accordion.Content>{item.body}</Accordion.Content>
+        </Accordion.Item>
+      ))}
+    </Accordion.Root>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'Space / Enter', description: 'Expands / collapses the focused panel.' },
       { key: 'ArrowDown / ArrowUp', description: 'Moves focus between headers.' },
@@ -4328,6 +4810,46 @@ export default function Demo() {
     </Tabs.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'Three tabs',
+        description: 'Multiple tabs for account, password, and billing settings.',
+        preview: () => (
+          <Tabs.Root defaultValue="account" className="w-full max-w-md">
+            <Tabs.List>
+              <Tabs.Trigger value="account">Account</Tabs.Trigger>
+              <Tabs.Trigger value="password">Password</Tabs.Trigger>
+              <Tabs.Trigger value="billing">Billing</Tabs.Trigger>
+            </Tabs.List>
+            <Tabs.Content value="account" className="p-3 text-sm text-muted-foreground">
+              Make changes to your account here.
+            </Tabs.Content>
+            <Tabs.Content value="password" className="p-3 text-sm text-muted-foreground">
+              Update your password and recovery methods.
+            </Tabs.Content>
+            <Tabs.Content value="billing" className="p-3 text-sm text-muted-foreground">
+              Manage invoices and seats.
+            </Tabs.Content>
+          </Tabs.Root>
+        ),
+        code: `import { Tabs } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Tabs.Root defaultValue="account">
+      <Tabs.List>
+        <Tabs.Trigger value="account">Account</Tabs.Trigger>
+        <Tabs.Trigger value="password">Password</Tabs.Trigger>
+        <Tabs.Trigger value="billing">Billing</Tabs.Trigger>
+      </Tabs.List>
+      <Tabs.Content value="account">Make changes to your account here.</Tabs.Content>
+      <Tabs.Content value="password">Update your password and recovery methods.</Tabs.Content>
+      <Tabs.Content value="billing">Manage invoices and seats.</Tabs.Content>
+    </Tabs.Root>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'Tab', description: 'Moves focus to the active trigger, then the panel.' },
       { key: 'ArrowLeft / ArrowRight', description: 'Moves to the previous / next tab.' },
@@ -4352,6 +4874,40 @@ export default function Demo() {
 export default function Demo() {
   return <Slider defaultValue={[50]} max={100} />;
 }`,
+    examples: [
+      {
+        title: 'Range slider',
+        description: 'Pass two default values to create a range slider with two thumbs.',
+        preview: () => {
+          function RangeDemo() {
+            const [range, setRange] = React.useState([20, 80]);
+            return (
+              <div className="grid gap-3 w-full max-w-sm">
+                <Slider
+                  value={range}
+                  onValueChange={setRange}
+                  min={0}
+                  max={100}
+                  step={5}
+                />
+                <p className="text-muted-foreground text-xs text-center">
+                  {range[0]} – {range[1]}
+                </p>
+              </div>
+            );
+          }
+          return <RangeDemo />;
+        },
+        code: `import { Slider } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [range, setRange] = React.useState([20, 80]);
+  return (
+    <Slider value={range} onValueChange={setRange} min={0} max={100} step={5} />
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'ArrowRight / ArrowUp', description: 'Increases the value by the step amount.' },
       { key: 'ArrowLeft / ArrowDown', description: 'Decreases the value by the step amount.' },
@@ -4390,6 +4946,50 @@ export default function Demo() {
     </Avatar.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'Avatar group',
+        description: 'Stack avatars with negative margin to form a compact group.',
+        preview: () => {
+          const people = [
+            { initials: 'AL', src: 'https://i.pravatar.cc/64?img=1' },
+            { initials: 'GH', src: 'https://i.pravatar.cc/64?img=2' },
+            { initials: 'MH', src: undefined },
+            { initials: 'AT', src: undefined },
+          ];
+          return (
+            <div className="flex -space-x-2">
+              {people.map((p) => (
+                <Avatar.Root key={p.initials} className="ring-background ring-2">
+                  {p.src && <Avatar.Image src={p.src} alt="" />}
+                  <Avatar.Fallback>{p.initials}</Avatar.Fallback>
+                </Avatar.Root>
+              ))}
+            </div>
+          );
+        },
+        code: `import { Avatar } from '@aura-ui/styled';
+
+const people = [
+  { initials: 'AL', src: '/al.jpg' },
+  { initials: 'GH', src: '/gh.jpg' },
+  { initials: 'MH', src: undefined },
+];
+
+export default function Demo() {
+  return (
+    <div className="flex -space-x-2">
+      {people.map((p) => (
+        <Avatar.Root key={p.initials} className="ring-2 ring-background">
+          {p.src && <Avatar.Image src={p.src} alt="" />}
+          <Avatar.Fallback>{p.initials}</Avatar.Fallback>
+        </Avatar.Root>
+      ))}
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'badge',
@@ -4411,6 +5011,34 @@ export default function Demo() {
 export default function Demo() {
   return <Badge variant="success">Success</Badge>;
 }`,
+    examples: [
+      {
+        title: 'Status indicators',
+        description: 'Show all five semantic variants to communicate pipeline or task status.',
+        preview: () => (
+          <div className="flex flex-wrap gap-2">
+            <Badge>Default</Badge>
+            <Badge variant="secondary">Draft</Badge>
+            <Badge variant="success">Published</Badge>
+            <Badge variant="warning">Pending</Badge>
+            <Badge variant="destructive">Failed</Badge>
+          </div>
+        ),
+        code: `import { Badge } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <Badge>Default</Badge>
+      <Badge variant="secondary">Draft</Badge>
+      <Badge variant="success">Published</Badge>
+      <Badge variant="warning">Pending</Badge>
+      <Badge variant="destructive">Failed</Badge>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'card',
@@ -4449,6 +5077,50 @@ export default function Demo() {
     </Card.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'With form',
+        description: 'A card that wraps a form for collecting user input.',
+        preview: () => (
+          <Card.Root className="max-w-sm">
+            <Card.Header>
+              <Card.Title>Team plan</Card.Title>
+              <Card.Description>Shared components, tokens, and docs in one workspace.</Card.Description>
+            </Card.Header>
+            <Card.Content className="grid gap-3">
+              <div className="grid gap-1.5">
+                <Label htmlFor="card-team-name">Team name</Label>
+                <Input id="card-team-name" defaultValue="Design Systems" />
+              </div>
+            </Card.Content>
+            <Card.Footer className="justify-end gap-2">
+              <Button variant="outline">Cancel</Button>
+              <Button>Save</Button>
+            </Card.Footer>
+          </Card.Root>
+        ),
+        code: `import { Card, Button, Label, Input } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Card.Root>
+      <Card.Header>
+        <Card.Title>Team plan</Card.Title>
+        <Card.Description>Shared workspace.</Card.Description>
+      </Card.Header>
+      <Card.Content>
+        <Label htmlFor="name">Team name</Label>
+        <Input id="name" defaultValue="Design Systems" />
+      </Card.Content>
+      <Card.Footer className="justify-end gap-2">
+        <Button variant="outline">Cancel</Button>
+        <Button>Save</Button>
+      </Card.Footer>
+    </Card.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'alert',
@@ -4478,6 +5150,48 @@ export default function Demo() {
     </Alert.Root>
   );
 }`,
+    examples: [
+      {
+        title: 'All variants',
+        description: 'Five semantic variants to cover every notification context.',
+        preview: () => (
+          <div className="w-full max-w-md space-y-2">
+            <Alert.Root variant="success">
+              <Alert.Title>Deployed</Alert.Title>
+              <Alert.Description>v2.8.0 is live in production.</Alert.Description>
+            </Alert.Root>
+            <Alert.Root variant="warning">
+              <Alert.Title>Approaching limit</Alert.Title>
+              <Alert.Description>Upgrade before the billing cycle ends.</Alert.Description>
+            </Alert.Root>
+            <Alert.Root variant="info">
+              <Alert.Title>Tip</Alert.Title>
+              <Alert.Description>Use keyboard shortcuts to move faster.</Alert.Description>
+            </Alert.Root>
+          </div>
+        ),
+        code: `import { Alert } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="space-y-2">
+      <Alert.Root variant="success">
+        <Alert.Title>Deployed</Alert.Title>
+        <Alert.Description>v2.8.0 is live in production.</Alert.Description>
+      </Alert.Root>
+      <Alert.Root variant="warning">
+        <Alert.Title>Approaching limit</Alert.Title>
+        <Alert.Description>Upgrade before the billing cycle ends.</Alert.Description>
+      </Alert.Root>
+      <Alert.Root variant="info">
+        <Alert.Title>Tip</Alert.Title>
+        <Alert.Description>Use keyboard shortcuts to move faster.</Alert.Description>
+      </Alert.Root>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'input',
@@ -4491,6 +5205,30 @@ export default function Demo() {
 export default function Demo() {
   return <Input placeholder="you@example.com" />;
 }`,
+    examples: [
+      {
+        title: 'States',
+        description: 'Input with disabled and invalid (aria-invalid) states.',
+        preview: () => (
+          <div className="grid gap-2 w-full max-w-sm">
+            <Input placeholder="Normal" />
+            <Input placeholder="Disabled" disabled />
+            <Input placeholder="Invalid" aria-invalid />
+          </div>
+        ),
+        code: `import { Input } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="grid gap-2">
+      <Input placeholder="Normal" />
+      <Input placeholder="Disabled" disabled />
+      <Input placeholder="Invalid" aria-invalid />
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'progress',
@@ -4505,6 +5243,23 @@ export default function Demo() {
 export default function Demo() {
   return <Progress value={66} />;
 }`,
+    examples: [
+      {
+        title: 'Indeterminate',
+        description: 'Pass null or undefined as value to render an indeterminate progress bar.',
+        preview: () => (
+          <div className="w-full max-w-sm space-y-2">
+            <Progress value={null} className="w-full" />
+            <p className="text-muted-foreground text-xs text-center">Loading…</p>
+          </div>
+        ),
+        code: `import { Progress } from '@aura-ui/styled';
+
+export default function Demo() {
+  return <Progress value={null} />;
+}`,
+      },
+    ],
   },
   {
     slug: 'toast',
@@ -4534,6 +5289,49 @@ export default function Demo() {
     </Toast.Provider>
   );
 }`,
+    examples: [
+      {
+        title: 'Success variant',
+        description: 'Show a success toast after a user action like saving a record.',
+        preview: () => {
+          function ToastSuccessDemo() {
+            const [open, setOpen] = React.useState(false);
+            return (
+              <Toast.Provider>
+                <Button variant="outline" onClick={() => setOpen(true)}>
+                  Save record
+                </Button>
+                <Toast.Root open={open} onOpenChange={setOpen} variant="success" duration={4000}>
+                  <div className="grid gap-0.5">
+                    <Toast.Title>Record saved</Toast.Title>
+                    <Toast.Description>Changes were persisted successfully.</Toast.Description>
+                  </div>
+                  <Toast.Close />
+                </Toast.Root>
+                <Toast.Viewport />
+              </Toast.Provider>
+            );
+          }
+          return <ToastSuccessDemo />;
+        },
+        code: `import { Toast, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <Toast.Provider>
+      <Button onClick={() => setOpen(true)}>Save record</Button>
+      <Toast.Root open={open} onOpenChange={setOpen} variant="success" duration={4000}>
+        <Toast.Title>Record saved</Toast.Title>
+        <Toast.Description>Changes were persisted successfully.</Toast.Description>
+        <Toast.Close />
+      </Toast.Root>
+      <Toast.Viewport />
+    </Toast.Provider>
+  );
+}`,
+      },
+    ],
     keyboard: [
       { key: 'F8', description: 'Jumps focus into the toast viewport.' },
       { key: 'Tab', description: 'Moves focus through the toast.' },
@@ -4562,6 +5360,44 @@ export default function Demo() {
 export default function Demo() {
   return <Skeleton className="h-10 w-40" />;
 }`,
+    examples: [
+      {
+        title: 'Card placeholder',
+        description: 'Compose Skeleton into a card layout while data is loading.',
+        preview: () => (
+          <div className="w-full max-w-sm rounded-lg border border-border p-4 space-y-3">
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-10 w-10 rounded-full" />
+              <div className="flex-1 space-y-1.5">
+                <Skeleton className="h-3 w-1/3" />
+                <Skeleton className="h-2.5 w-1/2" />
+              </div>
+            </div>
+            <Skeleton className="h-3 w-full" />
+            <Skeleton className="h-3 w-4/5" />
+            <Skeleton className="h-8 w-24 rounded-md" />
+          </div>
+        ),
+        code: `import { Skeleton } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="rounded-lg border p-4 space-y-3">
+      <div className="flex items-center gap-3">
+        <Skeleton className="h-10 w-10 rounded-full" />
+        <div className="flex-1 space-y-1.5">
+          <Skeleton className="h-3 w-1/3" />
+          <Skeleton className="h-2.5 w-1/2" />
+        </div>
+      </div>
+      <Skeleton className="h-3 w-full" />
+      <Skeleton className="h-3 w-4/5" />
+      <Skeleton className="h-8 w-24 rounded-md" />
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'spinner',
@@ -4586,6 +5422,41 @@ export default function Demo() {
 export default function Demo() {
   return <Spinner label="Loading results" />;
 }`,
+    examples: [
+      {
+        title: 'Loading button',
+        description: 'Embed a Spinner inside a Button to indicate an async action in progress.',
+        preview: () => {
+          function LoadingButtonDemo() {
+            const [loading, setLoading] = React.useState(false);
+            return (
+              <Button
+                disabled={loading}
+                onClick={() => {
+                  setLoading(true);
+                  setTimeout(() => setLoading(false), 2000);
+                }}
+              >
+                {loading && <Spinner size="sm" label="Saving…" className="mr-2" />}
+                {loading ? 'Saving…' : 'Save changes'}
+              </Button>
+            );
+          }
+          return <LoadingButtonDemo />;
+        },
+        code: `import { Button, Spinner } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [loading, setLoading] = React.useState(false);
+  return (
+    <Button disabled={loading} onClick={() => setLoading(true)}>
+      {loading && <Spinner size="sm" label="Saving…" className="mr-2" />}
+      {loading ? 'Saving…' : 'Save changes'}
+    </Button>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'separator',
@@ -4609,6 +5480,34 @@ export default function Demo() {
 export default function Demo() {
   return <Separator />;
 }`,
+    examples: [
+      {
+        title: 'Vertical separator',
+        description: 'Use orientation="vertical" to separate inline items like nav links.',
+        preview: () => (
+          <nav className="flex h-5 items-center gap-3 text-sm">
+            <a href="#" className="hover:underline">Home</a>
+            <Separator orientation="vertical" />
+            <a href="#" className="hover:underline">Docs</a>
+            <Separator orientation="vertical" />
+            <a href="#" className="hover:underline">Blog</a>
+          </nav>
+        ),
+        code: `import { Separator } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <nav className="flex h-5 items-center gap-3 text-sm">
+      <a href="/">Home</a>
+      <Separator orientation="vertical" />
+      <a href="/docs">Docs</a>
+      <Separator orientation="vertical" />
+      <a href="/blog">Blog</a>
+    </nav>
+  );
+}`,
+      },
+    ],
   },
 
   /* ── Additional components ─────────────────────────────────────── */
@@ -4620,6 +5519,30 @@ export default function Demo() {
     features: ['Associates with a control via htmlFor.', 'Supports asChild.'],
     preview: () => <Label htmlFor="x">Email address</Label>,
     code: `import { Label } from '@aura-ui/styled';\n\n<Label htmlFor="email">Email address</Label>`,
+    examples: [
+      {
+        title: 'With input and description',
+        description: 'Pair Label with an Input and helper text for a complete field.',
+        preview: () => (
+          <div className="grid gap-1.5 w-full max-w-sm">
+            <Label htmlFor="ex-email">Email address</Label>
+            <Input id="ex-email" type="email" placeholder="you@example.com" />
+            <p className="text-muted-foreground text-xs">We&apos;ll never share your email.</p>
+          </div>
+        ),
+        code: `import { Label, Input } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="grid gap-1.5">
+      <Label htmlFor="email">Email address</Label>
+      <Input id="email" type="email" placeholder="you@example.com" />
+      <p className="text-xs text-muted-foreground">We'll never share your email.</p>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'textarea',
@@ -4629,6 +5552,49 @@ export default function Demo() {
     features: ['Smooth focus ring.', 'Wraps the native textarea.'],
     preview: () => <Textarea placeholder="Type your message…" className="w-full max-w-sm" />,
     code: `import { Textarea } from '@aura-ui/styled';\n\n<Textarea placeholder="Type your message…" />`,
+    examples: [
+      {
+        title: 'With character count',
+        description: 'Combine with state to show a live character counter.',
+        preview: () => {
+          function TextareaDemo() {
+            const [value, setValue] = React.useState('');
+            const max = 200;
+            return (
+              <div className="grid gap-1 w-full max-w-sm">
+                <Textarea
+                  value={value}
+                  onChange={(e) => setValue(e.target.value.slice(0, max))}
+                  placeholder="Type your message…"
+                  rows={3}
+                />
+                <p className={`text-xs text-right ${value.length >= max ? 'text-destructive' : 'text-muted-foreground'}`}>
+                  {value.length}/{max}
+                </p>
+              </div>
+            );
+          }
+          return <TextareaDemo />;
+        },
+        code: `import { Textarea } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [value, setValue] = React.useState('');
+  const max = 200;
+  return (
+    <div className="grid gap-1">
+      <Textarea
+        value={value}
+        onChange={(e) => setValue(e.target.value.slice(0, max))}
+        placeholder="Type your message…"
+        rows={3}
+      />
+      <p className="text-xs text-right text-muted-foreground">{value.length}/{max}</p>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'toggle',
@@ -4638,6 +5604,36 @@ export default function Demo() {
     features: ['Controlled or uncontrolled.', 'Two variants, three sizes.'],
     preview: () => <Toggle defaultPressed>Bold</Toggle>,
     code: `import { Toggle } from '@aura-ui/styled';\n\n<Toggle defaultPressed>Bold</Toggle>`,
+    examples: [
+      {
+        title: 'Outline variant',
+        description: 'The outline variant pairs well with text editor toolbars.',
+        preview: () => (
+          <div className="flex gap-1">
+            <Toggle variant="outline" defaultPressed aria-label="Bold">
+              <strong>B</strong>
+            </Toggle>
+            <Toggle variant="outline" aria-label="Italic">
+              <em>I</em>
+            </Toggle>
+            <Toggle variant="outline" aria-label="Underline">
+              <span className="underline">U</span>
+            </Toggle>
+          </div>
+        ),
+        code: `import { Toggle } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="flex gap-1">
+      <Toggle variant="outline" defaultPressed><strong>B</strong></Toggle>
+      <Toggle variant="outline"><em>I</em></Toggle>
+      <Toggle variant="outline"><span className="underline">U</span></Toggle>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'toggle-group',
@@ -4659,6 +5655,40 @@ export default function Demo() {
       </ToggleGroup.Root>
     ),
     code: `import { ToggleGroup } from '@aura-ui/styled';\n\n<ToggleGroup.Root type="multiple">\n  <ToggleGroup.Item value="bold">B</ToggleGroup.Item>\n  <ToggleGroup.Item value="italic">I</ToggleGroup.Item>\n</ToggleGroup.Root>`,
+    examples: [
+      {
+        title: 'Single selection (alignment)',
+        description: 'Use type="single" for mutually exclusive choices like text alignment.',
+        preview: () => {
+          function AlignDemo() {
+            const [align, setAlign] = React.useState('left');
+            return (
+              <div className="grid gap-2">
+                <ToggleGroup.Root type="single" value={align} onValueChange={(v) => v && setAlign(v)}>
+                  <ToggleGroup.Item value="left" aria-label="Left">L</ToggleGroup.Item>
+                  <ToggleGroup.Item value="center" aria-label="Center">C</ToggleGroup.Item>
+                  <ToggleGroup.Item value="right" aria-label="Right">R</ToggleGroup.Item>
+                </ToggleGroup.Root>
+                <p className="text-muted-foreground text-xs">Alignment: {align}</p>
+              </div>
+            );
+          }
+          return <AlignDemo />;
+        },
+        code: `import { ToggleGroup } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [align, setAlign] = React.useState('left');
+  return (
+    <ToggleGroup.Root type="single" value={align} onValueChange={(v) => v && setAlign(v)}>
+      <ToggleGroup.Item value="left">L</ToggleGroup.Item>
+      <ToggleGroup.Item value="center">C</ToggleGroup.Item>
+      <ToggleGroup.Item value="right">R</ToggleGroup.Item>
+    </ToggleGroup.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'radio-group',
@@ -4677,6 +5707,46 @@ export default function Demo() {
       </RadioGroup.Root>
     ),
     code: `import { RadioGroup } from '@aura-ui/styled';\n\n<RadioGroup.Root defaultValue="a">\n  <RadioGroup.Item value="a" />\n  <RadioGroup.Item value="b" />\n</RadioGroup.Root>`,
+    examples: [
+      {
+        title: 'Density selector',
+        description: 'Three options with descriptive labels for choosing UI density.',
+        preview: () => (
+          <RadioGroup.Root defaultValue="comfortable" aria-label="Density" className="grid gap-2">
+            {([
+              ['compact', 'Compact'],
+              ['comfortable', 'Comfortable'],
+              ['spacious', 'Spacious'],
+            ] as [string, string][]).map(([value, label]) => (
+              <label key={value} className="flex items-center gap-2 text-sm">
+                <RadioGroup.Item value={value} />
+                {label}
+              </label>
+            ))}
+          </RadioGroup.Root>
+        ),
+        code: `import { RadioGroup } from '@aura-ui/styled';
+
+const options = [
+  { value: 'compact', label: 'Compact' },
+  { value: 'comfortable', label: 'Comfortable' },
+  { value: 'spacious', label: 'Spacious' },
+];
+
+export default function Demo() {
+  return (
+    <RadioGroup.Root defaultValue="comfortable">
+      {options.map(({ value, label }) => (
+        <label key={value} className="flex items-center gap-2 text-sm">
+          <RadioGroup.Item value={value} />
+          {label}
+        </label>
+      ))}
+    </RadioGroup.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'form',
@@ -4703,6 +5773,62 @@ export default function Demo() {
       </Form.Root>
     ),
     code: `import { Form, Input, Button } from '@aura-ui/styled';\n\n<Form.Root>\n  <Form.Field name="email">\n    <Form.Label>Email</Form.Label>\n    <Form.Control asChild><Input type="email" required /></Form.Control>\n    <Form.Message match="valueMissing">Required</Form.Message>\n  </Form.Field>\n  <Form.Submit asChild><Button>Submit</Button></Form.Submit>\n</Form.Root>`,
+    examples: [
+      {
+        title: 'Login form',
+        description: 'A complete login form with email, password, and validation messages.',
+        preview: () => (
+          <Form.Root className="w-full max-w-sm grid gap-3" onSubmit={(e) => e.preventDefault()}>
+            <Form.Field name="email" className="grid gap-1.5">
+              <Form.Label asChild><Label>Email</Label></Form.Label>
+              <Form.Control asChild>
+                <Input type="email" required placeholder="you@example.com" />
+              </Form.Control>
+              <Form.Message match="valueMissing" className="text-destructive text-xs">
+                Email is required.
+              </Form.Message>
+              <Form.Message match="typeMismatch" className="text-destructive text-xs">
+                Enter a valid email address.
+              </Form.Message>
+            </Form.Field>
+            <Form.Field name="password" className="grid gap-1.5">
+              <Form.Label asChild><Label>Password</Label></Form.Label>
+              <Form.Control asChild>
+                <Input type="password" required minLength={8} placeholder="••••••••" />
+              </Form.Control>
+              <Form.Message match="valueMissing" className="text-destructive text-xs">
+                Password is required.
+              </Form.Message>
+            </Form.Field>
+            <Form.Submit asChild>
+              <Button className="w-full">Log in</Button>
+            </Form.Submit>
+          </Form.Root>
+        ),
+        code: `import { Form, Input, Label, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Form.Root className="grid gap-3" onSubmit={(e) => e.preventDefault()}>
+      <Form.Field name="email" className="grid gap-1.5">
+        <Form.Label asChild><Label>Email</Label></Form.Label>
+        <Form.Control asChild>
+          <Input type="email" required placeholder="you@example.com" />
+        </Form.Control>
+        <Form.Message match="valueMissing" className="text-xs text-destructive">Required</Form.Message>
+        <Form.Message match="typeMismatch" className="text-xs text-destructive">Invalid email</Form.Message>
+      </Form.Field>
+      <Form.Field name="password" className="grid gap-1.5">
+        <Form.Label asChild><Label>Password</Label></Form.Label>
+        <Form.Control asChild><Input type="password" required minLength={8} /></Form.Control>
+        <Form.Message match="valueMissing" className="text-xs text-destructive">Required</Form.Message>
+      </Form.Field>
+      <Form.Submit asChild><Button className="w-full">Log in</Button></Form.Submit>
+    </Form.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'aspect-ratio',
@@ -4720,6 +5846,44 @@ export default function Demo() {
       </div>
     ),
     code: `import { AspectRatio } from '@aura-ui/styled';\n\n<AspectRatio ratio={16 / 9}>\n  <img src="/photo.jpg" alt="" />\n</AspectRatio>`,
+    examples: [
+      {
+        title: 'Portrait and square',
+        description: 'Use different ratios for portrait (4/5) and square (1/1) crops.',
+        preview: () => (
+          <div className="flex gap-3">
+            <div className="w-28">
+              <AspectRatio ratio={4 / 5} className="overflow-hidden rounded-lg">
+                <div className="bg-accent flex h-full w-full items-center justify-center text-xs">4:5</div>
+              </AspectRatio>
+            </div>
+            <div className="w-28">
+              <AspectRatio ratio={1} className="overflow-hidden rounded-lg">
+                <div className="bg-muted flex h-full w-full items-center justify-center text-xs">1:1</div>
+              </AspectRatio>
+            </div>
+          </div>
+        ),
+        code: `import { AspectRatio } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="flex gap-3">
+      <div className="w-28">
+        <AspectRatio ratio={4 / 5} className="overflow-hidden rounded-lg">
+          <img src="/portrait.jpg" alt="" className="object-cover w-full h-full" />
+        </AspectRatio>
+      </div>
+      <div className="w-28">
+        <AspectRatio ratio={1} className="overflow-hidden rounded-lg">
+          <img src="/square.jpg" alt="" className="object-cover w-full h-full" />
+        </AspectRatio>
+      </div>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'circular-progress',
@@ -4734,6 +5898,30 @@ export default function Demo() {
       </div>
     ),
     code: `import { CircularProgress } from '@aura-ui/styled';\n\n<CircularProgress value={66} />`,
+    examples: [
+      {
+        title: 'Sized with label',
+        description: 'Customize track size and embed a label inside the circle.',
+        preview: () => (
+          <div className="flex gap-6 items-center">
+            <CircularProgress value={42} size={64} strokeWidth={6} />
+            <CircularProgress value={75} size={80} strokeWidth={8} />
+            <CircularProgress value={null} size={64} strokeWidth={6} />
+          </div>
+        ),
+        code: `import { CircularProgress } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="flex gap-6 items-center">
+      <CircularProgress value={42} size={64} strokeWidth={6} />
+      <CircularProgress value={75} size={80} strokeWidth={8} />
+      <CircularProgress value={null} size={64} strokeWidth={6} />
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'meter',
@@ -4745,6 +5933,34 @@ export default function Demo() {
       <Meter value={70} max={100} low={30} high={80} optimum={60} className="w-full max-w-sm" />
     ),
     code: `import { Meter } from '@aura-ui/styled';\n\n<Meter value={70} low={30} high={80} optimum={60} />`,
+    examples: [
+      {
+        title: 'Storage usage',
+        description: 'Show disk or quota usage with thresholds for low, high, and optimum.',
+        preview: () => (
+          <div className="w-full max-w-sm space-y-2">
+            <div className="flex justify-between text-xs">
+              <span>Storage</span>
+              <span className="text-muted-foreground">47 GB / 100 GB</span>
+            </div>
+            <Meter value={47} max={100} low={20} high={80} optimum={50} className="w-full" />
+          </div>
+        ),
+        code: `import { Meter } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="space-y-1">
+      <div className="flex justify-between text-xs">
+        <span>Storage</span>
+        <span className="text-muted-foreground">47 GB / 100 GB</span>
+      </div>
+      <Meter value={47} max={100} low={20} high={80} optimum={50} />
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'copy-button',
@@ -4759,6 +5975,28 @@ export default function Demo() {
       </div>
     ),
     code: `import { CopyButton } from '@aura-ui/styled';\n\n<CopyButton value="npx aura-ui init" />`,
+    examples: [
+      {
+        title: 'In a code block',
+        description: 'Pair CopyButton with a styled code block — the typical documentation pattern.',
+        preview: () => (
+          <div className="flex items-center justify-between gap-2 rounded-md bg-muted px-3 py-2 font-mono text-sm w-full max-w-sm">
+            <span>pnpm add @aura-ui/styled</span>
+            <CopyButton value="pnpm add @aura-ui/styled" />
+          </div>
+        ),
+        code: `import { CopyButton } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="flex items-center justify-between rounded-md bg-muted px-3 py-2 font-mono text-sm">
+      <span>pnpm add @aura-ui/styled</span>
+      <CopyButton value="pnpm add @aura-ui/styled" />
+    </div>
+  );
+}`,
+      },
+    ],
   },
   ...MATERIAL_COMPONENTS,
   {
@@ -4778,6 +6016,48 @@ export default function Demo() {
       </Collapsible.Root>
     ),
     code: `import { Collapsible, Button } from '@aura-ui/styled';\n\n<Collapsible.Root>\n  <Collapsible.Trigger asChild><Button>Toggle</Button></Collapsible.Trigger>\n  <Collapsible.Content>Hidden content.</Collapsible.Content>\n</Collapsible.Root>`,
+    examples: [
+      {
+        title: 'Controlled',
+        description: 'Fully controlled open state with a dynamic toggle indicator.',
+        preview: () => {
+          function CollapsibleDemo() {
+            const [open, setOpen] = React.useState(true);
+            return (
+              <Collapsible.Root open={open} onOpenChange={setOpen} className="w-full max-w-md">
+                <Collapsible.Trigger asChild>
+                  <Button variant="outline" className="w-full justify-between">
+                    Release notes
+                    <span aria-hidden="true">{open ? '−' : '+'}</span>
+                  </Button>
+                </Collapsible.Trigger>
+                <Collapsible.Content className="mt-2 rounded-md border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+                  Added keyboard support, reduced motion handling, and token-based styling.
+                </Collapsible.Content>
+              </Collapsible.Root>
+            );
+          }
+          return <CollapsibleDemo />;
+        },
+        code: `import { Collapsible, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [open, setOpen] = React.useState(true);
+  return (
+    <Collapsible.Root open={open} onOpenChange={setOpen}>
+      <Collapsible.Trigger asChild>
+        <Button variant="outline" className="w-full justify-between">
+          Release notes <span>{open ? '−' : '+'}</span>
+        </Button>
+      </Collapsible.Trigger>
+      <Collapsible.Content className="mt-2 rounded-md border p-4 text-sm">
+        Added keyboard support and token-based styling.
+      </Collapsible.Content>
+    </Collapsible.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'breadcrumb',
@@ -4799,6 +6079,44 @@ export default function Demo() {
       </Breadcrumb.Root>
     ),
     code: `import { Breadcrumb } from '@aura-ui/styled';\n\n<Breadcrumb.Root><Breadcrumb.List>\n  <Breadcrumb.Item><Breadcrumb.Link href="/">Home</Breadcrumb.Link></Breadcrumb.Item>\n  <Breadcrumb.Separator />\n  <Breadcrumb.Item><Breadcrumb.Page>Docs</Breadcrumb.Page></Breadcrumb.Item>\n</Breadcrumb.List></Breadcrumb.Root>`,
+    examples: [
+      {
+        title: 'Multi-level navigation',
+        description: 'Three levels showing the full path to the current resource.',
+        preview: () => (
+          <Breadcrumb.Root>
+            <Breadcrumb.List>
+              <Breadcrumb.Item>
+                <Breadcrumb.Link href="#">Home</Breadcrumb.Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Separator />
+              <Breadcrumb.Item>
+                <Breadcrumb.Link href="#">Library</Breadcrumb.Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Separator />
+              <Breadcrumb.Item>
+                <Breadcrumb.Page>Components</Breadcrumb.Page>
+              </Breadcrumb.Item>
+            </Breadcrumb.List>
+          </Breadcrumb.Root>
+        ),
+        code: `import { Breadcrumb } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Breadcrumb.Root>
+      <Breadcrumb.List>
+        <Breadcrumb.Item><Breadcrumb.Link href="/">Home</Breadcrumb.Link></Breadcrumb.Item>
+        <Breadcrumb.Separator />
+        <Breadcrumb.Item><Breadcrumb.Link href="/library">Library</Breadcrumb.Link></Breadcrumb.Item>
+        <Breadcrumb.Separator />
+        <Breadcrumb.Item><Breadcrumb.Page>Components</Breadcrumb.Page></Breadcrumb.Item>
+      </Breadcrumb.List>
+    </Breadcrumb.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'pagination',
@@ -4827,6 +6145,63 @@ export default function Demo() {
       </Pagination.Root>
     ),
     code: `import { Pagination } from '@aura-ui/styled';\n\n<Pagination.Root><Pagination.Content>\n  <Pagination.Item><Pagination.Previous href="#" /></Pagination.Item>\n  <Pagination.Item><Pagination.Link href="#" isActive>1</Pagination.Link></Pagination.Item>\n  <Pagination.Item><Pagination.Next href="#" /></Pagination.Item>\n</Pagination.Content></Pagination.Root>`,
+    examples: [
+      {
+        title: 'Interactive',
+        description: 'Controlled pagination that tracks the active page with state.',
+        preview: () => {
+          function PaginationDemo() {
+            const [page, setPage] = React.useState(2);
+            return (
+              <Pagination.Root>
+                <Pagination.Content>
+                  <Pagination.Item>
+                    <Pagination.Previous onClick={() => setPage((p) => Math.max(1, p - 1))} />
+                  </Pagination.Item>
+                  {[1, 2, 3].map((n) => (
+                    <Pagination.Item key={n}>
+                      <Pagination.Link isActive={page === n} onClick={() => setPage(n)}>
+                        {n}
+                      </Pagination.Link>
+                    </Pagination.Item>
+                  ))}
+                  <Pagination.Item>
+                    <Pagination.Ellipsis />
+                  </Pagination.Item>
+                  <Pagination.Item>
+                    <Pagination.Next onClick={() => setPage((p) => Math.min(3, p + 1))} />
+                  </Pagination.Item>
+                </Pagination.Content>
+              </Pagination.Root>
+            );
+          }
+          return <PaginationDemo />;
+        },
+        code: `import { Pagination } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [page, setPage] = React.useState(2);
+  return (
+    <Pagination.Root>
+      <Pagination.Content>
+        <Pagination.Item>
+          <Pagination.Previous onClick={() => setPage((p) => Math.max(1, p - 1))} />
+        </Pagination.Item>
+        {[1, 2, 3].map((n) => (
+          <Pagination.Item key={n}>
+            <Pagination.Link isActive={page === n} onClick={() => setPage(n)}>{n}</Pagination.Link>
+          </Pagination.Item>
+        ))}
+        <Pagination.Item><Pagination.Ellipsis /></Pagination.Item>
+        <Pagination.Item>
+          <Pagination.Next onClick={() => setPage((p) => Math.min(3, p + 1))} />
+        </Pagination.Item>
+      </Pagination.Content>
+    </Pagination.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'stepper',
@@ -4844,6 +6219,40 @@ export default function Demo() {
       </Stepper.Root>
     ),
     code: `import { Stepper } from '@aura-ui/styled';\n\n<Stepper.Root activeStep={1}>\n  <Stepper.Step index={0} /><Stepper.Separator />\n  <Stepper.Step index={1} /><Stepper.Separator />\n  <Stepper.Step index={2} />\n</Stepper.Root>`,
+    examples: [
+      {
+        title: 'With labels',
+        description: 'Each step labeled to describe what happens at that stage.',
+        preview: () => (
+          <Stepper.Root activeStep={1} className="max-w-lg">
+            <Stepper.Step index={0}>
+              <Stepper.Title>Account</Stepper.Title>
+            </Stepper.Step>
+            <Stepper.Separator />
+            <Stepper.Step index={1}>
+              <Stepper.Title>Profile</Stepper.Title>
+            </Stepper.Step>
+            <Stepper.Separator />
+            <Stepper.Step index={2}>
+              <Stepper.Title>Billing</Stepper.Title>
+            </Stepper.Step>
+          </Stepper.Root>
+        ),
+        code: `import { Stepper } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Stepper.Root activeStep={1}>
+      <Stepper.Step index={0}><Stepper.Title>Account</Stepper.Title></Stepper.Step>
+      <Stepper.Separator />
+      <Stepper.Step index={1}><Stepper.Title>Profile</Stepper.Title></Stepper.Step>
+      <Stepper.Separator />
+      <Stepper.Step index={2}><Stepper.Title>Billing</Stepper.Title></Stepper.Step>
+    </Stepper.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'alert-dialog',
@@ -4872,6 +6281,82 @@ export default function Demo() {
       </AlertDialog.Root>
     ),
     code: `import { AlertDialog, Button } from '@aura-ui/styled';\n\n<AlertDialog.Root>\n  <AlertDialog.Trigger asChild><Button>Delete</Button></AlertDialog.Trigger>\n  <AlertDialog.Portal>\n    <AlertDialog.Overlay />\n    <AlertDialog.Content>\n      <AlertDialog.Title>Are you sure?</AlertDialog.Title>\n      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>\n      <AlertDialog.Action>Delete</AlertDialog.Action>\n    </AlertDialog.Content>\n  </AlertDialog.Portal>\n</AlertDialog.Root>`,
+    examples: [
+      {
+        title: 'With async action',
+        description: 'Disable the action button while async work is in progress.',
+        preview: () => {
+          function AlertDialogDemo() {
+            const [loading, setLoading] = React.useState(false);
+            return (
+              <AlertDialog.Root>
+                <AlertDialog.Trigger asChild>
+                  <Button variant="destructive">Delete workspace</Button>
+                </AlertDialog.Trigger>
+                <AlertDialog.Portal>
+                  <AlertDialog.Overlay />
+                  <AlertDialog.Content>
+                    <AlertDialog.Header>
+                      <AlertDialog.Title>Delete workspace?</AlertDialog.Title>
+                      <AlertDialog.Description>
+                        All projects and data will be permanently removed. This action cannot be undone.
+                      </AlertDialog.Description>
+                    </AlertDialog.Header>
+                    <AlertDialog.Footer>
+                      <AlertDialog.Cancel disabled={loading}>Cancel</AlertDialog.Cancel>
+                      <AlertDialog.Action
+                        disabled={loading}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setLoading(true);
+                          setTimeout(() => setLoading(false), 1500);
+                        }}
+                      >
+                        {loading ? 'Deleting…' : 'Delete'}
+                      </AlertDialog.Action>
+                    </AlertDialog.Footer>
+                  </AlertDialog.Content>
+                </AlertDialog.Portal>
+              </AlertDialog.Root>
+            );
+          }
+          return <AlertDialogDemo />;
+        },
+        code: `import { AlertDialog, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [loading, setLoading] = React.useState(false);
+  return (
+    <AlertDialog.Root>
+      <AlertDialog.Trigger asChild>
+        <Button variant="destructive">Delete workspace</Button>
+      </AlertDialog.Trigger>
+      <AlertDialog.Portal>
+        <AlertDialog.Overlay />
+        <AlertDialog.Content>
+          <AlertDialog.Title>Delete workspace?</AlertDialog.Title>
+          <AlertDialog.Description>This cannot be undone.</AlertDialog.Description>
+          <AlertDialog.Footer>
+            <AlertDialog.Cancel disabled={loading}>Cancel</AlertDialog.Cancel>
+            <AlertDialog.Action
+              disabled={loading}
+              onClick={async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                await deleteWorkspace();
+                setLoading(false);
+              }}
+            >
+              {loading ? 'Deleting…' : 'Delete'}
+            </AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog.Portal>
+    </AlertDialog.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'sheet',
@@ -4893,6 +6378,56 @@ export default function Demo() {
       </Sheet.Root>
     ),
     code: `import { Sheet, Button } from '@aura-ui/styled';\n\n<Sheet.Root>\n  <Sheet.Trigger asChild><Button>Open</Button></Sheet.Trigger>\n  <Sheet.Content side="right">\n    <Sheet.Title>Sheet</Sheet.Title>\n  </Sheet.Content>\n</Sheet.Root>`,
+    examples: [
+      {
+        title: 'Edit profile',
+        description: 'A right-side sheet with a form for updating user details.',
+        preview: () => (
+          <Sheet.Root>
+            <Sheet.Trigger asChild>
+              <Button variant="outline">Edit profile</Button>
+            </Sheet.Trigger>
+            <Sheet.Content side="right">
+              <Sheet.Header>
+                <Sheet.Title>Edit profile</Sheet.Title>
+                <Sheet.Description>Update account details and notification preferences.</Sheet.Description>
+              </Sheet.Header>
+              <div className="grid gap-3 py-4">
+                <div className="grid gap-1.5">
+                  <Label htmlFor="sheet-name">Name</Label>
+                  <Input id="sheet-name" defaultValue="Ada Lovelace" />
+                </div>
+              </div>
+              <Sheet.Footer>
+                <Sheet.Close asChild>
+                  <Button>Save changes</Button>
+                </Sheet.Close>
+              </Sheet.Footer>
+            </Sheet.Content>
+          </Sheet.Root>
+        ),
+        code: `import { Sheet, Button, Label, Input } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Sheet.Root>
+      <Sheet.Trigger asChild><Button variant="outline">Edit profile</Button></Sheet.Trigger>
+      <Sheet.Content side="right">
+        <Sheet.Header>
+          <Sheet.Title>Edit profile</Sheet.Title>
+          <Sheet.Description>Update account details.</Sheet.Description>
+        </Sheet.Header>
+        <Label htmlFor="name">Name</Label>
+        <Input id="name" defaultValue="Ada Lovelace" />
+        <Sheet.Footer>
+          <Sheet.Close asChild><Button>Save changes</Button></Sheet.Close>
+        </Sheet.Footer>
+      </Sheet.Content>
+    </Sheet.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'drawer',
@@ -4914,6 +6449,50 @@ export default function Demo() {
       </Drawer.Root>
     ),
     code: `import { Drawer, Button } from '@aura-ui/styled';\n\n<Drawer.Root>\n  <Drawer.Trigger asChild><Button>Open</Button></Drawer.Trigger>\n  <Drawer.Content>\n    <Drawer.Title>Drawer</Drawer.Title>\n  </Drawer.Content>\n</Drawer.Root>`,
+    examples: [
+      {
+        title: 'With footer actions',
+        description: 'A confirmation drawer with primary and cancel actions in the footer.',
+        preview: () => (
+          <Drawer.Root>
+            <Drawer.Trigger asChild>
+              <Button variant="outline">Confirm deployment</Button>
+            </Drawer.Trigger>
+            <Drawer.Content>
+              <Drawer.Header>
+                <Drawer.Title>Confirm deployment</Drawer.Title>
+                <Drawer.Description>Review the production deploy before continuing.</Drawer.Description>
+              </Drawer.Header>
+              <Drawer.Footer>
+                <Button>Deploy</Button>
+                <Drawer.Close asChild>
+                  <Button variant="outline">Cancel</Button>
+                </Drawer.Close>
+              </Drawer.Footer>
+            </Drawer.Content>
+          </Drawer.Root>
+        ),
+        code: `import { Drawer, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Drawer.Root>
+      <Drawer.Trigger asChild><Button variant="outline">Confirm deployment</Button></Drawer.Trigger>
+      <Drawer.Content>
+        <Drawer.Header>
+          <Drawer.Title>Confirm deployment</Drawer.Title>
+          <Drawer.Description>Review before continuing.</Drawer.Description>
+        </Drawer.Header>
+        <Drawer.Footer>
+          <Button>Deploy</Button>
+          <Drawer.Close asChild><Button variant="outline">Cancel</Button></Drawer.Close>
+        </Drawer.Footer>
+      </Drawer.Content>
+    </Drawer.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'hover-card',
@@ -4924,12 +6503,22 @@ export default function Demo() {
     preview: () => (
       <HoverCard.Root>
         <HoverCard.Trigger asChild>
-          <a className="cursor-pointer underline">@aura-ui</a>
+          <a href="#" className="text-sm font-medium underline underline-offset-4">@aura-ui</a>
         </HoverCard.Trigger>
-        <HoverCard.Content>A React component library.</HoverCard.Content>
+        <HoverCard.Content>
+          <div className="flex items-start gap-3">
+            <Avatar.Root>
+              <Avatar.Fallback>AU</Avatar.Fallback>
+            </Avatar.Root>
+            <div>
+              <h4 className="text-sm font-semibold">@aura-ui</h4>
+              <p className="text-xs text-muted-foreground">Accessible React components with Tailwind styling.</p>
+            </div>
+          </div>
+        </HoverCard.Content>
       </HoverCard.Root>
     ),
-    code: `import { HoverCard } from '@aura-ui/styled';\n\n<HoverCard.Root>\n  <HoverCard.Trigger asChild><a>@aura-ui</a></HoverCard.Trigger>\n  <HoverCard.Content>A React component library.</HoverCard.Content>\n</HoverCard.Root>`,
+    code: `import { HoverCard, Avatar } from '@aura-ui/styled';\n\n<HoverCard.Root>\n  <HoverCard.Trigger asChild><a href="#">@aura-ui</a></HoverCard.Trigger>\n  <HoverCard.Content>\n    <div className="flex items-start gap-3">\n      <Avatar.Root><Avatar.Fallback>AU</Avatar.Fallback></Avatar.Root>\n      <div>\n        <h4 className="text-sm font-semibold">@aura-ui</h4>\n        <p className="text-xs text-muted-foreground">Accessible React components.</p>\n      </div>\n    </div>\n  </HoverCard.Content>\n</HoverCard.Root>`,
   },
   {
     slug: 'context-menu',
@@ -4949,6 +6538,48 @@ export default function Demo() {
       </ContextMenu.Root>
     ),
     code: `import { ContextMenu } from '@aura-ui/styled';\n\n<ContextMenu.Root>\n  <ContextMenu.Trigger>Right-click here</ContextMenu.Trigger>\n  <ContextMenu.Content>\n    <ContextMenu.Item>Copy</ContextMenu.Item>\n  </ContextMenu.Content>\n</ContextMenu.Root>`,
+    examples: [
+      {
+        title: 'Rich context menu',
+        description: 'Include labels, separators, and checkbox items.',
+        preview: () => (
+          <ContextMenu.Root>
+            <ContextMenu.Trigger className="border-border text-muted-foreground flex h-24 w-64 items-center justify-center rounded-md border-2 border-dashed text-sm">
+              Right-click for actions
+            </ContextMenu.Trigger>
+            <ContextMenu.Content className="w-52">
+              <ContextMenu.Label>File</ContextMenu.Label>
+              <ContextMenu.Item>Open</ContextMenu.Item>
+              <ContextMenu.Item>Save</ContextMenu.Item>
+              <ContextMenu.Separator />
+              <ContextMenu.CheckboxItem checked>Show toolbar</ContextMenu.CheckboxItem>
+              <ContextMenu.Separator />
+              <ContextMenu.Item className="text-destructive">Delete</ContextMenu.Item>
+            </ContextMenu.Content>
+          </ContextMenu.Root>
+        ),
+        code: `import { ContextMenu } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <ContextMenu.Root>
+      <ContextMenu.Trigger className="flex h-24 w-64 items-center justify-center rounded-md border-2 border-dashed text-sm">
+        Right-click for actions
+      </ContextMenu.Trigger>
+      <ContextMenu.Content className="w-52">
+        <ContextMenu.Label>File</ContextMenu.Label>
+        <ContextMenu.Item>Open</ContextMenu.Item>
+        <ContextMenu.Item>Save</ContextMenu.Item>
+        <ContextMenu.Separator />
+        <ContextMenu.CheckboxItem checked>Show toolbar</ContextMenu.CheckboxItem>
+        <ContextMenu.Separator />
+        <ContextMenu.Item variant="destructive">Delete</ContextMenu.Item>
+      </ContextMenu.Content>
+    </ContextMenu.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'menubar',
@@ -4974,6 +6605,69 @@ export default function Demo() {
       </Menubar.Root>
     ),
     code: `import { Menubar } from '@aura-ui/styled';\n\n<Menubar.Root>\n  <Menubar.Menu>\n    <Menubar.Trigger>File</Menubar.Trigger>\n    <Menubar.Content><Menubar.Item>New</Menubar.Item></Menubar.Content>\n  </Menubar.Menu>\n</Menubar.Root>`,
+    examples: [
+      {
+        title: 'Full application menubar',
+        description: 'Three menus with submenus, separators, shortcuts, and radio groups.',
+        preview: () => (
+          <Menubar.Root>
+            <Menubar.Menu>
+              <Menubar.Trigger>File</Menubar.Trigger>
+              <Menubar.Content>
+                <Menubar.Item>New</Menubar.Item>
+                <Menubar.Item>Open</Menubar.Item>
+                <Menubar.Separator />
+                <Menubar.Item>Save</Menubar.Item>
+              </Menubar.Content>
+            </Menubar.Menu>
+            <Menubar.Menu>
+              <Menubar.Trigger>Edit</Menubar.Trigger>
+              <Menubar.Content>
+                <Menubar.Item>Undo</Menubar.Item>
+                <Menubar.Item>Redo</Menubar.Item>
+              </Menubar.Content>
+            </Menubar.Menu>
+            <Menubar.Menu>
+              <Menubar.Trigger>View</Menubar.Trigger>
+              <Menubar.Content>
+                <Menubar.RadioGroup value="system">
+                  <Menubar.RadioItem value="light">Light</Menubar.RadioItem>
+                  <Menubar.RadioItem value="dark">Dark</Menubar.RadioItem>
+                  <Menubar.RadioItem value="system">System</Menubar.RadioItem>
+                </Menubar.RadioGroup>
+              </Menubar.Content>
+            </Menubar.Menu>
+          </Menubar.Root>
+        ),
+        code: `import { Menubar } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Menubar.Root>
+      <Menubar.Menu>
+        <Menubar.Trigger>File</Menubar.Trigger>
+        <Menubar.Content>
+          <Menubar.Item>New</Menubar.Item>
+          <Menubar.Item>Open</Menubar.Item>
+          <Menubar.Separator />
+          <Menubar.Item>Save</Menubar.Item>
+        </Menubar.Content>
+      </Menubar.Menu>
+      <Menubar.Menu>
+        <Menubar.Trigger>View</Menubar.Trigger>
+        <Menubar.Content>
+          <Menubar.RadioGroup value="system">
+            <Menubar.RadioItem value="light">Light</Menubar.RadioItem>
+            <Menubar.RadioItem value="dark">Dark</Menubar.RadioItem>
+            <Menubar.RadioItem value="system">System</Menubar.RadioItem>
+          </Menubar.RadioGroup>
+        </Menubar.Content>
+      </Menubar.Menu>
+    </Menubar.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'navigation-menu',
@@ -4994,6 +6688,62 @@ export default function Demo() {
       </NavigationMenu.Root>
     ),
     code: `import { NavigationMenu } from '@aura-ui/styled';\n\n<NavigationMenu.Root>\n  <NavigationMenu.List>\n    <NavigationMenu.Item value="docs">\n      <NavigationMenu.Trigger>Docs</NavigationMenu.Trigger>\n    </NavigationMenu.Item>\n  </NavigationMenu.List>\n</NavigationMenu.Root>`,
+    examples: [
+      {
+        title: 'With viewport content',
+        description: 'Add NavigationMenu.Content to display a rich link grid on hover.',
+        preview: () => (
+          <NavigationMenu.Root>
+            <NavigationMenu.List>
+              <NavigationMenu.Item value="components">
+                <NavigationMenu.Trigger>Components</NavigationMenu.Trigger>
+                <NavigationMenu.Content className="w-[280px] p-3">
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {['Button', 'Dialog', 'Popover', 'Tooltip'].map((c) => (
+                      <NavigationMenu.Link key={c} href="#" className="hover:bg-accent rounded p-2">
+                        {c}
+                      </NavigationMenu.Link>
+                    ))}
+                  </div>
+                </NavigationMenu.Content>
+              </NavigationMenu.Item>
+              <NavigationMenu.Item value="docs">
+                <NavigationMenu.Link href="#" className="px-3 py-2">
+                  Docs
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+            </NavigationMenu.List>
+            <NavigationMenu.Viewport />
+          </NavigationMenu.Root>
+        ),
+        code: `import { NavigationMenu } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <NavigationMenu.Root>
+      <NavigationMenu.List>
+        <NavigationMenu.Item value="components">
+          <NavigationMenu.Trigger>Components</NavigationMenu.Trigger>
+          <NavigationMenu.Content className="w-[280px] p-3">
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              {['Button', 'Dialog', 'Popover', 'Tooltip'].map((c) => (
+                <NavigationMenu.Link key={c} href="#" className="rounded p-2 hover:bg-accent">
+                  {c}
+                </NavigationMenu.Link>
+              ))}
+            </div>
+          </NavigationMenu.Content>
+        </NavigationMenu.Item>
+        <NavigationMenu.Item value="docs">
+          <NavigationMenu.Link href="#">Docs</NavigationMenu.Link>
+        </NavigationMenu.Item>
+      </NavigationMenu.List>
+      <NavigationMenu.Viewport />
+    </NavigationMenu.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'combobox',
@@ -5014,6 +6764,51 @@ export default function Demo() {
       </Combobox.Root>
     ),
     code: `import { Combobox } from '@aura-ui/styled';\n\n<Combobox.Root>\n  <Combobox.Input placeholder="Search…" />\n  <Combobox.Content>\n    <Combobox.Item value="react">React</Combobox.Item>\n  </Combobox.Content>\n</Combobox.Root>`,
+    examples: [
+      {
+        title: 'Controlled value',
+        description: 'Track the selected value externally to drive other parts of the UI.',
+        preview: () => {
+          const frameworks = ['React', 'Vue', 'Svelte', 'Solid', 'Angular'];
+          function ComboboxDemo() {
+            const [selected, setSelected] = React.useState('');
+            return (
+              <div className="grid gap-2">
+                <Combobox.Root value={selected} onValueChange={setSelected}>
+                  <Combobox.Input placeholder="Pick a framework…" className="w-56" />
+                  <Combobox.Content>
+                    {frameworks.map((f) => (
+                      <Combobox.Item key={f} value={f.toLowerCase()}>{f}</Combobox.Item>
+                    ))}
+                  </Combobox.Content>
+                </Combobox.Root>
+                {selected && (
+                  <p className="text-muted-foreground text-xs">Selected: {selected}</p>
+                )}
+              </div>
+            );
+          }
+          return <ComboboxDemo />;
+        },
+        code: `import { Combobox } from '@aura-ui/styled';
+
+const frameworks = ['React', 'Vue', 'Svelte', 'Solid', 'Angular'];
+
+export default function Demo() {
+  const [selected, setSelected] = React.useState('');
+  return (
+    <Combobox.Root value={selected} onValueChange={setSelected}>
+      <Combobox.Input placeholder="Pick a framework…" />
+      <Combobox.Content>
+        {frameworks.map((f) => (
+          <Combobox.Item key={f} value={f.toLowerCase()}>{f}</Combobox.Item>
+        ))}
+      </Combobox.Content>
+    </Combobox.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'command',
@@ -5034,6 +6829,55 @@ export default function Demo() {
       </Command.Root>
     ),
     code: `import { Command } from '@aura-ui/styled';\n\n<Command.Root>\n  <Command.Input placeholder="Type a command…" />\n  <Command.List>\n    <Command.Group heading="Suggestions">\n      <Command.Item>Search</Command.Item>\n    </Command.Group>\n  </Command.List>\n</Command.Root>`,
+    examples: [
+      {
+        title: 'With shortcuts and groups',
+        description: 'A command palette with keyboard shortcuts, icons, and multiple sections.',
+        preview: () => (
+          <Command.Root className="max-w-md rounded-md border border-border shadow-sm">
+            <Command.Input placeholder="Type a command or search" />
+            <Command.List>
+              <Command.Empty>No results found.</Command.Empty>
+              <Command.Group heading="Suggestions">
+                <Command.Item>
+                  Search
+                  <Command.Shortcut>Ctrl K</Command.Shortcut>
+                </Command.Item>
+                <Command.Item>Favorites</Command.Item>
+                <Command.Item>Inbox</Command.Item>
+              </Command.Group>
+              <Command.Separator />
+              <Command.Group heading="Settings">
+                <Command.Item>
+                  Preferences
+                  <Command.Shortcut>Ctrl ,</Command.Shortcut>
+                </Command.Item>
+              </Command.Group>
+            </Command.List>
+          </Command.Root>
+        ),
+        code: `import { Command } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Command.Root>
+      <Command.Input placeholder="Type a command or search" />
+      <Command.List>
+        <Command.Empty>No results found.</Command.Empty>
+        <Command.Group heading="Suggestions">
+          <Command.Item>Search <Command.Shortcut>Ctrl K</Command.Shortcut></Command.Item>
+          <Command.Item>Favorites</Command.Item>
+        </Command.Group>
+        <Command.Separator />
+        <Command.Group heading="Settings">
+          <Command.Item>Preferences <Command.Shortcut>Ctrl ,</Command.Shortcut></Command.Item>
+        </Command.Group>
+      </Command.List>
+    </Command.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'one-time-password-field',
@@ -5049,6 +6893,44 @@ export default function Demo() {
       </OneTimePasswordField.Root>
     ),
     code: `import { OneTimePasswordField } from '@aura-ui/styled';\n\n<OneTimePasswordField.Root length={6}>\n  {[0,1,2,3,4,5].map((i) => (\n    <OneTimePasswordField.Input key={i} index={i} />\n  ))}\n</OneTimePasswordField.Root>`,
+    examples: [
+      {
+        title: '6-digit OTP',
+        description: 'A six-cell OTP input with completion callback.',
+        preview: () => {
+          function OTPDemo() {
+            const [done, setDone] = React.useState(false);
+            return (
+              <div className="grid gap-3 text-center">
+                <OneTimePasswordField.Root
+                  length={6}
+                  onComplete={() => setDone(true)}
+                  className="gap-2"
+                >
+                  {[0, 1, 2, 3, 4, 5].map((i) => (
+                    <OneTimePasswordField.Input key={i} index={i} />
+                  ))}
+                </OneTimePasswordField.Root>
+                {done && <p className="text-success text-xs">Code verified!</p>}
+              </div>
+            );
+          }
+          return <OTPDemo />;
+        },
+        code: `import { OneTimePasswordField } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [done, setDone] = React.useState(false);
+  return (
+    <OneTimePasswordField.Root length={6} onComplete={() => setDone(true)}>
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <OneTimePasswordField.Input key={i} index={i} />
+      ))}
+    </OneTimePasswordField.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'password-toggle-field',
@@ -5063,6 +6945,40 @@ export default function Demo() {
       </PasswordToggleField.Root>
     ),
     code: `import { PasswordToggleField } from '@aura-ui/styled';\n\n<PasswordToggleField.Root>\n  <PasswordToggleField.Input placeholder="Password" />\n  <PasswordToggleField.Toggle />\n</PasswordToggleField.Root>`,
+    examples: [
+      {
+        title: 'With label and strength hint',
+        description: 'Wrap in a field layout and add a password strength message.',
+        preview: () => (
+          <div className="grid gap-1.5 w-full max-w-sm">
+            <Label htmlFor="pw">Password</Label>
+            <PasswordToggleField.Root className="w-full" id="pw">
+              <PasswordToggleField.Input placeholder="Min. 8 characters" />
+              <PasswordToggleField.Toggle />
+            </PasswordToggleField.Root>
+            <p className="text-muted-foreground text-xs">
+              Use at least 8 characters with letters and numbers.
+            </p>
+          </div>
+        ),
+        code: `import { PasswordToggleField, Label } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <div className="grid gap-1.5">
+      <Label htmlFor="pw">Password</Label>
+      <PasswordToggleField.Root id="pw">
+        <PasswordToggleField.Input placeholder="Min. 8 characters" />
+        <PasswordToggleField.Toggle />
+      </PasswordToggleField.Root>
+      <p className="text-xs text-muted-foreground">
+        Use at least 8 characters with letters and numbers.
+      </p>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'number-field',
@@ -5078,6 +6994,50 @@ export default function Demo() {
       </NumberField.Root>
     ),
     code: `import { NumberField } from '@aura-ui/styled';\n\n<NumberField.Root defaultValue={5} min={0} max={20}>\n  <NumberField.DecrementTrigger />\n  <NumberField.Input />\n  <NumberField.IncrementTrigger />\n</NumberField.Root>`,
+    examples: [
+      {
+        title: 'Quantity selector',
+        description: 'A controlled number field used as a cart quantity input.',
+        preview: () => {
+          function QuantityDemo() {
+            const [qty, setQty] = React.useState(1);
+            return (
+              <div className="flex items-center gap-3">
+                <Label htmlFor="qty">Quantity</Label>
+                <NumberField.Root
+                  id="qty"
+                  value={qty}
+                  onValueChange={(v) => setQty(v ?? 1)}
+                  min={1}
+                  max={99}
+                  step={1}
+                >
+                  <NumberField.DecrementTrigger />
+                  <NumberField.Input className="w-14 text-center" />
+                  <NumberField.IncrementTrigger />
+                </NumberField.Root>
+              </div>
+            );
+          }
+          return <QuantityDemo />;
+        },
+        code: `import { NumberField, Label } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [qty, setQty] = React.useState(1);
+  return (
+    <div className="flex items-center gap-3">
+      <Label htmlFor="qty">Quantity</Label>
+      <NumberField.Root id="qty" value={qty} onValueChange={setQty} min={1} max={99}>
+        <NumberField.DecrementTrigger />
+        <NumberField.Input className="w-14 text-center" />
+        <NumberField.IncrementTrigger />
+      </NumberField.Root>
+    </div>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'calendar',
@@ -5087,6 +7047,19 @@ export default function Demo() {
     features: ['Single / range / multiple.', 'Keyboard navigation.'],
     preview: () => <Calendar mode="single" />,
     code: `import { Calendar } from '@aura-ui/styled';\n\n<Calendar mode="single" />`,
+    examples: [
+      {
+        title: 'Range selection',
+        description: 'Switch to mode="range" to allow selecting a start and end date.',
+        preview: () => <Calendar mode="range" />,
+        code: `import { Calendar } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [range, setRange] = React.useState(undefined);
+  return <Calendar mode="range" selected={range} onSelect={setRange} />;
+}`,
+      },
+    ],
   },
   {
     slug: 'date-picker',
@@ -5096,6 +7069,50 @@ export default function Demo() {
     features: ['MUI-style field API.', 'Popover-anchored calendar.', 'Controlled or uncontrolled.'],
     preview: () => <DatePicker label="Release date" defaultValue={new Date(2026, 4, 23)} />,
     code: `import { DatePicker } from '@aura-ui/styled';\n\n<DatePicker\n  label="Release date"\n  value={date}\n  onChange={setDate}\n/>`,
+    examples: [
+      {
+        title: 'Controlled with min/max',
+        description: 'Restrict selectable dates to a valid booking window.',
+        preview: () => {
+          function DatePickerDemo() {
+            const [date, setDate] = React.useState<Date | null>(null);
+            const min = new Date(2026, 4, 1);
+            const max = new Date(2026, 11, 31);
+            return (
+              <div className="grid gap-2">
+                <DatePicker
+                  label="Booking date"
+                  value={date}
+                  onChange={setDate}
+                  minDate={min}
+                  maxDate={max}
+                />
+                {date && (
+                  <p className="text-muted-foreground text-xs">
+                    Selected: {date.toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            );
+          }
+          return <DatePickerDemo />;
+        },
+        code: `import { DatePicker } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [date, setDate] = React.useState(null);
+  return (
+    <DatePicker
+      label="Booking date"
+      value={date}
+      onChange={setDate}
+      minDate={new Date(2026, 0, 1)}
+      maxDate={new Date(2026, 11, 31)}
+    />
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'date-range-picker',
@@ -5110,6 +7127,44 @@ export default function Demo() {
       />
     ),
     code: `import { DateRangePicker } from '@aura-ui/styled';\n\n<DateRangePicker\n  label="Sprint window"\n  value={range}\n  onChange={setRange}\n/>`,
+    examples: [
+      {
+        title: 'Controlled range',
+        description: 'Track the selected date range externally for form submission.',
+        preview: () => {
+          function DateRangeDemo() {
+            const [range, setRange] = React.useState<[Date | null, Date | null]>([null, null]);
+            return (
+              <div className="grid gap-2">
+                <DateRangePicker
+                  label="Report period"
+                  value={range}
+                  onChange={setRange}
+                />
+                {range[0] && range[1] && (
+                  <p className="text-muted-foreground text-xs">
+                    {range[0].toLocaleDateString()} – {range[1].toLocaleDateString()}
+                  </p>
+                )}
+              </div>
+            );
+          }
+          return <DateRangeDemo />;
+        },
+        code: `import { DateRangePicker } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [range, setRange] = React.useState([null, null]);
+  return (
+    <DateRangePicker
+      label="Report period"
+      value={range}
+      onChange={setRange}
+    />
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'time-picker',
@@ -5121,6 +7176,31 @@ export default function Demo() {
       <TimePicker label="Start time" defaultValue={new Date(2026, 4, 23, 9, 30)} ampm />
     ),
     code: `import { TimePicker } from '@aura-ui/styled';\n\n<TimePicker\n  label="Start time"\n  value={time}\n  onChange={setTime}\n  ampm\n  minutesStep={15}\n/>`,
+    examples: [
+      {
+        title: '24-hour with step',
+        description: 'Use 24-hour mode and snap minutes to 30-minute intervals.',
+        preview: () => (
+          <TimePicker
+            label="Meeting time"
+            defaultValue={new Date(2026, 4, 23, 14, 0)}
+            minutesStep={30}
+          />
+        ),
+        code: `import { TimePicker } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <TimePicker
+      label="Meeting time"
+      value={time}
+      onChange={setTime}
+      minutesStep={30}
+    />
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'date-time-picker',
@@ -5141,6 +7221,35 @@ export default function Demo() {
       />
     ),
     code: `import { DateTimePicker } from '@aura-ui/styled';\n\n<DateTimePicker\n  label="Deployment window"\n  value={dateTime}\n  onChange={setDateTime}\n  minDateTime={start}\n  maxDateTime={end}\n/>`,
+    examples: [
+      {
+        title: 'With AM/PM and helper text',
+        description: 'Enable 12-hour clock and guide the user with helper text.',
+        preview: () => (
+          <DateTimePicker
+            label="Publish at"
+            defaultValue={new Date(2026, 4, 23, 9, 0)}
+            ampm
+            minutesStep={15}
+            helperText="Pick the date and then the time."
+          />
+        ),
+        code: `import { DateTimePicker } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <DateTimePicker
+      label="Publish at"
+      value={dateTime}
+      onChange={setDateTime}
+      ampm
+      minutesStep={15}
+      helperText="Pick the date and then the time."
+    />
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'color-picker',
@@ -5157,6 +7266,30 @@ export default function Demo() {
       </ColorPicker.Root>
     ),
     code: `import { ColorPicker } from '@aura-ui/styled';\n\n<ColorPicker.Root>\n  <ColorPicker.Area />\n  <ColorPicker.HueSlider />\n  <ColorPicker.AlphaSlider />\n  <ColorPicker.Swatch />\n</ColorPicker.Root>`,
+    examples: [
+      {
+        title: 'Without alpha slider',
+        description: 'Omit the AlphaSlider for opaque color selection only.',
+        preview: () => (
+          <ColorPicker.Root className="border-border w-56 rounded-lg border p-3">
+            <ColorPicker.Area />
+            <ColorPicker.HueSlider />
+            <ColorPicker.Swatch />
+          </ColorPicker.Root>
+        ),
+        code: `import { ColorPicker } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <ColorPicker.Root>
+      <ColorPicker.Area />
+      <ColorPicker.HueSlider />
+      <ColorPicker.Swatch />
+    </ColorPicker.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'file-upload',
@@ -5171,6 +7304,35 @@ export default function Demo() {
       </FileUpload.Root>
     ),
     code: `import { FileUpload } from '@aura-ui/styled';\n\n<FileUpload.Root multiple maxFiles={3}>\n  <FileUpload.Dropzone />\n  <FileUpload.Input />\n</FileUpload.Root>`,
+    examples: [
+      {
+        title: 'With accepted types and size limit',
+        description: 'Restrict uploads to images with a 5 MB size cap.',
+        preview: () => (
+          <FileUpload.Root
+            accept="image/*"
+            maxSize={5 * 1024 * 1024}
+            className="w-full max-w-sm"
+          >
+            <FileUpload.Dropzone />
+            <FileUpload.Input />
+          </FileUpload.Root>
+        ),
+        code: `import { FileUpload } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <FileUpload.Root
+      accept="image/*"
+      maxSize={5 * 1024 * 1024}
+    >
+      <FileUpload.Dropzone />
+      <FileUpload.Input />
+    </FileUpload.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'scroll-area',
@@ -5188,6 +7350,43 @@ export default function Demo() {
       </ScrollArea.Root>
     ),
     code: `import { ScrollArea } from '@aura-ui/styled';\n\n<ScrollArea.Root className="h-48">\n  {/* long content */}\n</ScrollArea.Root>`,
+    examples: [
+      {
+        title: 'Horizontal scroll',
+        description: 'Combine ScrollArea with a wide inner element for horizontal scrolling.',
+        preview: () => (
+          <ScrollArea.Root className="border-border w-64 rounded-md border">
+            <div className="flex gap-3 p-3" style={{ width: '600px' }}>
+              {Array.from({ length: 10 }, (_, i) => (
+                <div
+                  key={i}
+                  className="bg-accent flex h-16 w-20 flex-shrink-0 items-center justify-center rounded text-sm font-medium"
+                >
+                  Item {i + 1}
+                </div>
+              ))}
+            </div>
+            <ScrollArea.Scrollbar orientation="horizontal" />
+          </ScrollArea.Root>
+        ),
+        code: `import { ScrollArea } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <ScrollArea.Root className="w-64 rounded-md border">
+      <div className="flex gap-3 p-3" style={{ width: '600px' }}>
+        {Array.from({ length: 10 }, (_, i) => (
+          <div key={i} className="flex h-16 w-20 flex-shrink-0 items-center justify-center rounded bg-accent text-sm">
+            Item {i + 1}
+          </div>
+        ))}
+      </div>
+      <ScrollArea.Scrollbar orientation="horizontal" />
+    </ScrollArea.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'toolbar',
@@ -5204,6 +7403,36 @@ export default function Demo() {
       </Toolbar.Root>
     ),
     code: `import { Toolbar } from '@aura-ui/styled';\n\n<Toolbar.Root>\n  <Toolbar.Button>Bold</Toolbar.Button>\n  <Toolbar.Separator />\n  <Toolbar.Button>Share</Toolbar.Button>\n</Toolbar.Root>`,
+    examples: [
+      {
+        title: 'Rich text toolbar',
+        description: 'Group formatting toggles, a separator, and a link button in a toolbar.',
+        preview: () => (
+          <Toolbar.Root>
+            <Toolbar.Button aria-label="Bold"><strong>B</strong></Toolbar.Button>
+            <Toolbar.Button aria-label="Italic"><em>I</em></Toolbar.Button>
+            <Toolbar.Button aria-label="Underline"><span className="underline">U</span></Toolbar.Button>
+            <Toolbar.Separator />
+            <Toolbar.Button>Link</Toolbar.Button>
+            <Toolbar.Button>Image</Toolbar.Button>
+          </Toolbar.Root>
+        ),
+        code: `import { Toolbar } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Toolbar.Root>
+      <Toolbar.Button aria-label="Bold"><strong>B</strong></Toolbar.Button>
+      <Toolbar.Button aria-label="Italic"><em>I</em></Toolbar.Button>
+      <Toolbar.Button aria-label="Underline"><span className="underline">U</span></Toolbar.Button>
+      <Toolbar.Separator />
+      <Toolbar.Button>Link</Toolbar.Button>
+      <Toolbar.Button>Image</Toolbar.Button>
+    </Toolbar.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'resizable',
@@ -5231,6 +7460,40 @@ export default function Demo() {
       </Resizable.Group>
     ),
     code: `import { Resizable } from '@aura-ui/styled';\n\n<Resizable.Group>\n  <Resizable.Panel id="a" defaultSize={50}>A</Resizable.Panel>\n  <Resizable.Handle between={['a','b']} withHandle />\n  <Resizable.Panel id="b" defaultSize={50}>B</Resizable.Panel>\n</Resizable.Group>`,
+    examples: [
+      {
+        title: 'Three-panel layout',
+        description: 'A sidebar, main content, and detail panel with draggable handles.',
+        preview: () => (
+          <Resizable.Group className="border-border h-40 w-full max-w-sm rounded-md border" direction="horizontal">
+            <Resizable.Panel id="r-sidebar" defaultSize={25} minSize={15} className="flex items-center justify-center text-xs font-medium">
+              Sidebar
+            </Resizable.Panel>
+            <Resizable.Handle between={['r-sidebar', 'r-main']} withHandle />
+            <Resizable.Panel id="r-main" defaultSize={50} className="flex items-center justify-center text-xs font-medium">
+              Main
+            </Resizable.Panel>
+            <Resizable.Handle between={['r-main', 'r-detail']} withHandle />
+            <Resizable.Panel id="r-detail" defaultSize={25} minSize={15} className="flex items-center justify-center text-xs font-medium">
+              Detail
+            </Resizable.Panel>
+          </Resizable.Group>
+        ),
+        code: `import { Resizable } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Resizable.Group className="h-40 w-full rounded-md border" direction="horizontal">
+      <Resizable.Panel id="sidebar" defaultSize={25} minSize={15}>Sidebar</Resizable.Panel>
+      <Resizable.Handle between={['sidebar', 'main']} withHandle />
+      <Resizable.Panel id="main" defaultSize={50}>Main</Resizable.Panel>
+      <Resizable.Handle between={['main', 'detail']} withHandle />
+      <Resizable.Panel id="detail" defaultSize={25} minSize={15}>Detail</Resizable.Panel>
+    </Resizable.Group>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'carousel',
@@ -5254,6 +7517,58 @@ export default function Demo() {
       </Carousel.Root>
     ),
     code: `import { Carousel } from '@aura-ui/styled';\n\n<Carousel.Root>\n  <Carousel.Content>\n    <Carousel.Item>Slide 1</Carousel.Item>\n  </Carousel.Content>\n  <Carousel.Previous />\n  <Carousel.Next />\n</Carousel.Root>`,
+    examples: [
+      {
+        title: 'Card carousel',
+        description: 'Wrap card content in each slide for a scrollable feature list.',
+        preview: () => (
+          <Carousel.Root className="w-64">
+            <Carousel.Content>
+              {[
+                { title: 'Components', desc: '50+ accessible primitives' },
+                { title: 'Themes', desc: 'CSS variable token system' },
+                { title: 'DataTable', desc: 'Full-featured data grid' },
+              ].map((item) => (
+                <Carousel.Item key={item.title}>
+                  <div className="bg-card border-border flex h-28 flex-col items-center justify-center rounded-lg border p-4 text-center">
+                    <p className="text-sm font-semibold">{item.title}</p>
+                    <p className="text-muted-foreground mt-1 text-xs">{item.desc}</p>
+                  </div>
+                </Carousel.Item>
+              ))}
+            </Carousel.Content>
+            <Carousel.Previous />
+            <Carousel.Next />
+          </Carousel.Root>
+        ),
+        code: `import { Carousel } from '@aura-ui/styled';
+
+const slides = [
+  { title: 'Components', desc: '50+ accessible primitives' },
+  { title: 'Themes', desc: 'CSS variable token system' },
+  { title: 'DataTable', desc: 'Full-featured data grid' },
+];
+
+export default function Demo() {
+  return (
+    <Carousel.Root className="w-64">
+      <Carousel.Content>
+        {slides.map((slide) => (
+          <Carousel.Item key={slide.title}>
+            <div className="flex h-28 flex-col items-center justify-center rounded-lg border p-4 text-center">
+              <p className="text-sm font-semibold">{slide.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{slide.desc}</p>
+            </div>
+          </Carousel.Item>
+        ))}
+      </Carousel.Content>
+      <Carousel.Previous />
+      <Carousel.Next />
+    </Carousel.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'tree',
@@ -5277,6 +7592,56 @@ export default function Demo() {
       </Tree.Root>
     ),
     code: `import { Tree } from '@aura-ui/styled';\n\n<Tree.Root defaultExpanded={['root']}>\n  <Tree.Item id="root" hasChildren>\n    <Tree.Trigger hasChildren>src</Tree.Trigger>\n    <Tree.Group>\n      <Tree.Item id="a"><Tree.Trigger>index.ts</Tree.Trigger></Tree.Item>\n    </Tree.Group>\n  </Tree.Item>\n</Tree.Root>`,
+    examples: [
+      {
+        title: 'Multi-level file tree',
+        description: 'Deeply nested tree mimicking a project directory structure.',
+        preview: () => (
+          <Tree.Root defaultExpanded={['src', 'components']} className="text-sm w-56">
+            <Tree.Item id="src" hasChildren>
+              <Tree.Trigger hasChildren>src</Tree.Trigger>
+              <Tree.Group>
+                <Tree.Item id="components" hasChildren>
+                  <Tree.Trigger hasChildren>components</Tree.Trigger>
+                  <Tree.Group>
+                    <Tree.Item id="button">
+                      <Tree.Trigger hasChildren={false}>Button.tsx</Tree.Trigger>
+                    </Tree.Item>
+                    <Tree.Item id="dialog">
+                      <Tree.Trigger hasChildren={false}>Dialog.tsx</Tree.Trigger>
+                    </Tree.Item>
+                  </Tree.Group>
+                </Tree.Item>
+                <Tree.Item id="index">
+                  <Tree.Trigger hasChildren={false}>index.ts</Tree.Trigger>
+                </Tree.Item>
+              </Tree.Group>
+            </Tree.Item>
+          </Tree.Root>
+        ),
+        code: `import { Tree } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Tree.Root defaultExpanded={['src', 'components']}>
+      <Tree.Item id="src" hasChildren>
+        <Tree.Trigger hasChildren>src</Tree.Trigger>
+        <Tree.Group>
+          <Tree.Item id="components" hasChildren>
+            <Tree.Trigger hasChildren>components</Tree.Trigger>
+            <Tree.Group>
+              <Tree.Item id="button"><Tree.Trigger>Button.tsx</Tree.Trigger></Tree.Item>
+              <Tree.Item id="dialog"><Tree.Trigger>Dialog.tsx</Tree.Trigger></Tree.Item>
+            </Tree.Group>
+          </Tree.Item>
+          <Tree.Item id="index"><Tree.Trigger>index.ts</Tree.Trigger></Tree.Item>
+        </Tree.Group>
+      </Tree.Item>
+    </Tree.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'editable',
@@ -5291,6 +7656,41 @@ export default function Demo() {
       </Editable.Root>
     ),
     code: `import { Editable } from '@aura-ui/styled';\n\n<Editable.Root defaultValue="Click to edit">\n  <Editable.Preview />\n  <Editable.Input />\n</Editable.Root>`,
+    examples: [
+      {
+        title: 'Inline title editing',
+        description: 'Use Editable for a task or document title that the user can rename in place.',
+        preview: () => {
+          function EditableDemo() {
+            const [title, setTitle] = React.useState('Untitled document');
+            return (
+              <div className="grid gap-1">
+                <Editable.Root
+                  value={title}
+                  onValueChange={setTitle}
+                >
+                  <Editable.Preview className="text-lg font-semibold cursor-pointer hover:bg-accent/50 rounded px-1" />
+                  <Editable.Input className="text-lg font-semibold" />
+                </Editable.Root>
+                <p className="text-muted-foreground text-xs">Click to rename</p>
+              </div>
+            );
+          }
+          return <EditableDemo />;
+        },
+        code: `import { Editable } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [title, setTitle] = React.useState('Untitled document');
+  return (
+    <Editable.Root value={title} onValueChange={setTitle} activationMode="dblclick">
+      <Editable.Preview className="text-lg font-semibold cursor-pointer rounded px-1 hover:bg-accent/50" />
+      <Editable.Input className="text-lg font-semibold" />
+    </Editable.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'tags-input',
@@ -5307,6 +7707,43 @@ export default function Demo() {
       </TagsInput.Root>
     ),
     code: `import { TagsInput } from '@aura-ui/styled';\n\n<TagsInput.Root defaultValue={['react']}>\n  <TagsInput.Items>\n    {(tag, i) => <TagsInput.Tag key={i} index={i} tag={tag} />}\n  </TagsInput.Items>\n  <TagsInput.Input placeholder="Add tag…" />\n</TagsInput.Root>`,
+    examples: [
+      {
+        title: 'Controlled with max tags',
+        description: 'Cap the tag count and track the value externally.',
+        preview: () => {
+          function TagsDemo() {
+            const [tags, setTags] = React.useState(['react', 'typescript']);
+            const max = 5;
+            return (
+              <div className="grid gap-2 w-full max-w-sm">
+                <TagsInput.Root value={tags} onValueChange={setTags} className="w-full">
+                  <TagsInput.Items>
+                    {(tag, i) => <TagsInput.Tag key={i} index={i} tag={tag} />}
+                  </TagsInput.Items>
+                  <TagsInput.Input placeholder="Add up to 5 tags…" />
+                </TagsInput.Root>
+                <p className="text-muted-foreground text-xs">{tags.length}/{max} tags</p>
+              </div>
+            );
+          }
+          return <TagsDemo />;
+        },
+        code: `import { TagsInput } from '@aura-ui/styled';
+
+export default function Demo() {
+  const [tags, setTags] = React.useState(['react', 'typescript']);
+  return (
+    <TagsInput.Root value={tags} onValueChange={setTags} max={5}>
+      <TagsInput.Items>
+        {(tag, i) => <TagsInput.Tag key={i} index={i} tag={tag} />}
+      </TagsInput.Items>
+      <TagsInput.Input placeholder="Add up to 5 tags…" />
+    </TagsInput.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'mentions',
@@ -5336,6 +7773,63 @@ export default function Demo() {
       </Mentions.Root>
     ),
     code: `import { Mentions } from '@aura-ui/styled';\n\n<Mentions.Root>\n  <Mentions.Textarea placeholder="Try @ada…" />\n  <Mentions.Suggestions items={users}>\n    <Mentions.Items>\n      {(item, i) => <Mentions.Item key={item.id} suggestion={item} index={i}>@{item.label}</Mentions.Item>}\n    </Mentions.Items>\n  </Mentions.Suggestions>\n</Mentions.Root>`,
+    examples: [
+      {
+        title: 'With default value',
+        description: 'Pre-populate the textarea with an existing mention to show highlighted tokens.',
+        preview: () => {
+          const team = [
+            { id: 'ada', label: 'ada' },
+            { id: 'grace', label: 'grace' },
+            { id: 'margaret', label: 'margaret' },
+          ];
+          return (
+            <Mentions.Root
+              className="w-full max-w-sm"
+              defaultValue="Hey @ada, can you review this with @grace?"
+            >
+              <Mentions.Textarea placeholder="Write an update…" rows={3} />
+              <Mentions.Suggestions items={team}>
+                <div className="border-border bg-popover rounded-md border p-1 shadow-md">
+                  <Mentions.Items>
+                    {(item, i) => (
+                      <Mentions.Item key={item.id} suggestion={item} index={i}>
+                        <div className="hover:bg-accent rounded px-2 py-1 text-sm">@{item.label}</div>
+                      </Mentions.Item>
+                    )}
+                  </Mentions.Items>
+                </div>
+              </Mentions.Suggestions>
+            </Mentions.Root>
+          );
+        },
+        code: `import { Mentions } from '@aura-ui/styled';
+
+const team = [
+  { id: 'ada', label: 'ada' },
+  { id: 'grace', label: 'grace' },
+];
+
+export default function Demo() {
+  return (
+    <Mentions.Root defaultValue="Hey @ada, can you review this?">
+      <Mentions.Textarea placeholder="Write an update…" rows={3} />
+      <Mentions.Suggestions items={team}>
+        <div className="rounded-md border p-1 shadow-md bg-popover">
+          <Mentions.Items>
+            {(item, i) => (
+              <Mentions.Item key={item.id} suggestion={item} index={i}>
+                @{item.label}
+              </Mentions.Item>
+            )}
+          </Mentions.Items>
+        </div>
+      </Mentions.Suggestions>
+    </Mentions.Root>
+  );
+}`,
+      },
+    ],
   },
   {
     slug: 'data-table',
