@@ -5,157 +5,53 @@
  */
 
 export * as Dialog from './dialog';
-export type {
-  DialogRootProps,
-  DialogTriggerProps,
-  DialogPortalProps,
-  DialogOverlayProps,
-  DialogContentProps,
-  DialogTitleProps,
-  DialogDescriptionProps,
-  DialogCloseProps,
-} from './dialog';
+export type * from './dialog/dialog.types';
 
 export * as Avatar from './avatar';
-export type {
-  AvatarRootProps,
-  AvatarImageProps,
-  AvatarFallbackProps,
-  ImageLoadingStatus,
-} from './avatar';
+export type * from './avatar/avatar.types';
 
 export * as Progress from './progress';
-export type { ProgressRootProps, ProgressIndicatorProps, ProgressState } from './progress';
+export type * from './progress/progress.types';
 
 export * as RadioGroup from './radio-group';
-export type {
-  RadioGroupRootProps,
-  RadioGroupItemProps,
-  RadioGroupIndicatorProps,
-} from './radio-group';
+export type * from './radio-group/radio-group.types';
 
 export * as ToggleGroup from './toggle-group';
-export type {
-  ToggleGroupRootProps,
-  ToggleGroupSingleProps,
-  ToggleGroupMultipleProps,
-  ToggleGroupItemProps,
-} from './toggle-group';
+export type * from './toggle-group/toggle-group.types';
 
 export * as Slider from './slider';
-export type {
-  SliderRootProps,
-  SliderTrackProps,
-  SliderRangeProps,
-  SliderThumbProps,
-} from './slider';
+export type * from './slider/slider.types';
 
 export * as Form from './form';
-export type {
-  FormProps,
-  FormFieldProps,
-  FormLabelProps,
-  FormControlProps,
-  FormMessageProps,
-  FormValidityStateProps,
-  FormSubmitProps,
-  Matcher,
-  ValidityMatcher,
-  CustomMatcher,
-} from './form';
+export type * from './form/form.types';
 
 export * as Collapsible from './collapsible';
-export type {
-  CollapsibleRootProps,
-  CollapsibleTriggerProps,
-  CollapsibleContentProps,
-} from './collapsible';
+export type * from './collapsible/collapsible.types';
 
 export * as Accordion from './accordion';
-export type {
-  AccordionRootProps,
-  AccordionSingleProps,
-  AccordionMultipleProps,
-  AccordionItemProps,
-  AccordionHeaderProps,
-  AccordionTriggerProps,
-  AccordionContentProps,
-} from './accordion';
+export type * from './accordion/accordion.types';
 
 export * as Tabs from './tabs';
-export type { TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps } from './tabs';
+export type * from './tabs/tabs.types';
 
 export * as AlertDialog from './alert-dialog';
-export type {
-  AlertDialogRootProps,
-  AlertDialogTriggerProps,
-  AlertDialogPortalProps,
-  AlertDialogOverlayProps,
-  AlertDialogContentProps,
-  AlertDialogTitleProps,
-  AlertDialogDescriptionProps,
-  AlertDialogActionProps,
-  AlertDialogCancelProps,
-} from './alert-dialog';
+export type * from './alert-dialog/alert-dialog.types';
 
 export * as Popover from './popover';
-export type {
-  PopoverRootProps,
-  PopoverTriggerProps,
-  PopoverAnchorProps,
-  PopoverPortalProps,
-  PopoverContentProps,
-  PopoverCloseProps,
-  PopoverArrowProps,
-} from './popover';
+export type * from './popover/popover.types';
 
 export * as Tooltip from './tooltip';
-export type {
-  TooltipProviderProps,
-  TooltipRootProps,
-  TooltipTriggerProps,
-  TooltipPortalProps,
-  TooltipContentProps,
-  TooltipArrowProps,
-} from './tooltip';
+export type * from './tooltip/tooltip.types';
 
 export * as HoverCard from './hover-card';
-export type {
-  HoverCardRootProps,
-  HoverCardTriggerProps,
-  HoverCardPortalProps,
-  HoverCardContentProps,
-  HoverCardArrowProps,
-} from './hover-card';
+export type * from './hover-card/hover-card.types';
 
 export * as Toast from './toast';
-export type {
-  ToastProviderProps,
-  ToastViewportProps,
-  ToastRootProps,
-  ToastTitleProps,
-  ToastDescriptionProps,
-  ToastActionProps,
-  ToastCloseProps,
-  SwipeDirection,
-} from './toast';
+export type * from './toast/toast.types';
 
 // Phase F: complex compound
 export * as Menu from './menu';
-export type {
-  MenuRootProps,
-  MenuAnchorProps,
-  MenuPortalProps,
-  MenuContentProps,
-  MenuItemProps,
-  MenuGroupProps,
-  MenuLabelProps,
-  MenuCheckboxItemProps,
-  MenuRadioGroupProps,
-  MenuRadioItemProps,
-  MenuItemIndicatorProps,
-  MenuSeparatorProps,
-} from './menu';
+export type * from './menu/menu.types';
 
 export * as DropdownMenu from './dropdown-menu';
 export type {
@@ -178,6 +74,12 @@ export type {
 
 export * as Breadcrumb from './breadcrumb';
 export type { BreadcrumbProps } from './breadcrumb/breadcrumb';
+
+export * as Pagination from './pagination';
+export type * from './pagination/pagination.types';
+
+export * as Stepper from './stepper';
+export type * from './stepper/stepper.types';
 
 export * as Select from './select';
 export type {
@@ -249,43 +151,35 @@ export * as Calendar from './calendar';
 export type { CalendarDateRange, CalendarRootProps } from './calendar/calendar';
 
 export * as DatePicker from './date-picker';
-export type { DatePickerRootProps } from './date-picker/date-picker';
+export type * from './date-picker/date-picker.types';
 
 export * as TimePicker from './time-picker';
 export type {
   TimePickerRootProps,
+  TimePickerValue,
+  TimePickerFormat,
+  TimePickerViewRenderer,
+  TimePickerSegment,
   TimeValue,
   SegmentProps as TimePickerSegmentProps,
-} from './time-picker/time-picker';
+  TimePickerValueProps,
+} from './time-picker/time-picker.types';
 
 export * as DateRangePicker from './date-range-picker';
-export type {
-  DateRangePickerRootProps,
-  DateRange,
-  DateRangeTuple,
-  DateRangeValue,
-  DateRangePickerShortcut,
-} from './date-range-picker/date-range-picker';
+export type * from './date-range-picker/date-range-picker.types';
 
 export * as DateTimePicker from './date-time-picker';
 export type {
   DateTimePickerRootProps,
+  DateTimePickerFormat,
+  DateTimePickerViewRenderer,
+  DateTimePickerSegment,
   SegmentProps as DateTimePickerSegmentProps,
   TimePanelProps as DateTimePickerTimePanelProps,
   TimePanelRenderProps as DateTimePickerTimePanelRenderProps,
-} from './date-time-picker/date-time-picker';
-export type {
-  DatePickerView,
-  DateRangePosition,
-  DateTimePickerView,
-  DateTimeValidationError,
-  DateValidationError,
-  PickerChangeContext,
-  PickerFieldSection,
-  PickerSelectedSections,
-  TimePickerView,
-  TimeValidationError,
-} from './picker-utils';
+  DateTimePickerValueProps,
+} from './date-time-picker/date-time-picker.types';
+export type * from './picker-utils';
 
 export * as ColorPicker from './color-picker';
 export type { ColorPickerRootProps, HsvaColor } from './color-picker/color-picker';
@@ -331,7 +225,7 @@ export type {
 } from './mentions/mentions';
 
 export * as Card from './card';
-export type { CardRootProps, CardSectionProps } from './card/card.types';
+export type * from './card/card.types';
 
 export * from './aspect-ratio';
 export * from './switch';
@@ -352,68 +246,12 @@ export * from './textarea';
 
 // Chart
 export * as Chart from './chart';
+export type * from './chart/chart.types';
 export type {
-  ChartRootProps,
-  ChartPieRootProps,
-  ChartRadarRootProps,
-  ChartMargin,
-  ChartDimensions,
-  ChartXAxisProps,
-  ChartYAxisProps,
-  ChartGridProps,
-  ChartBarProps,
-  ChartLineProps,
-  ChartAreaProps,
-  ChartScatterProps,
-  ChartBubbleProps,
-  ChartPieProps,
-  ChartPieCenterLabelProps,
-  ChartPolarGridProps,
-  ChartPolarAngleAxisProps,
-  ChartRadarProps,
-  ChartHeatmapProps,
-  ChartTreemapProps,
-  ChartFunnelProps,
-  ChartGaugeProps,
-  ChartGaugeContainerProps,
-  ChartGaugeValueArcProps,
-  ChartGaugeReferenceArcProps,
-  ChartGaugePointerProps,
-  GaugeContextValue,
-  ChartCandlestickProps,
-  ChartTooltipProps,
-  ChartLegendProps,
-  HighlightScope,
-  MarkShape,
-  ScatterMarkerShape,
-  TooltipState,
-  TooltipPayloadEntry,
-  TreemapNode,
-  OhlcEntry,
-  FunnelEntry,
-  CurveType,
-  ChartSparkLineProps,
-  ChartRangeBarProps,
-  ChartRangeAreaProps,
-  ChartReferenceLineProps,
-  ChartReferenceAreaProps,
-  ChartRadialBarRootProps,
-  ChartRadialBarProps,
-  ChartRadialLineRootProps,
-  ChartRadialLineProps,
-  ChartWaterfallProps,
-  ChartSankeyProps,
-  ChartPyramidProps,
-  ChartGanttProps,
-  ChartHistogramProps,
-  ChartBoxplotProps,
-  BoxplotEntry,
-  ChartSunburstProps,
-  SunburstNode,
-  ChartChordProps,
-  ChartLinearGaugeProps,
-  WaterfallEntry,
-  SankeyNode,
-  SankeyLink,
-  GanttTask,
-} from './chart';
+  TreemapLayoutNode,
+  FunnelLayoutSegment,
+  GaugeArcData,
+  CandlestickBar,
+  HeatmapCell,
+} from './chart/layout';
+export type { BarRectProps } from './chart/paths';
