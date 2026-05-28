@@ -160,4 +160,20 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 );
 Alert.displayName = 'Alert';
 
-export { Alert, Root, Icon, Content, Title, Description, Close };
+// Attach sub-components for compound usage: <Alert.Root>, <Alert.Title>, etc.
+const AlertWithSubs = Alert as typeof Alert & {
+  Root: typeof Root;
+  Icon: typeof Icon;
+  Content: typeof Content;
+  Title: typeof Title;
+  Description: typeof Description;
+  Close: typeof Close;
+};
+AlertWithSubs.Root = Root;
+AlertWithSubs.Icon = Icon;
+AlertWithSubs.Content = Content;
+AlertWithSubs.Title = Title;
+AlertWithSubs.Description = Description;
+AlertWithSubs.Close = Close;
+
+export { AlertWithSubs as Alert, Root, Icon, Content, Title, Description, Close };

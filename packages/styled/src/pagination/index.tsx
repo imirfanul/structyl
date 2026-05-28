@@ -24,18 +24,32 @@ const Item = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<'li'
 );
 Item.displayName = 'Pagination.Item';
 
-interface PaginationLinkProps extends React.ComponentPropsWithoutRef<'button'>, Pick<ButtonProps, 'size'> {
+interface PaginationLinkProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'href'>, Pick<ButtonProps, 'size'> {
   isActive?: boolean;
+  href?: string;
 }
 
-const Link: React.FC<PaginationLinkProps> = ({ className, isActive, size = 'icon', ...props }) => (
-  <button
-    type="button"
-    aria-current={isActive ? 'page' : undefined}
-    className={cn(buttonVariants({ variant: isActive ? 'outline' : 'ghost', size }), className)}
-    {...props}
-  />
-);
+const Link: React.FC<PaginationLinkProps> = ({ className, isActive, size = 'icon', href, ...props }) => {
+  const sharedCls = cn(buttonVariants({ variant: isActive ? 'outline' : 'ghost', size }), className);
+  if (href) {
+    return (
+      <a
+        href={href}
+        aria-current={isActive ? 'page' : undefined}
+        className={sharedCls}
+        {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      />
+    );
+  }
+  return (
+    <button
+      type="button"
+      aria-current={isActive ? 'page' : undefined}
+      className={sharedCls}
+      {...props}
+    />
+  );
+};
 Link.displayName = 'Pagination.Link';
 
 const Previous: React.FC<React.ComponentProps<typeof Link>> = ({ className, ...props }) => (

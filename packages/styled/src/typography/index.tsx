@@ -35,16 +35,27 @@ export const typographyVariants = tv({
       tooltip: 'text-variant-tooltip',
       code: 'text-variant-code',
       lead: 'text-variant-lead',
+      // ── Convenience aliases ──────────────────────────────────────────────
+      body: 'text-variant-body1',
+      small: 'text-variant-body2',
+      muted: 'text-variant-body2 text-muted-foreground',
     },
     color: {
       inherit: 'text-inherit',
       primary: 'text-primary',
       secondary: 'text-fg-secondary',
+      muted: 'text-muted-foreground',
       disabled: 'text-fg-disabled',
       error: 'text-destructive',
       warning: 'text-warning',
       info: 'text-info',
       success: 'text-success',
+    },
+    align: {
+      left: 'text-left',
+      center: 'text-center',
+      right: 'text-right',
+      justify: 'text-justify',
     },
     truncate: {
       true: 'truncate',
@@ -76,6 +87,9 @@ const defaultElementMap: Record<string, React.ElementType> = {
   body1: 'p',
   body2: 'p',
   body3: 'p',
+  body: 'p',
+  small: 'p',
+  muted: 'p',
   lead: 'p',
   caption: 'span',
   overline: 'span',
@@ -107,6 +121,8 @@ export interface TypographyProps
   gutterBottom?: boolean;
   /** Add paragraph bottom margin (1rem) */
   paragraph?: boolean;
+  /** Text alignment */
+  align?: 'left' | 'center' | 'right' | 'justify';
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -121,6 +137,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
       noWrap,
       gutterBottom,
       paragraph,
+      align,
       as,
       asChild = false,
       ...props
@@ -133,7 +150,7 @@ const Typography = React.forwardRef<HTMLElement, TypographyProps>(
       <Comp
         ref={ref}
         className={cn(
-          typographyVariants({ variant, color, truncate, noWrap, gutterBottom, paragraph }),
+          typographyVariants({ variant, color, truncate, noWrap, gutterBottom, paragraph, align }),
           className,
         )}
         {...props}

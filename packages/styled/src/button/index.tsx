@@ -366,29 +366,57 @@ export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Collapses shared borders between buttons */
   attached?: boolean;
   orientation?: 'horizontal' | 'vertical';
+  /** Propagated to child Button components */
+  variant?: VariantProps<typeof buttonVariants>['variant'];
+  /** Propagated to child Button components */
+  color?: VariantProps<typeof buttonVariants>['color'];
+  /** Propagated to child Button components */
+  size?: VariantProps<typeof buttonVariants>['size'];
+  /** Propagated to child Button components */
+  disabled?: boolean;
+  /** Propagated to child Button components — makes each button full-width */
+  fullWidth?: boolean;
 }
 
 const ButtonGroup = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-  ({ className, attached = false, orientation = 'horizontal', ...props }, ref) => (
-    <div
-      ref={ref}
-      role="group"
-      data-orientation={orientation}
-      className={cn(
-        'inline-flex',
-        orientation === 'vertical' ? 'flex-col' : 'flex-row',
-        attached && [
-          orientation === 'horizontal'
-            ? '[&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none [&>*:not(:first-child)]:-ml-px'
-            : '[&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none [&>*:not(:first-child)]:-mt-px',
-          '[&>*:focus-visible]:z-10 [&>*:hover]:z-10 [&>*]:relative',
-        ],
-        !attached && (orientation === 'horizontal' ? 'gap-2' : 'gap-2 flex-col'),
-        className,
-      )}
-      {...props}
-    />
-  ),
+  ({ className, attached = false, orientation = 'horizontal', variant, color, size, disabled, fullWidth, children, ...props }, ref) => {
+    const hasOverrides = variant !== undefined || color !== undefined || size !== undefined || disabled !== undefined || fullWidth !== undefined;
+    const clonedChildren = hasOverrides
+      ? React.Children.map(children, (child) => {
+          if (!React.isValidElement(child)) return child;
+          return React.cloneElement(child as React.ReactElement<Record<string, unknown>>, {
+            ...(variant !== undefined && { variant }),
+            ...(color !== undefined && { color }),
+            ...(size !== undefined && { size }),
+            ...(disabled !== undefined && { disabled }),
+            ...(fullWidth !== undefined && { fullWidth }),
+          });
+        })
+      : children;
+
+    return (
+      <div
+        ref={ref}
+        role="group"
+        data-orientation={orientation}
+        className={cn(
+          'inline-flex',
+          orientation === 'vertical' ? 'flex-col' : 'flex-row',
+          attached && [
+            orientation === 'horizontal'
+              ? '[&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none [&>*:not(:first-child)]:-ml-px'
+              : '[&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none [&>*:not(:first-child)]:-mt-px',
+            '[&>*:focus-visible]:z-10 [&>*:hover]:z-10 [&>*]:relative',
+          ],
+          !attached && (orientation === 'horizontal' ? 'gap-2' : 'gap-2 flex-col'),
+          className,
+        )}
+        {...props}
+      >
+        {clonedChildren}
+      </div>
+    );
+  },
 );
 ButtonGroup.displayName = 'ButtonGroup';
 

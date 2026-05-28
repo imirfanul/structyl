@@ -8,16 +8,24 @@ import { cn } from '@aura-ui/utils';
 export interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
   /** Shrinks to content width instead of full-width */
   compact?: boolean;
+  /** Fixes the header row so it stays visible when scrolling */
+  stickyHeader?: boolean;
+  /** Controls cell padding size */
+  size?: 'small' | 'medium' | 'large';
 }
 
 const Root = React.forwardRef<HTMLTableElement, TableProps>(
-  ({ className, compact = false, ...props }, ref) => (
-    <div className="relative w-full overflow-x-auto">
+  ({ className, compact = false, stickyHeader = false, size = 'medium', ...props }, ref) => (
+    <div className={cn('relative w-full overflow-x-auto', stickyHeader && 'overflow-y-auto max-h-96')}>
       <table
         ref={ref}
         className={cn(
-          'caption-bottom text-sm',
+          'caption-bottom',
+          size === 'small' && 'text-xs',
+          size === 'medium' && 'text-sm',
+          size === 'large' && 'text-base',
           compact ? 'w-auto' : 'w-full',
+          stickyHeader && '[&_thead_tr]:sticky [&_thead_tr]:top-0 [&_thead_tr]:z-10 [&_thead_tr]:bg-bg',
           className,
         )}
         {...props}

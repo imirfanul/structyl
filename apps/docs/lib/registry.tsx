@@ -92,6 +92,7 @@ import {
   Timeline,
   ClickAwayListener,
   NoSsr,
+  MaterialPortal as Portal,
   Popper,
   TextareaAutosize,
   Transition,
@@ -1790,26 +1791,68 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
     category: 'Utils',
     description: 'Renders children into document.body or a custom container.',
     features: ['SSR-safe mount.', 'Custom container support.'],
-    preview: () => <span className="text-sm">Portal utility</span>,
-    code: `import { Portal } from '@aura-ui/styled';\n\n<Portal><div>Portaled</div></Portal>`,
+    preview: () => {
+      const containerRef = React.useRef<HTMLDivElement>(null);
+      const [mounted, setMounted] = React.useState(false);
+      React.useEffect(() => { setMounted(true); }, []);
+      return (
+        <div className="flex flex-col gap-3 w-full max-w-xs">
+          <div ref={containerRef} className="border-border rounded-md border p-3 text-sm min-h-10 flex items-center gap-2">
+            <span className="text-muted-foreground text-xs">Container:</span>
+            {mounted && containerRef.current && (
+              <Portal container={containerRef.current}>
+                <span className="text-primary font-medium text-xs">Portalled inside here</span>
+              </Portal>
+            )}
+          </div>
+          <span className="text-xs text-muted-foreground">Content is portalled into the container div above</span>
+        </div>
+      );
+    },
+    code: `import { Portal } from '@aura-ui/styled';
+
+const containerRef = useRef<HTMLDivElement>(null);
+
+<div ref={containerRef}>
+  <Portal container={containerRef.current}>
+    <span>Portalled here</span>
+  </Portal>
+</div>`,
   },
   {
     slug: 'popper',
     name: 'Popper',
     category: 'Utils',
-    description: 'Low-level floating positioning primitive.',
-    features: ['Anchor and content parts.', 'Collision-aware placement.'],
-    preview: () => (
-      <Popper.Root>
-        <Popper.Anchor>
-          <Button variant="outline">Anchor</Button>
-        </Popper.Anchor>
-        <Popper.Content className="border-border bg-popover rounded-md border p-2 text-xs shadow-md">
-          Popper
-        </Popper.Content>
-      </Popper.Root>
-    ),
-    code: `import { Popper } from '@aura-ui/styled';\n\n<Popper.Root><Popper.Anchor /><Popper.Content /></Popper.Root>`,
+    description: 'Low-level floating positioning primitive anchored to an element.',
+    features: ['open / anchorEl API.', 'Collision-aware placement via floating-ui.'],
+    preview: () => {
+      const [open, setOpen] = React.useState(false);
+      const anchorRef = React.useRef<HTMLButtonElement>(null);
+      return (
+        <div className="flex flex-col items-center gap-4 py-8">
+          <Button ref={anchorRef} variant="outline" onClick={() => setOpen(o => !o)}>
+            {open ? 'Hide Popper' : 'Show Popper'}
+          </Button>
+          <Popper
+            open={open}
+            anchorEl={anchorRef.current}
+            placement="bottom"
+            className="border-border bg-popover rounded-md border p-3 text-sm shadow-md z-50"
+          >
+            Popper content
+          </Popper>
+        </div>
+      );
+    },
+    code: `import { Button, Popper } from '@aura-ui/styled';
+
+const [open, setOpen] = useState(false);
+const anchorRef = useRef<HTMLButtonElement>(null);
+
+<Button ref={anchorRef} onClick={() => setOpen(o => !o)}>Toggle</Button>
+<Popper open={open} anchorEl={anchorRef.current} placement="bottom">
+  Popper content
+</Popper>`,
   },
   {
     slug: 'textarea-autosize',
@@ -1824,14 +1867,34 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
     slug: 'transition',
     name: 'Transition',
     category: 'Utils',
-    description: 'Adds open/closed data-state for animation composition.',
-    features: ['Optional unmount-on-exit.', 'Works with Tailwind data-state selectors.'],
-    preview: () => (
-      <Transition in className="border-border rounded-md border p-3 text-sm">
-        Visible
-      </Transition>
-    ),
-    code: `import { Transition } from '@aura-ui/styled';\n\n<Transition in>Content</Transition>`,
+    description: 'Manages entering/entered/exiting/exited states for CSS transitions.',
+    features: ['Four-stage state machine.', 'unmountOnExit support.', 'timeout control.'],
+    preview: () => {
+      const [show, setShow] = React.useState(true);
+      return (
+        <div className="flex flex-col items-center gap-4">
+          <Button variant="outline" onClick={() => setShow(s => !s)}>
+            {show ? 'Hide' : 'Show'}
+          </Button>
+          <Transition
+            in={show}
+            timeout={300}
+            unmountOnExit
+            className="border-border rounded-md border p-4 text-sm w-48 text-center"
+          >
+            Transition content
+          </Transition>
+        </div>
+      );
+    },
+    code: `import { Button, Transition } from '@aura-ui/styled';
+
+const [show, setShow] = useState(true);
+
+<Button onClick={() => setShow(s => !s)}>Toggle</Button>
+<Transition in={show} timeout={300} unmountOnExit>
+  <div>Content</div>
+</Transition>`,
   },
   {
     slug: 'css-baseline',
@@ -2922,76 +2985,107 @@ const options = [
   ],
   portal: [
     {
-      title: 'Default body portal',
-      description: 'Portal renders into document.body when no container is provided.',
-      preview: () => (
-        <Typography variant="muted">
-          Portal output is rendered outside this preview container.
-        </Typography>
-      ),
+      title: 'Inline container portal',
+      description: 'Portal renders children inside a specific DOM node — here visible within the preview.',
+      preview: () => {
+        const containerRef = React.useRef<HTMLDivElement>(null);
+        const [mounted, setMounted] = React.useState(false);
+        React.useEffect(() => { setMounted(true); }, []);
+        return (
+          <div ref={containerRef} className="border-border flex min-h-12 items-center gap-2 rounded-md border p-3 text-sm">
+            <span className="text-muted-foreground text-xs shrink-0">Container:</span>
+            {mounted && containerRef.current && (
+              <Portal container={containerRef.current}>
+                <span className="text-primary font-medium text-xs">Portalled here ✓</span>
+              </Portal>
+            )}
+          </div>
+        );
+      },
       code: `import { Portal } from '@aura-ui/styled';
 
-<Portal>
-  <div>Rendered in document.body</div>
-</Portal>`,
+const containerRef = useRef<HTMLDivElement>(null);
+
+<div ref={containerRef}>
+  <Portal container={containerRef.current}>
+    <span>Portalled here</span>
+  </Portal>
+</div>`,
     },
     {
-      title: 'Custom container',
-      description: 'Pass a container when the portal should render into a specific DOM node.',
+      title: 'Body portal',
+      description: 'Without a container, Portal renders into document.body — useful for modals and overlays.',
       preview: () => (
-        <Typography variant="muted">
-          Use a ref-backed container for local portal targets.
+        <Typography variant="muted" className="text-xs">
+          Content portalled to document.body exits this preview container — useful for z-index isolation.
         </Typography>
       ),
       code: `import { Portal } from '@aura-ui/styled';
 
-<Portal container={containerRef.current}>
-  <div>Rendered in a custom container</div>
+// renders into document.body
+<Portal>
+  <div className="fixed inset-0 z-50">Overlay</div>
 </Portal>`,
     },
   ],
   popper: [
     {
-      title: 'Anchored content',
-      description: 'Use Anchor and Content for low-level floating UI.',
-      preview: () => (
-        <Popper.Root>
-          <Popper.Anchor>
-            <Button variant="outline">Anchor</Button>
-          </Popper.Anchor>
-          <Popper.Content className="border-border bg-popover rounded-md border p-2 text-xs shadow-md">
-            Positioned content
-          </Popper.Content>
-        </Popper.Root>
-      ),
+      title: 'Toggle with anchorEl',
+      description: 'Pass open and anchorEl to show/hide positioned content next to an element.',
+      preview: () => {
+        const [open, setOpen] = React.useState(false);
+        const anchorRef = React.useRef<HTMLButtonElement>(null);
+        return (
+          <div className="flex flex-col items-center gap-6 py-6">
+            <Button ref={anchorRef} variant="outline" onClick={() => setOpen(o => !o)}>
+              {open ? 'Hide' : 'Show'} Popper
+            </Button>
+            <Popper
+              open={open}
+              anchorEl={anchorRef.current}
+              placement="bottom"
+              className="border-border bg-popover rounded-md border p-3 text-sm shadow-md z-50"
+            >
+              Floating content
+            </Popper>
+          </div>
+        );
+      },
       code: `import { Button, Popper } from '@aura-ui/styled';
 
-<Popper.Root>
-  <Popper.Anchor><Button variant="outline">Anchor</Button></Popper.Anchor>
-  <Popper.Content>Positioned content</Popper.Content>
-</Popper.Root>`,
+const [open, setOpen] = useState(false);
+const anchorRef = useRef<HTMLButtonElement>(null);
+
+<Button ref={anchorRef} onClick={() => setOpen(o => !o)}>Toggle</Button>
+<Popper open={open} anchorEl={anchorRef.current} placement="bottom">
+  Floating content
+</Popper>`,
     },
     {
-      title: 'Custom content styling',
-      description: 'Content accepts className for menu, tooltip or picker surfaces.',
-      preview: () => (
-        <Popper.Root>
-          <Popper.Anchor>
-            <Chip label="Status" />
-          </Popper.Anchor>
-          <Popper.Content className="border-border bg-card rounded-md border p-3 text-sm shadow-md">
-            Healthy
-          </Popper.Content>
-        </Popper.Root>
-      ),
-      code: `import { Chip, Popper } from '@aura-ui/styled';
+      title: 'Placement variants',
+      description: 'Use placement to control which side the content appears on.',
+      preview: () => {
+        const [placement, setPlacement] = React.useState<'top' | 'bottom' | 'left' | 'right'>('bottom');
+        const anchorRef = React.useRef<HTMLButtonElement>(null);
+        const [open, setOpen] = React.useState(true);
+        return (
+          <div className="flex flex-col items-center gap-6 py-8">
+            <div className="flex gap-2">
+              {(['top', 'bottom', 'left', 'right'] as const).map(p => (
+                <Button key={p} size="sm" variant={placement === p ? 'default' : 'outline'} onClick={() => { setPlacement(p); setOpen(true); }}>{p}</Button>
+              ))}
+            </div>
+            <Button ref={anchorRef} variant="secondary" size="sm">Anchor</Button>
+            <Popper open={open} anchorEl={anchorRef.current} placement={placement} className="border-border bg-popover rounded-md border px-3 py-1.5 text-xs shadow-md z-50">
+              {placement}
+            </Popper>
+          </div>
+        );
+      },
+      code: `import { Button, Popper } from '@aura-ui/styled';
 
-<Popper.Root>
-  <Popper.Anchor><Chip label="Status" /></Popper.Anchor>
-  <Popper.Content className="rounded-md border border-border bg-card p-3">
-    Healthy
-  </Popper.Content>
-</Popper.Root>`,
+<Popper open={open} anchorEl={el} placement="top">Top</Popper>
+<Popper open={open} anchorEl={el} placement="right">Right</Popper>`,
     },
   ],
   'textarea-autosize': [
@@ -3023,36 +3117,57 @@ const options = [
   ],
   transition: [
     {
-      title: 'Open state animation',
-      description:
-        'Transition adds data-state attributes so Tailwind animation classes can target open and closed states.',
-      preview: () => (
-        <Transition in className="border-border rounded-md border p-4 text-sm">
-          Open content
-        </Transition>
-      ),
-      code: `import { Transition } from '@aura-ui/styled';
+      title: 'Fade toggle',
+      description: 'Toggle in to run entering/exiting states and fade the content.',
+      preview: () => {
+        const [show, setShow] = React.useState(true);
+        return (
+          <div className="flex flex-col items-center gap-4">
+            <Button variant="outline" onClick={() => setShow(s => !s)}>
+              {show ? 'Hide' : 'Show'}
+            </Button>
+            <Transition
+              in={show}
+              timeout={300}
+              unmountOnExit
+              className="border-border rounded-md border p-4 text-sm w-40 text-center"
+            >
+              Content
+            </Transition>
+          </div>
+        );
+      },
+      code: `import { Button, Transition } from '@aura-ui/styled';
 
-<Transition in className="data-[state=open]:animate-in">
-  Open content
+const [show, setShow] = useState(true);
+
+<Button onClick={() => setShow(s => !s)}>Toggle</Button>
+<Transition in={show} timeout={300} unmountOnExit>
+  Content
 </Transition>`,
     },
     {
-      title: 'Unmount on exit',
-      description: 'Use unmountOnExit when closed content should leave the DOM.',
-      preview: () => (
-        <Transition
-          in={false}
-          unmountOnExit
-          className="border-border rounded-md border p-4 text-sm"
-        >
-          Hidden
-        </Transition>
-      ),
+      title: 'Render function (status)',
+      description: 'Pass a function as children to receive the current transition status.',
+      preview: () => {
+        const [show, setShow] = React.useState(true);
+        return (
+          <div className="flex flex-col items-center gap-4">
+            <Button variant="outline" size="sm" onClick={() => setShow(s => !s)}>Toggle</Button>
+            <Transition in={show} timeout={400}>
+              {(status) => (
+                <div className="border-border rounded-md border p-3 text-xs font-mono">
+                  state: <span className="text-primary">{status}</span>
+                </div>
+              )}
+            </Transition>
+          </div>
+        );
+      },
       code: `import { Transition } from '@aura-ui/styled';
 
-<Transition in={open} unmountOnExit>
-  Content
+<Transition in={show} timeout={400}>
+  {(status) => <div>State: {status}</div>}
 </Transition>`,
     },
   ],
@@ -3314,12 +3429,12 @@ const materialPropExamples: Record<string, ComponentExample> = {
     description:
       'ButtonGroup propagates variant, color, size, disabled and fullWidth to Aura Button children.',
     preview: () => (
-      <ButtonGroup variant="contained" color="secondary" size="small">
+      <ButtonGroup variant="contained" color="secondary" size="sm">
         <Button>One</Button>
         <Button>Two</Button>
       </ButtonGroup>
     ),
-    code: `<ButtonGroup variant="contained" color="secondary" size="small" fullWidth>
+    code: `<ButtonGroup variant="contained" color="secondary" size="sm" fullWidth>
   <Button>One</Button>
   <Button>Two</Button>
 </ButtonGroup>`,
@@ -3346,11 +3461,11 @@ const materialPropExamples: Record<string, ComponentExample> = {
       'Rating supports controlled/uncontrolled values, custom labels, max, sizes and colors.',
     preview: () => (
       <Stack spacing="sm">
-        <Rating defaultValue={3} size="small" color="success" />
-        <Rating defaultValue={4} max={6} size="large" color="warning" />
+        <Rating defaultValue={3} size="sm" color="yellow" />
+        <Rating defaultValue={4} max={6} size="lg" color="orange" />
       </Stack>
     ),
-    code: `<Rating defaultValue={3} size="small" color="success" />
+    code: `<Rating defaultValue={3} size="sm" color="yellow" />
 <Rating value={value} onValueChange={setValue} max={10} icon="●" emptyIcon="○" />`,
   },
   autocomplete: {
@@ -3649,32 +3764,47 @@ const materialPropExamples: Record<string, ComponentExample> = {
 </NoSsr>`,
   },
   portal: {
-    title: 'Custom containers',
-    description: 'Portal can render into body or a provided container.',
-    preview: () => (
-      <Typography variant="muted">Pass container when body is not the desired target.</Typography>
-    ),
+    title: 'Custom container',
+    description: 'Portal renders into document.body by default; pass container for a specific node.',
+    preview: () => {
+      const containerRef = React.useRef<HTMLDivElement>(null);
+      const [mounted, setMounted] = React.useState(false);
+      React.useEffect(() => { setMounted(true); }, []);
+      return (
+        <div ref={containerRef} className="border-border flex min-h-10 items-center gap-2 rounded-md border p-3 text-sm">
+          <span className="text-muted-foreground text-xs">Container:</span>
+          {mounted && containerRef.current && (
+            <Portal container={containerRef.current}>
+              <span className="text-primary text-xs font-medium">Portalled ✓</span>
+            </Portal>
+          )}
+        </div>
+      );
+    },
     code: `<Portal container={containerRef.current}>
   <div>Portaled content</div>
 </Portal>`,
   },
   popper: {
-    title: 'Anchor and content',
-    description: 'Compose Root, Anchor and Content for low-level floating UI.',
-    preview: () => (
-      <Popper.Root>
-        <Popper.Anchor>
-          <Button variant="outline">Anchor</Button>
-        </Popper.Anchor>
-        <Popper.Content className="border-border bg-popover rounded-md border p-2 text-xs shadow-md">
-          Placed content
-        </Popper.Content>
-      </Popper.Root>
-    ),
-    code: `<Popper.Root>
-  <Popper.Anchor><Button>Anchor</Button></Popper.Anchor>
-  <Popper.Content>Placed content</Popper.Content>
-</Popper.Root>`,
+    title: 'open + anchorEl',
+    description: 'Pass open and anchorEl to show positioned content next to an element.',
+    preview: () => {
+      const [open, setOpen] = React.useState(false);
+      const anchorRef = React.useRef<HTMLButtonElement>(null);
+      return (
+        <div className="flex flex-col items-center gap-6 py-4">
+          <Button ref={anchorRef} variant="outline" size="sm" onClick={() => setOpen(o => !o)}>
+            {open ? 'Hide' : 'Show'}
+          </Button>
+          <Popper open={open} anchorEl={anchorRef.current} placement="bottom" className="border-border bg-popover rounded-md border p-2 text-xs shadow-md z-50">
+            Floating content
+          </Popper>
+        </div>
+      );
+    },
+    code: `<Popper open={open} anchorEl={anchorRef.current} placement="bottom">
+  Floating content
+</Popper>`,
   },
   'textarea-autosize': {
     title: 'Row limits',

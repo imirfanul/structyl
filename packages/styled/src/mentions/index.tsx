@@ -4,7 +4,13 @@ import * as React from 'react';
 import { Mentions as MentionsPrimitive } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
 
-const Root = MentionsPrimitive.Root;
+const Root = React.forwardRef<
+  React.ElementRef<typeof MentionsPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof MentionsPrimitive.Root>
+>(({ className, ...props }, ref) => (
+  <MentionsPrimitive.Root ref={ref} className={cn('relative', className)} {...props} />
+));
+Root.displayName = 'Mentions.Root';
 
 const Textarea = React.forwardRef<
   React.ElementRef<typeof MentionsPrimitive.Textarea>,
@@ -23,7 +29,21 @@ const Textarea = React.forwardRef<
 ));
 Textarea.displayName = 'Mentions.Textarea';
 
-const Suggestions = MentionsPrimitive.Suggestions;
+const Suggestions = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<typeof MentionsPrimitive.Suggestions> & { className?: string }
+>(({ className, children, ...props }, ref) => (
+  <MentionsPrimitive.Suggestions disablePortal {...props}>
+    <div
+      ref={ref}
+      className={cn('absolute left-0 top-full z-50 mt-1 min-w-[8rem]', className)}
+    >
+      {children}
+    </div>
+  </MentionsPrimitive.Suggestions>
+));
+Suggestions.displayName = 'Mentions.Suggestions';
+
 const Items = MentionsPrimitive.Items;
 const Item = MentionsPrimitive.Item;
 

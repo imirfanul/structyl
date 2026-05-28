@@ -361,33 +361,95 @@ const preset = {
   },
   plugins: [
     animate,
-    // ── Typography variant utilities ────────────────────────────────────────
-    twPlugin(({ addUtilities }: { addUtilities: (u: Record<string, Record<string, string>>) => void }) => {
+    twPlugin(({
+      addBase,
+      addUtilities,
+    }: {
+      addBase: (b: Record<string, Record<string, string>>) => void;
+      addUtilities: (u: Record<string, Record<string, string>>) => void;
+    }) => {
+      // ── Typography CSS custom properties ─────────────────────────────────
+      // Injected into :root so any theme or user CSS can override a single var
+      // to restyle the entire variant (e.g. `--typography-h1-size: 4rem`).
+      addBase({
+        ':root': {
+          // Headings
+          '--typography-h1-size': '3.5rem',           '--typography-h1-weight': '800',  '--typography-h1-line-height': '1.2',   '--typography-h1-letter-spacing': '-0.02em',
+          '--typography-h2-size': '2.75rem',          '--typography-h2-weight': '800',  '--typography-h2-line-height': '1.25', '--typography-h2-letter-spacing': '-0.01em',
+          '--typography-h3-size': '2rem',             '--typography-h3-weight': '700',  '--typography-h3-line-height': '1.3',
+          '--typography-h4-size': '1.5rem',           '--typography-h4-weight': '700',  '--typography-h4-line-height': '1.35',
+          '--typography-h5-size': '1.25rem',          '--typography-h5-weight': '600',  '--typography-h5-line-height': '1.4',
+          '--typography-h6-size': '1rem',             '--typography-h6-weight': '600',  '--typography-h6-line-height': '1.5',  '--typography-h6-letter-spacing': '0.0075em',
+          // Subtitles
+          '--typography-subtitle1-size': '1rem',      '--typography-subtitle1-weight': '500', '--typography-subtitle1-line-height': '1.75', '--typography-subtitle1-letter-spacing': '0.009em',
+          '--typography-subtitle2-size': '0.875rem',  '--typography-subtitle2-weight': '500', '--typography-subtitle2-line-height': '1.57', '--typography-subtitle2-letter-spacing': '0.006em',
+          // Body
+          '--typography-body1-size': '1rem',          '--typography-body1-weight': '400',     '--typography-body1-line-height': '1.75',
+          '--typography-body2-size': '0.875rem',      '--typography-body2-weight': '400',     '--typography-body2-line-height': '1.43',
+          '--typography-body-bold-1-size': '1rem',    '--typography-body-bold-1-weight': '600', '--typography-body-bold-1-line-height': '1.75',
+          '--typography-body-bold-2-size': '0.875rem','--typography-body-bold-2-weight': '600', '--typography-body-bold-2-line-height': '1.43',
+          // Small scale
+          '--typography-caption-size': '0.75rem',     '--typography-caption-weight': '400',   '--typography-caption-line-height': '1.66',  '--typography-caption-letter-spacing': '0.033em',
+          '--typography-overline-size': '0.75rem',    '--typography-overline-weight': '400',  '--typography-overline-line-height': '2.66', '--typography-overline-letter-spacing': '0.083em',
+          // Buttons
+          '--typography-button-lg-size': '0.9375rem', '--typography-button-lg-weight': '500', '--typography-button-lg-line-height': '1.73', '--typography-button-lg-letter-spacing': '0.046em',
+          '--typography-button-md-size': '0.875rem',  '--typography-button-md-weight': '500', '--typography-button-md-line-height': '1.71', '--typography-button-md-letter-spacing': '0.046em',
+          '--typography-button-sm-size': '0.8125rem', '--typography-button-sm-weight': '500', '--typography-button-sm-line-height': '1.69', '--typography-button-sm-letter-spacing': '0.046em',
+          // Form / UI chrome
+          '--typography-input-label-size': '0.75rem',  '--typography-input-label-weight': '400', '--typography-input-label-line-height': '1.5',   '--typography-input-label-letter-spacing': '0.009em',
+          '--typography-helper-text-size': '0.75rem',  '--typography-helper-text-weight': '400', '--typography-helper-text-line-height': '1.66',  '--typography-helper-text-letter-spacing': '0.033em',
+          '--typography-chip-size': '0.8125rem',        '--typography-chip-weight': '400',        '--typography-chip-line-height': '1.38',         '--typography-chip-letter-spacing': '0.016em',
+          '--typography-tooltip-size': '0.625rem',      '--typography-tooltip-weight': '500',     '--typography-tooltip-line-height': '1.4',
+          '--typography-alert-title-size': '1rem',      '--typography-alert-title-weight': '600', '--typography-alert-title-line-height': '1.5',   '--typography-alert-title-letter-spacing': '0.009em',
+          '--typography-table-header-size': '0.875rem', '--typography-table-header-weight': '500','--typography-table-header-line-height': '1.71', '--typography-table-header-letter-spacing': '0.017em',
+          '--typography-badge-label-size': '0.75rem',   '--typography-badge-label-weight': '500', '--typography-badge-label-line-height': '1.66',  '--typography-badge-label-letter-spacing': '0.014em',
+        },
+      });
+
+      // ── Color foreground alias vars ───────────────────────────────────────
+      // Theme tokens use the short -fg suffix; these aliases let plain CSS also
+      // use the longer -foreground convention (var(--color-primary-foreground)).
+      addBase({
+        ':root': {
+          '--color-primary-foreground':     'var(--color-primary-fg)',
+          '--color-secondary-foreground':   'var(--color-secondary-fg)',
+          '--color-destructive-foreground': 'var(--color-destructive-fg)',
+          '--color-success-foreground':     'var(--color-success-fg)',
+          '--color-warning-foreground':     'var(--color-warning-fg)',
+          '--color-info-foreground':        'var(--color-info-fg)',
+          '--color-muted-foreground':       'var(--color-muted-fg)',
+          '--color-accent-foreground':      'var(--color-accent-fg)',
+          '--color-card-foreground':        'var(--color-card-fg)',
+          '--color-popover-foreground':     'var(--color-popover-fg)',
+        },
+      });
+
+      // ── Typography variant utilities (use CSS custom properties) ─────────
       addUtilities({
-        '.text-variant-h1':          { fontSize: '3.5rem',    fontWeight: '800', lineHeight: '1.2',   letterSpacing: '-0.02em' },
-        '.text-variant-h2':          { fontSize: '2.75rem',   fontWeight: '800', lineHeight: '1.25',  letterSpacing: '-0.01em' },
-        '.text-variant-h3':          { fontSize: '2rem',      fontWeight: '700', lineHeight: '1.3' },
-        '.text-variant-h4':          { fontSize: '1.5rem',    fontWeight: '700', lineHeight: '1.35' },
-        '.text-variant-h5':          { fontSize: '1.25rem',   fontWeight: '600', lineHeight: '1.4' },
-        '.text-variant-h6':          { fontSize: '1rem',      fontWeight: '600', lineHeight: '1.5',   letterSpacing: '0.0075em' },
-        '.text-variant-subtitle1':   { fontSize: '1rem',      fontWeight: '500', lineHeight: '1.75',  letterSpacing: '0.009em' },
-        '.text-variant-subtitle2':   { fontSize: '0.875rem',  fontWeight: '500', lineHeight: '1.57',  letterSpacing: '0.006em' },
-        '.text-variant-body1':       { fontSize: '1rem',      fontWeight: '400', lineHeight: '1.75' },
-        '.text-variant-body2':       { fontSize: '0.875rem',  fontWeight: '400', lineHeight: '1.43' },
-        '.text-variant-body-bold-1': { fontSize: '1rem',      fontWeight: '600', lineHeight: '1.75' },
-        '.text-variant-body-bold-2': { fontSize: '0.875rem',  fontWeight: '600', lineHeight: '1.43' },
-        '.text-variant-caption':     { fontSize: '0.75rem',   fontWeight: '400', lineHeight: '1.66',  letterSpacing: '0.033em' },
-        '.text-variant-overline':    { fontSize: '0.75rem',   fontWeight: '400', lineHeight: '2.66',  letterSpacing: '0.083em', textTransform: 'uppercase' },
-        '.text-variant-button-lg':   { fontSize: '0.9375rem', fontWeight: '500', lineHeight: '1.73',  letterSpacing: '0.046em' },
-        '.text-variant-button-md':   { fontSize: '0.875rem',  fontWeight: '500', lineHeight: '1.71',  letterSpacing: '0.046em' },
-        '.text-variant-button-sm':   { fontSize: '0.8125rem', fontWeight: '500', lineHeight: '1.69',  letterSpacing: '0.046em' },
-        '.text-variant-input-label': { fontSize: '0.75rem',   fontWeight: '400', lineHeight: '1.5',   letterSpacing: '0.009em' },
-        '.text-variant-helper-text': { fontSize: '0.75rem',   fontWeight: '400', lineHeight: '1.66',  letterSpacing: '0.033em' },
-        '.text-variant-chip':        { fontSize: '0.8125rem', fontWeight: '400', lineHeight: '1.38',  letterSpacing: '0.016em' },
-        '.text-variant-tooltip':     { fontSize: '0.625rem',  fontWeight: '500', lineHeight: '1.4' },
-        '.text-variant-alert-title': { fontSize: '1rem',      fontWeight: '600', lineHeight: '1.5',   letterSpacing: '0.009em' },
-        '.text-variant-table-header':{ fontSize: '0.875rem',  fontWeight: '500', lineHeight: '1.71',  letterSpacing: '0.017em' },
-        '.text-variant-badge-label': { fontSize: '0.75rem',   fontWeight: '500', lineHeight: '1.66',  letterSpacing: '0.014em' },
+        '.text-variant-h1':          { fontSize: 'var(--typography-h1-size)',         fontWeight: 'var(--typography-h1-weight)',         lineHeight: 'var(--typography-h1-line-height)',         letterSpacing: 'var(--typography-h1-letter-spacing)' },
+        '.text-variant-h2':          { fontSize: 'var(--typography-h2-size)',         fontWeight: 'var(--typography-h2-weight)',         lineHeight: 'var(--typography-h2-line-height)',         letterSpacing: 'var(--typography-h2-letter-spacing)' },
+        '.text-variant-h3':          { fontSize: 'var(--typography-h3-size)',         fontWeight: 'var(--typography-h3-weight)',         lineHeight: 'var(--typography-h3-line-height)' },
+        '.text-variant-h4':          { fontSize: 'var(--typography-h4-size)',         fontWeight: 'var(--typography-h4-weight)',         lineHeight: 'var(--typography-h4-line-height)' },
+        '.text-variant-h5':          { fontSize: 'var(--typography-h5-size)',         fontWeight: 'var(--typography-h5-weight)',         lineHeight: 'var(--typography-h5-line-height)' },
+        '.text-variant-h6':          { fontSize: 'var(--typography-h6-size)',         fontWeight: 'var(--typography-h6-weight)',         lineHeight: 'var(--typography-h6-line-height)',         letterSpacing: 'var(--typography-h6-letter-spacing)' },
+        '.text-variant-subtitle1':   { fontSize: 'var(--typography-subtitle1-size)',  fontWeight: 'var(--typography-subtitle1-weight)',  lineHeight: 'var(--typography-subtitle1-line-height)',  letterSpacing: 'var(--typography-subtitle1-letter-spacing)' },
+        '.text-variant-subtitle2':   { fontSize: 'var(--typography-subtitle2-size)',  fontWeight: 'var(--typography-subtitle2-weight)',  lineHeight: 'var(--typography-subtitle2-line-height)',  letterSpacing: 'var(--typography-subtitle2-letter-spacing)' },
+        '.text-variant-body1':       { fontSize: 'var(--typography-body1-size)',      fontWeight: 'var(--typography-body1-weight)',      lineHeight: 'var(--typography-body1-line-height)' },
+        '.text-variant-body2':       { fontSize: 'var(--typography-body2-size)',      fontWeight: 'var(--typography-body2-weight)',      lineHeight: 'var(--typography-body2-line-height)' },
+        '.text-variant-body-bold-1': { fontSize: 'var(--typography-body-bold-1-size)',fontWeight: 'var(--typography-body-bold-1-weight)',lineHeight: 'var(--typography-body-bold-1-line-height)' },
+        '.text-variant-body-bold-2': { fontSize: 'var(--typography-body-bold-2-size)',fontWeight: 'var(--typography-body-bold-2-weight)',lineHeight: 'var(--typography-body-bold-2-line-height)' },
+        '.text-variant-caption':     { fontSize: 'var(--typography-caption-size)',    fontWeight: 'var(--typography-caption-weight)',    lineHeight: 'var(--typography-caption-line-height)',    letterSpacing: 'var(--typography-caption-letter-spacing)' },
+        '.text-variant-overline':    { fontSize: 'var(--typography-overline-size)',   fontWeight: 'var(--typography-overline-weight)',   lineHeight: 'var(--typography-overline-line-height)',   letterSpacing: 'var(--typography-overline-letter-spacing)', textTransform: 'uppercase' },
+        '.text-variant-button-lg':   { fontSize: 'var(--typography-button-lg-size)',  fontWeight: 'var(--typography-button-lg-weight)',  lineHeight: 'var(--typography-button-lg-line-height)',  letterSpacing: 'var(--typography-button-lg-letter-spacing)' },
+        '.text-variant-button-md':   { fontSize: 'var(--typography-button-md-size)',  fontWeight: 'var(--typography-button-md-weight)',  lineHeight: 'var(--typography-button-md-line-height)',  letterSpacing: 'var(--typography-button-md-letter-spacing)' },
+        '.text-variant-button-sm':   { fontSize: 'var(--typography-button-sm-size)',  fontWeight: 'var(--typography-button-sm-weight)',  lineHeight: 'var(--typography-button-sm-line-height)',  letterSpacing: 'var(--typography-button-sm-letter-spacing)' },
+        '.text-variant-input-label': { fontSize: 'var(--typography-input-label-size)',fontWeight: 'var(--typography-input-label-weight)',lineHeight: 'var(--typography-input-label-line-height)', letterSpacing: 'var(--typography-input-label-letter-spacing)' },
+        '.text-variant-helper-text': { fontSize: 'var(--typography-helper-text-size)',fontWeight: 'var(--typography-helper-text-weight)',lineHeight: 'var(--typography-helper-text-line-height)', letterSpacing: 'var(--typography-helper-text-letter-spacing)' },
+        '.text-variant-chip':        { fontSize: 'var(--typography-chip-size)',       fontWeight: 'var(--typography-chip-weight)',       lineHeight: 'var(--typography-chip-line-height)',       letterSpacing: 'var(--typography-chip-letter-spacing)' },
+        '.text-variant-tooltip':     { fontSize: 'var(--typography-tooltip-size)',    fontWeight: 'var(--typography-tooltip-weight)',    lineHeight: 'var(--typography-tooltip-line-height)' },
+        '.text-variant-alert-title': { fontSize: 'var(--typography-alert-title-size)',fontWeight: 'var(--typography-alert-title-weight)',lineHeight: 'var(--typography-alert-title-line-height)', letterSpacing: 'var(--typography-alert-title-letter-spacing)' },
+        '.text-variant-table-header':{ fontSize: 'var(--typography-table-header-size)',fontWeight:'var(--typography-table-header-weight)',lineHeight:'var(--typography-table-header-line-height)', letterSpacing: 'var(--typography-table-header-letter-spacing)' },
+        '.text-variant-badge-label': { fontSize: 'var(--typography-badge-label-size)',fontWeight: 'var(--typography-badge-label-weight)',lineHeight: 'var(--typography-badge-label-line-height)', letterSpacing: 'var(--typography-badge-label-letter-spacing)' },
       });
     }),
   ],

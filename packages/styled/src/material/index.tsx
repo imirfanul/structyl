@@ -7,6 +7,8 @@ import type {
   AuraRatingProps as PrimitiveRatingProps,
   AuraSnackbarProps as PrimitiveSnackbarProps,
   AuraTransferListProps as PrimitiveTransferListProps,
+  PopperProps,
+  AuraTransitionProps as PrimitiveTransitionProps,
 } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
 import { buttonVariants, type ButtonProps } from '../button';
@@ -1575,7 +1577,11 @@ const Timeline = {
 const ClickAwayListener = MaterialPrimitive.ClickAwayListener;
 const NoSsr = MaterialPrimitive.NoSsr;
 const Portal = MaterialPrimitive.Portal;
-const Popper = MaterialPrimitive.Popper;
+
+const Popper = React.forwardRef<HTMLDivElement, PopperProps>(
+  (props, ref) => <MaterialPrimitive.Popper ref={ref} {...props} />,
+);
+Popper.displayName = 'Popper';
 
 const TextareaAutosize = React.forwardRef<
   React.ElementRef<typeof MaterialPrimitive.TextareaAutosize>,
@@ -1594,14 +1600,14 @@ const TextareaAutosize = React.forwardRef<
 ));
 TextareaAutosize.displayName = 'TextareaAutosize';
 
-const Transition = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Transition>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Transition>
->(({ className, ...props }, ref) => (
+const Transition = React.forwardRef<HTMLDivElement, PrimitiveTransitionProps>(
+  ({ className, ...props }, ref) => (
   <MaterialPrimitive.Transition
     ref={ref}
     className={cn(
-      'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0',
+      'data-[state=entering]:animate-in data-[state=entering]:fade-in-0',
+      'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0',
+      'data-[state=exited]:hidden',
       className,
     )}
     {...props}

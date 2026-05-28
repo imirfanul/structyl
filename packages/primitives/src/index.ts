@@ -138,6 +138,7 @@ export type {
   InitColorSchemeScriptProps as AuraInitColorSchemeScriptProps,
   TransferListProps as AuraTransferListProps,
   TransferListOption as AuraTransferListOption,
+  PopperProps,
 } from './material';
 
 export * as Combobox from './combobox';

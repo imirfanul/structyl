@@ -172,9 +172,12 @@ const PopperContent = React.forwardRef<HTMLDivElement, PopperContentProps>(
         autoUpdate(...args, {
           animationFrame: updatePositionStrategy === 'always',
         }),
-      elements: { reference: ctx.anchor },
       middleware,
     });
+
+    React.useLayoutEffect(() => {
+      refs.setPositionReference(ctx.anchor);
+    }, [ctx.anchor, refs]);
 
     const [placedSide, placedAlign] = getSideAndAlignFromPlacement(placement);
 

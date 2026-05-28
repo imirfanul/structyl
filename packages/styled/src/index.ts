@@ -325,7 +325,7 @@ export { Stat, StatGroup, TrendBadge } from './stat';
 export type { StatProps, StatGroupProps, TrendDirection } from './stat';
 
 export * as Timeline from './timeline';
-export type { TimelineProps, TimelineItemProps } from './timeline';
+export type { TimelineProps, TimelineItemProps, TimelineDotProps } from './timeline';
 
 export { Rating } from './rating';
 export type { RatingProps } from './rating';

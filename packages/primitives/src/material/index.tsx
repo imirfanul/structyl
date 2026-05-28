@@ -900,7 +900,63 @@ const NoSsr: React.FC<{
 NoSsr.displayName = 'NoSsr';
 
 const Portal = PortalPrimitive;
-const Popper = PopperPrimitive;
+
+// ── MUI-style Popper ──────────────────────────────────────────────────────────
+
+export interface PopperProps {
+  open: boolean;
+  anchorEl?: Element | null | (() => Element | null);
+  placement?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end';
+  children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
+  keepMounted?: boolean;
+  disablePortal?: boolean;
+  container?: Element | DocumentFragment | null;
+}
+
+function getAnchorEl(anchorEl: PopperProps['anchorEl']): Element | null {
+  return typeof anchorEl === 'function' ? anchorEl() : (anchorEl ?? null);
+}
+
+function parsePlacement(placement: string): { side: 'top' | 'right' | 'bottom' | 'left'; align: 'start' | 'center' | 'end' } {
+  const [side, align = 'center'] = placement.split('-') as [string, string | undefined];
+  return { side: side as 'top' | 'right' | 'bottom' | 'left', align: (align ?? 'center') as 'start' | 'center' | 'end' };
+}
+
+const Popper = React.forwardRef<HTMLDivElement, PopperProps>(
+  ({ open, anchorEl: anchorElProp, placement = 'bottom', children, className, style, keepMounted = false, disablePortal = false, container }, ref) => {
+    const virtualRef = React.useRef({ getBoundingClientRect: (): DOMRect => getAnchorEl(anchorElProp)?.getBoundingClientRect() ?? new DOMRect() });
+
+    React.useEffect(() => {
+      virtualRef.current.getBoundingClientRect = () => getAnchorEl(anchorElProp)?.getBoundingClientRect() ?? new DOMRect();
+    });
+
+    if (!open && !keepMounted) return null;
+
+    const { side, align } = parsePlacement(placement);
+
+    const content = (
+      <PopperPrimitive.Root>
+        <PopperPrimitive.Anchor virtualRef={virtualRef} />
+        <PopperPrimitive.Content
+          ref={ref}
+          side={side}
+          align={align}
+          sideOffset={4}
+          style={{ display: !open ? 'none' : undefined, ...style }}
+          className={className}
+        >
+          {children}
+        </PopperPrimitive.Content>
+      </PopperPrimitive.Root>
+    );
+
+    if (disablePortal) return content;
+    return <PortalPrimitive container={container ?? undefined}>{content}</PortalPrimitive>;
+  },
+);
+Popper.displayName = 'Popper';
 
 export interface TextareaAutosizeProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   minRows?: number;
@@ -940,29 +996,97 @@ const TextareaAutosize = React.forwardRef<HTMLTextAreaElement, TextareaAutosizeP
 );
 TextareaAutosize.displayName = 'TextareaAutosize';
 
-export interface TransitionProps extends DivProps {
+type TransitionStatus = 'entering' | 'entered' | 'exiting' | 'exited';
+
+export interface TransitionProps extends Omit<DivProps, 'children'> {
   in?: boolean;
   appear?: boolean;
   mountOnEnter?: boolean;
   unmountOnExit?: boolean;
   timeout?: number | { appear?: number; enter?: number; exit?: number };
+  onEnter?: () => void;
+  onEntering?: () => void;
+  onEntered?: () => void;
+  onExit?: () => void;
+  onExiting?: () => void;
+  onExited?: () => void;
+  children?: React.ReactNode | ((status: TransitionStatus) => React.ReactNode);
 }
 
 const Transition = React.forwardRef<HTMLDivElement, TransitionProps>(
   (
-    { in: open = false, appear, mountOnEnter = false, unmountOnExit = false, timeout, ...props },
+    {
+      in: inProp = false,
+      appear = false,
+      mountOnEnter = false,
+      unmountOnExit = false,
+      timeout = 300,
+      onEnter, onEntering, onEntered,
+      onExit, onExiting, onExited,
+      children,
+      ...props
+    },
     ref,
-  ) =>
-    !open && (unmountOnExit || mountOnEnter) ? null : (
+  ) => {
+    const enterMs = typeof timeout === 'number' ? timeout : (timeout.enter ?? 300);
+    const exitMs = typeof timeout === 'number' ? timeout : (timeout.exit ?? 300);
+    const appearMs = typeof timeout === 'number' ? timeout : (timeout.appear ?? enterMs);
+
+    const initialStatus: TransitionStatus = inProp
+      ? (appear ? 'exited' : 'entered')
+      : 'exited';
+
+    const [status, setStatus] = React.useState<TransitionStatus>(initialStatus);
+    const [mounted, setMounted] = React.useState(inProp || !mountOnEnter);
+    const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    React.useEffect(() => {
+      if (inProp) {
+        setMounted(true);
+        setStatus('entering');
+        onEnter?.();
+        timerRef.current = setTimeout(() => {
+          setStatus('entering');
+          onEntering?.();
+          timerRef.current = setTimeout(() => {
+            setStatus('entered');
+            onEntered?.();
+          }, status === 'exited' && appear ? appearMs : enterMs);
+        }, 10);
+      } else {
+        setStatus('exiting');
+        onExit?.();
+        timerRef.current = setTimeout(() => {
+          setStatus('exiting');
+          onExiting?.();
+          timerRef.current = setTimeout(() => {
+            setStatus('exited');
+            onExited?.();
+            if (unmountOnExit) setMounted(false);
+          }, exitMs);
+        }, 10);
+      }
+      return () => {
+        if (timerRef.current) clearTimeout(timerRef.current);
+      };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inProp]);
+
+    if (!mounted) return null;
+
+    const content = typeof children === 'function' ? children(status) : children;
+
+    return (
       <Primitive.div
         data-aura-ui-transition=""
-        data-state={open ? 'open' : 'closed'}
-        data-appear={appear ? '' : undefined}
-        data-timeout={typeof timeout === 'number' ? timeout : undefined}
+        data-state={status}
         {...props}
         ref={ref}
-      />
-    ),
+      >
+        {content}
+      </Primitive.div>
+    );
+  },
 );
 Transition.displayName = 'Transition';
 

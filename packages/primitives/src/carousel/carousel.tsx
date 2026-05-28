@@ -9,7 +9,7 @@ interface CarouselContextValue {
   index: number;
   setIndex: (i: number) => void;
   count: number;
-  setCount: (n: number) => void;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
   orientation: 'horizontal' | 'vertical';
   loop: boolean;
   next: () => void;
@@ -65,7 +65,7 @@ const Root = React.forwardRef<HTMLDivElement, CarouselRootProps>(
         index={index}
         setIndex={setIndex as (i: number) => void}
         count={count}
-        setCount={setCount}
+        setCount={setCount as React.Dispatch<React.SetStateAction<number>>}
         orientation={orientation}
         loop={loop}
         next={next}
@@ -135,8 +135,8 @@ const Slide = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'d
     const ref = React.useRef<HTMLDivElement>(null);
     const composedRef = useComposedRefs(forwardedRef, ref);
     React.useEffect(() => {
-      ctx.setCount(ctx.count + 1);
-      return () => ctx.setCount(Math.max(0, ctx.count - 1));
+      ctx.setCount(c => c + 1);
+      return () => ctx.setCount(c => Math.max(0, c - 1));
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (

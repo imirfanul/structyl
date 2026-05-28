@@ -138,15 +138,21 @@ export interface SuggestionsProps {
   items: MentionSuggestion[];
   children?: React.ReactNode;
   container?: Element | DocumentFragment | null;
+  /** Render inline (no Portal). Use this when the parent is position:relative. */
+  disablePortal?: boolean;
 }
 
-const Suggestions: React.FC<SuggestionsProps> = ({ items, children, container }) => {
+const Suggestions: React.FC<SuggestionsProps> = ({ items, children, container, disablePortal = false }) => {
   const ctx = useMentionsContext('Mentions.Suggestions');
   const filtered = items.filter((i) => i.label.toLowerCase().startsWith(ctx.query.toLowerCase()));
   return (
     <SuggestionsContext.Provider value={{ items: filtered }}>
       <Presence present={ctx.open && filtered.length > 0}>
-        <PortalPrimitive container={container ?? undefined}>{children}</PortalPrimitive>
+        {disablePortal ? (
+          children as React.ReactElement
+        ) : (
+          <PortalPrimitive container={container ?? undefined}>{children}</PortalPrimitive>
+        )}
       </Presence>
     </SuggestionsContext.Provider>
   );
