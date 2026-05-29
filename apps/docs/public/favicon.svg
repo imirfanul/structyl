@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="aura-ui">
+  <defs>
+    <linearGradient id="sky" x1="40" y1="20" x2="472" y2="492" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#131F36"/>
+      <stop offset="1" stop-color="#070B18"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="150" y1="70" x2="360" y2="440" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4DF6C9"/>
+      <stop offset="0.42" stop-color="#23C7D6"/>
+      <stop offset="0.78" stop-color="#6E8BFF"/>
+      <stop offset="1" stop-color="#A973FF"/>
+    </linearGradient>
+    <radialGradient id="coreLum" cx="0.40" cy="0.36" r="0.72">
+      <stop offset="0" stop-color="#ECFFFB" stop-opacity="0.95"/>
+      <stop offset="0.5" stop-color="#ECFFFB" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fade" x1="420" y1="80" x2="130" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#3a3a3a"/>
+    </linearGradient>
+    <mask id="ringfade"><rect width="512" height="512" fill="url(#fade)"/></mask>
+    <filter id="g" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="14"/></filter>
+    <clipPath id="sq"><rect width="512" height="512" rx="116" ry="116"/></clipPath>
+  </defs>
+  <g clip-path="url(#sq)">
+    <rect width="512" height="512" fill="url(#sky)"/>
+    <g mask="url(#ringfade)">
+      <circle cx="256" cy="256" r="188" fill="none" stroke="url(#aurora)" stroke-width="18" filter="url(#g)" opacity="0.7"/>
+      <circle cx="256" cy="256" r="188" fill="none" stroke="url(#aurora)" stroke-width="16"/>
+    </g>
+    <circle cx="256" cy="256" r="120" fill="url(#aurora)" filter="url(#g)" opacity="0.5"/>
+    <circle cx="256" cy="256" r="116" fill="url(#aurora)"/>
+    <circle cx="256" cy="256" r="116" fill="url(#coreLum)"/>
+  </g>
+</svg>

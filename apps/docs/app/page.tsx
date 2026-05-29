@@ -19,10 +19,9 @@ export default function Page() {
       {/* Nav */}
       <header className="border-b border-border">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2 font-mono text-sm tracking-tight">
-            <span className="size-2 rounded-full bg-primary" />
-            <span className="font-semibold">aura-ui</span>
-            <span className="text-muted-foreground">/ v0.0.1</span>
+          <div className="flex items-center">
+            <img src="/logo.svg" alt="aura-ui" className="hidden h-8 w-auto dark:block" />
+            <img src="/logo-light.svg" alt="aura-ui" className="block h-8 w-auto dark:hidden" />
           </div>
           <nav className="flex items-center gap-6 text-sm">
             <Link href="/docs" className="text-muted-foreground hover:text-fg">
@@ -46,7 +45,7 @@ export default function Page() {
         <div className="flex flex-col gap-8">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-muted/30 px-3 py-1 text-xs font-mono text-muted-foreground">
             <span className="size-1.5 rounded-full bg-emerald-500" />
-            v0.0.1 · in development
+            v1.0.0 · stable
           </span>
 
           <h1 className="text-balance font-sans text-5xl font-medium tracking-tight md:text-7xl">

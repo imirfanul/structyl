@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="160" viewBox="0 0 560 160" role="img" aria-label="aura-ui">
+  <defs>
+    <linearGradient id="sky" x1="14" y1="14" x2="146" y2="146" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#131F36"/><stop offset="1" stop-color="#070B18"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="48" y1="26" x2="112" y2="138" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4DF6C9"/><stop offset="0.42" stop-color="#23C7D6"/>
+      <stop offset="0.78" stop-color="#6E8BFF"/><stop offset="1" stop-color="#A973FF"/>
+    </linearGradient>
+    <radialGradient id="coreLum" cx="0.40" cy="0.36" r="0.72">
+      <stop offset="0" stop-color="#ECFFFB" stop-opacity="0.92"/>
+      <stop offset="0.45" stop-color="#ECFFFB" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fade" x1="128" y1="28" x2="36" y2="132" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#2b2b2b"/>
+    </linearGradient>
+    <mask id="rf"><rect width="160" height="160" fill="url(#fade)"/></mask>
+    <filter id="gl" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="3.2"/></filter>
+    <clipPath id="sq"><rect x="14" y="14" width="132" height="132" rx="34" ry="34"/></clipPath>
+  </defs>
+  <g clip-path="url(#sq)">
+    <rect x="14" y="14" width="132" height="132" fill="url(#sky)"/>
+    <g mask="url(#rf)">
+      <g filter="url(#gl)" opacity="0.75">
+        <circle cx="80" cy="80" r="44" fill="none" stroke="url(#aurora)" stroke-width="3.4"/>
+        <circle cx="80" cy="80" r="58" fill="none" stroke="url(#aurora)" stroke-width="2.8"/>
+      </g>
+      <circle cx="80" cy="80" r="44" fill="none" stroke="url(#aurora)" stroke-width="3"/>
+      <circle cx="80" cy="80" r="58" fill="none" stroke="url(#aurora)" stroke-width="2.4"/>
+    </g>
+    <circle cx="80" cy="80" r="28" fill="url(#aurora)" filter="url(#gl)" opacity="0.55"/>
+    <circle cx="80" cy="80" r="26" fill="url(#aurora)"/>
+    <circle cx="80" cy="80" r="26" fill="url(#coreLum)"/>
+  </g>
+  <text x="180" y="104" font-family="'Geist','Segoe UI',system-ui,-apple-system,'DejaVu Sans',sans-serif"
+        font-size="78" font-weight="700" letter-spacing="-1">
+    <tspan fill="#0E1426">aura</tspan><tspan fill="#0D94A5">-ui</tspan>
+  </text>
+</svg>

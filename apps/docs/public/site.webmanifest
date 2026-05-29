@@ -1,0 +1,23 @@
+{
+  "name": "aura-ui",
+  "short_name": "aura-ui",
+  "description": "Accessible React component library — headless primitives, Tailwind-styled components, runtime theming.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#070B18",
+  "theme_color": "#070B18",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

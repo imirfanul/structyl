@@ -4,7 +4,6 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
-  Sparkles,
   Search,
   X,
   BookOpen,
@@ -105,11 +104,11 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         <div className="mx-auto flex h-[52px] max-w-[1440px] items-center gap-6 px-5">
 
           {/* Logo */}
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-[7px] bg-gradient-to-br from-primary to-primary/60 text-primary-foreground shadow-sm">
-              <Sparkles className="h-3.5 w-3.5" />
-            </div>
-            <span className="text-[13px] font-semibold tracking-tight">aura-ui</span>
+          <Link href="/" className="flex shrink-0 items-center">
+            {/* dark logo (light text on dark squircle) */}
+            <img src="/logo.svg" alt="aura-ui" className="hidden h-7 w-auto dark:block" />
+            {/* light logo (dark text on dark squircle) */}
+            <img src="/logo-light.svg" alt="aura-ui" className="block h-7 w-auto dark:hidden" />
           </Link>
 
           <span className="hidden text-lg text-border/80 md:block">/</span>

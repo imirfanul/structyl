@@ -1,0 +1,119 @@
+# aura-ui
+
+> Accessible React component library — headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable.
+
+## Overview
+
+aura-ui is an open-source TypeScript-first React component library. It is structured as a monorepo with independently-versioned packages. The library is WAI-ARIA compliant, supports dark mode out of the box, and is compatible with Next.js App Router and SSR.
+
+Current version: 1.0.0
+License: MIT
+Documentation: https://aura-ui.dev
+Source: https://github.com/aura-ui/aura-ui
+npm: https://www.npmjs.com/org/aura-ui
+
+## Installation
+
+```bash
+pnpm add @aura-ui/styled
+# or
+npm install @aura-ui/styled
+```
+
+## Packages
+
+- `@aura-ui/styled` — Tailwind-styled component layer (main package for most users)
+- `@aura-ui/primitives` — Unstyled, accessible headless behavior primitives
+- `@aura-ui/themes` — Runtime theming system with CSS variables and ThemeProvider
+- `@aura-ui/hooks` — 24+ SSR-safe, tree-shakeable React hooks
+- `@aura-ui/data-table` — First-class DataTable with sorting, filtering, pagination, virtualization
+- `@aura-ui/icons` — Icon set (Lucide re-export)
+- `@aura-ui/utils` — Pure utility functions (cn, type guards, etc.)
+- `@aura-ui/core` — Internal primitives (Slot, Primitive, createContext)
+- `@aura-ui/cli` — shadcn-style installer CLI
+
+## Key Features
+
+- 90+ components across inputs, layout, navigation, overlays, feedback, and data display
+- WAI-ARIA APG compliant — passes axe-core with zero violations
+- Tailwind CSS v4 compatible
+- Runtime theming with CSS custom properties — switch themes without a page reload
+- Dark mode: system, light, or dark preference
+- Compound component API using dot-notation (e.g. `<Dialog.Root>`, `<Dialog.Content>`)
+- Supports `asChild` prop via Slot pattern — render any element while keeping behavior
+- Controlled and uncontrolled state for all stateful components
+- Full keyboard navigation for every interactive component
+- SSR-safe — compatible with Next.js App Router and React Server Components
+- TypeScript strict mode — no `any`, full type inference
+
+## Component Categories
+
+### Inputs
+Autocomplete, Button, Button Group, Calendar, Checkbox, Color Picker, Combobox, Copy Button, Date Picker, Date Range Picker, Date Time Picker, Editable, File Upload, Floating Action Button, Form, Input, Label, Mentions, Multi Select, Number Field, OTP Field, Password Toggle Field, Radio Group, Rating, Select, Slider, Switch, Tags Input, Textarea, Textarea Autosize, Time Picker, Toggle, Toggle Group, Transfer List
+
+### Layout
+Aspect Ratio, Box, Container, Grid, Masonry, Paper, Resizable, Scroll Area, Separator, Stack
+
+### Navigation
+App Bar, Bottom Navigation, Breadcrumb, Command, Link, Menubar, Navigation Menu, Pagination, Speed Dial, Stepper, Tabs, Toolbar
+
+### Overlays
+Alert Dialog, Backdrop, Context Menu, Dialog, Drawer, Dropdown Menu, Hover Card, Modal, Popover, Sheet, Tooltip
+
+### Data display
+Accordion, Avatar, Badge, Card, Carousel, Chart, Chip, Collapsible, Collapse, Data Table, Image List, List, SVG Icon, Table, Timeline, Tree, Typography
+
+### Feedback
+Alert, Circular Progress, Meter, Progress, Skeleton, Snackbar, Spinner, Toast
+
+### Utilities
+Click Away Listener, CSS Baseline, Init Color Scheme Script, No SSR, Popper, Portal, Transition
+
+## Basic Usage
+
+```tsx
+import { Button } from '@aura-ui/styled';
+
+export default function App() {
+  return <Button variant="default">Click me</Button>;
+}
+```
+
+## Theming
+
+```tsx
+// In your root layout
+import { ThemeProvider } from '@aura-ui/themes';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        <ThemeProvider defaultTheme="slate" defaultMode="system">
+          {children}
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+## Frequently Asked Questions
+
+**Q: What is aura-ui?**
+A: aura-ui is an accessible, TypeScript-first React component library with 90+ components. It provides headless primitives and Tailwind-styled wrappers, similar to Radix UI + shadcn/ui but as a full package.
+
+**Q: How does aura-ui differ from shadcn/ui?**
+A: aura-ui ships as actual npm packages you install, not copy-paste code. It also includes a runtime theming system, a first-class DataTable, and more components out of the box.
+
+**Q: Is aura-ui compatible with Next.js App Router?**
+A: Yes. All components with React hooks are marked with 'use client'. The library is SSR-safe and compatible with React Server Components.
+
+**Q: Does aura-ui support dark mode?**
+A: Yes. The theming system supports system, light, and dark modes out of the box. Theme switches happen without a page reload using CSS custom properties.
+
+**Q: How do I customize the theme?**
+A: Use the Theme Builder at https://aura-ui.dev/themes to generate custom CSS variables, or configure via ThemeProvider props.
+
+**Q: Is aura-ui free?**
+A: Yes. MIT license, free forever.

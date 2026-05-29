@@ -1,5 +1,12 @@
 # aura-ui
 
+<!-- markdownlint-disable MD033 -->
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="apps/docs/public/logo.svg">
+  <img alt="aura-ui" src="apps/docs/public/logo-light.svg" height="60">
+</picture>
+<!-- markdownlint-enable MD033 -->
+
 > A world-class React component library — accessible headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
