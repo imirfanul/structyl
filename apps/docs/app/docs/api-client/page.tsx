@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy, ChevronRight, ArrowUpRight, AlertCircle, RefreshCw } from '@aura-ui/icons';
+import { Check, Copy, ChevronRight, ArrowUpRight, AlertCircle } from '@aura-ui/icons';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
 
@@ -169,9 +169,9 @@ function QueryDemo() {
   const [status, setStatus] = React.useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [users, setUsers] = React.useState<User[]>([]);
   const [staleFor, setStaleFor] = React.useState(0);
-  const staleRef = React.useRef<ReturnType<typeof setInterval>>();
+  const staleRef = React.useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
-  const fetch = React.useCallback((force = false) => {
+  const loadUsers = React.useCallback((force = false) => {
     if (status === 'loading' && !force) return;
     setStatus('loading');
     setStaleFor(0);
@@ -185,9 +185,14 @@ function QueryDemo() {
         setStaleFor(s);
       }, 1000);
     }, 900);
-  }, [status]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  React.useEffect(() => { fetch(); return () => clearInterval(staleRef.current); }, []);
+  React.useEffect(() => {
+    loadUsers();
+    return () => clearInterval(staleRef.current);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const isStale = staleFor >= 60;
   const cacheInfo = status === 'success'
@@ -210,7 +215,7 @@ function QueryDemo() {
              status === 'error' ? 'useApiQuery › status: error' : 'useApiQuery › idle'}
           </span>
         </div>
-        <button onClick={() => fetch(true)} disabled={status === 'loading'}
+        <button onClick={() => loadUsers(true)} disabled={status === 'loading'}
           className="ml-2 shrink-0 rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-fg disabled:opacity-40">
           refetch()
         </button>
@@ -382,7 +387,7 @@ function OptimisticDemo() {
     // Optimistic update — flip immediately
     setLiked(prev => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) { next.delete(id); } else { next.add(id); }
       return next;
     });
     setPending(prev => new Set([...prev, id]));

@@ -219,7 +219,7 @@ function ThemeSwitcherDemo() {
           </div>
 
           {/* Table rows */}
-          {[['Alice Chen', 'Engineer', 'active'], ['Bob Smith', 'Designer', 'away'], ['Carol Wu', 'Product', 'active']].map(([name, role, status]) => (
+          {([['Alice Chen', 'Engineer', 'active'], ['Bob Smith', 'Designer', 'away'], ['Carol Wu', 'Product', 'active']] as [string, string, string][]).map(([name, role, status]) => (
             <div key={name} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: pal.muted }}>
               <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold" style={{ background: pal.primary, color: pal.primaryFg }}>
                 {name[0]}
