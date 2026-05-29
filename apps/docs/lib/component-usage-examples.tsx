@@ -1859,6 +1859,23 @@ export const componentUsageGroups = [
   },
 ] as const;
 
+function PaginationInteractiveExample() {
+  const [page, setPage] = React.useState(3);
+  const [pageSize, setPageSize] = React.useState(25);
+  const totalRows = 389;
+  const pageCount = Math.ceil(totalRows / pageSize);
+  return (
+    <Pagination
+      page={page}
+      pageCount={pageCount}
+      pageSize={pageSize}
+      totalRows={totalRows}
+      onPageChange={setPage}
+      onPageSizeChange={(size) => { setPageSize(size); setPage(1); }}
+    />
+  );
+}
+
 export const componentUsageExamples: Record<string, UsageExample[]> = {
   button: [
     {
@@ -3057,42 +3074,19 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   ],
   pagination: [
     {
-      title: 'Dense page controls',
-      description: 'Pagination combines previous/next links, page links and ellipsis markers.',
+      title: 'Standard pagination bar',
+      description: 'Matches the DataTable pagination: First/Prev/Next/Last buttons, page dropdown, rows-per-page selector, and total row count.',
       preview: () => (
-        <Pagination.Root>
-          <Pagination.Content>
-            <Pagination.Item>
-              <Pagination.Previous href="#" />
-            </Pagination.Item>
-            <Pagination.Item>
-              <Pagination.Link href="#">1</Pagination.Link>
-            </Pagination.Item>
-            <Pagination.Item>
-              <Pagination.Ellipsis />
-            </Pagination.Item>
-            <Pagination.Item>
-              <Pagination.Link href="#" isActive>
-                8
-              </Pagination.Link>
-            </Pagination.Item>
-            <Pagination.Item>
-              <Pagination.Link href="#">9</Pagination.Link>
-            </Pagination.Item>
-            <Pagination.Item>
-              <Pagination.Next href="#" />
-            </Pagination.Item>
-          </Pagination.Content>
-        </Pagination.Root>
+        <PaginationInteractiveExample />
       ),
-      code: `<Pagination.Root>
-  <Pagination.Content>
-    <Pagination.Item><Pagination.Previous href="#" /></Pagination.Item>
-    <Pagination.Item><Pagination.Ellipsis /></Pagination.Item>
-    <Pagination.Item><Pagination.Link href="#" isActive>8</Pagination.Link></Pagination.Item>
-    <Pagination.Item><Pagination.Next href="#" /></Pagination.Item>
-  </Pagination.Content>
-</Pagination.Root>`,
+      code: `<Pagination
+  page={page}
+  pageCount={20}
+  pageSize={pageSize}
+  totalRows={389}
+  onPageChange={setPage}
+  onPageSizeChange={setPageSize}
+/>`,
     },
   ],
   stepper: [

@@ -1,208 +1,154 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from '@aura-ui/icons';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@aura-ui/icons';
 import { cn } from '@aura-ui/utils';
-import { buttonVariants, type ButtonProps } from '../button';
+import { Button } from '../button';
+import * as Select from '../select';
 
-// ── Low-level building blocks ─────────────────────────────────────────────────
+// ── Pagination ─────────────────────────────────────────────────────────────────
 
-const Root: React.FC<React.ComponentProps<'nav'>> = ({ className, ...props }) => (
-  <nav role="navigation" aria-label="pagination" className={cn('mx-auto flex w-full justify-center', className)} {...props} />
-);
-Root.displayName = 'Pagination.Root';
-
-const Content = React.forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<'ul'>>(
-  ({ className, ...props }, ref) => (
-    <ul ref={ref} className={cn('flex flex-row items-center gap-1', className)} {...props} />
-  ),
-);
-Content.displayName = 'Pagination.Content';
-
-const Item = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<'li'>>(
-  ({ className, ...props }, ref) => <li ref={ref} className={cn('', className)} {...props} />,
-);
-Item.displayName = 'Pagination.Item';
-
-interface PaginationLinkProps extends Omit<React.ComponentPropsWithoutRef<'button'>, 'href'>, Pick<ButtonProps, 'size'> {
-  isActive?: boolean;
-  href?: string;
-}
-
-const Link: React.FC<PaginationLinkProps> = ({ className, isActive, size = 'icon', href, ...props }) => {
-  const sharedCls = cn(buttonVariants({ variant: isActive ? 'outline' : 'ghost', size }), className);
-  if (href) {
-    return (
-      <a
-        href={href}
-        aria-current={isActive ? 'page' : undefined}
-        className={sharedCls}
-        {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
-      />
-    );
-  }
-  return (
-    <button
-      type="button"
-      aria-current={isActive ? 'page' : undefined}
-      className={sharedCls}
-      {...props}
-    />
-  );
-};
-Link.displayName = 'Pagination.Link';
-
-const Previous: React.FC<React.ComponentProps<typeof Link>> = ({ className, ...props }) => (
-  <Link aria-label="Go to previous page" size="default" className={cn('gap-1 pl-2.5', className)} {...props}>
-    <ChevronLeft className="h-4 w-4" aria-hidden />
-    <span>Previous</span>
-  </Link>
-);
-Previous.displayName = 'Pagination.Previous';
-
-const Next: React.FC<React.ComponentProps<typeof Link>> = ({ className, ...props }) => (
-  <Link aria-label="Go to next page" size="default" className={cn('gap-1 pr-2.5', className)} {...props}>
-    <span>Next</span>
-    <ChevronRight className="h-4 w-4" aria-hidden />
-  </Link>
-);
-Next.displayName = 'Pagination.Next';
-
-const First: React.FC<React.ComponentProps<typeof Link>> = ({ className, ...props }) => (
-  <Link aria-label="Go to first page" size="icon" className={className} {...props}>
-    <ChevronsLeft className="h-4 w-4" aria-hidden />
-  </Link>
-);
-First.displayName = 'Pagination.First';
-
-const Last: React.FC<React.ComponentProps<typeof Link>> = ({ className, ...props }) => (
-  <Link aria-label="Go to last page" size="icon" className={className} {...props}>
-    <ChevronsRight className="h-4 w-4" aria-hidden />
-  </Link>
-);
-Last.displayName = 'Pagination.Last';
-
-const Ellipsis: React.FC<React.ComponentProps<'span'>> = ({ className, ...props }) => (
-  <span aria-hidden className={cn('flex h-9 w-9 items-center justify-center', className)} {...props}>
-    <MoreHorizontal className="h-4 w-4" />
-    <span className="sr-only">More pages</span>
-  </span>
-);
-Ellipsis.displayName = 'Pagination.Ellipsis';
-
-// ── Compound smart pagination ─────────────────────────────────────────────────
-// Handles ellipsis logic, page-size selector, and jump-to-page.
-
-export interface SmartPaginationProps {
+export interface PaginationProps {
+  /** Current page number (1-based) */
   page: number;
-  pageSize: number;
-  total: number;
+  /** Total number of pages */
+  pageCount: number;
+  /** Current page size */
+  pageSize?: number;
+  /** Total row count shown on the left */
+  totalRows?: number;
+  /** Called when the user navigates to a different page */
   onPageChange: (page: number) => void;
-  onPageSizeChange?: (size: number) => void;
+  /** Called when the user changes the page size; if omitted the rows-per-page selector is hidden */
+  onPageSizeChange?: (pageSize: number) => void;
+  /** Options for the rows-per-page selector */
   pageSizeOptions?: number[];
-  /** Max page buttons before collapsing to ellipsis */
-  siblingCount?: number;
-  showFirstLast?: boolean;
-  showJumpTo?: boolean;
-  showPageSize?: boolean;
+  /** Show the "X total rows" label (only visible when totalRows is provided) */
+  showTotalRows?: boolean;
   className?: string;
 }
 
-function buildPageRange(current: number, total: number, siblings: number): (number | '...')[] {
-  const range: (number | '...')[] = [];
-  const left = Math.max(2, current - siblings);
-  const right = Math.min(total - 1, current + siblings);
+const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
+  (
+    {
+      page,
+      pageCount,
+      pageSize = 10,
+      totalRows,
+      onPageChange,
+      onPageSizeChange,
+      pageSizeOptions = [10, 25, 50, 100],
+      showTotalRows = true,
+      className,
+    },
+    ref,
+  ) => {
+    const totalPages = Math.max(pageCount, 1);
+    const canPrev = page > 1;
+    const canNext = page < totalPages;
 
-  range.push(1);
-  if (left > 2) range.push('...');
-  for (let i = left; i <= right; i++) range.push(i);
-  if (right < total - 1) range.push('...');
-  if (total > 1) range.push(total);
+    const pageOptions = Array.from({ length: totalPages }, (_, i) => ({
+      value: String(i + 1),
+      label: String(i + 1),
+    }));
 
-  return range;
-}
+    const pageSizeSelectOptions = pageSizeOptions.map((s) => ({
+      value: String(s),
+      label: String(s),
+    }));
 
-const SmartPagination: React.FC<SmartPaginationProps> = ({
-  page,
-  pageSize,
-  total,
-  onPageChange,
-  onPageSizeChange,
-  pageSizeOptions = [10, 20, 50, 100],
-  siblingCount = 1,
-  showFirstLast = false,
-  showJumpTo = false,
-  showPageSize = false,
-  className,
-}) => {
-  const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const pages = buildPageRange(page, totalPages, siblingCount);
-  const [jumpValue, setJumpValue] = React.useState('');
-
-  const handleJump = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter') return;
-    const n = parseInt(jumpValue, 10);
-    if (!isNaN(n) && n >= 1 && n <= totalPages) {
-      onPageChange(n);
-      setJumpValue('');
-    }
-  };
-
-  return (
-    <div className={cn('flex flex-wrap items-center justify-center gap-3', className)}>
-      <Root>
-        <Content>
-          {showFirstLast && <Item><First onClick={() => onPageChange(1)} disabled={page <= 1} /></Item>}
-          <Item><Previous onClick={() => onPageChange(page - 1)} disabled={page <= 1} /></Item>
-
-          {pages.map((p, i) =>
-            p === '...' ? (
-              <Item key={`ellipsis-${i}`}><Ellipsis /></Item>
-            ) : (
-              <Item key={p}>
-                <Link isActive={p === page} onClick={() => onPageChange(p as number)}>
-                  {p}
-                </Link>
-              </Item>
-            ),
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          'flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between',
+          className,
+        )}
+      >
+        {/* Left: total rows + rows per page */}
+        <div className="text-muted-foreground flex flex-wrap items-center gap-4 text-sm">
+          {showTotalRows && totalRows !== undefined && (
+            <span className="tabular-nums">{totalRows} total rows</span>
           )}
-
-          <Item><Next onClick={() => onPageChange(page + 1)} disabled={page >= totalPages} /></Item>
-          {showFirstLast && <Item><Last onClick={() => onPageChange(totalPages)} disabled={page >= totalPages} /></Item>}
-        </Content>
-      </Root>
-
-      {showPageSize && onPageSizeChange && (
-        <select
-          aria-label="Rows per page"
-          value={pageSize}
-          onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="border-border bg-bg h-9 rounded-md border px-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-        >
-          {pageSizeOptions.map((s) => (
-            <option key={s} value={s}>{s} / page</option>
-          ))}
-        </select>
-      )}
-
-      {showJumpTo && (
-        <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-          <span>Go to</span>
-          <input
-            type="number"
-            min={1}
-            max={totalPages}
-            value={jumpValue}
-            onChange={(e) => setJumpValue(e.target.value)}
-            onKeyDown={handleJump}
-            aria-label="Jump to page"
-            className="border-border bg-bg focus:ring-ring h-9 w-14 rounded-md border px-2 text-center text-sm focus:outline-none focus:ring-2"
-          />
+          {onPageSizeChange && (
+            <label className="flex items-center gap-2">
+              <span className="whitespace-nowrap">Rows per page</span>
+              <Select.Root
+                value={String(pageSize)}
+                onValueChange={(v) => onPageSizeChange(Number(v))}
+              >
+                <Select.Trigger className="h-8 w-20">
+                  <Select.Value />
+                </Select.Trigger>
+                <Select.Content options={pageSizeSelectOptions} />
+              </Select.Root>
+            </label>
+          )}
         </div>
-      )}
-    </div>
-  );
-};
-SmartPagination.displayName = 'SmartPagination';
 
-export { Root, Content, Item, Link, Previous, Next, First, Last, Ellipsis, SmartPagination };
+        {/* Right: page navigation */}
+        <div className="flex flex-wrap items-center gap-1">
+          <span className="text-muted-foreground mr-1 text-sm tabular-nums">
+            Page {page} of {totalPages}
+          </span>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() => onPageChange(1)}
+            disabled={!canPrev}
+            aria-label="First page"
+            title="First page"
+          >
+            <ChevronsLeft className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() => onPageChange(page - 1)}
+            disabled={!canPrev}
+            aria-label="Previous page"
+            title="Previous page"
+          >
+            <ChevronLeft className="size-4" />
+          </Button>
+          <Select.Root
+            value={String(page)}
+            onValueChange={(v) => onPageChange(Number(v))}
+          >
+            <Select.Trigger className="h-8 w-16" aria-label="Go to page">
+              <Select.Value />
+            </Select.Trigger>
+            <Select.Content options={pageOptions} />
+          </Select.Root>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() => onPageChange(page + 1)}
+            disabled={!canNext}
+            aria-label="Next page"
+            title="Next page"
+          >
+            <ChevronRight className="size-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={() => onPageChange(totalPages)}
+            disabled={!canNext}
+            aria-label="Last page"
+            title="Last page"
+          >
+            <ChevronsRight className="size-4" />
+          </Button>
+        </div>
+      </div>
+    );
+  },
+);
+Pagination.displayName = 'Pagination';
+
+export { Pagination };

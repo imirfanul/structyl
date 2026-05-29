@@ -625,19 +625,20 @@ export const API: Record<string, ApiPart[]> = {
     { name: 'Breadcrumb.Separator', description: 'Divider between crumbs.', props: [className] },
   ],
   pagination: [
-    { name: 'Pagination.Root', description: 'A nav landmark for pagination.', props: [className] },
-    { name: 'Pagination.Content', description: 'The list of page links.', props: [className] },
     {
-      name: 'Pagination.Link',
-      description: 'A page link.',
+      name: 'Pagination',
+      description: 'Full-featured pagination bar matching the DataTable pagination.',
       props: [
-        { name: 'isActive', type: 'boolean', description: 'Marks the current page.' },
-        { name: 'size', type: "'default' | 'sm' | 'lg' | 'icon'", description: 'Link size.' },
+        { name: 'page', type: 'number', description: 'Current page (1-based).' },
+        { name: 'pageCount', type: 'number', description: 'Total number of pages.' },
+        { name: 'pageSize', type: 'number', description: 'Current page size (default 10).' },
+        { name: 'totalRows', type: 'number', description: 'Total row count shown on the left.' },
+        { name: 'onPageChange', type: '(page: number) => void', description: 'Called on page navigation.' },
+        { name: 'onPageSizeChange', type: '(size: number) => void', description: 'Called on page size change. If omitted the rows-per-page selector is hidden.' },
+        { name: 'pageSizeOptions', type: 'number[]', description: 'Options for the rows-per-page selector (default [10, 25, 50, 100]).' },
+        { name: 'showTotalRows', type: 'boolean', description: 'Show the total row count label (default true).' },
       ],
     },
-    { name: 'Pagination.Previous', description: 'Link to the previous page.', props: [] },
-    { name: 'Pagination.Next', description: 'Link to the next page.', props: [] },
-    { name: 'Pagination.Ellipsis', description: 'Indicates skipped pages.', props: [] },
   ],
   stepper: [
     {

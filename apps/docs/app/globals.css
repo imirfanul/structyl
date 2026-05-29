@@ -14,13 +14,15 @@
     --chart-5: 340 75% 55%;
   }
 
-  * {
-    border-color: hsl(var(--color-border));
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--color-border, 214 32% 91%));
   }
 
   body {
-    background: hsl(var(--color-bg));
-    color: hsl(var(--color-fg));
+    background-color: hsl(var(--color-bg, 0 0% 100%));
+    color: hsl(var(--color-fg, 222 47% 11%));
     font-feature-settings:
       'rlig' 1,
       'calt' 1;

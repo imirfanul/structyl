@@ -1,5 +1,6 @@
 import * as React from 'react';
 import type { ThemeMode } from './types';
+import { defaultThemes } from './themes';
 
 interface ThemeScriptProps {
   defaultTheme?: string;
@@ -8,11 +9,16 @@ interface ThemeScriptProps {
   attribute?: string;
 }
 
+function tokensToVars(tokens: Record<string, string>): string {
+  return Object.entries(tokens)
+    .map(([k, v]) => `--color-${k}:${v}`)
+    .join(';');
+}
+
 /**
- * Renders an inline script that applies the saved theme + mode to <html>
- * BEFORE React hydrates. Prevents flash of incorrect theme on SSR.
- *
- * Place inside <head> of your root layout.
+ * Renders a <style> block with the default theme's CSS variables plus an inline
+ * script that updates them from localStorage before first paint. Place inside
+ * <head> of your root layout to prevent flash of unstyled content.
  */
 export function ThemeScript({
   defaultTheme = 'slate',
@@ -20,6 +26,17 @@ export function ThemeScript({
   storageKey = 'aura-ui-theme',
   attribute = 'data-theme',
 }: ThemeScriptProps): React.JSX.Element {
+  const cfg = defaultThemes[defaultTheme as keyof typeof defaultThemes];
+  const lightVars = cfg ? tokensToVars(cfg.light as Record<string, string>) : '';
+  const darkVars = cfg ? tokensToVars(cfg.dark as Record<string, string>) : '';
+
+  // Static CSS covers the default theme before JS runs (SSR + initial paint).
+  // [data-mode="dark"] overrides are picked up as soon as the script below sets
+  // the attribute on <html>, which happens before the browser paints.
+  const staticCss = lightVars
+    ? `:root{${lightVars}}:root[data-mode="dark"]{${darkVars}}`
+    : '';
+
   const script = `
 (function(){
   try {
@@ -36,5 +53,12 @@ export function ThemeScript({
   } catch (e) {}
 })();`.trim();
 
-  return <script dangerouslySetInnerHTML={{ __html: script }} suppressHydrationWarning />;
+  return (
+    <>
+      {staticCss && (
+        <style dangerouslySetInnerHTML={{ __html: staticCss }} suppressHydrationWarning />
+      )}
+      <script dangerouslySetInnerHTML={{ __html: script }} suppressHydrationWarning />
+    </>
+  );
 }

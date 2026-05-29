@@ -6506,82 +6506,74 @@ export default function Demo() {
     slug: 'pagination',
     name: 'Pagination',
     category: 'Disclosure',
-    description: 'Navigation for splitting content across multiple pages.',
-    features: ['Previous / next / ellipsis.', 'Active page styling.'],
-    preview: () => (
-      <Pagination.Root>
-        <Pagination.Content>
-          <Pagination.Item>
-            <Pagination.Previous href="#" />
-          </Pagination.Item>
-          <Pagination.Item>
-            <Pagination.Link href="#" isActive>
-              1
-            </Pagination.Link>
-          </Pagination.Item>
-          <Pagination.Item>
-            <Pagination.Link href="#">2</Pagination.Link>
-          </Pagination.Item>
-          <Pagination.Item>
-            <Pagination.Next href="#" />
-          </Pagination.Item>
-        </Pagination.Content>
-      </Pagination.Root>
-    ),
-    code: `import { Pagination } from '@aura-ui/styled';\n\n<Pagination.Root><Pagination.Content>\n  <Pagination.Item><Pagination.Previous href="#" /></Pagination.Item>\n  <Pagination.Item><Pagination.Link href="#" isActive>1</Pagination.Link></Pagination.Item>\n  <Pagination.Item><Pagination.Next href="#" /></Pagination.Item>\n</Pagination.Content></Pagination.Root>`,
+    description: 'Navigation bar matching DataTable pagination: page controls, rows-per-page selector, and total row count.',
+    features: ['First / prev / next / last buttons.', 'Page dropdown and rows-per-page selector.', 'Total row count display.'],
+    preview: () => {
+      function PaginationPreview() {
+        const [page, setPage] = React.useState(3);
+        return (
+          <Pagination
+            page={page}
+            pageCount={10}
+            pageSize={25}
+            totalRows={243}
+            onPageChange={setPage}
+          />
+        );
+      }
+      return <PaginationPreview />;
+    },
+    code: `import { Pagination } from '@aura-ui/styled';
+
+const [page, setPage] = useState(1);
+
+<Pagination
+  page={page}
+  pageCount={10}
+  totalRows={243}
+  onPageChange={setPage}
+/>`,
     examples: [
       {
-        title: 'Interactive',
-        description: 'Controlled pagination that tracks the active page with state.',
+        title: 'With rows-per-page selector',
+        description: 'Pass onPageSizeChange to show the rows-per-page dropdown alongside navigation.',
         preview: () => {
-          function PaginationDemo() {
-            const [page, setPage] = React.useState(2);
+          function PaginationWithSizeDemo() {
+            const [page, setPage] = React.useState(1);
+            const [pageSize, setPageSize] = React.useState(25);
+            const totalRows = 389;
+            const pageCount = Math.ceil(totalRows / pageSize);
             return (
-              <Pagination.Root>
-                <Pagination.Content>
-                  <Pagination.Item>
-                    <Pagination.Previous onClick={() => setPage((p) => Math.max(1, p - 1))} />
-                  </Pagination.Item>
-                  {[1, 2, 3].map((n) => (
-                    <Pagination.Item key={n}>
-                      <Pagination.Link isActive={page === n} onClick={() => setPage(n)}>
-                        {n}
-                      </Pagination.Link>
-                    </Pagination.Item>
-                  ))}
-                  <Pagination.Item>
-                    <Pagination.Ellipsis />
-                  </Pagination.Item>
-                  <Pagination.Item>
-                    <Pagination.Next onClick={() => setPage((p) => Math.min(3, p + 1))} />
-                  </Pagination.Item>
-                </Pagination.Content>
-              </Pagination.Root>
+              <Pagination
+                page={page}
+                pageCount={pageCount}
+                pageSize={pageSize}
+                totalRows={totalRows}
+                onPageChange={setPage}
+                onPageSizeChange={(size) => { setPageSize(size); setPage(1); }}
+                pageSizeOptions={[10, 25, 50, 100]}
+              />
             );
           }
-          return <PaginationDemo />;
+          return <PaginationWithSizeDemo />;
         },
         code: `import { Pagination } from '@aura-ui/styled';
 
 export default function Demo() {
-  const [page, setPage] = React.useState(2);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(25);
+  const totalRows = 389;
+  const pageCount = Math.ceil(totalRows / pageSize);
   return (
-    <Pagination.Root>
-      <Pagination.Content>
-        <Pagination.Item>
-          <Pagination.Previous onClick={() => setPage((p) => Math.max(1, p - 1))} />
-        </Pagination.Item>
-        {[1, 2, 3].map((n) => (
-          <Pagination.Item key={n}>
-            <Pagination.Link isActive={page === n} onClick={() => setPage(n)}>{n}</Pagination.Link>
-          </Pagination.Item>
-        ))}
-        <Pagination.Item><Pagination.Ellipsis /></Pagination.Item>
-        <Pagination.Item>
-          <Pagination.Next onClick={() => setPage((p) => Math.min(3, p + 1))} />
-        </Pagination.Item>
-      </Pagination.Content>
-    </Pagination.Root>
+    <Pagination
+      page={page}
+      pageCount={pageCount}
+      pageSize={pageSize}
+      totalRows={totalRows}
+      onPageChange={setPage}
+      onPageSizeChange={(size) => { setPageSize(size); setPage(1); }}
+      pageSizeOptions={[10, 25, 50, 100]}
+    />
   );
 }`,
       },

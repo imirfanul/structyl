@@ -88,10 +88,8 @@ export * as Tabs from './tabs';
 export type { TabsRootProps, TabsListProps, TabsTriggerProps, TabsContentProps } from '@aura-ui/primitives';
 export * as Breadcrumb from './breadcrumb';
 export type { BreadcrumbProps } from '@aura-ui/primitives';
-export * as Pagination from './pagination';
-export { SmartPagination } from './pagination';
-export type { SmartPaginationProps } from './pagination';
-export type { PaginationProps } from '@aura-ui/primitives';
+export { Pagination } from './pagination';
+export type { PaginationProps } from './pagination';
 export * as Stepper from './stepper';
 export type { StepperProps, StepperButtonProps } from '@aura-ui/primitives';
 
