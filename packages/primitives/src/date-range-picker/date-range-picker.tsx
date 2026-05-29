@@ -260,12 +260,15 @@ const Root: React.FC<DateRangePickerRootProps> = ({
   });
 
   const validationError = validateRange(value, validationOptions);
-  const lastValidationError = React.useRef<DateRangeValidationError | null>(validationError);
+  const lastValidationError = React.useRef<DateRangeValidationError | null | undefined>(undefined);
 
   React.useEffect(() => {
     if (lastValidationError.current !== validationError) {
+      const prev = lastValidationError.current;
       lastValidationError.current = validationError;
-      onError?.(validationError, rangeToTuple(value));
+      if (prev !== undefined || validationError !== null) {
+        onError?.(validationError, rangeToTuple(value));
+      }
     }
   }, [onError, validationError, value]);
 

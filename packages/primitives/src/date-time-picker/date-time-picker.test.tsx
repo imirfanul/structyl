@@ -175,7 +175,7 @@ describe('DateTimePicker (primitive)', () => {
   it('Segment increments hour with ArrowUp', () => {
     const handleChange = vi.fn();
     render(
-      <DateTimePicker.Root defaultOpen defaultValue={May1_14h30} onChange={handleChange}>
+      <DateTimePicker.Root defaultOpen defaultValue={May1_14h30} defaultView="hours" onChange={handleChange}>
         <DateTimePicker.Content aria-label="Choose date and time">
           <DateTimePicker.TimePanel data-testid="time-panel">
             <DateTimePicker.Segment segment="hour" data-testid="hour-seg" />
@@ -196,7 +196,7 @@ describe('DateTimePicker (primitive)', () => {
   it('Segment decrements minute with ArrowDown', () => {
     const handleChange = vi.fn();
     render(
-      <DateTimePicker.Root defaultOpen defaultValue={May1_14h30} onChange={handleChange}>
+      <DateTimePicker.Root defaultOpen defaultValue={May1_14h30} defaultView="hours" onChange={handleChange}>
         <DateTimePicker.Content aria-label="Choose date and time">
           <DateTimePicker.TimePanel data-testid="time-panel">
             <DateTimePicker.Segment segment="hour" />

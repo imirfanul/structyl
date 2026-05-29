@@ -37,7 +37,7 @@ jobs:
         run: pnpm lint
 
       - name: Unit tests
-        run: pnpm test -- --run
+        run: pnpm test
 
       - name: Storybook story tests
         run: npx vitest --project storybook run

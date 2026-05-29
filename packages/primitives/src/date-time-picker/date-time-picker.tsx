@@ -278,12 +278,15 @@ const Root: React.FC<DateTimePickerRootProps> = ({
   });
 
   const validationError = validateDateTimeValue(value ?? null, validationOptions);
-  const lastValidationError = React.useRef<DateTimeValidationError | null>(validationError);
+  const lastValidationError = React.useRef<DateTimeValidationError | null | undefined>(undefined);
 
   React.useEffect(() => {
     if (lastValidationError.current !== validationError) {
+      const prev = lastValidationError.current;
       lastValidationError.current = validationError;
-      onError?.(validationError, value ?? null);
+      if (prev !== undefined || validationError !== null) {
+        onError?.(validationError, value ?? null);
+      }
     }
   }, [onError, validationError, value]);
 

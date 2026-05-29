@@ -222,12 +222,15 @@ const Root: React.FC<DatePickerRootProps> = ({
   });
 
   const validationError = validateDateValue(value ?? null, validationOptions);
-  const lastValidationError = React.useRef<DateValidationError | null>(validationError);
+  const lastValidationError = React.useRef<DateValidationError | null | undefined>(undefined);
 
   React.useEffect(() => {
     if (lastValidationError.current !== validationError) {
+      const prev = lastValidationError.current;
       lastValidationError.current = validationError;
-      onError?.(validationError, value ?? null);
+      if (prev !== undefined || validationError !== null) {
+        onError?.(validationError, value ?? null);
+      }
     }
   }, [onError, validationError, value]);
 
