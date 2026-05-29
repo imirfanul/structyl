@@ -1,6 +1,6 @@
 {
   "name": "@aura-ui/utils",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Pure utility functions: cn, type guards, array/object/string/number/date utilities",
   "license": "MIT",
   "type": "module",

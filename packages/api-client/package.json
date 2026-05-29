@@ -1,6 +1,6 @@
 {
   "name": "@aura-ui/api-client",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Lightweight Axios wrapper with built-in caching for any React framework — zero extra dependencies",
   "license": "MIT",
   "type": "module",

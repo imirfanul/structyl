@@ -1,6 +1,6 @@
 {
   "name": "@aura-ui/core",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Internal primitives powering @aura-ui (Slot, Primitive, contexts, focus management)",
   "license": "MIT",
   "type": "module",

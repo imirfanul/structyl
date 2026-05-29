@@ -1,6 +1,6 @@
 {
   "name": "@aura-ui/primitives",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Headless, accessible React primitives — behavior without styling",
   "license": "MIT",
   "type": "module",

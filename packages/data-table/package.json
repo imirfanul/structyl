@@ -1,6 +1,6 @@
 {
   "name": "@aura-ui/data-table",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "A full-featured DataTable with sorting, filtering, virtualization, and server-side data",
   "license": "MIT",
   "type": "module",

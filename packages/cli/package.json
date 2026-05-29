@@ -1,6 +1,6 @@
 {
   "name": "@aura-ui/cli",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "CLI for adding @aura-ui components to your project (shadcn-style)",
   "license": "MIT",
   "type": "module",

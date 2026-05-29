@@ -1,6 +1,6 @@
 {
   "name": "@aura-ui/hooks",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "50+ reusable React hooks: state, DOM, browser, performance, async",
   "license": "MIT",
   "type": "module",
