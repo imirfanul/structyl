@@ -840,13 +840,177 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     lang: 'bash',
     exports: ['aura-ui init', 'aura-ui add <component>', 'aura-ui add --all'],
   },
+  '@aura-ui/api-client': {
+    stats: [
+      { label: 'Bundle', value: '~6 kB' },
+      { label: 'Peer deps', value: 'axios + react' },
+      { label: 'Cache', value: 'useSyncExternalStore' },
+    ],
+    code: `import { ApiProvider, useApiQuery, useApiMutation } from '@aura-ui/api-client';
+import { createApiClient } from '@aura-ui/api-client';
+
+// 1. Create a client
+const apiClient = createApiClient({
+  baseURL: 'https://api.example.com',
+  getAuthToken: () => localStorage.getItem('token'),
+  refreshToken: () => refreshMyToken(),
+});
+
+// 2. Wrap your app
+<ApiProvider client={apiClient}>
+  <App />
+</ApiProvider>
+
+// 3. Fetch data
+const { data, isLoading, error, refetch } = useApiQuery('/users', {
+  staleTime: 60_000,
+  retry: 2,
+  select: (users) => users.filter((u) => u.active),
+});
+
+// 4. Mutate
+const { mutate } = useApiMutation('/users', {
+  method: 'POST',
+  invalidates: [['/users']],
+  onSuccess: (user) => toast('Created!'),
+});`,
+    lang: 'tsx',
+    exports: [
+      'useApiQuery',
+      'useApiMutation',
+      'useInfiniteApiQuery',
+      'useApiQueries',
+      'useSuspenseApiQuery',
+      'usePrefetch',
+      'ApiProvider',
+      'useApiClient',
+      'useApiContext',
+      'createApiClient',
+      'ApiClient',
+      'QueryClient',
+      'persistCache',
+      'ApiDevTools (subpath)',
+      'prefetchApiQuery (server)',
+      'dehydrate / hydrate (server)',
+    ],
+    preview: () => {
+      function ApiClientDemo() {
+        type User = { id: number; name: string; role: string };
+        const MOCK_USERS: User[] = [
+          { id: 1, name: 'Alice Chen', role: 'Engineer' },
+          { id: 2, name: 'Bob Smith', role: 'Designer' },
+          { id: 3, name: 'Carol Wu', role: 'Product' },
+        ];
+        const [status, setStatus] = React.useState<'idle' | 'loading' | 'success'>('idle');
+        const [users, setUsers] = React.useState<User[]>([]);
+        const [selected, setSelected] = React.useState<number | null>(null);
+        const [mutating, setMutating] = React.useState(false);
+
+        const fetchUsers = React.useCallback(() => {
+          setStatus('loading');
+          setUsers([]);
+          setTimeout(() => {
+            setUsers(MOCK_USERS);
+            setStatus('success');
+          }, 800);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
+
+        React.useEffect(() => { fetchUsers(); }, [fetchUsers]);
+
+        const deleteUser = (id: number) => {
+          setSelected(id);
+          setMutating(true);
+          setTimeout(() => {
+            setUsers((prev) => prev.filter((u) => u.id !== id));
+            setMutating(false);
+            setSelected(null);
+          }, 600);
+        };
+
+        return (
+          <div className="w-full max-w-sm space-y-3 font-sans">
+            {/* Hook status bar */}
+            <div className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-2">
+              <div className="flex items-center gap-2">
+                <span className={`h-2 w-2 rounded-full transition-colors ${
+                  status === 'loading' ? 'animate-pulse bg-amber-400' :
+                  status === 'success' ? 'bg-emerald-400' : 'bg-border'
+                }`} />
+                <span className="font-mono text-[11px] text-muted-foreground">
+                  {status === 'loading' ? 'useApiQuery › fetching…' :
+                   status === 'success' ? `useApiQuery › ${users.length} users` : 'idle'}
+                </span>
+              </div>
+              <button
+                onClick={fetchUsers}
+                disabled={status === 'loading'}
+                className="rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-fg disabled:opacity-40"
+              >
+                refetch()
+              </button>
+            </div>
+
+            {/* User list */}
+            <div className="overflow-hidden rounded-lg border border-border">
+              {status === 'loading' ? (
+                <div className="space-y-px">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="flex items-center gap-3 border-b border-border/60 p-3 last:border-0">
+                      <div className="h-7 w-7 animate-pulse rounded-full bg-muted" />
+                      <div className="flex-1 space-y-1.5">
+                        <div className="h-2.5 w-24 animate-pulse rounded bg-muted" />
+                        <div className="h-2 w-16 animate-pulse rounded bg-muted" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : users.length === 0 ? (
+                <p className="py-6 text-center text-[12px] text-muted-foreground">No users</p>
+              ) : (
+                <div className="divide-y divide-border/60">
+                  {users.map((u) => (
+                    <div key={u.id} className="flex items-center gap-3 p-3">
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
+                        {u.name[0]}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[13px] font-medium leading-none">{u.name}</p>
+                        <p className="mt-0.5 text-[11px] text-muted-foreground">{u.role}</p>
+                      </div>
+                      <button
+                        onClick={() => deleteUser(u.id)}
+                        disabled={mutating}
+                        className="rounded-md px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-500 disabled:opacity-40"
+                      >
+                        {selected === u.id && mutating ? '…' : 'delete'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Mutation status */}
+            {mutating && (
+              <div className="flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
+                <span className="font-mono text-[11px] text-amber-600">useApiMutation › DELETE /users/{selected}</span>
+              </div>
+            )}
+          </div>
+        );
+      }
+      return <ApiClientDemo />;
+    },
+  },
 };
 
 const ARCH_LAYERS = [
   { label: 'Foundation', pkgs: ['@aura-ui/core', '@aura-ui/utils'], color: 'bg-blue-500/10 border-blue-500/20 text-blue-600' },
   { label: 'Behavior',   pkgs: ['@aura-ui/hooks', '@aura-ui/themes', '@aura-ui/primitives'], color: 'bg-violet-500/10 border-violet-500/20 text-violet-600' },
   { label: 'UI',         pkgs: ['@aura-ui/styled', '@aura-ui/icons'], color: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' },
-  { label: 'Data',       pkgs: ['@aura-ui/data-table'], color: 'bg-amber-500/10 border-amber-500/20 text-amber-600' },
+  { label: 'Data',       pkgs: ['@aura-ui/data-table', '@aura-ui/api-client'], color: 'bg-amber-500/10 border-amber-500/20 text-amber-600' },
   { label: 'Tooling',    pkgs: ['@aura-ui/cli'], color: 'bg-muted border-border text-muted-foreground' },
 ];
 

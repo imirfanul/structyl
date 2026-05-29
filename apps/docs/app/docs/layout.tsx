@@ -20,6 +20,8 @@ import {
   History,
   Keyboard,
   Clock,
+  Database,
+  Paintbrush,
 } from '@aura-ui/icons';
 import { useTheme } from '@aura-ui/themes';
 import { COMPONENTS, CATEGORIES, HOOKS } from '../../lib/registry';
@@ -33,6 +35,8 @@ const OVERVIEW = [
   { slug: 'icons',           title: 'Icons',           href: '/docs/icons',           icon: LayoutGrid },
   { slug: 'hooks',           title: 'Hooks',           href: '/docs/hooks',           icon: Code2 },
   { slug: 'packages',        title: 'Packages',        href: '/docs/packages',        icon: Package },
+  { slug: 'themes-docs',    title: 'Themes',           href: '/docs/themes',          icon: Paintbrush },
+  { slug: 'api-client',     title: 'API Client',       href: '/docs/api-client',      icon: Database },
 ];
 
 const RESOURCES = [
@@ -284,17 +288,32 @@ const QUICK_LINKS = [
   { label: 'Components',         href: '/docs',                      tag: 'docs' },
   { label: 'Icons',              href: '/docs/icons',                tag: 'icons' },
   { label: 'Hooks',              href: '/docs/hooks',                tag: 'hooks' },
+  { label: 'Themes',             href: '/docs/themes',               tag: 'docs' },
+  { label: 'API Client',         href: '/docs/api-client',           tag: 'package' },
   { label: 'Design tokens',      href: '/docs/design-tokens',        tag: 'docs' },
   { label: 'Themes playground',  href: '/themes',                    tag: 'themes' },
 ];
 
-type ResultType = 'component' | 'hook' | 'icon';
+// Static pages that should be discoverable via search
+const STATIC_PAGES = [
+  { name: 'Themes',           sub: 'Runtime theming, dark mode, custom themes, CSS token reference',       href: '/docs/themes',          keywords: ['theme', 'dark', 'light', 'color', 'mode', 'css', 'variable', 'token', 'custom', 'palette', 'brand', 'ssr', 'flash'] },
+  { name: 'API Client',       sub: 'Axios wrapper with React 18 cache, retries, mutations, SSR',          href: '/docs/api-client',      keywords: ['api', 'client', 'axios', 'fetch', 'query', 'mutation', 'cache', 'infinite', 'suspense', 'ssr', 'data'] },
+  { name: 'Getting started',  sub: 'Install aura-ui and render your first component',                     href: '/docs/getting-started', keywords: ['start', 'install', 'setup', 'begin'] },
+  { name: 'Hooks',            sub: '24 reusable, SSR-safe, tree-shakeable React hooks',                   href: '/docs/hooks',            keywords: ['hook', 'use', 'react'] },
+  { name: 'Packages',         sub: 'Nine focused, independently-versioned packages',                      href: '/docs/packages',        keywords: ['package', 'monorepo', 'core', 'styled', 'themes', 'icons'] },
+  { name: 'Accessibility',    sub: 'WAI-ARIA compliant keyboard navigation and screen reader support',    href: '/docs/accessibility',   keywords: ['a11y', 'aria', 'keyboard', 'screen reader', 'wcag'] },
+  { name: 'Design tokens',    sub: 'CSS variables and Tailwind theme tokens',                             href: '/docs/design-tokens',   keywords: ['token', 'color', 'css', 'variable', 'tailwind'] },
+  { name: 'Changelog',        sub: 'Release history and breaking changes',                                href: '/docs/changelog',       keywords: ['changelog', 'release', 'version', 'breaking'] },
+];
+
+type ResultType = 'component' | 'hook' | 'icon' | 'page';
 interface SearchResult { type: ResultType; name: string; sub: string; href: string }
 
 const TAG_STYLES: Record<ResultType, string> = {
   component: 'bg-blue-500/10 text-blue-500',
   hook:      'bg-violet-500/10 text-violet-500',
   icon:      'bg-amber-500/10 text-amber-600',
+  page:      'bg-emerald-500/10 text-emerald-600',
 };
 
 function CommandPalette({ onClose }: { onClose: () => void }) {
@@ -323,7 +342,15 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
       ? [{ type: 'icon', name: `Search icons for "${q}"`, sub: 'Browse the icon library', href: `/docs/icons?q=${encodeURIComponent(q)}` }]
       : [];
 
-    return [...comps, ...hooks, ...iconEntry];
+    const pages: SearchResult[] = STATIC_PAGES
+      .filter((p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.sub.toLowerCase().includes(q) ||
+        p.keywords.some((kw) => kw.includes(q)),
+      )
+      .map((p) => ({ type: 'page', name: p.name, sub: p.sub, href: p.href }));
+
+    return [...pages, ...comps, ...hooks, ...iconEntry];
   }, [query]);
 
   React.useEffect(() => { setCursor(0); }, [results]);
@@ -352,7 +379,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
             ref={inputRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search components, hooks, icons…"
+            placeholder="Search components, hooks, pages, icons…"
             className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
           />
           {query && (
@@ -410,10 +437,11 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
                       {link.label}
                     </span>
                     <span className={`rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${
-                      link.tag === 'docs'   ? 'bg-blue-500/10 text-blue-500' :
-                      link.tag === 'icons'  ? 'bg-amber-500/10 text-amber-600' :
-                      link.tag === 'hooks'  ? 'bg-violet-500/10 text-violet-500' :
-                                              'bg-emerald-500/10 text-emerald-600'
+                      link.tag === 'docs'    ? 'bg-blue-500/10 text-blue-500' :
+                      link.tag === 'icons'   ? 'bg-amber-500/10 text-amber-600' :
+                      link.tag === 'hooks'   ? 'bg-violet-500/10 text-violet-500' :
+                      link.tag === 'package' ? 'bg-emerald-500/10 text-emerald-600' :
+                                               'bg-emerald-500/10 text-emerald-600'
                     }`}>
                       {link.tag}
                     </span>

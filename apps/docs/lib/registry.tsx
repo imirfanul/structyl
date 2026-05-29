@@ -8547,6 +8547,17 @@ export const PACKAGES: PackageEntry[] = [
       'Transitive dependency resolution',
     ],
   },
+  {
+    name: '@aura-ui/api-client',
+    description:
+      'Lightweight Axios wrapper with React 18 cache, retries, SSR support, and zero extra dependencies.',
+    install: 'pnpm add @aura-ui/api-client',
+    highlights: [
+      'No TanStack Query — custom useSyncExternalStore cache',
+      'AbortController, polling, debounce, infinite scroll',
+      'SSR dehydrate/hydrate + cache persistence',
+    ],
+  },
 ];
 
 export const CATEGORIES = [
