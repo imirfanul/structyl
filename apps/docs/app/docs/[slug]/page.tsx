@@ -346,7 +346,7 @@ const VP_MAX: Record<Viewport, string> = { full: '100%', tablet: '768px', mobile
 function PreviewBlock({
   title,
   description,
-  preview,
+  preview: Preview,
   code,
   compact = false,
 }: {
@@ -423,7 +423,7 @@ function PreviewBlock({
             className="mx-auto transition-all duration-300"
             style={{ maxWidth: VP_MAX[viewport] }}
           >
-            <div className="flex w-full items-center justify-center">{preview()}</div>
+            <div className="flex w-full items-center justify-center"><Preview /></div>
           </div>
         </div>
       ) : (
@@ -901,11 +901,14 @@ function PackageCard({ pkg }: { pkg: typeof PACKAGES[number] }) {
       </div>
 
       {/* Live preview */}
-      {extra?.preview && (
-        <div className="mx-5 mb-4 flex min-h-[100px] items-center justify-center rounded-xl border border-border/60 bg-gradient-to-br from-accent/20 to-transparent p-5">
-          {extra.preview()}
-        </div>
-      )}
+      {extra?.preview && (() => {
+        const PkgPreview = extra.preview!;
+        return (
+          <div className="mx-5 mb-4 flex min-h-[100px] items-center justify-center rounded-xl border border-border/60 bg-gradient-to-br from-accent/20 to-transparent p-5">
+            <PkgPreview />
+          </div>
+        );
+      })()}
 
       {/* Expandable code snippet */}
       {extra?.code && (

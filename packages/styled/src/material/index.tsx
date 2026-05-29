@@ -1600,19 +1600,60 @@ const TextareaAutosize = React.forwardRef<
 ));
 TextareaAutosize.displayName = 'TextareaAutosize';
 
-const Transition = React.forwardRef<HTMLDivElement, PrimitiveTransitionProps>(
-  ({ className, ...props }, ref) => (
-  <MaterialPrimitive.Transition
-    ref={ref}
-    className={cn(
-      'data-[state=entering]:animate-in data-[state=entering]:fade-in-0',
-      'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0',
-      'data-[state=exited]:hidden',
-      className,
-    )}
-    {...props}
-  />
-));
+export type TransitionAnimation =
+  | 'fade'
+  | 'slide-up'
+  | 'slide-down'
+  | 'slide-left'
+  | 'slide-right'
+  | 'zoom'
+  | 'grow'
+  | 'collapse';
+
+const TRANSITION_CLASSES: Record<TransitionAnimation, string> = {
+  fade:
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0',
+  'slide-up':
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 data-[state=entering]:slide-in-from-bottom-4 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0 data-[state=exiting]:slide-out-to-bottom-4',
+  'slide-down':
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 data-[state=entering]:slide-in-from-top-4 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0 data-[state=exiting]:slide-out-to-top-4',
+  'slide-left':
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 data-[state=entering]:slide-in-from-right-4 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0 data-[state=exiting]:slide-out-to-right-4',
+  'slide-right':
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 data-[state=entering]:slide-in-from-left-4 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0 data-[state=exiting]:slide-out-to-left-4',
+  zoom:
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 data-[state=entering]:zoom-in-75 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0 data-[state=exiting]:zoom-out-75',
+  grow:
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 data-[state=entering]:zoom-in-90 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0 data-[state=exiting]:zoom-out-90',
+  collapse:
+    'data-[state=entering]:animate-in data-[state=entering]:fade-in-0 data-[state=entering]:slide-in-from-top-2 ' +
+    'data-[state=exiting]:animate-out data-[state=exiting]:fade-out-0 data-[state=exiting]:slide-out-to-top-2',
+};
+
+export interface TransitionProps extends PrimitiveTransitionProps {
+  animation?: TransitionAnimation;
+}
+
+const Transition = React.forwardRef<HTMLDivElement, TransitionProps>(
+  ({ className, animation = 'fade', ...props }, ref) => (
+    <MaterialPrimitive.Transition
+      ref={ref}
+      className={cn(
+        TRANSITION_CLASSES[animation],
+        'data-[state=exited]:hidden',
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
 Transition.displayName = 'Transition';
 
 const CssBaseline = MaterialPrimitive.CssBaseline;

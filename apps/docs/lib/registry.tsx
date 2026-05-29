@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/rules-of-hooks */
 
 import * as React from 'react';
 import {
@@ -97,6 +98,7 @@ import {
   TextareaAutosize,
   Transition,
   CssBaseline,
+  InitColorSchemeScript,
 } from '@aura-ui/styled';
 import { DataTable, type DataTableColumnDef, type DataTableFilterGroup } from '@aura-ui/data-table';
 import { componentUsageExamples } from './component-usage-examples';
@@ -1769,12 +1771,34 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
     category: 'Utils',
     description: 'Calls a handler when interaction happens outside its child.',
     features: ['Document-level mouse and touch support.', 'No visual wrapper.'],
-    preview: () => (
-      <ClickAwayListener>
-        <Button variant="outline">Click outside aware</Button>
-      </ClickAwayListener>
-    ),
-    code: `import { ClickAwayListener } from '@aura-ui/styled';\n\n<ClickAwayListener onClickAway={close}><div /></ClickAwayListener>`,
+    preview: () => {
+      const [open, setOpen] = React.useState(false);
+      return (
+        <div className="flex min-h-[120px] flex-col items-center justify-center gap-4 p-4">
+          {!open ? (
+            <Button variant="outline" onClick={() => setOpen(true)}>Open panel</Button>
+          ) : (
+            <ClickAwayListener onClickAway={() => setOpen(false)}>
+              <Paper className="flex flex-col gap-1 p-4 text-sm shadow-md">
+                <span className="font-medium">Click outside to close</span>
+                <span className="text-muted-foreground text-xs">Clicks inside here are ignored</span>
+              </Paper>
+            </ClickAwayListener>
+          )}
+        </div>
+      );
+    },
+    code: `import { ClickAwayListener, Paper } from '@aura-ui/styled';
+
+const [open, setOpen] = useState(false);
+
+{!open ? (
+  <Button onClick={() => setOpen(true)}>Open panel</Button>
+) : (
+  <ClickAwayListener onClickAway={() => setOpen(false)}>
+    <Paper>Click outside to close</Paper>
+  </ClickAwayListener>
+)}`,
   },
   {
     slug: 'no-ssr',
@@ -1782,8 +1806,19 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
     category: 'Utils',
     description: 'Defers rendering until after mount.',
     features: ['SSR-safe fallback.', 'Client-only children.'],
-    preview: () => <NoSsr fallback="Loading">Client rendered</NoSsr>,
-    code: `import { NoSsr } from '@aura-ui/styled';\n\n<NoSsr fallback={null}>Client only</NoSsr>`,
+    preview: () => (
+      <NoSsr fallback={<Typography variant="muted" className="text-xs italic">Rendering on server…</Typography>}>
+        <Paper className="flex flex-col gap-1 p-4 text-sm">
+          <span className="font-medium">Rendered on client</span>
+          <span className="text-muted-foreground text-xs">Window: {typeof window !== 'undefined' ? `${window.innerWidth}×${window.innerHeight}` : ''}</span>
+        </Paper>
+      </NoSsr>
+    ),
+    code: `import { NoSsr } from '@aura-ui/styled';
+
+<NoSsr fallback={<span>Rendering on server…</span>}>
+  Window: {window.innerWidth}×{window.innerHeight}
+</NoSsr>`,
   },
   {
     slug: 'portal',
@@ -1868,21 +1903,28 @@ const anchorRef = useRef<HTMLButtonElement>(null);
     name: 'Transition',
     category: 'Utils',
     description: 'Manages entering/entered/exiting/exited states for CSS transitions.',
-    features: ['Four-stage state machine.', 'unmountOnExit support.', 'timeout control.'],
+    features: ['Eight animation types.', 'Four-stage state machine.', 'unmountOnExit support.', 'Timeout control.'],
     preview: () => {
+      const ANIMS = ['fade', 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'zoom', 'grow', 'collapse'] as const;
+      type Anim = typeof ANIMS[number];
       const [show, setShow] = React.useState(true);
+      const [anim, setAnim] = React.useState<Anim>('fade');
       return (
-        <div className="flex flex-col items-center gap-4">
-          <Button variant="outline" onClick={() => setShow(s => !s)}>
+        <div className="flex flex-col items-center gap-4 w-full max-w-xs">
+          <div className="flex flex-wrap justify-center gap-1">
+            {ANIMS.map(a => (
+              <button
+                key={a}
+                onClick={() => setAnim(a)}
+                className={`rounded px-2 py-0.5 text-[11px] font-medium transition-colors ${anim === a ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-accent hover:text-fg'}`}
+              >{a}</button>
+            ))}
+          </div>
+          <Button variant="outline" size="sm" onClick={() => setShow(s => !s)}>
             {show ? 'Hide' : 'Show'}
           </Button>
-          <Transition
-            in={show}
-            timeout={300}
-            unmountOnExit
-            className="border-border rounded-md border p-4 text-sm w-48 text-center"
-          >
-            Transition content
+          <Transition in={show} timeout={300} animation={anim} unmountOnExit className="border-border rounded-md border p-4 text-sm w-48 text-center">
+            <span className="font-mono text-xs">{anim}</span>
           </Transition>
         </div>
       );
@@ -1892,8 +1934,8 @@ const anchorRef = useRef<HTMLButtonElement>(null);
 const [show, setShow] = useState(true);
 
 <Button onClick={() => setShow(s => !s)}>Toggle</Button>
-<Transition in={show} timeout={300} unmountOnExit>
-  <div>Content</div>
+<Transition in={show} timeout={300} animation="slide-up" unmountOnExit>
+  Content
 </Transition>`,
   },
   {
@@ -1903,12 +1945,18 @@ const [show, setShow] = useState(true);
     description: 'Injects a small global reset.',
     features: ['Box sizing reset.', 'Form font inheritance.'],
     preview: () => (
-      <>
+      <div className="flex flex-col gap-2 w-full max-w-sm text-xs">
         <CssBaseline />
-        <span className="text-sm">Baseline mounted</span>
-      </>
+        <span className="text-muted-foreground">Injected CSS reset:</span>
+        <pre className="bg-muted overflow-auto rounded p-2 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
+          {`*,*::before,*::after { box-sizing: border-box }\nhtml { line-height: 1.5; -webkit-text-size-adjust: 100% }\nbody { margin: 0 }\nbutton,input,textarea,select { font: inherit }`}
+        </pre>
+      </div>
     ),
-    code: `import { CssBaseline } from '@aura-ui/styled';\n\n<CssBaseline />`,
+    code: `import { CssBaseline } from '@aura-ui/styled';
+
+// Place once at your app root — injects a minimal CSS reset
+<CssBaseline />`,
   },
   {
     slug: 'init-color-scheme-script',
@@ -1916,8 +1964,19 @@ const [show, setShow] = useState(true);
     category: 'Utils',
     description: 'Sets the initial color-scheme attribute before hydration.',
     features: ['LocalStorage-aware.', 'System mode support.'],
-    preview: () => <span className="text-sm">Color scheme script</span>,
-    code: `import { InitColorSchemeScript } from '@aura-ui/styled';\n\n<InitColorSchemeScript defaultMode="system" />`,
+    preview: () => (
+      <div className="flex flex-col gap-2 w-full max-w-sm text-xs">
+        <InitColorSchemeScript defaultMode="system" />
+        <span className="text-muted-foreground">Script injected into &lt;head&gt; before hydration:</span>
+        <pre className="bg-muted overflow-auto rounded p-2 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
+          {`var m = localStorage.getItem("aura-ui-mode") || "system";\nif (m === "system") {\n  m = matchMedia("(prefers-color-scheme: dark)").matches\n    ? "dark" : "light";\n}\ndocument.documentElement.setAttribute("data-theme", m);`}
+        </pre>
+      </div>
+    ),
+    code: `import { InitColorSchemeScript } from '@aura-ui/styled';
+
+// In your root layout <head> — runs before hydration to prevent flash
+<InitColorSchemeScript defaultMode="system" />`,
   },
 ];
 
@@ -2924,62 +2983,114 @@ const options = [
   ],
   'click-away-listener': [
     {
-      title: 'Dismiss a surface',
-      description: 'Wrap one child and receive outside pointer/touch interactions.',
-      preview: () => (
-        <ClickAwayListener onClickAway={() => {}}>
-          <Paper className="p-4 text-sm">Click-away aware panel</Paper>
-        </ClickAwayListener>
-      ),
-      code: `import { ClickAwayListener } from '@aura-ui/styled';
+      title: 'Dismiss a panel',
+      description: 'Open a panel and click anywhere outside to close it. Clicks inside are ignored.',
+      preview: () => {
+        const [open, setOpen] = React.useState(false);
+        return (
+          <div className="flex min-h-[120px] flex-col items-center justify-center gap-3 p-4">
+            {!open ? (
+              <Button variant="outline" onClick={() => setOpen(true)}>Open panel</Button>
+            ) : (
+              <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <Paper className="flex flex-col gap-2 p-4 shadow-md">
+                  <span className="text-sm font-medium">Panel is open</span>
+                  <span className="text-muted-foreground text-xs">Click outside to dismiss</span>
+                  <Button variant="outline" size="sm" onClick={() => setOpen(false)}>Close</Button>
+                </Paper>
+              </ClickAwayListener>
+            )}
+          </div>
+        );
+      },
+      code: `import { ClickAwayListener, Paper, Button } from '@aura-ui/styled';
 
-<ClickAwayListener onClickAway={close}>
-  <div>Click-away aware panel</div>
-</ClickAwayListener>`,
+const [open, setOpen] = useState(false);
+
+{!open ? (
+  <Button onClick={() => setOpen(true)}>Open panel</Button>
+) : (
+  <ClickAwayListener onClickAway={() => setOpen(false)}>
+    <Paper>
+      <p>Click outside to dismiss</p>
+      <Button onClick={() => setOpen(false)}>Close</Button>
+    </Paper>
+  </ClickAwayListener>
+)}`,
     },
     {
-      title: 'With buttons',
-      description:
-        'The child keeps its own behavior; ClickAwayListener only observes outside interactions.',
-      preview: () => (
-        <ClickAwayListener onClickAway={() => {}}>
-          <Button variant="outline">Observed button</Button>
-        </ClickAwayListener>
-      ),
-      code: `import { Button, ClickAwayListener } from '@aura-ui/styled';
+      title: 'Tooltip-style popover',
+      description: 'Use with a dropdown or popover surface — inside clicks keep it open.',
+      preview: () => {
+        const [open, setOpen] = React.useState(false);
+        return (
+          <div className="flex min-h-[140px] flex-col items-start gap-3 p-4">
+            <Button variant="outline" size="sm" onClick={() => setOpen(o => !o)}>
+              {open ? 'Opened (click outside)' : 'Open menu'}
+            </Button>
+            {open && (
+              <ClickAwayListener onClickAway={() => setOpen(false)}>
+                <Paper className="flex flex-col gap-1 p-2 text-xs shadow-md min-w-[140px]">
+                  <button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item A</button>
+                  <button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item B</button>
+                  <button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item C</button>
+                </Paper>
+              </ClickAwayListener>
+            )}
+          </div>
+        );
+      },
+      code: `import { ClickAwayListener, Paper } from '@aura-ui/styled';
 
-<ClickAwayListener onClickAway={close}>
-  <Button variant="outline">Observed button</Button>
-</ClickAwayListener>`,
+const [open, setOpen] = useState(false);
+
+<Button onClick={() => setOpen(o => !o)}>Open menu</Button>
+{open && (
+  <ClickAwayListener onClickAway={() => setOpen(false)}>
+    <Paper>
+      <button onClick={() => setOpen(false)}>Item A</button>
+      <button onClick={() => setOpen(false)}>Item B</button>
+    </Paper>
+  </ClickAwayListener>
+)}`,
     },
   ],
   'no-ssr': [
     {
-      title: 'Client-only content',
-      description: 'Render browser-dependent children after the component mounts.',
+      title: 'Browser-only value',
+      description: 'Show content that relies on browser APIs — safe on the server, accurate on the client.',
       preview: () => (
-        <NoSsr fallback={<Typography variant="muted">Loading client state...</Typography>}>
-          Client state loaded
+        <NoSsr fallback={
+          <Paper className="flex flex-col gap-1 p-4 text-sm opacity-50">
+            <span>Rendering on server…</span>
+          </Paper>
+        }>
+          <Paper className="flex flex-col gap-1 p-4 text-sm">
+            <span className="font-medium">Rendered on client ✓</span>
+            <span className="text-muted-foreground text-xs">
+              Viewport: {typeof window !== 'undefined' ? `${window.innerWidth}×${window.innerHeight}px` : ''}
+            </span>
+          </Paper>
         </NoSsr>
       ),
       code: `import { NoSsr } from '@aura-ui/styled';
 
-<NoSsr fallback="Loading client state...">
-  Client state loaded
+<NoSsr fallback={<span>Loading…</span>}>
+  Viewport: {window.innerWidth}×{window.innerHeight}px
 </NoSsr>`,
     },
     {
-      title: 'Avoid hydration mismatch',
-      description: 'Use NoSsr around content that depends on browser-only values.',
+      title: 'Deferred with one frame',
+      description: 'Pass defer to delay one animation frame after mount, smoothing flash for slow renders.',
       preview: () => (
-        <NoSsr fallback={null}>
-          <Chip label="Mounted on client" variant="outline" />
+        <NoSsr fallback={<Chip label="Loading…" variant="outline" />} defer>
+          <Chip label="Deferred client render ✓" />
         </NoSsr>
       ),
       code: `import { Chip, NoSsr } from '@aura-ui/styled';
 
-<NoSsr fallback={null}>
-  <Chip label="Mounted on client" />
+<NoSsr fallback={<Chip label="Loading…" />} defer>
+  <Chip label="Deferred client render" />
 </NoSsr>`,
     },
   ],
@@ -3117,38 +3228,109 @@ const anchorRef = useRef<HTMLButtonElement>(null);
   ],
   transition: [
     {
-      title: 'Fade toggle',
-      description: 'Toggle in to run entering/exiting states and fade the content.',
+      title: 'Slide animations',
+      description: 'slide-up, slide-down, slide-left, slide-right — content enters from the opposite edge.',
       preview: () => {
-        const [show, setShow] = React.useState(true);
+        const dirs = [
+          { anim: 'slide-up', label: '↑ Up' },
+          { anim: 'slide-down', label: '↓ Down' },
+          { anim: 'slide-left', label: '← Left' },
+          { anim: 'slide-right', label: '→ Right' },
+        ] as const;
+        type Dir = typeof dirs[number]['anim'];
+        const [shows, setShows] = React.useState<Record<Dir, boolean>>({ 'slide-up': true, 'slide-down': true, 'slide-left': true, 'slide-right': true });
         return (
-          <div className="flex flex-col items-center gap-4">
-            <Button variant="outline" onClick={() => setShow(s => !s)}>
-              {show ? 'Hide' : 'Show'}
-            </Button>
-            <Transition
-              in={show}
-              timeout={300}
-              unmountOnExit
-              className="border-border rounded-md border p-4 text-sm w-40 text-center"
-            >
-              Content
-            </Transition>
+          <div className="grid grid-cols-2 gap-3 w-full max-w-xs">
+            {dirs.map(({ anim, label }) => (
+              <div key={anim} className="flex flex-col items-center gap-2">
+                <Button variant="outline" size="sm" className="w-full text-xs" onClick={() => setShows(s => ({ ...s, [anim]: !s[anim] }))}>
+                  {label}
+                </Button>
+                <div className="min-h-[40px] flex items-center justify-center w-full">
+                  <Transition in={shows[anim]} timeout={300} animation={anim} unmountOnExit className="border-border bg-muted rounded px-3 py-1.5 text-[11px]">
+                    {anim}
+                  </Transition>
+                </div>
+              </div>
+            ))}
           </div>
         );
       },
-      code: `import { Button, Transition } from '@aura-ui/styled';
+      code: `import { Transition } from '@aura-ui/styled';
 
-const [show, setShow] = useState(true);
-
-<Button onClick={() => setShow(s => !s)}>Toggle</Button>
-<Transition in={show} timeout={300} unmountOnExit>
+<Transition in={show} timeout={300} animation="slide-up" unmountOnExit>
   Content
-</Transition>`,
+</Transition>
+
+// other directions: slide-down | slide-left | slide-right`,
+    },
+    {
+      title: 'Scale animations',
+      description: 'zoom scales from 75%, grow scales from 90% — both combine with fade.',
+      preview: () => {
+        const [showZoom, setShowZoom] = React.useState(true);
+        const [showGrow, setShowGrow] = React.useState(true);
+        return (
+          <div className="flex gap-8">
+            {[
+              { label: 'zoom', anim: 'zoom' as const, show: showZoom, toggle: () => setShowZoom(s => !s) },
+              { label: 'grow', anim: 'grow' as const, show: showGrow, toggle: () => setShowGrow(s => !s) },
+            ].map(({ label, anim, show, toggle }) => (
+              <div key={label} className="flex flex-col items-center gap-2">
+                <Button variant="outline" size="sm" onClick={toggle}>{label}</Button>
+                <div className="min-h-[48px] flex items-center justify-center">
+                  <Transition in={show} timeout={250} animation={anim} unmountOnExit className="border-border bg-muted rounded px-3 py-2 text-xs">
+                    {label}
+                  </Transition>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      },
+      code: `import { Transition } from '@aura-ui/styled';
+
+<Transition in={show} timeout={250} animation="zoom" unmountOnExit>
+  Content
+</Transition>
+
+// gentle scale: animation="grow"`,
+    },
+    {
+      title: 'Collapse and fade',
+      description: 'collapse slides from the top edge; fade is pure opacity-only.',
+      preview: () => {
+        const [showCollapse, setShowCollapse] = React.useState(true);
+        const [showFade, setShowFade] = React.useState(true);
+        return (
+          <div className="flex gap-8">
+            {[
+              { label: 'collapse', anim: 'collapse' as const, show: showCollapse, toggle: () => setShowCollapse(s => !s) },
+              { label: 'fade', anim: 'fade' as const, show: showFade, toggle: () => setShowFade(s => !s) },
+            ].map(({ label, anim, show, toggle }) => (
+              <div key={label} className="flex flex-col items-center gap-2">
+                <Button variant="outline" size="sm" onClick={toggle}>{label}</Button>
+                <div className="min-h-[48px] flex items-center justify-center">
+                  <Transition in={show} timeout={300} animation={anim} unmountOnExit className="border-border bg-muted rounded px-3 py-2 text-xs">
+                    {label}
+                  </Transition>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      },
+      code: `import { Transition } from '@aura-ui/styled';
+
+<Transition in={show} timeout={300} animation="collapse" unmountOnExit>
+  Content
+</Transition>
+
+// pure opacity: animation="fade" (default)`,
     },
     {
       title: 'Render function (status)',
-      description: 'Pass a function as children to receive the current transition status.',
+      description: 'Pass a function as children to receive the current transition status and drive custom styles.',
       preview: () => {
         const [show, setShow] = React.useState(true);
         return (
@@ -3167,65 +3349,99 @@ const [show, setShow] = useState(true);
       code: `import { Transition } from '@aura-ui/styled';
 
 <Transition in={show} timeout={400}>
-  {(status) => <div>State: {status}</div>}
+  {(status) => (
+    <div style={{ opacity: status === 'entered' ? 1 : 0 }}>
+      {status}
+    </div>
+  )}
 </Transition>`,
     },
   ],
   'css-baseline': [
     {
-      title: 'App-level reset',
-      description: 'Mount CssBaseline once near the root of your app.',
+      title: 'Injected styles',
+      description: 'CssBaseline injects a minimal CSS reset as a <style> tag — mount it once at your app root.',
       preview: () => (
-        <>
+        <div className="flex flex-col gap-2 w-full max-w-sm">
           <CssBaseline />
-          <Typography variant="muted">Baseline is mounted for this preview.</Typography>
-        </>
+          <Typography variant="muted" className="text-xs">CssBaseline is mounted. Injected rules:</Typography>
+          <pre className="bg-muted rounded p-3 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
+            {`*, *::before, *::after {\n  box-sizing: border-box;\n}\nhtml {\n  line-height: 1.5;\n  -webkit-text-size-adjust: 100%;\n}\nbody {\n  margin: 0;\n}\nbutton, input, textarea, select {\n  font: inherit;\n}`}
+          </pre>
+        </div>
       ),
       code: `import { CssBaseline } from '@aura-ui/styled';
 
-export function App() {
+export function RootLayout() {
   return (
     <>
       <CssBaseline />
-      <Routes />
+      <App />
     </>
   );
 }`,
     },
     {
-      title: 'With providers',
-      description: 'Place the reset inside or beside theme providers depending on app structure.',
-      preview: () => <Typography variant="muted">Use once with your theme provider.</Typography>,
+      title: 'With color-scheme',
+      description: 'Pass enableColorScheme to also inject color-scheme: light dark on html.',
+      preview: () => (
+        <div className="flex flex-col gap-2 w-full max-w-sm">
+          <CssBaseline enableColorScheme />
+          <pre className="bg-muted rounded p-3 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
+            {`html {\n  color-scheme: light dark;\n  /* ... other reset rules */\n}`}
+          </pre>
+        </div>
+      ),
       code: `import { CssBaseline } from '@aura-ui/styled';
 
-<ThemeProvider>
-  <CssBaseline />
-  <App />
-</ThemeProvider>`,
+<CssBaseline enableColorScheme />`,
     },
   ],
   'init-color-scheme-script': [
     {
-      title: 'System mode',
-      description: 'Set defaultMode to system so first paint follows the user preference.',
+      title: 'System mode default',
+      description: 'defaultMode="system" reads prefers-color-scheme on first paint — no flash of wrong theme.',
       preview: () => (
-        <Typography variant="muted">Script should be placed before app hydration.</Typography>
+        <div className="flex flex-col gap-2 w-full max-w-sm text-xs">
+          <InitColorSchemeScript defaultMode="system" />
+          <Typography variant="muted">Generated inline script (runs before React hydrates):</Typography>
+          <pre className="bg-muted rounded p-3 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
+            {`var m = localStorage.getItem("aura-ui-mode") || "system";\nif (m === "system") {\n  m = matchMedia("(prefers-color-scheme: dark)").matches\n    ? "dark" : "light";\n}\ndocument.documentElement\n  .setAttribute("data-theme", m);`}
+          </pre>
+        </div>
+      ),
+      code: `// In Next.js root layout.tsx <head>:
+import { InitColorSchemeScript } from '@aura-ui/styled';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <head>
+        <InitColorSchemeScript defaultMode="system" />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}`,
+    },
+    {
+      title: 'Custom attribute and storage key',
+      description: 'Override the HTML attribute and localStorage key to match your existing theme system.',
+      preview: () => (
+        <div className="flex flex-col gap-2 w-full max-w-sm text-xs">
+          <InitColorSchemeScript attribute="data-color-mode" defaultMode="light" storageKey="my-app-theme" />
+          <Typography variant="muted">Script sets data-color-mode on &lt;html&gt;:</Typography>
+          <pre className="bg-muted rounded p-3 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
+            {`var m = localStorage.getItem("my-app-theme") || "light";\n// ...\ndocument.documentElement\n  .setAttribute("data-color-mode", m);`}
+          </pre>
+        </div>
       ),
       code: `import { InitColorSchemeScript } from '@aura-ui/styled';
 
-<InitColorSchemeScript defaultMode="system" />`,
-    },
-    {
-      title: 'Custom storage key',
-      description:
-        'Use storageKey when your app already stores theme preference under a known key.',
-      preview: () => <Typography variant="muted">Use before your root app markup.</Typography>,
-      code: `import { InitColorSchemeScript } from '@aura-ui/styled';
-
 <InitColorSchemeScript
-  attribute="data-theme"
+  attribute="data-color-mode"
   defaultMode="light"
-  storageKey="aura-theme-mode"
+  storageKey="my-app-theme"
 />`,
     },
   ],
@@ -3740,23 +3956,39 @@ const materialPropExamples: Record<string, ComponentExample> = {
 </Timeline.Root>`,
   },
   'click-away-listener': {
-    title: 'Outside clicks',
-    description: 'Attach onClickAway to any observed child.',
-    preview: () => (
-      <ClickAwayListener onClickAway={() => {}}>
-        <Button variant="outline">Observed</Button>
-      </ClickAwayListener>
-    ),
-    code: `<ClickAwayListener onClickAway={close}>
+    title: 'onClickAway callback',
+    description: 'Receives the raw mouse or touch event — use it to close, dismiss, or reset.',
+    preview: () => {
+      const [open, setOpen] = React.useState(false);
+      const [count, setCount] = React.useState(0);
+      return (
+        <div className="flex min-h-[100px] flex-col items-center justify-center gap-3 p-4">
+          {!open ? (
+            <Button variant="outline" size="sm" onClick={() => setOpen(true)}>Open</Button>
+          ) : (
+            <ClickAwayListener onClickAway={() => { setOpen(false); setCount(c => c + 1); }}>
+              <Paper className="flex flex-col gap-1 p-3 text-xs shadow-md">
+                <span className="font-medium">Panel open</span>
+                <span className="text-muted-foreground">Click outside to close ({count} times)</span>
+              </Paper>
+            </ClickAwayListener>
+          )}
+        </div>
+      );
+    },
+    code: `<ClickAwayListener onClickAway={(event) => {
+  console.log('clicked away', event);
+  close();
+}}>
   <Paper>Observed content</Paper>
 </ClickAwayListener>`,
   },
   'no-ssr': {
-    title: 'Fallback and defer',
-    description: 'Use defer to wait one frame after mount before showing children.',
+    title: 'fallback and defer',
+    description: 'fallback shows during SSR; defer waits one animation frame after mount.',
     preview: () => (
-      <NoSsr fallback={<Typography variant="muted">Loading...</Typography>} defer>
-        <Chip label="Client" />
+      <NoSsr fallback={<Chip label="Server fallback" variant="outline" />} defer>
+        <Chip label="Client render (deferred) ✓" />
       </NoSsr>
     ),
     code: `<NoSsr fallback={<span>Loading...</span>} defer>
@@ -3820,15 +4052,37 @@ const materialPropExamples: Record<string, ComponentExample> = {
     code: `<TextareaAutosize minRows={2} maxRows={4} defaultValue="Line one\\nLine two" />`,
   },
   transition: {
-    title: 'Mount and timeout props',
-    description:
-      'Transition exposes data-state and mount/timeout metadata for Tailwind animation classes.',
-    preview: () => (
-      <Transition in appear timeout={200} className="border-border rounded-md border p-3 text-sm">
-        Animated content
-      </Transition>
-    ),
-    code: `<Transition in appear timeout={200} mountOnEnter unmountOnExit>
+    title: 'animation prop',
+    description: 'Pick from 8 built-in animations: fade, slide-up/down/left/right, zoom, grow, collapse.',
+    preview: () => {
+      const ANIMS = ['fade', 'slide-up', 'zoom', 'grow', 'collapse'] as const;
+      type Anim = typeof ANIMS[number];
+      const [active, setActive] = React.useState<Anim>('slide-up');
+      const [show, setShow] = React.useState(true);
+      return (
+        <div className="flex flex-col items-center gap-3 w-full max-w-xs">
+          <div className="flex flex-wrap justify-center gap-1">
+            {ANIMS.map(a => (
+              <button key={a} onClick={() => setActive(a)} className={`rounded px-2 py-0.5 text-[11px] font-medium transition-colors ${active === a ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-accent'}`}>
+                {a}
+              </button>
+            ))}
+          </div>
+          <Button variant="outline" size="sm" onClick={() => setShow(s => !s)}>
+            {show ? 'Hide' : 'Show'}
+          </Button>
+          <Transition in={show} timeout={300} animation={active} unmountOnExit className="border-border rounded-md border px-4 py-2 text-xs">
+            {active}
+          </Transition>
+        </div>
+      );
+    },
+    code: `<Transition
+  in={show}
+  timeout={300}
+  animation="slide-up"
+  unmountOnExit
+>
   Content
 </Transition>`,
   },
@@ -6339,48 +6593,75 @@ export default function Demo() {
     category: 'Disclosure',
     description: 'A multi-step process indicator.',
     features: ['Complete / current / upcoming states.', 'Horizontal or vertical.'],
-    preview: () => (
-      <Stepper.Root activeStep={1} className="w-full max-w-sm">
-        <Stepper.Step index={0} />
-        <Stepper.Separator />
-        <Stepper.Step index={1} />
-        <Stepper.Separator />
-        <Stepper.Step index={2} />
-      </Stepper.Root>
-    ),
-    code: `import { Stepper } from '@aura-ui/styled';\n\n<Stepper.Root activeStep={1}>\n  <Stepper.Step index={0} /><Stepper.Separator />\n  <Stepper.Step index={1} /><Stepper.Separator />\n  <Stepper.Step index={2} />\n</Stepper.Root>`,
+    preview: () => {
+      const [active, setActive] = React.useState(0);
+      const steps = 3;
+      return (
+        <div className="flex w-full max-w-sm flex-col gap-4">
+          <Stepper.Root activeStep={active} className="w-full">
+            <Stepper.Step index={0} />
+            <Stepper.Separator />
+            <Stepper.Step index={1} />
+            <Stepper.Separator />
+            <Stepper.Step index={2} />
+          </Stepper.Root>
+          <div className="flex justify-between">
+            <Button variant="outline" size="sm" disabled={active === 0} onClick={() => setActive(a => a - 1)}>Previous</Button>
+            <Button variant="outline" size="sm" disabled={active === steps - 1} onClick={() => setActive(a => a + 1)}>Next</Button>
+          </div>
+        </div>
+      );
+    },
+    code: `import { Stepper, Button } from '@aura-ui/styled';
+
+const [active, setActive] = useState(0);
+
+<Stepper.Root activeStep={active}>
+  <Stepper.Step index={0} /><Stepper.Separator />
+  <Stepper.Step index={1} /><Stepper.Separator />
+  <Stepper.Step index={2} />
+</Stepper.Root>
+<Button disabled={active === 0} onClick={() => setActive(a => a - 1)}>Previous</Button>
+<Button disabled={active === 2} onClick={() => setActive(a => a + 1)}>Next</Button>`,
     examples: [
       {
         title: 'With labels',
         description: 'Each step labeled to describe what happens at that stage.',
-        preview: () => (
-          <Stepper.Root activeStep={1} className="max-w-lg">
-            <Stepper.Step index={0}>
-              <Stepper.Title>Account</Stepper.Title>
-            </Stepper.Step>
-            <Stepper.Separator />
-            <Stepper.Step index={1}>
-              <Stepper.Title>Profile</Stepper.Title>
-            </Stepper.Step>
-            <Stepper.Separator />
-            <Stepper.Step index={2}>
-              <Stepper.Title>Billing</Stepper.Title>
-            </Stepper.Step>
-          </Stepper.Root>
-        ),
-        code: `import { Stepper } from '@aura-ui/styled';
+        preview: () => {
+          const [active, setActive] = React.useState(0);
+          const labels = ['Account', 'Profile', 'Billing'];
+          return (
+            <div className="flex w-full max-w-lg flex-col gap-4">
+              <Stepper.Root activeStep={active} className="w-full">
+                {labels.map((label, i) => (
+                  <React.Fragment key={label}>
+                    {i > 0 && <Stepper.Separator />}
+                    <Stepper.Step index={i}>
+                      <Stepper.Title>{label}</Stepper.Title>
+                    </Stepper.Step>
+                  </React.Fragment>
+                ))}
+              </Stepper.Root>
+              <div className="flex justify-between">
+                <Button variant="outline" size="sm" disabled={active === 0} onClick={() => setActive(a => a - 1)}>Previous</Button>
+                <Button variant="outline" size="sm" disabled={active === labels.length - 1} onClick={() => setActive(a => a + 1)}>Next</Button>
+              </div>
+            </div>
+          );
+        },
+        code: `import { Stepper, Button } from '@aura-ui/styled';
 
-export default function Demo() {
-  return (
-    <Stepper.Root activeStep={1}>
-      <Stepper.Step index={0}><Stepper.Title>Account</Stepper.Title></Stepper.Step>
-      <Stepper.Separator />
-      <Stepper.Step index={1}><Stepper.Title>Profile</Stepper.Title></Stepper.Step>
-      <Stepper.Separator />
-      <Stepper.Step index={2}><Stepper.Title>Billing</Stepper.Title></Stepper.Step>
-    </Stepper.Root>
-  );
-}`,
+const [active, setActive] = useState(0);
+
+<Stepper.Root activeStep={active}>
+  <Stepper.Step index={0}><Stepper.Title>Account</Stepper.Title></Stepper.Step>
+  <Stepper.Separator />
+  <Stepper.Step index={1}><Stepper.Title>Profile</Stepper.Title></Stepper.Step>
+  <Stepper.Separator />
+  <Stepper.Step index={2}><Stepper.Title>Billing</Stepper.Title></Stepper.Step>
+</Stepper.Root>
+<Button disabled={active === 0} onClick={() => setActive(a => a - 1)}>Previous</Button>
+<Button disabled={active === 2} onClick={() => setActive(a => a + 1)}>Next</Button>`,
       },
     ],
   },

@@ -371,3 +371,4 @@ export {
   Portal as MaterialPortal,
   InitColorSchemeScript,
 } from './material';
+export type { TransitionAnimation, TransitionProps as AuraTransitionProps } from './material';
