@@ -21,7 +21,7 @@ export const Default: Story = {
         <Drawer.Header>
           <Drawer.Title>Edit Profile</Drawer.Title>
           <Drawer.Description>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </Drawer.Description>
         </Drawer.Header>
         <div className="grid gap-4 px-4">

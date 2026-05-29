@@ -2070,7 +2070,7 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
   };
 
   // Unique id for the tbody element (for aria-controls on search)
-  const tbodyId = React.useId ? React.useId() : undefined;
+  const tbodyId = React.useId();
   const tbodyIdAttr = tbodyId ? `datatable-tbody-${tbodyId.replace(/:/g, '')}` : undefined;
 
   // Round 3: Feature 1 — if pivot is active, render pivot view instead
@@ -4700,6 +4700,7 @@ function SparklineSVG({
   );
 }
 
+/* eslint-disable react/display-name */
 function buildBuiltinCellRenderer<TData, TValue>({
   type,
   badgeMap,
@@ -4888,6 +4889,7 @@ function buildBuiltinCellRenderer<TData, TValue>({
       return undefined;
   }
 }
+/* eslint-enable react/display-name */
 
 /* ─── Keyboard shortcuts modal ─────────────────────────────────────── */
 

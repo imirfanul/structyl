@@ -60,7 +60,7 @@ export const MultipleOpen: Story = {
           <Trigger>Does it support SSR?</Trigger>
           <Content>
             Yes. Every component is SSR-safe. Server components are supported via the{' '}
-            <code>'use client'</code> boundary placed at the package entry point.
+            <code>&apos;use client&apos;</code> boundary placed at the package entry point.
           </Content>
         </Item>
         <Item value="q3">

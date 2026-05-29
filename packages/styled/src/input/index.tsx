@@ -83,9 +83,9 @@ const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
           )}
           {React.Children.map(children, (child) => {
             if (!React.isValidElement(child)) return child;
-            return React.cloneElement(child as React.ReactElement<any>, {
+            return React.cloneElement(child as React.ReactElement<{ className?: string }>, {
               className: cn(
-                (child as React.ReactElement<any>).props.className,
+                (child as React.ReactElement<{ className?: string }>).props.className,
                 hasStart && 'pl-9',
                 hasEnd && 'pr-9',
                 hasLeftAddon && 'rounded-l-none',

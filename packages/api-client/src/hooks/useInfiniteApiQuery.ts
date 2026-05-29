@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
 import { serializeKey } from '../cache';
 import { useApiContext } from '../provider';
 import type {
-  ApiError,
   UseInfiniteApiQueryOptions,
   InfiniteData,
   InfiniteApiQueryResult,

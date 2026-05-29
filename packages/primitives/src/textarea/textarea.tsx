@@ -18,7 +18,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>((props, re
           target: { value: v },
         } as unknown as React.ChangeEvent<HTMLTextAreaElement>;
         try {
-          (onChange as any)(synthetic);
+          onChange(synthetic);
         } catch {
           // ignore
         }

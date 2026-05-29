@@ -85,12 +85,12 @@ export const CodeExample: Story = {
             <div className="grid grid-cols-3 gap-2 text-xs">
               <span>variant</span>
               <span className="font-mono text-muted-foreground">string</span>
-              <span className="font-mono">"default"</span>
+              <span className="font-mono">&quot;default&quot;</span>
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">
               <span>size</span>
               <span className="font-mono text-muted-foreground">string</span>
-              <span className="font-mono">"md"</span>
+              <span className="font-mono">&quot;md&quot;</span>
             </div>
           </div>
         </Content>

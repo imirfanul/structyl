@@ -21,7 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref) => {
     onChange: (v) => {
       if (onChange) {
         const synthetic = { target: { value: v } } as unknown as React.ChangeEvent<HTMLInputElement>;
-        try { (onChange as any)(synthetic); } catch { /* ignore */ }
+        try { onChange(synthetic); } catch { /* ignore */ }
       }
     },
   });

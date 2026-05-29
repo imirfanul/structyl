@@ -125,10 +125,10 @@ const Group = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       >
         {visible.map((child, i) =>
           React.isValidElement(child)
-            ? React.cloneElement(child as React.ReactElement<any>, {
+            ? React.cloneElement(child as React.ReactElement<{ className?: string; size?: VariantProps<typeof avatarVariants>['size'] }>, {
                 key: i,
                 className: cn(
-                  (child as React.ReactElement<any>).props.className,
+                  (child as React.ReactElement<{ className?: string; size?: VariantProps<typeof avatarVariants>['size'] }>).props.className,
                   'ring-bg ring-2',
                 ),
                 size,

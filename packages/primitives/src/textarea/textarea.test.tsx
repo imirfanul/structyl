@@ -14,7 +14,7 @@ describe('Textarea (primitive)', () => {
 
   it('supports controlled textarea', () => {
     let value = 'a';
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       value = e.target.value;
     };
     const { getByRole, rerender } = render(<Textarea value={value} onChange={handleChange} />);

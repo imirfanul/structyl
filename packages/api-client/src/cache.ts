@@ -265,7 +265,7 @@ export class QueryClient {
     this.config.onSuccess?.(data, key);
   }
 
-  notifyError(error: import('./types').ApiError, key: string): void {
+  notifyError(error: ApiError, key: string): void {
     this.config.onError?.(error, key);
   }
 }

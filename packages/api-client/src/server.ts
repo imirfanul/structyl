@@ -1,5 +1,5 @@
 import type { AxiosInstance } from 'axios';
-import { QueryClient, serializeKey } from './cache';
+import { QueryClient } from './cache';
 import type { CacheEntry } from './cache';
 import type { ApiClient } from './client';
 

@@ -21,7 +21,7 @@ export const Default: Story = {
         <Sheet.Header>
           <Sheet.Title>Edit Profile</Sheet.Title>
           <Sheet.Description>
-            Make changes to your profile here. Click save when you're done.
+            Make changes to your profile here. Click save when you&apos;re done.
           </Sheet.Description>
         </Sheet.Header>
         <div className="grid gap-4 py-4">

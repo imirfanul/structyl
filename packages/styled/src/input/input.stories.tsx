@@ -103,7 +103,7 @@ export const WithLabel: Story = {
         Email address
       </label>
       <Input id="email-input" type="email" placeholder="you@example.com" />
-      <p className="text-xs text-muted-foreground">We'll never share your email.</p>
+      <p className="text-xs text-muted-foreground">We&apos;ll never share your email.</p>
     </div>
   ),
 };

@@ -117,7 +117,7 @@ export const Controlled: Story = {
             </Trigger>
             <Content>
               <p className="pt-2 text-sm text-muted-foreground">
-                This panel's open state is driven by external React state, demonstrating controlled
+                This panel&apos;s open state is driven by external React state, demonstrating controlled
                 usage of the Collapsible primitive.
               </p>
             </Content>

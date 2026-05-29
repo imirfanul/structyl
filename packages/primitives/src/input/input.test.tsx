@@ -14,7 +14,7 @@ describe('Input (primitive)', () => {
 
   it('supports controlled input', () => {
     let value = 'a';
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       value = e.target.value;
     };
     const { getByRole, rerender } = render(<Input value={value} onChange={handleChange} />);

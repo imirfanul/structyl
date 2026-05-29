@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
 import type { AxiosInstance } from 'axios';
 import { serializeKey } from '../cache';
 import { useApiContext } from '../provider';
-import type { ApiError, UseApiQueryOptions, ApiQueryResult } from '../types';
+import type { UseApiQueryOptions, ApiQueryResult } from '../types';
 import { withRetry, toApiError } from '../utils';
 
 type FetcherFn<TData> = (instance: AxiosInstance) => Promise<TData>;
