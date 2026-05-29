@@ -37,9 +37,12 @@ const Slot = React.forwardRef<HTMLElement, SlotProps>((props, forwardedRef) => {
     );
   }
 
+  // Pass the single filtered child — avoids SlotClone seeing boolean falsy values
+  // (e.g. {icon && <span/>}) that components emit when asChild=true.
+  const singleChild = childrenArray.length === 1 ? childrenArray[0] : children;
   return (
     <SlotClone {...slotProps} ref={forwardedRef}>
-      {children}
+      {singleChild}
     </SlotClone>
   );
 });
