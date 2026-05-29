@@ -23,6 +23,7 @@ import {
   Input,
   Progress,
   Toast,
+  toast,
   Skeleton,
   Spinner,
   Separator,
@@ -5657,61 +5658,117 @@ export default function Demo() {
       'Exposes a hotkey to jump to the toast viewport.',
     ],
     preview: () => <ToastDemo />,
-    code: `import { Toast, Button } from '@aura-ui/styled';
+    code: `import { toast, Button } from '@aura-ui/styled';
+// Add <Toaster /> once in your root layout
 
 export default function Demo() {
-  const [open, setOpen] = React.useState(false);
   return (
-    <Toast.Provider>
-      <Button onClick={() => setOpen(true)}>Show toast</Button>
-      <Toast.Root open={open} onOpenChange={setOpen}>
-        <Toast.Title>Scheduled</Toast.Title>
-        <Toast.Description>Friday at 5:00 PM</Toast.Description>
-        <Toast.Close />
-      </Toast.Root>
-      <Toast.Viewport />
-    </Toast.Provider>
+    <Button onClick={() => toast.success('Scheduled: Friday at 5:00 PM')}>
+      Show toast
+    </Button>
   );
 }`,
     examples: [
       {
         title: 'Success variant',
         description: 'Show a success toast after a user action like saving a record.',
-        preview: () => {
-          function ToastSuccessDemo() {
-            const [open, setOpen] = React.useState(false);
-            return (
-              <Toast.Provider>
-                <Button variant="outline" onClick={() => setOpen(true)}>
-                  Save record
-                </Button>
-                <Toast.Root open={open} onOpenChange={setOpen} variant="success" duration={4000}>
-                  <div className="grid gap-0.5">
-                    <Toast.Title>Record saved</Toast.Title>
-                    <Toast.Description>Changes were persisted successfully.</Toast.Description>
-                  </div>
-                  <Toast.Close />
-                </Toast.Root>
-                <Toast.Viewport />
-              </Toast.Provider>
-            );
-          }
-          return <ToastSuccessDemo />;
-        },
-        code: `import { Toast, Button } from '@aura-ui/styled';
+        preview: () => (
+          <Button
+            variant="outline"
+            onClick={() => toast.success('Record saved', { description: 'Changes were persisted successfully.' })}
+          >
+            Save record
+          </Button>
+        ),
+        code: `import { toast, Button } from '@aura-ui/styled';
 
 export default function Demo() {
-  const [open, setOpen] = React.useState(false);
   return (
-    <Toast.Provider>
-      <Button onClick={() => setOpen(true)}>Save record</Button>
-      <Toast.Root open={open} onOpenChange={setOpen} variant="success" duration={4000}>
-        <Toast.Title>Record saved</Toast.Title>
-        <Toast.Description>Changes were persisted successfully.</Toast.Description>
-        <Toast.Close />
-      </Toast.Root>
-      <Toast.Viewport />
-    </Toast.Provider>
+    <Button variant="outline" onClick={() => toast.success('Record saved', { description: 'Changes were persisted successfully.' })}>
+      Save record
+    </Button>
+  );
+}`,
+      },
+      {
+        title: 'Error with retry',
+        description: 'Show an error toast with a retry button for recoverable failures.',
+        preview: () => (
+          <Button
+            variant="destructive"
+            onClick={() =>
+              toast.error('Upload failed', {
+                description: 'Connection timed out.',
+                retry: () => toast.success('File uploaded!'),
+              })
+            }
+          >
+            Trigger error
+          </Button>
+        ),
+        code: `import { toast, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Button variant="destructive" onClick={() =>
+      toast.error('Upload failed', {
+        description: 'Connection timed out.',
+        retry: () => toast.success('File uploaded!'),
+      })
+    }>
+      Trigger error
+    </Button>
+  );
+}`,
+      },
+      {
+        title: 'All positions',
+        description:
+          'Each toast can be placed at any corner or edge via the horizontal and vertical options. Click a button to see the toast appear at that position.',
+        preview: () => {
+          const verticals = ['top', 'bottom'] as const;
+          const horizontals = ['left', 'center', 'right'] as const;
+          return (
+            <div className="grid grid-cols-3 gap-2">
+              {verticals.flatMap((v) =>
+                horizontals.map((h) => (
+                  <Button
+                    key={`${v}-${h}`}
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      toast.info(`${v} · ${h}`, { horizontal: h, vertical: v })
+                    }
+                  >
+                    {v} · {h}
+                  </Button>
+                )),
+              )}
+            </div>
+          );
+        },
+        code: `import { toast, Button } from '@aura-ui/styled';
+// <Toaster /> in root layout handles all positions
+
+const verticals  = ['top', 'bottom'] as const;
+const horizontals = ['left', 'center', 'right'] as const;
+
+export default function Demo() {
+  return (
+    <div className="grid grid-cols-3 gap-2">
+      {verticals.flatMap((v) =>
+        horizontals.map((h) => (
+          <Button
+            key={\`\${v}-\${h}\`}
+            variant="outline"
+            size="sm"
+            onClick={() => toast.info(\`\${v} · \${h}\`, { horizontal: h, vertical: v })}
+          >
+            {v} · {h}
+          </Button>
+        )),
+      )}
+    </div>
   );
 }`,
       },
@@ -8324,17 +8381,10 @@ for (const entry of COMPONENTS) {
 }
 
 function ToastDemo() {
-  const [open, setOpen] = React.useState(false);
   return (
-    <Toast.Provider>
-      <Button onClick={() => setOpen(true)}>Show toast</Button>
-      <Toast.Root open={open} onOpenChange={setOpen} duration={4000}>
-        <Toast.Title>Scheduled</Toast.Title>
-        <Toast.Description>Friday, February 10 at 5:00 PM</Toast.Description>
-        <Toast.Close />
-      </Toast.Root>
-      <Toast.Viewport />
-    </Toast.Provider>
+    <Button onClick={() => toast.success('Scheduled: Friday, February 10 at 5:00 PM')}>
+      Show toast
+    </Button>
   );
 }
 

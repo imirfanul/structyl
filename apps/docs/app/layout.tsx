@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { ThemeProvider, ThemeScript } from '@aura-ui/themes';
+import { Toaster } from '@aura-ui/styled';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="min-h-screen font-sans antialiased" suppressHydrationWarning>
         <ThemeProvider defaultTheme="slate" defaultMode="system">
           {children}
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

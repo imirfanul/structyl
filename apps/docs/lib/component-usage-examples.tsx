@@ -70,6 +70,7 @@ import {
   Textarea,
   TimePicker,
   Toast,
+  toast,
   Toggle,
   ToggleGroup,
   Toolbar,
@@ -1003,26 +1004,23 @@ function ExampleShell({
 
 function ToastVariantsExample() {
   return (
-    <Toast.Provider>
-      <div className="grid gap-2">
-        <Toast.Root open duration={8000} variant="success" className="relative translate-x-0">
-          <div className="grid gap-1">
-            <Toast.Title>Release promoted</Toast.Title>
-            <Toast.Description>Production traffic is now serving v2.8.0.</Toast.Description>
-          </div>
-          <Toast.Action altText="View release">View</Toast.Action>
-          <Toast.Close />
-        </Toast.Root>
-        <Toast.Root open duration={8000} variant="warning" className="relative translate-x-0">
-          <div className="grid gap-1">
-            <Toast.Title>Usage approaching limit</Toast.Title>
-            <Toast.Description>Upgrade before the next billing cycle.</Toast.Description>
-          </div>
-          <Toast.Close />
-        </Toast.Root>
-      </div>
-      <Toast.Viewport className="hidden" />
-    </Toast.Provider>
+    <div className="flex flex-wrap gap-2">
+      <Button variant="outline" size="sm" onClick={() => toast.success('Release promoted', { description: 'Production traffic is now serving v2.8.0.' })}>
+        Success
+      </Button>
+      <Button variant="outline" size="sm" onClick={() => toast.error('Deploy failed', { description: 'Check the error logs for details.' })}>
+        Error
+      </Button>
+      <Button variant="outline" size="sm" onClick={() => toast.warning('Usage approaching limit', { description: 'Upgrade before the next billing cycle.' })}>
+        Warning
+      </Button>
+      <Button variant="outline" size="sm" onClick={() => toast.info('Update available', { description: 'Refresh to get the latest features.' })}>
+        Info
+      </Button>
+      <Button variant="outline" size="sm" onClick={() => toast.loading('Syncing…', { duration: 3000 })}>
+        Loading
+      </Button>
+    </div>
   );
 }
 
@@ -2613,19 +2611,61 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
   ],
   toast: [
     {
-      title: 'Toast variants and actions',
+      title: 'Toast variants',
       description:
-        'Toast supports variants, action buttons, close buttons and persistent viewports.',
+        'Fire success, error, warning, info and loading toasts from anywhere with the imperative API.',
       preview: () => <ToastVariantsExample />,
-      code: `<Toast.Provider>
-  <Toast.Root open variant="success">
-    <Toast.Title>Release promoted</Toast.Title>
-    <Toast.Description>Production traffic is now serving v2.8.0.</Toast.Description>
-    <Toast.Action altText="View release">View</Toast.Action>
-    <Toast.Close />
-  </Toast.Root>
-  <Toast.Viewport />
-</Toast.Provider>`,
+      code: `import { toast, Button } from '@aura-ui/styled';
+// Requires <Toaster /> in your root layout
+
+export default function Demo() {
+  return (
+    <div className="flex gap-2">
+      <Button onClick={() => toast.success('Release promoted', { description: 'v2.8.0 is live.' })}>
+        Success
+      </Button>
+      <Button onClick={() => toast.error('Deploy failed', { description: 'Check the logs.' })}>
+        Error
+      </Button>
+      <Button onClick={() => toast.warning('Usage limit', { description: 'Upgrade soon.' })}>
+        Warning
+      </Button>
+      <Button onClick={() => toast.info('Update available')}>Info</Button>
+    </div>
+  );
+}`,
+    },
+    {
+      title: 'Promise toast',
+      description: 'Automatically transitions from loading to success or error when a promise settles.',
+      preview: () => (
+        <Button
+          variant="outline"
+          onClick={() =>
+            toast.promise(
+              new Promise<{ name: string }>((resolve) => setTimeout(() => resolve({ name: 'Report' }), 1800)),
+              { loading: 'Uploading…', success: (d) => `${d.name} uploaded!`, error: 'Upload failed.' },
+            )
+          }
+        >
+          Upload (1.8s)
+        </Button>
+      ),
+      code: `import { toast, Button } from '@aura-ui/styled';
+
+export default function Demo() {
+  return (
+    <Button onClick={() =>
+      toast.promise(uploadFile(), {
+        loading: 'Uploading…',
+        success: (data) => \`\${data.name} uploaded!\`,
+        error: 'Upload failed.',
+      })
+    }>
+      Upload
+    </Button>
+  );
+}`,
     },
   ],
   skeleton: [

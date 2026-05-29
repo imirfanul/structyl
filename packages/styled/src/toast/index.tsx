@@ -117,3 +117,9 @@ Description.displayName = 'Toast.Description';
 
 export { Provider, Viewport, Root, Action, Close, Title, Description, toastVariants };
 export type { ToastRootProps };
+
+export { toast, useToast } from './use-toast';
+export type { ToastOptions, ToastItem, ToastVariant, ToastHorizontal, ToastVertical } from './use-toast';
+
+export { Toaster } from './toaster';
+export type { ToasterProps } from './toaster';

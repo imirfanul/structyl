@@ -40,5 +40,3 @@ export * from './use-isomorphic-layout-effect';
 export * from './use-window-size';
 export * from './use-hotkeys';
 
-// Notifications
-export * from './use-toast';

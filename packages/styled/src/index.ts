@@ -166,6 +166,9 @@ export type {
   ToastCloseProps,
   SwipeDirection,
 } from '@aura-ui/primitives';
+// Imperative toast API — importable directly from @aura-ui/styled
+export { toast, useToast, Toaster } from './toast';
+export type { ToastOptions, ToastItem, ToastVariant, ToastHorizontal, ToastVertical, ToasterProps } from './toast';
 
 // Phase F: complex compound
 export * as DropdownMenu from './dropdown-menu';
