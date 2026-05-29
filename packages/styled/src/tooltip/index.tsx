@@ -19,7 +19,7 @@ export const tooltipContentVariants = tv({
   variants: {
     variant: {
       default: 'bg-fg/90 text-bg backdrop-blur-sm',
-      dark: 'bg-gray-900 text-gray-100',
+      dark: 'bg-fg text-bg shadow-lg',
       light: 'bg-bg text-fg border border-border shadow-lg',
       primary: 'bg-primary text-primary-foreground',
       secondary: 'bg-secondary text-secondary-foreground',
@@ -67,7 +67,7 @@ const Content = React.forwardRef<
           className={cn(
             'fill-fg/90',
             variant === 'light' && 'fill-border',
-            variant === 'dark' && 'fill-gray-900',
+            variant === 'dark' && 'fill-fg',
             variant === 'primary' && 'fill-primary',
             variant === 'secondary' && 'fill-secondary',
             variant === 'info' && 'fill-info',

@@ -13,7 +13,7 @@ export const skeletonVariants = tv({
       /** Shimmer sweep effect */
       shimmer: [
         'after:absolute after:inset-0',
-        'after:bg-gradient-to-r after:from-transparent after:via-white/20 after:to-transparent',
+        'after:bg-gradient-to-r after:from-transparent after:via-fg/10 after:to-transparent',
         'after:translate-x-[-100%] after:animate-[shimmer_1.5s_infinite]',
       ],
       /** No animation (for reduced-motion users) */

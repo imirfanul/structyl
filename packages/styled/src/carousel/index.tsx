@@ -166,7 +166,7 @@ const Counter = React.forwardRef<HTMLSpanElement, CounterProps>(
         aria-live="polite"
         aria-atomic
         className={cn(
-          'absolute bottom-3 right-3 rounded-full bg-black/50 px-2.5 py-0.5 text-xs font-medium text-white',
+          'absolute bottom-3 right-3 rounded-full bg-overlay/60 px-2.5 py-0.5 text-xs font-medium text-white',
           className,
         )}
         {...props}

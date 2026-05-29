@@ -52,7 +52,7 @@ function shiftL(p: { h: number; s: number; l: number }, d: number) {
   return { ...p, l: Math.max(2, Math.min(97, p.l + d)) };
 }
 function contrastFg(p: { h: number; s: number; l: number }) {
-  return p.l > 55 ? '222 47% 11%' : '0 0% 100%';
+  return relativeLuminance(hslPartsToHex(p)) > 0.179 ? '222 47% 11%' : '0 0% 100%';
 }
 function toKebab(s: string) {
   return s.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
@@ -130,6 +130,12 @@ function generateCSS(
   const p = hexToHslParts(primary), d = hexToHslParts(destructive);
   const s = hexToHslParts(success), w = hexToHslParts(warning), n = hexToHslParts(info);
   const pStr = hslStr(p), pFg = contrastFg(p);
+  const wFg = relativeLuminance(hslPartsToHex(w)) > 0.179 ? '38 92% 8%' : '0 0% 100%';
+  const wDarkFg = relativeLuminance(hslPartsToHex(shiftL(w, 5))) > 0.179 ? '38 92% 8%' : '0 0% 100%';
+  const sFg = relativeLuminance(hslPartsToHex(s)) > 0.179 ? '0 0% 5%' : '0 0% 100%';
+  const sDarkFg = relativeLuminance(hslPartsToHex(shiftL(s, 5))) > 0.179 ? '0 0% 5%' : '0 0% 100%';
+  const nFg = relativeLuminance(hslPartsToHex(n)) > 0.179 ? '0 0% 5%' : '0 0% 100%';
+  const nDarkFg = relativeLuminance(hslPartsToHex(shiftL(n, 7))) > 0.179 ? '0 0% 5%' : '0 0% 100%';
   const densityScale = density === 'compact' ? '0.875' : density === 'relaxed' ? '1.125' : '1';
   const customVars = (i: string) => customColors.length
     ? '\n' + customColors.map(c => `${i}--color-${toKebab(c.name)}: ${hexToHsl(c.hex)};`).join('\n') : '';
@@ -166,11 +172,11 @@ ${i}--color-accent-fg: 222 47% 11%;
 ${i}--color-destructive: ${hslStr(d)};
 ${i}--color-destructive-fg: 0 0% 100%;
 ${i}--color-success: ${hslStr(s)};
-${i}--color-success-fg: 0 0% 100%;
+${i}--color-success-fg: ${sFg};
 ${i}--color-warning: ${hslStr(w)};
-${i}--color-warning-fg: 38 92% 8%;
+${i}--color-warning-fg: ${wFg};
 ${i}--color-info: ${hslStr(n)};
-${i}--color-info-fg: 0 0% 100%;
+${i}--color-info-fg: ${nFg};
 ${i}--color-border: 214 32% 91%;
 ${i}--color-border-strong: 214 24% 80%;
 ${i}--color-input: 214 32% 91%;
@@ -197,11 +203,11 @@ ${i}--color-accent-fg: 210 40% 98%;
 ${i}--color-destructive: ${hslStr(shiftL(d, -10))};
 ${i}--color-destructive-fg: 0 0% 100%;
 ${i}--color-success: ${hslStr(shiftL(s, 5))};
-${i}--color-success-fg: 0 0% 100%;
+${i}--color-success-fg: ${sDarkFg};
 ${i}--color-warning: ${hslStr(shiftL(w, 5))};
-${i}--color-warning-fg: 38 92% 8%;
+${i}--color-warning-fg: ${wDarkFg};
 ${i}--color-info: ${hslStr(shiftL(n, 7))};
-${i}--color-info-fg: 0 0% 100%;
+${i}--color-info-fg: ${nDarkFg};
 ${i}--color-border: 217 33% 20%;
 ${i}--color-border-strong: 217 25% 30%;
 ${i}--color-input: 217 33% 20%;
@@ -513,7 +519,12 @@ function ColorRow({ label, hex, onChange, presets, onSnap }: {
                 hex === a.hex ? 'ring-primary' : 'ring-transparent hover:ring-border'
               }`}
               style={{ background: a.hex }}>
-              {hex === a.hex && <Check className="absolute inset-0 m-auto h-3 w-3 text-white drop-shadow" />}
+              {hex === a.hex && (
+                <Check
+                  className="absolute inset-0 m-auto h-3 w-3 drop-shadow"
+                  style={{ color: relativeLuminance(a.hex) > 0.179 ? '#0f1729' : '#ffffff' }}
+                />
+              )}
             </button>
           ))}
         </div>
@@ -1878,8 +1889,10 @@ export default function ThemesPlayground() {
                 {THEME_PRESETS.map(preset => (
                   <button key={preset.name} onClick={() => applyPreset(preset)} title={preset.name}
                     className="group flex flex-col items-center gap-1.5 rounded-xl border border-border p-2.5 text-[9px] font-medium transition-all hover:border-primary hover:bg-accent">
-                    <div className="h-5 w-5 rounded-full"
-                      style={{ background: preset.primary, boxShadow: `0 0 0 2px ${preset.primary}44` }} />
+                    <div
+                      className="h-5 w-5 rounded-full ring-1 ring-border ring-offset-1 ring-offset-card"
+                      style={{ background: preset.primary }}
+                    />
                     <span className="text-muted-foreground group-hover:text-fg">{preset.name}</span>
                   </button>
                 ))}

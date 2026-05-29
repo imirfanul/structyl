@@ -11,7 +11,7 @@ import {
 } from '@aura-ui/icons';
 import { Toast as ToastPrimitive } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
-import { Root, Action, Close, Title, Description, toastVariants } from './index';
+import { Root, Action, Close, Title, Description } from './toast-root';
 import { useToast } from './use-toast';
 import type { ToastHorizontal, ToastVariant, ToastVertical } from './use-toast';
 
@@ -127,7 +127,6 @@ export function Toaster({
                 onOpenChange={(isOpen) => { if (!isOpen) remove(id); }}
                 variant={toStyleVariant(variant)}
                 duration={duration}
-                className={toastVariants({ variant: toStyleVariant(variant) })}
               >
                 <div className="flex flex-1 items-start gap-3">
                   {Icon && (

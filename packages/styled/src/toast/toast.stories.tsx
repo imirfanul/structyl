@@ -170,17 +170,6 @@ const verticals: ToastVertical[]     = ['top', 'bottom'];
 
 export const Positions: Story = {
   name: 'All positions',
-  decorators: [
-    (Story) => (
-      <>
-        <Story />
-        {/* One Toaster per position combo — for demo only */}
-        {verticals.flatMap((v) =>
-          horizontals.map((h) => <Toaster key={`${v}-${h}`} horizontal={h} vertical={v} />),
-        )}
-      </>
-    ),
-  ],
   render: () => (
     <div className="grid grid-cols-3 gap-2">
       {verticals.flatMap((v) =>

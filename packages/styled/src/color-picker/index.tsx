@@ -22,7 +22,7 @@ const Area = React.forwardRef<
     {...props}
   >
     <ColorPickerPrimitive.AreaThumb
-      className="h-3 w-3 rounded-full border-2 border-white shadow"
+      className="h-3 w-3 rounded-full shadow-[0_0_0_2px_white,0_0_0_3px_rgba(0,0,0,0.4)]"
     />
   </ColorPickerPrimitive.Area>
 ));
