@@ -6,7 +6,6 @@ import {
   Button,
   Switch,
   Checkbox,
-  Label,
   Dialog,
   Popover,
   Tooltip,
@@ -1047,41 +1046,6 @@ const materialApi: Record<string, ApiPart[]> = {
       ],
     },
   ],
-  modal: [
-    {
-      name: 'Modal',
-      description: 'Low-level modal overlay.',
-      props: [
-        {
-          name: 'open | defaultOpen',
-          type: 'boolean',
-          description: 'Controlled or uncontrolled state.',
-        },
-        {
-          name: 'onOpenChange',
-          type: '(open: boolean) => void',
-          description: 'Open state callback.',
-        },
-        {
-          name: 'onClose',
-          type: "(event, reason: 'escapeKeyDown' | 'backdropClick') => void",
-          description: 'Close reason callback.',
-        },
-        {
-          name: 'container',
-          type: 'Element | DocumentFragment | null',
-          description: 'Portal container.',
-        },
-        {
-          name: 'closeOnEscape | closeOnPointerDownOutside',
-          type: 'boolean',
-          default: 'true',
-          description: 'Dismiss behavior toggles.',
-        },
-        materialClassNameProp,
-      ],
-    },
-  ],
   'app-bar': [
     {
       name: 'AppBar',
@@ -1678,15 +1642,6 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
       </Snackbar>
     ),
     code: `import { Snackbar } from '@aura-ui/styled';\n\n<Snackbar open={open}>Saved</Snackbar>`,
-  },
-  {
-    slug: 'modal',
-    name: 'Modal',
-    category: 'Overlays',
-    description: 'A low-level modal overlay.',
-    features: ['Controlled or uncontrolled.', 'Escape and outside dismissal.'],
-    preview: () => <Paper className="p-4 text-sm">Modal content surface</Paper>,
-    code: `import { Modal } from '@aura-ui/styled';\n\n<Modal open={open}><div>Content</div></Modal>`,
   },
   {
     slug: 'app-bar',
@@ -2420,7 +2375,7 @@ const materialExamples: Record<string, ComponentExample[]> = {
       description: 'Wrap the input with your own label and helper text when used inside forms.',
       preview: () => (
         <Stack spacing="sm" className="w-64">
-          <Label htmlFor="docs-autocomplete">Framework</Label>
+          <Typography as="label" htmlFor="docs-autocomplete" variant="input-label">Framework</Typography>
           <Autocomplete.Root>
             <Autocomplete.Input id="docs-autocomplete" placeholder="Choose one" />
             <Autocomplete.Content>
@@ -2431,10 +2386,10 @@ const materialExamples: Record<string, ComponentExample[]> = {
           <Typography variant="muted">Type to filter available options.</Typography>
         </Stack>
       ),
-      code: `import { Autocomplete, Label, Stack, Typography } from '@aura-ui/styled';
+      code: `import { Autocomplete, Stack, Typography } from '@aura-ui/styled';
 
 <Stack spacing="sm">
-  <Label htmlFor="framework">Framework</Label>
+  <Typography as="label" htmlFor="framework" variant="input-label">Framework</Typography>
   <Autocomplete.Root>
     <Autocomplete.Input id="framework" placeholder="Choose one" />
     <Autocomplete.Content>
@@ -2720,56 +2675,6 @@ const options = [
 <Snackbar open={open} onOpenChange={setOpen} autoHideDuration={6000}>
   Saved for later
 </Snackbar>`,
-    },
-  ],
-  modal: [
-    {
-      title: 'Content surface',
-      description:
-        'Modal is intentionally low-level; compose your own Paper, headings and actions inside it.',
-      preview: () => (
-        <Paper className="w-80 p-4">
-          <Typography variant="h4">Invite member</Typography>
-          <Typography variant="muted">Modal content is composed by the app.</Typography>
-          <Stack direction="row" spacing="sm" className="mt-4">
-            <Button size="sm">Send</Button>
-            <Button size="sm" variant="outline">
-              Cancel
-            </Button>
-          </Stack>
-        </Paper>
-      ),
-      code: `import { Button, Modal, Paper, Stack, Typography } from '@aura-ui/styled';
-
-<Modal open={open} onOpenChange={setOpen}>
-  <Paper className="w-full max-w-md p-4">
-    <Typography variant="h4">Invite member</Typography>
-    <Typography variant="muted">Modal content is composed by the app.</Typography>
-    <Stack direction="row" spacing="sm" className="mt-4">
-      <Button>Send</Button>
-      <Button variant="outline">Cancel</Button>
-    </Stack>
-  </Paper>
-</Modal>`,
-    },
-    {
-      title: 'Dismiss behavior',
-      description: 'Disable escape or outside dismissal for critical blocking flows.',
-      preview: () => (
-        <Typography variant="muted">
-          Set closeOnEscape and closeOnPointerDownOutside per flow.
-        </Typography>
-      ),
-      code: `import { Modal } from '@aura-ui/styled';
-
-<Modal
-  open={open}
-  onOpenChange={setOpen}
-  closeOnEscape={false}
-  closeOnPointerDownOutside={false}
->
-  Blocking content
-</Modal>`,
     },
   ],
   'app-bar': [
@@ -3850,21 +3755,6 @@ const materialPropExamples: Record<string, ComponentExample> = {
   onClose={(event, reason) => ...}
 />`,
   },
-  modal: {
-    title: 'Close reasons',
-    description: 'Modal reports escapeKeyDown and backdropClick through onClose.',
-    preview: () => (
-      <Typography variant="muted">Use onClose to branch by dismiss reason.</Typography>
-    ),
-    code: `<Modal
-  open={open}
-  onOpenChange={setOpen}
-  onClose={(event, reason) => {
-    if (reason === 'backdropClick') return;
-    setOpen(false);
-  }}
-/>`,
-  },
   'app-bar': {
     title: 'Color and elevation',
     description: 'AppBar supports MUI-like position, color, elevation and square props.',
@@ -4588,7 +4478,7 @@ export default function Demo() {
               <div className="grid gap-3">
                 <p className="text-sm font-medium">Team settings</p>
                 <div className="grid gap-1.5">
-                  <Label htmlFor="pop-name">Team name</Label>
+                  <Typography as="label" htmlFor="pop-name" variant="input-label">Team name</Typography>
                   <Input id="pop-name" defaultValue="Design Systems" />
                 </div>
                 <div className="flex items-center justify-between gap-3 text-sm">
@@ -4599,7 +4489,7 @@ export default function Demo() {
             </Popover.Content>
           </Popover.Root>
         ),
-        code: `import { Popover, Button, Label, Input, Switch } from '@aura-ui/styled';
+        code: `import { Popover, Button, Typography, Input, Switch } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
@@ -4609,7 +4499,7 @@ export default function Demo() {
       </Popover.Trigger>
       <Popover.Content className="w-72">
         <p className="text-sm font-medium">Team settings</p>
-        <Label htmlFor="name">Team name</Label>
+        <Typography as="label" htmlFor="name" variant="input-label">Team name</Typography>
         <Input id="name" defaultValue="Design Systems" />
         <div className="flex items-center justify-between text-sm">
           Public workspace <Switch defaultChecked />
@@ -4923,16 +4813,16 @@ export default function Demo() {
     preview: () => (
       <div className="flex items-center gap-2">
         <Switch id="s1" defaultChecked />
-        <Label htmlFor="s1">Airplane mode</Label>
+        <Typography as="label" htmlFor="s1" variant="input-label">Airplane mode</Typography>
       </div>
     ),
-    code: `import { Switch, Label } from '@aura-ui/styled';
+    code: `import { Switch, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <div className="flex items-center gap-2">
       <Switch id="s1" defaultChecked />
-      <Label htmlFor="s1">Airplane mode</Label>
+      <Typography as="label" htmlFor="s1" variant="input-label">Airplane mode</Typography>
     </div>
   );
 }`,
@@ -4951,7 +4841,7 @@ export default function Demo() {
                     checked={enabled}
                     onCheckedChange={setEnabled}
                   />
-                  <Label htmlFor="s-notifications">Email notifications</Label>
+                  <Typography as="label" htmlFor="s-notifications" variant="input-label">Email notifications</Typography>
                 </div>
                 <p className="text-muted-foreground text-xs">
                   Status: {enabled ? 'enabled' : 'disabled'}
@@ -4961,14 +4851,14 @@ export default function Demo() {
           }
           return <SwitchDemo />;
         },
-        code: `import { Switch, Label } from '@aura-ui/styled';
+        code: `import { Switch, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   const [enabled, setEnabled] = React.useState(false);
   return (
     <div className="flex items-center gap-2">
       <Switch id="notifications" checked={enabled} onCheckedChange={setEnabled} />
-      <Label htmlFor="notifications">Email notifications</Label>
+      <Typography as="label" htmlFor="notifications" variant="input-label">Email notifications</Typography>
     </div>
   );
 }`,
@@ -4991,16 +4881,16 @@ export default function Demo() {
     preview: () => (
       <div className="flex items-center gap-2">
         <Checkbox id="c1" defaultChecked />
-        <Label htmlFor="c1">Accept terms and conditions</Label>
+        <Typography as="label" htmlFor="c1" variant="input-label">Accept terms and conditions</Typography>
       </div>
     ),
-    code: `import { Checkbox, Label } from '@aura-ui/styled';
+    code: `import { Checkbox, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <div className="flex items-center gap-2">
       <Checkbox id="c1" defaultChecked />
-      <Label htmlFor="c1">Accept terms and conditions</Label>
+      <Typography as="label" htmlFor="c1" variant="input-label">Accept terms and conditions</Typography>
     </div>
   );
 }`,
@@ -5022,7 +4912,7 @@ export default function Demo() {
                     checked={parentState}
                     onCheckedChange={(v) => setItems(items.map(() => !!v))}
                   />
-                  <Label htmlFor="parent">Select all</Label>
+                  <Typography as="label" htmlFor="parent" variant="input-label">Select all</Typography>
                 </div>
                 {items.map((checked, i) => (
                   <div key={i} className="ml-5 flex items-center gap-2">
@@ -5033,7 +4923,7 @@ export default function Demo() {
                         setItems(items.map((c, j) => (j === i ? !!v : c)))
                       }
                     />
-                    <Label htmlFor={`item-${i}`}>Option {i + 1}</Label>
+                    <Typography as="label" htmlFor={`item-${i}`} variant="input-label">Option {i + 1}</Typography>
                   </div>
                 ))}
               </div>
@@ -5041,7 +4931,7 @@ export default function Demo() {
           }
           return <CheckboxDemo />;
         },
-        code: `import { Checkbox, Label } from '@aura-ui/styled';
+        code: `import { Checkbox, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   const [items, setItems] = React.useState([false, true, false]);
@@ -5053,13 +4943,13 @@ export default function Demo() {
       <div className="flex items-center gap-2">
         <Checkbox id="parent" checked={parentState}
           onCheckedChange={(v) => setItems(items.map(() => !!v))} />
-        <Label htmlFor="parent">Select all</Label>
+        <Typography as="label" htmlFor="parent" variant="input-label">Select all</Typography>
       </div>
       {items.map((checked, i) => (
         <div key={i} className="ml-5 flex items-center gap-2">
           <Checkbox id={\`item-\${i}\`} checked={checked}
             onCheckedChange={(v) => setItems(items.map((c, j) => j === i ? !!v : c))} />
-          <Label htmlFor={\`item-\${i}\`}>Option {i + 1}</Label>
+          <Typography as="label" htmlFor={\`item-\${i}\`} variant="input-label">Option {i + 1}</Typography>
         </div>
       ))}
     </div>
@@ -5474,7 +5364,7 @@ export default function Demo() {
             </Card.Header>
             <Card.Content className="grid gap-3">
               <div className="grid gap-1.5">
-                <Label htmlFor="card-team-name">Team name</Label>
+                <Typography as="label" htmlFor="card-team-name" variant="input-label">Team name</Typography>
                 <Input id="card-team-name" defaultValue="Design Systems" />
               </div>
             </Card.Content>
@@ -5484,7 +5374,7 @@ export default function Demo() {
             </Card.Footer>
           </Card.Root>
         ),
-        code: `import { Card, Button, Label, Input } from '@aura-ui/styled';
+        code: `import { Card, Button, Typography, Input } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
@@ -5494,7 +5384,7 @@ export default function Demo() {
         <Card.Description>Shared workspace.</Card.Description>
       </Card.Header>
       <Card.Content>
-        <Label htmlFor="name">Team name</Label>
+        <Typography as="label" htmlFor="name" variant="input-label">Team name</Typography>
         <Input id="name" defaultValue="Design Systems" />
       </Card.Content>
       <Card.Footer className="justify-end gap-2">
@@ -5953,39 +5843,6 @@ export default function Demo() {
 
   /* ── Additional components ─────────────────────────────────────── */
   {
-    slug: 'label',
-    name: 'Label',
-    category: 'Form',
-    description: 'An accessible label associated with a form control.',
-    features: ['Associates with a control via htmlFor.', 'Supports asChild.'],
-    preview: () => <Label htmlFor="x">Email address</Label>,
-    code: `import { Label } from '@aura-ui/styled';\n\n<Label htmlFor="email">Email address</Label>`,
-    examples: [
-      {
-        title: 'With input and description',
-        description: 'Pair Label with an Input and helper text for a complete field.',
-        preview: () => (
-          <div className="grid gap-1.5 w-full max-w-sm">
-            <Label htmlFor="ex-email">Email address</Label>
-            <Input id="ex-email" type="email" placeholder="you@example.com" />
-            <p className="text-muted-foreground text-xs">We&apos;ll never share your email.</p>
-          </div>
-        ),
-        code: `import { Label, Input } from '@aura-ui/styled';
-
-export default function Demo() {
-  return (
-    <div className="grid gap-1.5">
-      <Label htmlFor="email">Email address</Label>
-      <Input id="email" type="email" placeholder="you@example.com" />
-      <p className="text-xs text-muted-foreground">We'll never share your email.</p>
-    </div>
-  );
-}`,
-      },
-    ],
-  },
-  {
     slug: 'textarea',
     name: 'Textarea',
     category: 'Form',
@@ -6198,9 +6055,7 @@ export default function Demo() {
     preview: () => (
       <Form.Root className="w-full max-w-sm" onSubmit={(e) => e.preventDefault()}>
         <Form.Field name="email" className="grid gap-1.5">
-          <Form.Label asChild>
-            <Label>Email</Label>
-          </Form.Label>
+          <Form.Label>Email</Form.Label>
           <Form.Control asChild>
             <Input type="email" required placeholder="you@example.com" />
           </Form.Control>
@@ -6221,7 +6076,7 @@ export default function Demo() {
         preview: () => (
           <Form.Root className="w-full max-w-sm grid gap-3" onSubmit={(e) => e.preventDefault()}>
             <Form.Field name="email" className="grid gap-1.5">
-              <Form.Label asChild><Label>Email</Label></Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control asChild>
                 <Input type="email" required placeholder="you@example.com" />
               </Form.Control>
@@ -6233,7 +6088,7 @@ export default function Demo() {
               </Form.Message>
             </Form.Field>
             <Form.Field name="password" className="grid gap-1.5">
-              <Form.Label asChild><Label>Password</Label></Form.Label>
+              <Form.Label>Password</Form.Label>
               <Form.Control asChild>
                 <Input type="password" required minLength={8} placeholder="••••••••" />
               </Form.Control>
@@ -6246,13 +6101,13 @@ export default function Demo() {
             </Form.Submit>
           </Form.Root>
         ),
-        code: `import { Form, Input, Label, Button } from '@aura-ui/styled';
+        code: `import { Form, Input, Button } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <Form.Root className="grid gap-3" onSubmit={(e) => e.preventDefault()}>
       <Form.Field name="email" className="grid gap-1.5">
-        <Form.Label asChild><Label>Email</Label></Form.Label>
+        <Form.Label>Email</Form.Label>
         <Form.Control asChild>
           <Input type="email" required placeholder="you@example.com" />
         </Form.Control>
@@ -6260,7 +6115,7 @@ export default function Demo() {
         <Form.Message match="typeMismatch" className="text-xs text-destructive">Invalid email</Form.Message>
       </Form.Field>
       <Form.Field name="password" className="grid gap-1.5">
-        <Form.Label asChild><Label>Password</Label></Form.Label>
+        <Form.Label>Password</Form.Label>
         <Form.Control asChild><Input type="password" required minLength={8} /></Form.Control>
         <Form.Message match="valueMissing" className="text-xs text-destructive">Required</Form.Message>
       </Form.Field>
@@ -6854,7 +6709,7 @@ export default function Demo() {
               </Sheet.Header>
               <div className="grid gap-3 py-4">
                 <div className="grid gap-1.5">
-                  <Label htmlFor="sheet-name">Name</Label>
+                  <Typography as="label" htmlFor="sheet-name" variant="input-label">Name</Typography>
                   <Input id="sheet-name" defaultValue="Ada Lovelace" />
                 </div>
               </div>
@@ -6866,7 +6721,7 @@ export default function Demo() {
             </Sheet.Content>
           </Sheet.Root>
         ),
-        code: `import { Sheet, Button, Label, Input } from '@aura-ui/styled';
+        code: `import { Sheet, Button, Typography, Input } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
@@ -6877,7 +6732,7 @@ export default function Demo() {
           <Sheet.Title>Edit profile</Sheet.Title>
           <Sheet.Description>Update account details.</Sheet.Description>
         </Sheet.Header>
-        <Label htmlFor="name">Name</Label>
+        <Typography as="label" htmlFor="name" variant="input-label">Name</Typography>
         <Input id="name" defaultValue="Ada Lovelace" />
         <Sheet.Footer>
           <Sheet.Close asChild><Button>Save changes</Button></Sheet.Close>
@@ -7411,7 +7266,7 @@ export default function Demo() {
         description: 'Wrap in a field layout and add a password strength message.',
         preview: () => (
           <div className="grid gap-1.5 w-full max-w-sm">
-            <Label htmlFor="pw">Password</Label>
+            <Typography as="label" htmlFor="pw" variant="input-label">Password</Typography>
             <PasswordToggleField.Root className="w-full" id="pw">
               <PasswordToggleField.Input placeholder="Min. 8 characters" />
               <PasswordToggleField.Toggle />
@@ -7421,12 +7276,12 @@ export default function Demo() {
             </p>
           </div>
         ),
-        code: `import { PasswordToggleField, Label } from '@aura-ui/styled';
+        code: `import { PasswordToggleField, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <div className="grid gap-1.5">
-      <Label htmlFor="pw">Password</Label>
+      <Typography as="label" htmlFor="pw" variant="input-label">Password</Typography>
       <PasswordToggleField.Root id="pw">
         <PasswordToggleField.Input placeholder="Min. 8 characters" />
         <PasswordToggleField.Toggle />
@@ -7463,7 +7318,7 @@ export default function Demo() {
             const [qty, setQty] = React.useState(1);
             return (
               <div className="flex items-center gap-3">
-                <Label htmlFor="qty">Quantity</Label>
+                <Typography as="label" htmlFor="qty" variant="input-label">Quantity</Typography>
                 <NumberField.Root
                   id="qty"
                   value={qty}
@@ -7481,13 +7336,13 @@ export default function Demo() {
           }
           return <QuantityDemo />;
         },
-        code: `import { NumberField, Label } from '@aura-ui/styled';
+        code: `import { NumberField, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   const [qty, setQty] = React.useState(1);
   return (
     <div className="flex items-center gap-3">
-      <Label htmlFor="qty">Quantity</Label>
+      <Typography as="label" htmlFor="qty" variant="input-label">Quantity</Typography>
       <NumberField.Root id="qty" value={qty} onValueChange={setQty} min={1} max={99}>
         <NumberField.DecrementTrigger />
         <NumberField.Input className="w-14 text-center" />
