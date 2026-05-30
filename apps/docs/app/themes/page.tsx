@@ -320,6 +320,7 @@ const THEME_PRESETS = [
   { name: 'Violet',  primary: '#7c3aed', destructive: '#dc2626', success: '#16a34a', warning: '#d97706', info: '#0284c7', radius: '0.5rem' },
   { name: 'Slate',   primary: '#475569', destructive: '#dc2626', success: '#16a34a', warning: '#ca8a04', info: '#0284c7', radius: '0.25rem' },
   { name: 'Ember',   primary: '#be123c', destructive: '#9f1239', success: '#15803d', warning: '#b45309', info: '#0369a1', radius: '0.75rem' },
+  { name: 'Zinc',    primary: '#71717a', destructive: '#dc2626', success: '#16a34a', warning: '#ca8a04', info: '#0284c7', radius: '0.5rem' },
 ];
 
 const RADII = [

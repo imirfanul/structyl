@@ -8513,6 +8513,16 @@ export const HOOKS: HookEntry[] = [
     signature: '() => { width, height }',
     description: 'Tracks the viewport size.',
   },
+  {
+    name: 'useTheme',
+    signature: '() => { theme, setTheme, mode, setMode, resolvedMode, themes }',
+    description: 'Access and control the active aura-ui theme and color mode. Must be inside ThemeProvider. From @aura-ui/themes.',
+  },
+  {
+    name: 'useColorPreset',
+    signature: '(options?) => { presets, activeId, activePreset, setPreset, clearPreset }',
+    description: 'Manage an accent-color preset on top of the active theme. Persists to localStorage and re-applies after theme/mode changes. From @aura-ui/themes.',
+  },
 ];
 
 /* ── Packages registry ──────────────────────────────────────────────── */
@@ -8551,9 +8561,9 @@ export const PACKAGES: PackageEntry[] = [
   },
   {
     name: '@aura-ui/themes',
-    description: 'Runtime theming: ThemeProvider, useTheme, ThemeScript and three built-in themes.',
+    description: 'Runtime theming: ThemeProvider, useTheme, ThemeScript, 10 accent presets, and useColorPreset.',
     install: 'pnpm add @aura-ui/themes',
-    highlights: ['CSS-variable based', 'No flash of unstyled content', 'Custom themes supported'],
+    highlights: ['CSS-variable based', 'No flash of unstyled content', '10 built-in accent presets'],
   },
   {
     name: '@aura-ui/primitives',

@@ -49,6 +49,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
   align = 'center',
   loading = false,
 }) => {
+  const titleId = React.useId();
   const [internalOpen, setInternalOpen] = React.useState(false);
   const isControlled = openProp !== undefined;
   const open = isControlled ? openProp : internalOpen;
@@ -87,6 +88,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
             'data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1',
             'data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1',
           )}
+          aria-labelledby={titleId}
           onOpenAutoFocus={(e) => e.preventDefault()}
         >
           {/* Warning icon + title */}
@@ -97,7 +99,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
               </svg>
             </span>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-fg">{title}</p>
+              <p id={titleId} className="text-sm font-semibold text-fg">{title}</p>
               {description && (
                 <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{description}</p>
               )}

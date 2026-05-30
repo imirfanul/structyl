@@ -414,44 +414,6 @@ function ThemePresetsSection() {
   );
 }
 
-/* ── Leftover data (kept for type safety) ──────────────────────────────────── */
-const THEME_PRESETS = [
-  {
-    id:    'slate',
-    name:  'Slate',
-    desc:  'The default. Clean slate-blue neutrals.',
-    light: { bg: '#ffffff', primary: '#0f172a', muted: '#94a3b8', card: '#f8fafc', border: '#e2e8f0' },
-    dark:  { bg: '#080d18', primary: '#f8fafc', muted: '#475569', card: '#0f172a', border: '#1e293b' },
-    dots:  ['#0f172a', '#64748b', '#e2e8f0'],
-  },
-  {
-    id:    'zinc',
-    name:  'Zinc',
-    desc:  'Pure neutral gray. Minimal and timeless.',
-    light: { bg: '#ffffff', primary: '#18181b', muted: '#a1a1aa', card: '#fafafa', border: '#e4e4e7' },
-    dark:  { bg: '#0e0e11', primary: '#fafafa', muted: '#52525b', card: '#141417', border: '#27272a' },
-    dots:  ['#18181b', '#71717a', '#e4e4e7'],
-  },
-  {
-    id:    'rose',
-    name:  'Rose',
-    desc:  'Warm rose accent for expressive UIs.',
-    light: { bg: '#ffffff', primary: '#e11d48', muted: '#fda4af', card: '#fff1f2', border: '#fecdd3' },
-    dark:  { bg: '#100b0b', primary: '#e11d48', muted: '#9f1239', card: '#1a0f10', border: '#3f1d21' },
-    dots:  ['#e11d48', '#fb7185', '#ffe4e6'],
-  },
-  {
-    id:    'aura',
-    name:  'Aura',
-    desc:  'Indigo-violet — the native aura-ui palette.',
-    light: { bg: '#fafafa', primary: '#4f46e5', muted: '#a5b4fc', card: '#ffffff', border: '#e0e7ff' },
-    dark:  { bg: '#232b37', primary: '#c4b5fd', muted: '#7c3aed', card: '#2a3344', border: '#3b4255' },
-    dots:  ['#4f46e5', '#a78bfa', '#ede9fe'],
-  },
-] as const;
-
-type ThemeId = typeof THEME_PRESETS[number]['id'];
-
 /* ── Main Page ─────────────────────────────────────────────────────────────── */
 export default function Page() {
   const { theme, setTheme, resolvedMode, setMode } = useTheme();
