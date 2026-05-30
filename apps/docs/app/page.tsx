@@ -416,7 +416,7 @@ function ThemePresetsSection() {
 
 /* ── Main Page ─────────────────────────────────────────────────────────────── */
 export default function Page() {
-  const { theme, setTheme, resolvedMode, setMode } = useTheme();
+  const { resolvedMode, setMode } = useTheme();
   const isDark = resolvedMode === 'dark';
 
   return (

@@ -123,6 +123,8 @@ export interface TypographyProps
   paragraph?: boolean;
   /** Text alignment */
   align?: 'left' | 'center' | 'right' | 'justify';
+  /** Associates the label with a form control (for use with as="label") */
+  htmlFor?: string;
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────

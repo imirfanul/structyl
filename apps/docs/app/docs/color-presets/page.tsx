@@ -6,8 +6,6 @@ import {
   COLOR_PRESETS,
   useColorPreset,
   createColorPreset,
-  applyColorPreset,
-  clearColorPreset,
 } from '@aura-ui/themes';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
@@ -259,7 +257,7 @@ function AccentPicker() {
             <tr className="border-b border-border/50">
               <td className="py-2.5 pr-4 font-mono text-[12px] text-primary">clearPreset</td>
               <td className="py-2.5 pr-4 font-mono text-[12px] text-muted-foreground">() =&gt; void</td>
-              <td className="py-2.5 text-[13px] text-muted-foreground">Remove the override and restore the base theme's primary colors.</td>
+              <td className="py-2.5 text-[13px] text-muted-foreground">Remove the override and restore the base theme&apos;s primary colors.</td>
             </tr>
           </tbody>
         </table>
@@ -323,7 +321,7 @@ type ColorPresetId =
       <div className="rounded-xl border border-warning/30 bg-warning/5 p-4">
         <p className="text-sm font-medium text-warning">Client Component required</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">useColorPreset</code> uses React state and effects, so any component that calls it must be marked <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">'use client'</code>. The imperative <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">applyColorPreset</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">clearColorPreset</code> functions are safe to import from any module — they guard against SSR automatically.
+          <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">useColorPreset</code> uses React state and effects, so any component that calls it must be marked <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">&apos;use client&apos;</code>. The imperative <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">applyColorPreset</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">clearColorPreset</code> functions are safe to import from any module — they guard against SSR automatically.
         </p>
       </div>
       <CodeBlock code={`'use client'; // required

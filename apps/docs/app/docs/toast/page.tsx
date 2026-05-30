@@ -296,7 +296,7 @@ function CustomToaster() {
         Toast is built on the Radix Toast primitive which handles ARIA live regions automatically:
       </p>
       <ul className="space-y-1.5 text-sm text-muted-foreground">
-        <li>• The viewport has <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">role="region"</code> and <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">aria-label="Notifications"</code></li>
+        <li>• The viewport has <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">role=&quot;region&quot;</code> and <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">aria-label=&quot;Notifications&quot;</code></li>
         <li>• Each toast is announced to screen readers as a live region update</li>
         <li>• Focus is not moved to the toast — users can continue their current task</li>
         <li>• The hotkey <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">F8</kbd> moves focus to the toast viewport for keyboard users</li>
