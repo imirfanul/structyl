@@ -101,6 +101,7 @@ import {
   InitColorSchemeScript,
 } from '@aura-ui/styled';
 import { DataTable, type DataTableColumnDef, type DataTableFilterGroup } from '@aura-ui/data-table';
+import { VideoPlayer } from '@aura-ui/video-player';
 import { componentUsageExamples } from './component-usage-examples';
 
 /* ── Types ──────────────────────────────────────────────────────────── */
@@ -8226,6 +8227,157 @@ export default function Demo({ data }: { data: User[] }) {
   );
 }`,
   },
+  {
+    slug: 'video-player',
+    name: 'Video Player',
+    category: 'Media',
+    description:
+      'A fully-featured HTML5 video player with playlists, chapter markers, SRT/VTT subtitles, video filters, quality levels, and HLS adaptive streaming.',
+    features: [
+      'HLS adaptive streaming via hls.js — automatic quality switching.',
+      'Playlist with shuffle and repeat modes.',
+      'Chapter markers with tooltip labels and progress-bar marks.',
+      'SRT and VTT subtitle support with font, color, and position controls.',
+      'Video filter sliders: brightness, contrast, saturation, hue, blur, and sepia.',
+      'Quality level selection for HLS streams.',
+      'Thumbnail preview on progress-bar hover.',
+      'Picture-in-Picture and Fullscreen APIs.',
+      'Full keyboard shortcut set (Space, ←/→, ↑/↓, M, F, P, C).',
+      'Consumes @aura-ui/themes CSS tokens — respects your theme automatically.',
+    ],
+    preview: () => (
+      <VideoPlayer
+        src="https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
+      />
+    ),
+    code: `import { VideoPlayer } from '@aura-ui/video-player';
+
+export default function Demo() {
+  return (
+    <VideoPlayer
+      src="https://example.com/video.mp4"
+      poster="https://example.com/poster.jpg"
+    />
+  );
+}`,
+    examples: [
+      {
+        title: 'With playlist',
+        description: 'Pass an array of items to enable the built-in playlist panel with shuffle and repeat.',
+        preview: () => (
+          <VideoPlayer
+            src="https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
+            playlist={[
+              {
+                id: '1',
+                title: 'Big Buck Bunny',
+                src: 'https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4',
+              },
+              {
+                id: '2',
+                title: 'Sintel Trailer',
+                src: 'https://media.w3.org/2010/05/sintel/trailer.mp4',
+              },
+              {
+                id: '3',
+                title: 'W3C Sample',
+                src: 'https://media.w3.org/2010/05/video/movie_300.mp4',
+              },
+            ]}
+          />
+        ),
+        code: `import { VideoPlayer } from '@aura-ui/video-player';
+
+const playlist = [
+  { id: '1', title: 'Big Buck Bunny', src: '/video1.mp4', poster: '/poster1.jpg' },
+  { id: '2', title: 'Sintel Trailer', src: '/video2.mp4', poster: '/poster2.jpg' },
+  { id: '3', title: 'W3C Sample',     src: '/video3.mp4' },
+];
+
+export default function Demo() {
+  return <VideoPlayer src={playlist[0].src} playlist={playlist} />;
+}`,
+      },
+      {
+        title: 'With chapters',
+        description: 'Chapters are displayed as markers on the progress bar with tooltip titles.',
+        preview: () => (
+          <VideoPlayer
+            src="https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
+            chapters={[
+              { id: 'intro',  title: 'Introduction',  startTime: 0,   endTime: 30  },
+              { id: 'act1',   title: 'Act 1',          startTime: 30,  endTime: 120 },
+              { id: 'act2',   title: 'Act 2',          startTime: 120, endTime: 300 },
+              { id: 'finale', title: 'Finale',          startTime: 300, endTime: 596 },
+            ]}
+          />
+        ),
+        code: `import { VideoPlayer } from '@aura-ui/video-player';
+
+const chapters = [
+  { id: 'intro',  title: 'Introduction', startTime: 0,   endTime: 30  },
+  { id: 'act1',   title: 'Act 1',        startTime: 30,  endTime: 120 },
+  { id: 'act2',   title: 'Act 2',        startTime: 120, endTime: 300 },
+  { id: 'finale', title: 'Finale',       startTime: 300, endTime: 596 },
+];
+
+export default function Demo() {
+  return <VideoPlayer src="/video.mp4" chapters={chapters} />;
+}`,
+      },
+      {
+        title: 'YouTube video',
+        description: 'Pass any YouTube URL — the player automatically detects it and renders a native YouTube embed.',
+        preview: () => (
+          <VideoPlayer
+            src="https://www.youtube.com/watch?v=wDchsz8nmbo"
+          />
+        ),
+        code: `import { VideoPlayer } from '@aura-ui/video-player';
+
+export default function Demo() {
+  return (
+    <VideoPlayer src="https://www.youtube.com/watch?v=wDchsz8nmbo" />
+  );
+}`,
+      },
+    ],
+    api: [
+      {
+        name: 'VideoPlayer',
+        description: 'The root video player component.',
+        props: [
+          { name: 'src',            type: 'string',              description: 'URL of the video to play. Supports .mp4, .webm, and .m3u8 (HLS).' },
+          { name: 'poster',         type: 'string',              description: 'Poster image URL shown before playback starts.' },
+          { name: 'autoPlay',       type: 'boolean',  default: 'false', description: 'Start playback automatically on mount.' },
+          { name: 'loop',           type: 'boolean',  default: 'false', description: 'Loop the video after it ends.' },
+          { name: 'muted',          type: 'boolean',  default: 'false', description: 'Start with audio muted.' },
+          { name: 'className',      type: 'string',              description: 'Additional class names for the root container.' },
+          { name: 'subtitles',      type: 'SubtitleTrack[]',     description: 'Array of subtitle tracks to load. Each track has src, label, and language.' },
+          { name: 'playlist',       type: 'PlaylistItem[]',      description: 'Array of videos for the playlist panel.' },
+          { name: 'chapters',       type: 'Chapter[]',           description: 'Array of chapter markers shown on the progress bar.' },
+          { name: 'onPlay',         type: '() => void',          description: 'Callback fired when playback starts.' },
+          { name: 'onPause',        type: '() => void',          description: 'Callback fired when playback pauses.' },
+          { name: 'onEnded',        type: '() => void',          description: 'Callback fired when the video ends.' },
+          { name: 'onTimeUpdate',   type: '(currentTime: number) => void', description: 'Fires continuously with the current playback time.' },
+          { name: 'onVolumeChange', type: '(volume: number) => void',      description: 'Fires when volume or mute state changes.' },
+        ],
+      },
+    ],
+    keyboard: [
+      { key: 'Space / K',  description: 'Toggle play/pause.' },
+      { key: '→',          description: 'Skip forward 10 seconds.' },
+      { key: '←',          description: 'Skip backward 10 seconds.' },
+      { key: '↑',          description: 'Increase volume by 10%.' },
+      { key: '↓',          description: 'Decrease volume by 10%.' },
+      { key: 'M',          description: 'Toggle mute.' },
+      { key: 'F',          description: 'Toggle fullscreen.' },
+      { key: 'P',          description: 'Toggle Picture-in-Picture.' },
+      { key: 'C',          description: 'Toggle subtitles.' },
+      { key: '.',          description: 'Advance one frame (1/30 s).' },
+      { key: ',',          description: 'Go back one frame (1/30 s).' },
+    ],
+  },
 ];
 
 for (const entry of COMPONENTS) {
@@ -8482,4 +8634,5 @@ export const CATEGORIES = [
   'Utils',
   'Misc',
   'Data',
+  'Media',
 ];

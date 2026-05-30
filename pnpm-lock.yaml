@@ -146,6 +146,9 @@ importers:
       '@aura-ui/themes':
         specifier: workspace:*
         version: link:../../packages/themes
+      '@aura-ui/video-player':
+        specifier: workspace:*
+        version: link:../../packages/video-player
       next:
         specifier: ^15.0.3
         version: 15.5.18(@babel/core@7.29.0)(@playwright/test@1.60.0)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -512,6 +515,37 @@ importers:
       vitest:
         specifier: ^2.1.2
         version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+
+  packages/video-player:
+    dependencies:
+      '@aura-ui/styled':
+        specifier: workspace:*
+        version: link:../styled
+      hls.js:
+        specifier: ^1.5.20
+        version: 1.6.16
+      lucide-react:
+        specifier: ^0.460.0
+        version: 0.460.0(react@19.2.6)
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.15
+      react:
+        specifier: ^19.0.0
+        version: 19.2.6
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.6(react@19.2.6)
+      tailwindcss:
+        specifier: ^4.0.0
+        version: 4.3.0
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
 
 packages:
 
@@ -3203,6 +3237,9 @@ packages:
   headers-polyfill@5.0.1:
     resolution: {integrity: sha512-1TJ6Fih/b8h5TIcv+1+Hw0PDQWJTKDKzFZzcKOiW1wJza3XoAQlkCuXLbymPYB8+ZQyw8mHvdw560e8zVFIWyA==}
 
+  hls.js@1.6.16:
+    resolution: {integrity: sha512-VSIRpLfRwlAAdGL4wiTucx2ScRipo0ed1FBatWkyt832jC4CReKstga6yIhYVwGu9LOBjuX9wzmRMeQdBJtzEA==}
+
   html-encoding-sniffer@4.0.0:
     resolution: {integrity: sha512-Y22oTqIU4uuPgEemfz7NDJz6OeKf12Lsu+QC+s3BVpda64lTiMYCyGwg5ki4vFxkMwQdeZDl2adZoqUgdFuTgQ==}
     engines: {node: '>=18'}
@@ -3603,6 +3640,11 @@ packages:
 
   lucide-react@0.453.0:
     resolution: {integrity: sha512-kL+RGZCcJi9BvJtzg2kshO192Ddy9hv3ij+cPrVPWSRzgCWCVazoQJxOjAwgK53NomL07HB7GPHW120FimjNhQ==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
+
+  lucide-react@0.460.0:
+    resolution: {integrity: sha512-BVtq/DykVeIvRTJvRAgCsOwaGL8Un3Bxh8MbDxMhEWlZay3T4IpEKDEpwt5KZ0KJMHzgm6jrltxlT5eXOWXDHg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0-rc
 
@@ -7586,6 +7628,8 @@ snapshots:
       '@types/set-cookie-parser': 2.4.10
       set-cookie-parser: 3.1.0
 
+  hls.js@1.6.16: {}
+
   html-encoding-sniffer@4.0.0:
     dependencies:
       whatwg-encoding: 3.1.1
@@ -7987,6 +8031,10 @@ snapshots:
       yallist: 3.1.1
 
   lucide-react@0.453.0(react@19.2.6):
+    dependencies:
+      react: 19.2.6
+
+  lucide-react@0.460.0(react@19.2.6):
     dependencies:
       react: 19.2.6
 

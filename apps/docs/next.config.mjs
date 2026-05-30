@@ -10,6 +10,7 @@ const nextConfig = {
     '@aura-ui/styled',
     '@aura-ui/data-table',
     '@aura-ui/icons',
+    '@aura-ui/video-player',
   ],
 };
 

@@ -109,6 +109,7 @@ export const COMPONENT_SLUGS: { slug: string; name: string; description: string;
   { slug: 'transition',             name: 'Transition',              description: 'Applies enter/exit transitions to its children.',                               category: 'Utilities' },
   { slug: 'tree',                   name: 'Tree',                    description: 'A hierarchical list of items with expand/collapse behavior.',                   category: 'Data display' },
   { slug: 'typography',             name: 'Typography',              description: 'Renders text with semantic HTML and consistent styling.',                        category: 'Data display' },
+  { slug: 'video-player',           name: 'Video Player',            description: 'A fully-featured HTML5 video player with playlists, chapters, subtitles, filters, and HLS streaming.', category: 'Media' },
 ];
 
 /** Static /docs/[slug] pages that are not components */

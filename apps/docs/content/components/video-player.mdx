@@ -1,0 +1,50 @@
+---
+title: Video Player
+description: A fully-featured HTML5 video player with playlists, chapters, subtitles, video filters, quality levels, and HLS adaptive streaming.
+---
+
+# Video Player
+
+A fully-featured HTML5 video player built on `@aura-ui/video-player`. Supports playlists, chapter markers, SRT/VTT subtitles, video filters, quality selection, HLS streaming, and keyboard shortcuts. Colors are driven entirely by `@aura-ui/themes` CSS tokens so the player respects your configured theme.
+
+## Installation
+
+```bash
+pnpm add @aura-ui/video-player
+```
+
+## Usage
+
+```tsx
+import { VideoPlayer } from '@aura-ui/video-player';
+import '@aura-ui/video-player/styles.css';
+
+export function Example() {
+  return (
+    <VideoPlayer
+      src="https://example.com/video.mp4"
+      poster="https://example.com/poster.jpg"
+    />
+  );
+}
+```
+
+## HLS Streaming
+
+Pass an `.m3u8` URL as `src` — the player detects it automatically and initialises hls.js:
+
+```tsx
+<VideoPlayer src="https://example.com/stream.m3u8" />
+```
+
+## API Reference
+
+See the prop table rendered on this page. All event callbacks receive typed arguments.
+
+## Accessibility
+
+All control buttons are keyboard-navigable. The player supports a full keyboard shortcut set (Space, arrow keys, M, F, P, C, comma, period). Interactive elements carry appropriate ARIA labels.
+
+## Theming
+
+The player imports structural CSS from `@aura-ui/video-player/styles.css`. All color values reference `@aura-ui/themes` CSS tokens (`--color-primary`, `--color-fg`, `--color-border`, etc.). Wrap your application in `<ThemeProvider>` to enable runtime theme switching.
