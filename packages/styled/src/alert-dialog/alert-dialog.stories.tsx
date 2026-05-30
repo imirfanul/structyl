@@ -11,6 +11,33 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Preview: Story = {
+  name: 'Preview (open)',
+  render: () => (
+    <AlertDialog.Root defaultOpen>
+      <AlertDialog.Trigger asChild>
+        <Button variant="outline">Open Alert Dialog</Button>
+      </AlertDialog.Trigger>
+      <AlertDialog.Portal>
+        <AlertDialog.Overlay />
+        <AlertDialog.Content>
+          <AlertDialog.Header>
+            <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+            <AlertDialog.Description>
+              This action cannot be undone. This will permanently delete your account and remove
+              your data from our servers.
+            </AlertDialog.Description>
+          </AlertDialog.Header>
+          <AlertDialog.Footer>
+            <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+            <AlertDialog.Action>Continue</AlertDialog.Action>
+          </AlertDialog.Footer>
+        </AlertDialog.Content>
+      </AlertDialog.Portal>
+    </AlertDialog.Root>
+  ),
+};
+
 export const Default: Story = {
   render: () => (
     <AlertDialog.Root>

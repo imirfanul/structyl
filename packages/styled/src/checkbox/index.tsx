@@ -67,12 +67,9 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
       )}
       {...props}
     >
-      <CheckboxIndicator className={cn('flex items-center justify-center text-current animate-in zoom-in-50 duration-snappy')}>
-        {props.checked === 'indeterminate' ? (
-          <Minus className="size-3 stroke-[3]" />
-        ) : (
-          <Check className="size-3 stroke-[3]" />
-        )}
+      <CheckboxIndicator className={cn('group flex items-center justify-center text-current animate-in zoom-in-50 duration-snappy')}>
+        <Check className="size-3 stroke-[3] group-data-[state=indeterminate]:hidden" />
+        <Minus className="size-3 stroke-[3] group-data-[state=checked]:hidden" />
       </CheckboxIndicator>
     </CheckboxPrimitive>
   ),

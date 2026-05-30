@@ -7,6 +7,13 @@ import { composeEventHandlers } from '@aura-ui/utils';
 
 export type CheckedState = boolean | 'indeterminate';
 
+interface CheckboxContextValue {
+  checked: CheckedState;
+  disabled?: boolean;
+}
+
+const CheckboxContext = React.createContext<CheckboxContextValue>({ checked: false });
+
 export interface CheckboxProps
   extends Omit<React.ComponentPropsWithoutRef<'button'>, 'value' | 'checked' | 'defaultChecked'> {
   checked?: CheckedState;
@@ -40,7 +47,7 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((props, forw
   });
 
   return (
-    <>
+    <CheckboxContext.Provider value={{ checked, disabled }}>
       <Primitive.button
         type="button"
         role="checkbox"
@@ -84,7 +91,7 @@ const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>((props, forw
           }}
         />
       ) : null}
-    </>
+    </CheckboxContext.Provider>
   );
 });
 Checkbox.displayName = 'Checkbox';
@@ -97,7 +104,18 @@ interface CheckboxIndicatorProps extends React.ComponentPropsWithoutRef<'span'> 
 const CheckboxIndicator = React.forwardRef<HTMLSpanElement, CheckboxIndicatorProps>(
   (props, forwardedRef) => {
     const { forceMount, ...rest } = props;
-    return <Primitive.span {...rest} ref={forwardedRef} />;
+    const { checked } = React.useContext(CheckboxContext);
+
+    if (!forceMount && !checked) return null;
+
+    return (
+      <Primitive.span
+        data-state={checked === 'indeterminate' ? 'indeterminate' : checked ? 'checked' : 'unchecked'}
+        data-disabled={rest['data-disabled']}
+        {...rest}
+        ref={forwardedRef}
+      />
+    );
   },
 );
 CheckboxIndicator.displayName = 'CheckboxIndicator';

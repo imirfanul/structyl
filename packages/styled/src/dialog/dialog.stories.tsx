@@ -11,6 +11,56 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+export const Preview: Story = {
+  name: 'Preview (open)',
+  render: () => (
+    <Dialog.Root defaultOpen>
+      <Dialog.Trigger asChild>
+        <Button variant="outline">Open Dialog</Button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay />
+        <Dialog.Content>
+          <Dialog.Header>
+            <Dialog.Title>Edit Profile</Dialog.Title>
+            <Dialog.Description>
+              Make changes to your profile here. Click save when you&apos;re done.
+            </Dialog.Description>
+          </Dialog.Header>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="name-preview" className="text-right text-sm font-medium">
+                Name
+              </label>
+              <input
+                id="name-preview"
+                defaultValue="Pedro Duarte"
+                className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <label htmlFor="username-preview" className="text-right text-sm font-medium">
+                Username
+              </label>
+              <input
+                id="username-preview"
+                defaultValue="@peduarte"
+                className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+              />
+            </div>
+          </div>
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button variant="outline">Cancel</Button>
+            </Dialog.Close>
+            <Button>Save changes</Button>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  ),
+};
+
 export const Default: Story = {
   play: async ({ canvas, userEvent, canvasElement }) => {
     await userEvent.click(canvas.getByRole('button', { name: /open dialog/i }));
