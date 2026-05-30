@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Button } from '../button';
-import { Link as AuraLink } from '../material';
+import { Link as AuraLink } from '../aura';
 import { Typography } from '../typography';
 import { Badge } from './index';
 

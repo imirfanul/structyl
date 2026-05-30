@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Check, ChevronsRight, ChevronsLeft, Plus, X } from '@aura-ui/icons';
-import { Material as MaterialPrimitive } from '@aura-ui/primitives';
+import { Aura as AuraPrimitive } from '@aura-ui/primitives';
 import type {
   AuraRatingProps as PrimitiveRatingProps,
   AuraSnackbarProps as PrimitiveSnackbarProps,
@@ -14,7 +14,7 @@ import { cn } from '@aura-ui/utils';
 import { buttonVariants, type ButtonProps } from '../button';
 import * as Combobox from '../combobox';
 
-type MaterialColor =
+type AuraColor =
   | 'default'
   | 'inherit'
   | 'primary'
@@ -24,15 +24,15 @@ type MaterialColor =
   | 'destructive'
   | 'muted'
   | 'transparent';
-type MaterialSize = 'small' | 'medium' | 'large';
-type MaterialSpacing = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8;
+type AuraSize = 'small' | 'medium' | 'large';
+type AuraSpacing = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8;
 type ContainerMaxWidth = false | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full';
 type GridSize = 'auto' | 'grow' | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-type MaterialButtonVariant = 'contained' | 'outlined' | 'text';
-type AuraButtonVariant = NonNullable<ButtonProps['variant']>;
+type AuraButtonVariant = 'contained' | 'outlined' | 'text';
+type AuraUiButtonVariant = NonNullable<ButtonProps['variant']>;
 type AuraButtonSize = NonNullable<ButtonProps['size']>;
 
-const gapClasses: Record<MaterialSpacing, string> = {
+const gapClasses: Record<AuraSpacing, string> = {
   0: 'gap-0',
   1: 'gap-1',
   2: 'gap-2',
@@ -43,7 +43,7 @@ const gapClasses: Record<MaterialSpacing, string> = {
   8: 'gap-8',
 };
 
-const rowGapClasses: Record<MaterialSpacing, string> = {
+const rowGapClasses: Record<AuraSpacing, string> = {
   0: 'gap-y-0',
   1: 'gap-y-1',
   2: 'gap-y-2',
@@ -54,7 +54,7 @@ const rowGapClasses: Record<MaterialSpacing, string> = {
   8: 'gap-y-8',
 };
 
-const columnGapClasses: Record<MaterialSpacing, string> = {
+const columnGapClasses: Record<AuraSpacing, string> = {
   0: 'gap-x-0',
   1: 'gap-x-1',
   2: 'gap-x-2',
@@ -65,7 +65,7 @@ const columnGapClasses: Record<MaterialSpacing, string> = {
   8: 'gap-x-8',
 };
 
-const paddingClasses: Record<MaterialSpacing, string> = {
+const paddingClasses: Record<AuraSpacing, string> = {
   0: 'p-0',
   1: 'p-1',
   2: 'p-2',
@@ -76,7 +76,7 @@ const paddingClasses: Record<MaterialSpacing, string> = {
   8: 'p-8',
 };
 
-const marginClasses: Record<MaterialSpacing, string> = {
+const marginClasses: Record<AuraSpacing, string> = {
   0: 'm-0',
   1: 'm-1',
   2: 'm-2',
@@ -213,7 +213,7 @@ function getResponsiveGridSpan(
   return undefined;
 }
 
-const textColorClasses: Record<MaterialColor, string> = {
+const textColorClasses: Record<AuraColor, string> = {
   default: 'text-fg',
   inherit: 'text-inherit',
   primary: 'text-primary',
@@ -225,7 +225,7 @@ const textColorClasses: Record<MaterialColor, string> = {
   transparent: 'text-transparent',
 };
 
-const surfaceColorClasses: Record<MaterialColor, string> = {
+const surfaceColorClasses: Record<AuraColor, string> = {
   default: 'bg-bg text-fg',
   inherit: 'bg-inherit text-inherit',
   primary: 'bg-primary text-primary-foreground',
@@ -237,7 +237,7 @@ const surfaceColorClasses: Record<MaterialColor, string> = {
   transparent: 'bg-transparent text-fg',
 };
 
-const chipOutlineColorClasses: Record<Exclude<MaterialColor, 'inherit' | 'transparent'>, string> = {
+const chipOutlineColorClasses: Record<Exclude<AuraColor, 'inherit' | 'transparent'>, string> = {
   default: 'border-border bg-bg text-fg',
   primary: 'border-primary text-primary',
   secondary: 'border-secondary text-secondary-foreground',
@@ -258,9 +258,9 @@ const elevationClasses: Record<0 | 1 | 2 | 3 | 4 | 5 | 6, string> = {
 };
 
 function getButtonVariant(
-  variant: MaterialButtonVariant = 'contained',
-  color: MaterialColor = 'primary',
-): AuraButtonVariant {
+  variant: AuraButtonVariant = 'contained',
+  color: AuraColor = 'primary',
+): AuraUiButtonVariant {
   if (variant === 'outlined') return 'outline';
   if (variant === 'text') return color === 'primary' ? 'link' : 'ghost';
   if (color === 'secondary' || color === 'muted') return 'secondary';
@@ -268,21 +268,21 @@ function getButtonVariant(
   return 'default';
 }
 
-function getButtonSize(size: MaterialSize = 'medium'): AuraButtonSize {
+function getButtonSize(size: AuraSize = 'medium'): AuraButtonSize {
   if (size === 'small') return 'sm';
   if (size === 'large') return 'lg';
   return 'default';
 }
 
 const Box = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Box>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Box> & {
+  React.ElementRef<typeof AuraPrimitive.Box>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Box> & {
     display?: 'block' | 'inline' | 'inline-block' | 'flex' | 'inline-flex' | 'grid' | 'contents';
-    padding?: MaterialSpacing;
-    margin?: MaterialSpacing;
+    padding?: AuraSpacing;
+    margin?: AuraSpacing;
   }
 >(({ className, display, padding, margin, ...props }, ref) => (
-  <MaterialPrimitive.Box
+  <AuraPrimitive.Box
     ref={ref}
     className={cn(
       display === 'block' && 'block',
@@ -302,8 +302,8 @@ const Box = React.forwardRef<
 Box.displayName = 'Box';
 
 const Container = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Container>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Container> & {
+  React.ElementRef<typeof AuraPrimitive.Container>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Container> & {
     size?: Exclude<ContainerMaxWidth, false>;
     maxWidth?: ContainerMaxWidth;
     disableGutters?: boolean;
@@ -312,7 +312,7 @@ const Container = React.forwardRef<
 >(({ className, size, maxWidth, disableGutters = false, fixed = false, ...props }, ref) => {
   const resolvedMaxWidth = maxWidth ?? size ?? 'lg';
   return (
-    <MaterialPrimitive.Container
+    <AuraPrimitive.Container
       ref={ref}
       className={cn(
         'mx-auto w-full',
@@ -328,10 +328,10 @@ const Container = React.forwardRef<
 Container.displayName = 'Container';
 
 const Stack = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Stack>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Stack> & {
+  React.ElementRef<typeof AuraPrimitive.Stack>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Stack> & {
     direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
-    spacing?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | MaterialSpacing;
+    spacing?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | AuraSpacing;
     divider?: React.ReactNode;
     alignItems?: 'start' | 'center' | 'end' | 'stretch' | 'baseline';
     justifyContent?: 'start' | 'center' | 'end' | 'between' | 'around' | 'evenly';
@@ -376,7 +376,7 @@ const Stack = React.forwardRef<
       : children;
 
     return (
-      <MaterialPrimitive.Stack
+      <AuraPrimitive.Stack
         ref={ref}
         className={cn(
           'flex',
@@ -404,22 +404,22 @@ const Stack = React.forwardRef<
         {...props}
       >
         {content}
-      </MaterialPrimitive.Stack>
+      </AuraPrimitive.Stack>
     );
   },
 );
 Stack.displayName = 'Stack';
 
 const Grid = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Grid>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Grid> & {
+  React.ElementRef<typeof AuraPrimitive.Grid>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Grid> & {
     container?: boolean;
     item?: boolean;
     columns?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
-    spacing?: MaterialSpacing;
-    rowSpacing?: MaterialSpacing;
-    columnSpacing?: MaterialSpacing;
-    gap?: 'none' | 'sm' | 'md' | 'lg' | MaterialSpacing;
+    spacing?: AuraSpacing;
+    rowSpacing?: AuraSpacing;
+    columnSpacing?: AuraSpacing;
+    gap?: 'none' | 'sm' | 'md' | 'lg' | AuraSpacing;
     size?: GridSize;
     xs?: GridSize;
     sm?: GridSize;
@@ -461,7 +461,7 @@ const Grid = React.forwardRef<
               : 'gap-4';
     const span = size ?? xs;
     return (
-      <MaterialPrimitive.Grid
+      <AuraPrimitive.Grid
         ref={ref}
         className={cn(
           container && 'grid',
@@ -486,14 +486,14 @@ const Grid = React.forwardRef<
 Grid.displayName = 'Grid';
 
 const Paper = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Paper>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Paper> & {
+  React.ElementRef<typeof AuraPrimitive.Paper>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Paper> & {
     elevation?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     variant?: 'elevation' | 'outlined';
     square?: boolean;
   }
 >(({ className, elevation = 1, variant = 'elevation', square = false, ...props }, ref) => (
-  <MaterialPrimitive.Paper
+  <AuraPrimitive.Paper
     ref={ref}
     className={cn(
       'bg-card text-card-foreground border',
@@ -508,8 +508,8 @@ const Paper = React.forwardRef<
 Paper.displayName = 'Paper';
 
 const Typography = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Typography>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Typography> & {
+  React.ElementRef<typeof AuraPrimitive.Typography>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Typography> & {
     variant?:
       | 'h1'
       | 'h2'
@@ -529,7 +529,7 @@ const Typography = React.forwardRef<
       | 'muted'
       | 'code';
     align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-    color?: MaterialColor;
+    color?: AuraColor;
     gutterBottom?: boolean;
     noWrap?: boolean;
     paragraph?: boolean;
@@ -548,7 +548,7 @@ const Typography = React.forwardRef<
     },
     ref,
   ) => (
-    <MaterialPrimitive.Typography
+    <AuraPrimitive.Typography
       ref={ref}
       className={cn(
         variant === 'h1' && 'text-4xl font-semibold tracking-tight',
@@ -584,14 +584,14 @@ const Typography = React.forwardRef<
 Typography.displayName = 'Typography';
 
 const Link = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Link>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Link> & {
+  React.ElementRef<typeof AuraPrimitive.Link>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Link> & {
     underline?: 'always' | 'hover' | 'none';
-    color?: MaterialColor;
+    color?: AuraColor;
     variant?: React.ComponentPropsWithoutRef<typeof Typography>['variant'];
   }
 >(({ className, underline = 'hover', color = 'primary', variant, ...props }, ref) => (
-  <MaterialPrimitive.Link
+  <AuraPrimitive.Link
     ref={ref}
     className={cn(
       'focus-visible:ring-ring/40 underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2',
@@ -610,14 +610,14 @@ const Link = React.forwardRef<
 Link.displayName = 'Link';
 
 const SvgIcon = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.SvgIcon>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.SvgIcon> & {
-    color?: MaterialColor;
-    fontSize?: 'inherit' | MaterialSize;
+  React.ElementRef<typeof AuraPrimitive.SvgIcon>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.SvgIcon> & {
+    color?: AuraColor;
+    fontSize?: 'inherit' | AuraSize;
     titleAccess?: string;
   }
 >(({ className, color = 'inherit', fontSize = 'medium', titleAccess, title, ...props }, ref) => (
-  <MaterialPrimitive.SvgIcon
+  <AuraPrimitive.SvgIcon
     ref={ref}
     title={title ?? titleAccess}
     className={cn(
@@ -635,10 +635,10 @@ const SvgIcon = React.forwardRef<
 SvgIcon.displayName = 'SvgIcon';
 
 const Chart = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Chart>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Chart>
+  React.ElementRef<typeof AuraPrimitive.Chart>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Chart>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Chart
+  <AuraPrimitive.Chart
     ref={ref}
     className={cn(
       'text-primary border-border bg-card h-36 w-full rounded-md border p-3',
@@ -649,20 +649,20 @@ const Chart = React.forwardRef<
 ));
 Chart.displayName = 'Chart';
 
-interface ChipProps extends React.ComponentPropsWithoutRef<typeof MaterialPrimitive.ChipRoot> {
+interface ChipProps extends React.ComponentPropsWithoutRef<typeof AuraPrimitive.ChipRoot> {
   label?: React.ReactNode;
   onDelete?: () => void;
   deleteIcon?: React.ReactNode;
   icon?: React.ReactNode;
   avatar?: React.ReactNode;
   variant?: 'filled' | 'outlined' | 'default' | 'secondary' | 'outline';
-  color?: Exclude<MaterialColor, 'inherit' | 'transparent'>;
-  size?: Exclude<MaterialSize, 'large'>;
+  color?: Exclude<AuraColor, 'inherit' | 'transparent'>;
+  size?: Exclude<AuraSize, 'large'>;
   clickable?: boolean;
   disabled?: boolean;
 }
 
-const Chip = React.forwardRef<React.ElementRef<typeof MaterialPrimitive.ChipRoot>, ChipProps>(
+const Chip = React.forwardRef<React.ElementRef<typeof AuraPrimitive.ChipRoot>, ChipProps>(
   (
     {
       className,
@@ -682,7 +682,7 @@ const Chip = React.forwardRef<React.ElementRef<typeof MaterialPrimitive.ChipRoot
     },
     ref,
   ) => (
-    <MaterialPrimitive.ChipRoot
+    <AuraPrimitive.ChipRoot
       ref={ref}
       role={clickable ? 'button' : props.role}
       tabIndex={clickable && !disabled ? (tabIndex ?? 0) : tabIndex}
@@ -708,31 +708,31 @@ const Chip = React.forwardRef<React.ElementRef<typeof MaterialPrimitive.ChipRoot
     >
       {avatar ? <span className="-ml-1 inline-flex shrink-0">{avatar}</span> : null}
       {icon ? <span className="inline-flex shrink-0">{icon}</span> : null}
-      <MaterialPrimitive.ChipLabel className="truncate">
+      <AuraPrimitive.ChipLabel className="truncate">
         {label ?? children}
-      </MaterialPrimitive.ChipLabel>
+      </AuraPrimitive.ChipLabel>
       {onDelete ? (
-        <MaterialPrimitive.ChipDelete
+        <AuraPrimitive.ChipDelete
           aria-label="Remove"
           disabled={disabled}
           className="focus-visible:ring-ring rounded-full opacity-70 transition-opacity hover:opacity-100 focus-visible:outline-none focus-visible:ring-2"
           onClick={onDelete}
         >
           {deleteIcon ?? <X className="size-3" />}
-        </MaterialPrimitive.ChipDelete>
+        </AuraPrimitive.ChipDelete>
       ) : null}
-    </MaterialPrimitive.ChipRoot>
+    </AuraPrimitive.ChipRoot>
   ),
 );
 Chip.displayName = 'Chip';
 
 const ButtonGroup = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.ButtonGroup>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.ButtonGroup> & {
+  React.ElementRef<typeof AuraPrimitive.ButtonGroup>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.ButtonGroup> & {
     orientation?: 'horizontal' | 'vertical';
-    variant?: MaterialButtonVariant;
-    color?: MaterialColor;
-    size?: MaterialSize;
+    variant?: AuraButtonVariant;
+    color?: AuraColor;
+    size?: AuraSize;
     disabled?: boolean;
     fullWidth?: boolean;
   }
@@ -764,7 +764,7 @@ const ButtonGroup = React.forwardRef<
     });
 
     return (
-      <MaterialPrimitive.ButtonGroup
+      <AuraPrimitive.ButtonGroup
         ref={ref}
         className={cn(
           'border-border shadow-xs inline-flex overflow-hidden rounded-md border',
@@ -778,7 +778,7 @@ const ButtonGroup = React.forwardRef<
         {...props}
       >
         {content}
-      </MaterialPrimitive.ButtonGroup>
+      </AuraPrimitive.ButtonGroup>
     );
   },
 );
@@ -787,8 +787,8 @@ ButtonGroup.displayName = 'ButtonGroup';
 interface FloatingActionButtonProps extends Omit<ButtonProps, 'size' | 'variant' | 'color'> {
   extended?: boolean;
   variant?: 'circular' | 'extended';
-  color?: MaterialColor;
-  size?: MaterialSize;
+  color?: AuraColor;
+  size?: AuraSize;
 }
 
 const FloatingActionButton = React.forwardRef<HTMLButtonElement, FloatingActionButtonProps>(
@@ -805,7 +805,7 @@ const FloatingActionButton = React.forwardRef<HTMLButtonElement, FloatingActionB
           ? 'icon-lg'
           : 'icon';
     return (
-      <MaterialPrimitive.FloatingActionButton
+      <AuraPrimitive.FloatingActionButton
         ref={ref}
         className={cn(
           buttonVariants({ variant: getButtonVariant('contained', color), size: buttonSize }),
@@ -823,14 +823,14 @@ FloatingActionButton.displayName = 'FloatingActionButton';
 const Fab = FloatingActionButton;
 
 const Rating = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Rating>,
+  React.ElementRef<typeof AuraPrimitive.Rating>,
   PrimitiveRatingProps & {
-    size?: MaterialSize;
-    color?: Exclude<MaterialColor, 'inherit' | 'transparent'>;
+    size?: AuraSize;
+    color?: Exclude<AuraColor, 'inherit' | 'transparent'>;
     precision?: number;
   }
 >(({ className, itemClassName, size = 'medium', color = 'primary', precision, ...props }, ref) => (
-  <MaterialPrimitive.Rating
+  <AuraPrimitive.Rating
     ref={ref}
     className={cn('inline-flex items-center gap-0.5', className)}
     itemClassName={cn(
@@ -854,10 +854,10 @@ Rating.displayName = 'Rating';
 const Autocomplete = Combobox;
 
 const TransferList = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.TransferList>,
+  React.ElementRef<typeof AuraPrimitive.TransferList>,
   PrimitiveTransferListProps
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.TransferList
+  <AuraPrimitive.TransferList
     ref={ref}
     className={cn(
       'grid max-w-xl grid-cols-[1fr_auto_1fr] items-center gap-3',
@@ -876,12 +876,12 @@ TransferList.displayName = 'TransferList';
 
 const ListRoot = React.forwardRef<
   HTMLUListElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.Root> & {
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.Root> & {
     dense?: boolean;
     disablePadding?: boolean;
   }
 >(({ className, dense = false, disablePadding = false, ...props }, ref) => (
-  <MaterialPrimitive.List.Root
+  <AuraPrimitive.List.Root
     ref={ref}
     data-dense={dense ? '' : undefined}
     className={cn('grid gap-1', !disablePadding && 'p-1', dense && 'text-sm', className)}
@@ -892,12 +892,12 @@ ListRoot.displayName = 'List.Root';
 
 const ListItem = React.forwardRef<
   HTMLLIElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.Item> & {
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.Item> & {
     disablePadding?: boolean;
     divider?: boolean;
   }
 >(({ className, disablePadding = false, divider = false, ...props }, ref) => (
-  <MaterialPrimitive.List.Item
+  <AuraPrimitive.List.Item
     ref={ref}
     className={cn(
       'relative list-none',
@@ -912,7 +912,7 @@ ListItem.displayName = 'List.Item';
 
 const ListItemButton = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.ItemButton> & {
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.ItemButton> & {
     selected?: boolean;
     dense?: boolean;
     alignItems?: 'center' | 'flex-start';
@@ -922,7 +922,7 @@ const ListItemButton = React.forwardRef<
     { className, selected = false, dense = false, alignItems = 'center', disabled, ...props },
     ref,
   ) => (
-    <MaterialPrimitive.List.ItemButton
+    <AuraPrimitive.List.ItemButton
       ref={ref}
       disabled={disabled}
       data-state={selected ? 'selected' : undefined}
@@ -943,13 +943,13 @@ ListItemButton.displayName = 'List.ItemButton';
 
 const ListItemText = React.forwardRef<
   HTMLSpanElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.ItemText> & {
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.ItemText> & {
     primary?: React.ReactNode;
     secondary?: React.ReactNode;
     inset?: boolean;
   }
 >(({ className, primary, secondary, inset = false, children, ...props }, ref) => (
-  <MaterialPrimitive.List.ItemText
+  <AuraPrimitive.List.ItemText
     ref={ref}
     className={cn('grid min-w-0 flex-1', inset && 'pl-9', className)}
     {...props}
@@ -962,15 +962,15 @@ const ListItemText = React.forwardRef<
         ) : null}
       </>
     )}
-  </MaterialPrimitive.List.ItemText>
+  </AuraPrimitive.List.ItemText>
 ));
 ListItemText.displayName = 'List.ItemText';
 
 const ListItemIcon = React.forwardRef<
   HTMLSpanElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.ItemIcon>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.ItemIcon>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.List.ItemIcon
+  <AuraPrimitive.List.ItemIcon
     ref={ref}
     className={cn(
       'text-muted-foreground inline-flex min-w-6 shrink-0 items-center justify-center',
@@ -983,9 +983,9 @@ ListItemIcon.displayName = 'List.ItemIcon';
 
 const ListItemAvatar = React.forwardRef<
   HTMLSpanElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.ItemAvatar>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.ItemAvatar>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.List.ItemAvatar
+  <AuraPrimitive.List.ItemAvatar
     ref={ref}
     className={cn('inline-flex min-w-10 shrink-0 items-center justify-center', className)}
     {...props}
@@ -995,9 +995,9 @@ ListItemAvatar.displayName = 'List.ItemAvatar';
 
 const ListItemSecondaryAction = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.ItemSecondaryAction>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.ItemSecondaryAction>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.List.ItemSecondaryAction
+  <AuraPrimitive.List.ItemSecondaryAction
     ref={ref}
     className={cn('absolute right-2 top-1/2 -translate-y-1/2', className)}
     {...props}
@@ -1007,12 +1007,12 @@ ListItemSecondaryAction.displayName = 'List.ItemSecondaryAction';
 
 const ListSubheader = React.forwardRef<
   HTMLLIElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.List.Subheader> & {
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.List.Subheader> & {
     inset?: boolean;
     disableSticky?: boolean;
   }
 >(({ className, inset = false, disableSticky = false, ...props }, ref) => (
-  <MaterialPrimitive.List.Subheader
+  <AuraPrimitive.List.Subheader
     ref={ref}
     className={cn(
       'bg-bg text-muted-foreground px-3 py-1 text-xs font-semibold uppercase tracking-wide',
@@ -1038,9 +1038,9 @@ const List = {
 
 const ImageListRoot = React.forwardRef<
   HTMLUListElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.ImageList.Root> & {
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.ImageList.Root> & {
     cols?: 1 | 2 | 3 | 4 | 5 | 6;
-    gap?: MaterialSpacing;
+    gap?: AuraSpacing;
     rowHeight?: number | 'auto';
     variant?: 'standard' | 'woven' | 'masonry' | 'quilted';
   }
@@ -1054,7 +1054,7 @@ const ImageListRoot = React.forwardRef<
         ? ({ '--aura-image-list-row-height': `${rowHeight}px` } as React.CSSProperties)
         : undefined;
     return (
-      <MaterialPrimitive.ImageList.Root
+      <AuraPrimitive.ImageList.Root
         ref={ref}
         style={{ ...rowHeightStyle, ...style }}
         className={cn(
@@ -1081,9 +1081,9 @@ ImageListRoot.displayName = 'ImageList.Root';
 
 const ImageListItem = React.forwardRef<
   HTMLLIElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.ImageList.Item>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.ImageList.Item>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.ImageList.Item
+  <AuraPrimitive.ImageList.Item
     ref={ref}
     className={cn(
       'border-border bg-muted relative list-none overflow-hidden rounded-md border',
@@ -1096,9 +1096,9 @@ ImageListItem.displayName = 'ImageList.Item';
 
 const ImageListImage = React.forwardRef<
   HTMLImageElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.ImageList.Image>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.ImageList.Image>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.ImageList.Image
+  <AuraPrimitive.ImageList.Image
     ref={ref}
     className={cn('aspect-square w-full object-cover', className)}
     {...props}
@@ -1108,9 +1108,9 @@ ImageListImage.displayName = 'ImageList.Image';
 
 const ImageListCaption = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.ImageList.Caption>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.ImageList.Caption>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.ImageList.Caption
+  <AuraPrimitive.ImageList.Caption
     ref={ref}
     className={cn(
       'bg-bg/85 absolute inset-x-0 bottom-0 px-2 py-1 text-xs backdrop-blur',
@@ -1130,12 +1130,12 @@ const ImageList = {
 
 const TableRoot = React.forwardRef<
   HTMLTableElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Root> & {
-    size?: Exclude<MaterialSize, 'large'>;
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Root> & {
+    size?: Exclude<AuraSize, 'large'>;
     stickyHeader?: boolean;
   }
 >(({ className, size = 'medium', stickyHeader = false, ...props }, ref) => (
-  <MaterialPrimitive.Table.Root
+  <AuraPrimitive.Table.Root
     ref={ref}
     data-size={size}
     data-sticky-header={stickyHeader ? '' : undefined}
@@ -1151,10 +1151,10 @@ const TableRoot = React.forwardRef<
 TableRoot.displayName = 'Table.Root';
 
 const TableHeader = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Table.Header>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Header>
+  React.ElementRef<typeof AuraPrimitive.Table.Header>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Header>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Table.Header
+  <AuraPrimitive.Table.Header
     ref={ref}
     className={cn('[&_tr]:border-b', className)}
     {...props}
@@ -1163,10 +1163,10 @@ const TableHeader = React.forwardRef<
 TableHeader.displayName = 'Table.Header';
 
 const TableBody = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Table.Body>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Body>
+  React.ElementRef<typeof AuraPrimitive.Table.Body>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Body>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Table.Body
+  <AuraPrimitive.Table.Body
     ref={ref}
     className={cn('[&_tr:last-child]:border-0', className)}
     {...props}
@@ -1175,10 +1175,10 @@ const TableBody = React.forwardRef<
 TableBody.displayName = 'Table.Body';
 
 const TableFooter = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Table.Footer>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Footer>
+  React.ElementRef<typeof AuraPrimitive.Table.Footer>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Footer>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Table.Footer
+  <AuraPrimitive.Table.Footer
     ref={ref}
     className={cn('bg-muted/40 border-t font-medium', className)}
     {...props}
@@ -1187,10 +1187,10 @@ const TableFooter = React.forwardRef<
 TableFooter.displayName = 'Table.Footer';
 
 const TableRow = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Table.Row>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Row>
+  React.ElementRef<typeof AuraPrimitive.Table.Row>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Row>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Table.Row
+  <AuraPrimitive.Table.Row
     ref={ref}
     className={cn('border-border hover:bg-muted/40 border-b transition-colors', className)}
     {...props}
@@ -1199,10 +1199,10 @@ const TableRow = React.forwardRef<
 TableRow.displayName = 'Table.Row';
 
 const TableHead = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Table.Head>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Head>
+  React.ElementRef<typeof AuraPrimitive.Table.Head>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Head>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Table.Head
+  <AuraPrimitive.Table.Head
     ref={ref}
     className={cn('text-muted-foreground h-10 px-3 text-left align-middle font-medium', className)}
     {...props}
@@ -1211,10 +1211,10 @@ const TableHead = React.forwardRef<
 TableHead.displayName = 'Table.Head';
 
 const TableCell = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Table.Cell>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Cell>
+  React.ElementRef<typeof AuraPrimitive.Table.Cell>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Cell>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Table.Cell
+  <AuraPrimitive.Table.Cell
     ref={ref}
     className={cn('px-3 py-2 align-middle', className)}
     {...props}
@@ -1223,10 +1223,10 @@ const TableCell = React.forwardRef<
 TableCell.displayName = 'Table.Cell';
 
 const TableCaption = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Table.Caption>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Table.Caption>
+  React.ElementRef<typeof AuraPrimitive.Table.Caption>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Table.Caption>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Table.Caption
+  <AuraPrimitive.Table.Caption
     ref={ref}
     className={cn('text-muted-foreground mt-4 text-sm', className)}
     {...props}
@@ -1246,10 +1246,10 @@ const Table = {
 };
 
 const Backdrop = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Backdrop>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Backdrop>
+  React.ElementRef<typeof AuraPrimitive.Backdrop>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Backdrop>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Backdrop
+  <AuraPrimitive.Backdrop
     ref={ref}
     className={cn(
       'bg-fg/45 fixed inset-0 z-40 backdrop-blur-sm',
@@ -1262,10 +1262,10 @@ const Backdrop = React.forwardRef<
 Backdrop.displayName = 'Backdrop';
 
 const Snackbar = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Snackbar>,
+  React.ElementRef<typeof AuraPrimitive.Snackbar>,
   PrimitiveSnackbarProps
 >(({ className, anchorOrigin = { vertical: 'bottom', horizontal: 'left' }, ...props }, ref) => (
-  <MaterialPrimitive.Snackbar
+  <AuraPrimitive.Snackbar
     ref={ref}
     anchorOrigin={anchorOrigin}
     className={cn(
@@ -1283,10 +1283,10 @@ const Snackbar = React.forwardRef<
 Snackbar.displayName = 'Snackbar';
 
 const Modal = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Modal>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Modal>
+  React.ElementRef<typeof AuraPrimitive.Modal>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Modal>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Modal
+  <AuraPrimitive.Modal
     ref={ref}
     className={cn(
       'bg-fg/45 fixed inset-0 z-50 grid place-items-center p-4 backdrop-blur-sm',
@@ -1298,10 +1298,10 @@ const Modal = React.forwardRef<
 Modal.displayName = 'Modal';
 
 const AppBar = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.AppBar>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.AppBar> & {
+  React.ElementRef<typeof AuraPrimitive.AppBar>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.AppBar> & {
     position?: 'static' | 'sticky' | 'fixed' | 'absolute' | 'relative';
-    color?: MaterialColor;
+    color?: AuraColor;
     elevation?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     square?: boolean;
   }
@@ -1310,7 +1310,7 @@ const AppBar = React.forwardRef<
     { className, position = 'static', color = 'default', elevation = 0, square = true, ...props },
     ref,
   ) => (
-    <MaterialPrimitive.AppBar
+    <AuraPrimitive.AppBar
       ref={ref}
       className={cn(
         'border-border z-30 flex h-14 items-center border-b px-4 backdrop-blur',
@@ -1331,10 +1331,10 @@ const AppBar = React.forwardRef<
 AppBar.displayName = 'AppBar';
 
 const BottomNavigationRoot = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.BottomNavigation.Root>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.BottomNavigation.Root>
+  React.ElementRef<typeof AuraPrimitive.BottomNavigation.Root>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.BottomNavigation.Root>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.BottomNavigation.Root
+  <AuraPrimitive.BottomNavigation.Root
     ref={ref}
     className={cn('border-border bg-bg flex h-14 items-center justify-around border-t', className)}
     {...props}
@@ -1343,10 +1343,10 @@ const BottomNavigationRoot = React.forwardRef<
 BottomNavigationRoot.displayName = 'BottomNavigation.Root';
 
 const BottomNavigationItem = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.BottomNavigation.Item>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.BottomNavigation.Item>
+  React.ElementRef<typeof AuraPrimitive.BottomNavigation.Item>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.BottomNavigation.Item>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.BottomNavigation.Item
+  <AuraPrimitive.BottomNavigation.Item
     ref={ref}
     className={cn(
       'text-muted-foreground flex h-full min-w-16 flex-col items-center justify-center gap-0.5 px-3 text-xs transition-colors',
@@ -1365,10 +1365,10 @@ const BottomNavigation = {
 };
 
 const SpeedDialRoot = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.SpeedDial.Root>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.SpeedDial.Root>
+  React.ElementRef<typeof AuraPrimitive.SpeedDial.Root>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.SpeedDial.Root>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.SpeedDial.Root
+  <AuraPrimitive.SpeedDial.Root
     ref={ref}
     className={cn(
       'group fixed bottom-6 right-6 z-40 grid gap-2',
@@ -1383,10 +1383,10 @@ const SpeedDialRoot = React.forwardRef<
 SpeedDialRoot.displayName = 'SpeedDial.Root';
 
 const SpeedDialTrigger = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.SpeedDial.Trigger>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.SpeedDial.Trigger>
+  React.ElementRef<typeof AuraPrimitive.SpeedDial.Trigger>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.SpeedDial.Trigger>
 >(({ className, children, icon, 'aria-label': ariaLabel, ...props }, ref) => (
-  <MaterialPrimitive.SpeedDial.Trigger
+  <AuraPrimitive.SpeedDial.Trigger
     ref={ref}
     aria-label={ariaLabel ?? 'Toggle actions'}
     icon={icon ?? <Plus className="size-5" />}
@@ -1394,15 +1394,15 @@ const SpeedDialTrigger = React.forwardRef<
     {...props}
   >
     {children}
-  </MaterialPrimitive.SpeedDial.Trigger>
+  </AuraPrimitive.SpeedDial.Trigger>
 ));
 SpeedDialTrigger.displayName = 'SpeedDial.Trigger';
 
 const SpeedDialContent = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.SpeedDial.Content>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.SpeedDial.Content>
+  React.ElementRef<typeof AuraPrimitive.SpeedDial.Content>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.SpeedDial.Content>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.SpeedDial.Content
+  <AuraPrimitive.SpeedDial.Content
     ref={ref}
     className={cn(
       'grid gap-2',
@@ -1415,13 +1415,13 @@ const SpeedDialContent = React.forwardRef<
 SpeedDialContent.displayName = 'SpeedDial.Content';
 
 const SpeedDialAction = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.SpeedDial.Action>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.SpeedDial.Action> & {
+  React.ElementRef<typeof AuraPrimitive.SpeedDial.Action>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.SpeedDial.Action> & {
     tooltipTitle?: React.ReactNode;
     tooltipOpen?: boolean;
   }
 >(({ className, children, tooltipTitle, tooltipOpen = false, ...props }, ref) => (
-  <MaterialPrimitive.SpeedDial.Action
+  <AuraPrimitive.SpeedDial.Action
     ref={ref}
     className={cn(
       buttonVariants({ variant: 'secondary', size: 'icon' }),
@@ -1442,7 +1442,7 @@ const SpeedDialAction = React.forwardRef<
         {tooltipTitle}
       </span>
     ) : null}
-  </MaterialPrimitive.SpeedDial.Action>
+  </AuraPrimitive.SpeedDial.Action>
 ));
 SpeedDialAction.displayName = 'SpeedDial.Action';
 
@@ -1454,13 +1454,13 @@ const SpeedDial = {
 };
 
 const Masonry = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.Masonry>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Masonry> & {
+  React.ElementRef<typeof AuraPrimitive.Masonry>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Masonry> & {
     columns?: 1 | 2 | 3 | 4 | 5 | 6;
-    spacing?: MaterialSpacing;
+    spacing?: AuraSpacing;
   }
 >(({ className, columns = 3, spacing = 4, ...props }, ref) => (
-  <MaterialPrimitive.Masonry
+  <AuraPrimitive.Masonry
     ref={ref}
     className={cn(
       '[column-fill:_balance]',
@@ -1489,11 +1489,11 @@ Masonry.displayName = 'Masonry';
 
 const TimelineRoot = React.forwardRef<
   HTMLUListElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Timeline.Root> & {
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Timeline.Root> & {
     position?: 'left' | 'right' | 'alternate';
   }
 >(({ className, position = 'right', ...props }, ref) => (
-  <MaterialPrimitive.Timeline.Root
+  <AuraPrimitive.Timeline.Root
     ref={ref}
     data-position={position}
     className={cn(
@@ -1509,9 +1509,9 @@ TimelineRoot.displayName = 'Timeline.Root';
 
 const TimelineItem = React.forwardRef<
   HTMLLIElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Timeline.Item>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Timeline.Item>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Timeline.Item
+  <AuraPrimitive.Timeline.Item
     ref={ref}
     className={cn('grid grid-cols-[auto_1fr] gap-3', className)}
     {...props}
@@ -1521,9 +1521,9 @@ TimelineItem.displayName = 'Timeline.Item';
 
 const TimelineSeparator = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Timeline.Separator>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Timeline.Separator>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Timeline.Separator
+  <AuraPrimitive.Timeline.Separator
     ref={ref}
     className={cn('grid justify-items-center gap-1', className)}
     {...props}
@@ -1533,12 +1533,12 @@ TimelineSeparator.displayName = 'Timeline.Separator';
 
 const TimelineDot = React.forwardRef<
   HTMLSpanElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Timeline.Dot> & {
-    color?: Exclude<MaterialColor, 'inherit' | 'transparent'>;
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Timeline.Dot> & {
+    color?: Exclude<AuraColor, 'inherit' | 'transparent'>;
     variant?: 'filled' | 'outlined';
   }
 >(({ className, color = 'primary', variant = 'filled', ...props }, ref) => (
-  <MaterialPrimitive.Timeline.Dot
+  <AuraPrimitive.Timeline.Dot
     ref={ref}
     className={cn(
       'size-2.5 rounded-full border',
@@ -1556,9 +1556,9 @@ TimelineDot.displayName = 'Timeline.Dot';
 
 const TimelineContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.Timeline.Content>
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.Timeline.Content>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.Timeline.Content
+  <AuraPrimitive.Timeline.Content
     ref={ref}
     className={cn('pb-4 text-sm', className)}
     {...props}
@@ -1574,20 +1574,20 @@ const Timeline = {
   Content: TimelineContent,
 };
 
-const ClickAwayListener = MaterialPrimitive.ClickAwayListener;
-const NoSsr = MaterialPrimitive.NoSsr;
-const Portal = MaterialPrimitive.Portal;
+const ClickAwayListener = AuraPrimitive.ClickAwayListener;
+const NoSsr = AuraPrimitive.NoSsr;
+const Portal = AuraPrimitive.Portal;
 
 const Popper = React.forwardRef<HTMLDivElement, PopperProps>(
-  (props, ref) => <MaterialPrimitive.Popper ref={ref} {...props} />,
+  (props, ref) => <AuraPrimitive.Popper ref={ref} {...props} />,
 );
 Popper.displayName = 'Popper';
 
 const TextareaAutosize = React.forwardRef<
-  React.ElementRef<typeof MaterialPrimitive.TextareaAutosize>,
-  React.ComponentPropsWithoutRef<typeof MaterialPrimitive.TextareaAutosize>
+  React.ElementRef<typeof AuraPrimitive.TextareaAutosize>,
+  React.ComponentPropsWithoutRef<typeof AuraPrimitive.TextareaAutosize>
 >(({ className, ...props }, ref) => (
-  <MaterialPrimitive.TextareaAutosize
+  <AuraPrimitive.TextareaAutosize
     ref={ref}
     className={cn(
       'border-border bg-bg shadow-xs flex min-h-9 w-full rounded-md border px-3 py-2 text-sm',
@@ -1643,7 +1643,7 @@ export interface TransitionProps extends PrimitiveTransitionProps {
 
 const Transition = React.forwardRef<HTMLDivElement, TransitionProps>(
   ({ className, animation = 'fade', ...props }, ref) => (
-    <MaterialPrimitive.Transition
+    <AuraPrimitive.Transition
       ref={ref}
       className={cn(
         TRANSITION_CLASSES[animation],
@@ -1656,8 +1656,8 @@ const Transition = React.forwardRef<HTMLDivElement, TransitionProps>(
 );
 Transition.displayName = 'Transition';
 
-const CssBaseline = MaterialPrimitive.CssBaseline;
-const InitColorSchemeScript = MaterialPrimitive.InitColorSchemeScript;
+const CssBaseline = AuraPrimitive.CssBaseline;
+const InitColorSchemeScript = AuraPrimitive.InitColorSchemeScript;
 
 const TransferRightIcon = ChevronsRight;
 const TransferLeftIcon = ChevronsLeft;

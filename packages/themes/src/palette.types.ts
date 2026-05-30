@@ -22,7 +22,7 @@ export interface AlertPaletteColor extends PaletteColor {
   };
 }
 
-export interface MaterialScale {
+export interface AuraScale {
   '50': string;
   '100': string;
   '200': string;
@@ -40,23 +40,23 @@ export interface MaterialScale {
 }
 
 export interface StaticPalette {
-  yellow: MaterialScale;
-  amber: MaterialScale;
-  blue: MaterialScale;
-  blueGrey: MaterialScale;
-  brown: MaterialScale;
-  teal: MaterialScale;
-  red: MaterialScale;
-  purple: MaterialScale;
-  pink: MaterialScale;
-  orange: MaterialScale;
-  lime: MaterialScale;
-  lightGreen: MaterialScale;
-  cyan: MaterialScale;
-  deepOrange: MaterialScale;
-  deepPurple: MaterialScale;
-  green: MaterialScale;
-  grey: MaterialScale;
-  indigo: MaterialScale;
-  lightBlue: MaterialScale;
+  yellow: AuraScale;
+  amber: AuraScale;
+  blue: AuraScale;
+  blueGrey: AuraScale;
+  brown: AuraScale;
+  teal: AuraScale;
+  red: AuraScale;
+  purple: AuraScale;
+  pink: AuraScale;
+  orange: AuraScale;
+  lime: AuraScale;
+  lightGreen: AuraScale;
+  cyan: AuraScale;
+  deepOrange: AuraScale;
+  deepPurple: AuraScale;
+  green: AuraScale;
+  grey: AuraScale;
+  indigo: AuraScale;
+  lightBlue: AuraScale;
 }

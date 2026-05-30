@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '../button';
 import { Checkbox } from '../checkbox';
 import { Input } from '../input';
-import { Link as AuraLink } from '../material';
+import { Link as AuraLink } from '../aura';
 import { Typography } from '../typography';
 import * as Sheet from './index';
 

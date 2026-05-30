@@ -25,7 +25,7 @@ import {
 import { Button } from '../button';
 
 const meta: Meta = {
-  title: 'Styled/Material',
+  title: 'Styled/Aura',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

@@ -258,7 +258,7 @@ export type {
   CommandItemProps,
   CommandGroupProps,
 } from '@aura-ui/primitives';
-export * as Material from './material';
+export * as Aura from './aura';
 
 // Phase G: specialty form
 export * as OneTimePasswordField from './one-time-password-field';
@@ -337,8 +337,8 @@ export type { PopconfirmProps } from './popconfirm';
 export { Typography } from './typography';
 export type { TypographyProps, TypographyVariant, TypographyColor } from './typography';
 
-// ── Material component individual re-exports ─────────────────────────────────
-// These live in ./material but the registry and docs import them by name.
+// ── Aura component individual re-exports ─────────────────────────────────────
+// These live in ./aura but the registry and docs import them by name.
 // Note: ButtonGroup, Chart, Table, Timeline, Rating, Typography are already
 // exported individually above; do not re-export them here.
 export {
@@ -369,7 +369,7 @@ export {
   Transition,
   CssBaseline,
   Modal,
-  Portal as MaterialPortal,
+  Portal as AuraPortal,
   InitColorSchemeScript,
-} from './material';
-export type { TransitionAnimation, TransitionProps as AuraTransitionProps } from './material';
+} from './aura';
+export type { TransitionAnimation, TransitionProps as AuraTransitionProps } from './aura';

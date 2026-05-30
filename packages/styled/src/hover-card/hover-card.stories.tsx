@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { Link as AuraLink } from '../material';
+import { Link as AuraLink } from '../aura';
 import { Typography } from '../typography';
 import * as HoverCard from './index';
 

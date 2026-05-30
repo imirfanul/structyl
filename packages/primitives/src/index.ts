@@ -120,7 +120,7 @@ export type {
   MultiSelectOptionsProps,
 } from './multi-select/multi-select';
 
-export * as Material from './material';
+export * as Aura from './aura';
 export type {
   RatingProps as AuraRatingProps,
   ChartProps as AuraChartProps,
@@ -139,7 +139,7 @@ export type {
   TransferListProps as AuraTransferListProps,
   TransferListOption as AuraTransferListOption,
   PopperProps,
-} from './material';
+} from './aura';
 
 export * as Combobox from './combobox';
 export type {

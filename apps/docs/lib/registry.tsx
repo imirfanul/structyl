@@ -93,7 +93,7 @@ import {
   Timeline,
   ClickAwayListener,
   NoSsr,
-  MaterialPortal as Portal,
+  AuraPortal as Portal,
   Popper,
   TextareaAutosize,
   Transition,
@@ -236,26 +236,26 @@ const docsTableFilter: DataTableFilterGroup = {
   ],
 };
 
-const materialOptions = [
+const auraOptions = [
   { value: 'react', label: 'React' },
   { value: 'vue', label: 'Vue' },
   { value: 'svelte', label: 'Svelte' },
 ];
 
-const materialClassNameProp: ApiProp = {
+const auraClassNameProp: ApiProp = {
   name: 'className',
   type: 'string',
   description: 'Additional Tailwind classes merged with the component defaults.',
 };
 
-const materialAsChildProp: ApiProp = {
+const auraAsChildProp: ApiProp = {
   name: 'asChild',
   type: 'boolean',
   default: 'false',
   description: 'Merge props onto the immediate child instead of rendering the default element.',
 };
 
-const materialApi: Record<string, ApiPart[]> = {
+const auraApi: Record<string, ApiPart[]> = {
   box: [
     {
       name: 'Box',
@@ -276,8 +276,8 @@ const materialApi: Record<string, ApiPart[]> = {
           type: '0 | 1 | 2 | 3 | 4 | 5 | 6 | 8',
           description: 'Tokenized margin shortcut.',
         },
-        materialAsChildProp,
-        materialClassNameProp,
+        auraAsChildProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -310,7 +310,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Use fixed breakpoint widths.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -347,7 +347,7 @@ const materialApi: Record<string, ApiPart[]> = {
           type: "'nowrap' | 'wrap' | 'wrap-reverse'",
           description: 'Flex wrapping behavior.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -393,7 +393,7 @@ const materialApi: Record<string, ApiPart[]> = {
           type: "'auto' | 'grow' | 1…12",
           description: 'Column span at each breakpoint.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -420,7 +420,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Remove rounded corners.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -464,7 +464,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Display as paragraph-like block spacing.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -490,8 +490,8 @@ const materialApi: Record<string, ApiPart[]> = {
           type: "'body2' | 'button' | 'caption' | Typography variant",
           description: 'Optional text variant.',
         },
-        materialAsChildProp,
-        materialClassNameProp,
+        auraAsChildProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -514,7 +514,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: "'inherit'",
           description: 'Tokenized icon color.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -686,7 +686,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Disable chip interactions.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -726,7 +726,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Stretch group and children.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -754,7 +754,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: "'medium'",
           description: 'Button size.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -808,7 +808,7 @@ const materialApi: Record<string, ApiPart[]> = {
           type: 'number',
           description: 'Documented precision marker for design parity.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -816,23 +816,23 @@ const materialApi: Record<string, ApiPart[]> = {
     {
       name: 'Autocomplete.Root',
       description: 'Combobox root; accepts controlled/uncontrolled combobox props.',
-      props: [materialClassNameProp],
+      props: [auraClassNameProp],
     },
     {
       name: 'Autocomplete.Input',
       description: 'Search input.',
       props: [
         { name: 'placeholder', type: 'string', description: 'Input placeholder.' },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
-    { name: 'Autocomplete.Content', description: 'Popup content.', props: [materialClassNameProp] },
+    { name: 'Autocomplete.Content', description: 'Popup content.', props: [auraClassNameProp] },
     {
       name: 'Autocomplete.Item',
       description: 'Selectable option.',
       props: [
         { name: 'value', type: 'string', description: 'Option value.' },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -861,7 +861,7 @@ const materialApi: Record<string, ApiPart[]> = {
           type: 'React.ReactNode',
           description: 'Panel headings.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -877,7 +877,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Remove root padding.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
@@ -891,7 +891,7 @@ const materialApi: Record<string, ApiPart[]> = {
           description: 'Remove item padding.',
         },
         { name: 'divider', type: 'boolean', default: 'false', description: 'Show bottom divider.' },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
@@ -907,7 +907,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: "'center'",
           description: 'Row alignment.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
@@ -921,13 +921,13 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Align text with icon rows.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
       name: 'List.ItemIcon / ItemAvatar / ItemSecondaryAction / Subheader',
       description: 'Additional list slots.',
-      props: [materialClassNameProp],
+      props: [auraClassNameProp],
     },
   ],
   'image-list': [
@@ -954,13 +954,13 @@ const materialApi: Record<string, ApiPart[]> = {
           default: "'standard'",
           description: 'Image layout mode.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
       name: 'ImageList.Item / Image / Caption',
       description: 'Image tile parts.',
-      props: [materialClassNameProp],
+      props: [auraClassNameProp],
     },
   ],
   table: [
@@ -980,13 +980,13 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Stick table header.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
       name: 'Table.Header / Body / Footer / Row / Head / Cell / Caption',
       description: 'Semantic table parts.',
-      props: [materialClassNameProp],
+      props: [auraClassNameProp],
     },
   ],
   backdrop: [
@@ -1007,7 +1007,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Remove visible scrim color.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1043,7 +1043,7 @@ const materialApi: Record<string, ApiPart[]> = {
           type: "(event, reason: 'timeout' | 'clickaway' | 'escapeKeyDown') => void",
           description: 'Close request callback.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1076,7 +1076,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'true',
           description: 'Remove rounded corners.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1101,7 +1101,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Show all labels instead of only selected labels.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
@@ -1112,7 +1112,7 @@ const materialApi: Record<string, ApiPart[]> = {
         { name: 'label', type: 'React.ReactNode', description: 'Visible label slot.' },
         { name: 'icon', type: 'React.ReactNode', description: 'Icon slot.' },
         { name: 'showLabel', type: 'boolean', description: 'Override root label visibility.' },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1143,7 +1143,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Unmount the speed dial.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
@@ -1151,7 +1151,7 @@ const materialApi: Record<string, ApiPart[]> = {
       description: 'Floating trigger.',
       props: [
         { name: 'icon | openIcon', type: 'React.ReactNode', description: 'Closed and open icons.' },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
@@ -1165,7 +1165,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Force tooltip visible.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1186,7 +1186,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: '4',
           description: 'Column/item spacing.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1201,7 +1201,7 @@ const materialApi: Record<string, ApiPart[]> = {
           default: "'right'",
           description: 'Timeline content position.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
@@ -1220,13 +1220,13 @@ const materialApi: Record<string, ApiPart[]> = {
           default: "'filled'",
           description: 'Marker treatment.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
     {
       name: 'Timeline.Item / Separator / Content',
       description: 'Timeline composition parts.',
-      props: [materialClassNameProp],
+      props: [auraClassNameProp],
     },
   ],
   'click-away-listener': [
@@ -1281,7 +1281,7 @@ const materialApi: Record<string, ApiPart[]> = {
     {
       name: 'Popper.Root / Anchor / Content',
       description: 'Floating positioning primitives.',
-      props: [materialClassNameProp],
+      props: [auraClassNameProp],
     },
   ],
   'textarea-autosize': [
@@ -1291,7 +1291,7 @@ const materialApi: Record<string, ApiPart[]> = {
       props: [
         { name: 'minRows', type: 'number', default: '1', description: 'Minimum rows.' },
         { name: 'maxRows', type: 'number', description: 'Maximum rows before scrolling.' },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1313,7 +1313,7 @@ const materialApi: Record<string, ApiPart[]> = {
           type: 'number | { appear?: number; enter?: number; exit?: number }',
           description: 'Transition duration metadata.',
         },
-        materialClassNameProp,
+        auraClassNameProp,
       ],
     },
   ],
@@ -1359,7 +1359,7 @@ const materialApi: Record<string, ApiPart[]> = {
   ],
 };
 
-const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
+const AURA_COMPONENTS_BASE: ComponentEntry[] = [
   {
     slug: 'box',
     name: 'Box',
@@ -1544,7 +1544,7 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
       <Autocomplete.Root>
         <Autocomplete.Input placeholder="Search…" className="w-56" />
         <Autocomplete.Content>
-          {materialOptions.map((option) => (
+          {auraOptions.map((option) => (
             <Autocomplete.Item key={option.value} value={option.value}>
               {option.label}
             </Autocomplete.Item>
@@ -1560,7 +1560,7 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
     category: 'Inputs',
     description: 'Moves options between available and selected lists.',
     features: ['Controlled or uncontrolled.', 'Checkbox selection.'],
-    preview: () => <TransferList options={materialOptions} defaultValue={['vue']} />,
+    preview: () => <TransferList options={auraOptions} defaultValue={['vue']} />,
     code: `import { TransferList } from '@aura-ui/styled';\n\n<TransferList options={options} />`,
   },
   {
@@ -1937,7 +1937,7 @@ const [show, setShow] = useState(true);
   },
 ];
 
-const materialExamples: Record<string, ComponentExample[]> = {
+const auraExamples: Record<string, ComponentExample[]> = {
   box: [
     {
       title: 'As a layout wrapper',
@@ -2353,7 +2353,7 @@ const materialExamples: Record<string, ComponentExample[]> = {
         <Autocomplete.Root>
           <Autocomplete.Input placeholder="Search framework" className="w-64" />
           <Autocomplete.Content>
-            {materialOptions.map((option) => (
+            {auraOptions.map((option) => (
               <Autocomplete.Item key={option.value} value={option.value}>
                 {option.label}
               </Autocomplete.Item>
@@ -2407,7 +2407,7 @@ const materialExamples: Record<string, ComponentExample[]> = {
       description: 'Rename the source and target panels to match the workflow.',
       preview: () => (
         <TransferList
-          options={materialOptions}
+          options={auraOptions}
           defaultValue={['react']}
           sourceTitle="Available frameworks"
           targetTitle="Selected"
@@ -2427,7 +2427,7 @@ const materialExamples: Record<string, ComponentExample[]> = {
       description: 'Disable options that cannot be moved.',
       preview: () => (
         <TransferList
-          options={[...materialOptions, { value: 'solid', label: 'Solid', disabled: true }]}
+          options={[...auraOptions, { value: 'solid', label: 'Solid', disabled: true }]}
           defaultValue={['vue']}
         />
       ),
@@ -3354,7 +3354,7 @@ export default function RootLayout({ children }) {
   ],
 };
 
-const materialPropExamples: Record<string, ComponentExample> = {
+const auraPropExamples: Record<string, ComponentExample> = {
   box: {
     title: 'Supported props',
     description:
@@ -3621,7 +3621,7 @@ const materialPropExamples: Record<string, ComponentExample> = {
     description: 'Use value and onValueChange when app state owns the selected side.',
     preview: () => (
       <TransferList
-        options={materialOptions}
+        options={auraOptions}
         value={['react']}
         sourceTitle="Available"
         targetTitle="Chosen"
@@ -4001,12 +4001,12 @@ const materialPropExamples: Record<string, ComponentExample> = {
   },
 };
 
-const MATERIAL_COMPONENTS: ComponentEntry[] = MATERIAL_COMPONENTS_BASE.map((entry) => {
-  const propExample = materialPropExamples[entry.slug];
+const AURA_COMPONENTS: ComponentEntry[] = AURA_COMPONENTS_BASE.map((entry) => {
+  const propExample = auraPropExamples[entry.slug];
   return {
     ...entry,
-    api: materialApi[entry.slug],
-    examples: [...(materialExamples[entry.slug] ?? []), ...(propExample ? [propExample] : [])],
+    api: auraApi[entry.slug],
+    examples: [...(auraExamples[entry.slug] ?? []), ...(propExample ? [propExample] : [])],
   };
 });
 
@@ -6295,7 +6295,7 @@ export default function Demo() {
       },
     ],
   },
-  ...MATERIAL_COMPONENTS,
+  ...AURA_COMPONENTS,
   {
     slug: 'collapsible',
     name: 'Collapsible',
