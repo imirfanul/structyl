@@ -1736,8 +1736,8 @@ const MATERIAL_COMPONENTS_BASE: ComponentEntry[] = [
           ) : (
             <ClickAwayListener onClickAway={() => setOpen(false)}>
               <Paper className="flex flex-col gap-1 p-4 text-sm shadow-md">
-                <span className="font-medium">Click outside to close</span>
-                <span className="text-muted-foreground text-xs">Clicks inside here are ignored</span>
+                <Typography as="span" variant="body2" className="font-medium">Click outside to close</Typography>
+                <Typography as="span" variant="muted" className="text-xs">Clicks inside here are ignored</Typography>
               </Paper>
             </ClickAwayListener>
           )}
@@ -1765,14 +1765,14 @@ const [open, setOpen] = useState(false);
     preview: () => (
       <NoSsr fallback={<Typography variant="muted" className="text-xs italic">Rendering on server…</Typography>}>
         <Paper className="flex flex-col gap-1 p-4 text-sm">
-          <span className="font-medium">Rendered on client</span>
-          <span className="text-muted-foreground text-xs">Window: {typeof window !== 'undefined' ? `${window.innerWidth}×${window.innerHeight}` : ''}</span>
+          <Typography as="span" variant="body2" className="font-medium">Rendered on client</Typography>
+          <Typography as="span" variant="muted" className="text-xs">Window: {typeof window !== 'undefined' ? `${window.innerWidth}×${window.innerHeight}` : ''}</Typography>
         </Paper>
       </NoSsr>
     ),
-    code: `import { NoSsr } from '@aura-ui/styled';
+    code: `import { NoSsr, Typography } from '@aura-ui/styled';
 
-<NoSsr fallback={<span>Rendering on server…</span>}>
+<NoSsr fallback={<Typography as="span">Rendering on server…</Typography>}>
   Window: {window.innerWidth}×{window.innerHeight}
 </NoSsr>`,
   },
@@ -1789,24 +1789,24 @@ const [open, setOpen] = useState(false);
       return (
         <div className="flex flex-col gap-3 w-full max-w-xs">
           <div ref={containerRef} className="border-border rounded-md border p-3 text-sm min-h-10 flex items-center gap-2">
-            <span className="text-muted-foreground text-xs">Container:</span>
+            <Typography as="span" variant="muted" className="text-xs">Container:</Typography>
             {mounted && containerRef.current && (
               <Portal container={containerRef.current}>
-                <span className="text-primary font-medium text-xs">Portalled inside here</span>
+                <Typography as="span" variant="body2" className="text-primary font-medium text-xs">Portalled inside here</Typography>
               </Portal>
             )}
           </div>
-          <span className="text-xs text-muted-foreground">Content is portalled into the container div above</span>
+          <Typography as="span" variant="muted" className="text-xs">Content is portalled into the container div above</Typography>
         </div>
       );
     },
-    code: `import { Portal } from '@aura-ui/styled';
+    code: `import { Portal, Typography } from '@aura-ui/styled';
 
 const containerRef = useRef<HTMLDivElement>(null);
 
 <div ref={containerRef}>
   <Portal container={containerRef.current}>
-    <span>Portalled here</span>
+    <Typography as="span">Portalled here</Typography>
   </Portal>
 </div>`,
   },
@@ -1869,11 +1869,11 @@ const anchorRef = useRef<HTMLButtonElement>(null);
         <div className="flex flex-col items-center gap-4 w-full max-w-xs">
           <div className="flex flex-wrap justify-center gap-1">
             {ANIMS.map(a => (
-              <button
+              <Button
                 key={a}
                 onClick={() => setAnim(a)}
                 className={`rounded px-2 py-0.5 text-[11px] font-medium transition-colors ${anim === a ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-accent hover:text-fg'}`}
-              >{a}</button>
+              >{a}</Button>
             ))}
           </div>
           <Button variant="outline" size="sm" onClick={() => setShow(s => !s)}>
@@ -1903,7 +1903,7 @@ const [show, setShow] = useState(true);
     preview: () => (
       <div className="flex flex-col gap-2 w-full max-w-sm text-xs">
         <CssBaseline />
-        <span className="text-muted-foreground">Injected CSS reset:</span>
+        <Typography as="span" variant="muted">Injected CSS reset:</Typography>
         <pre className="bg-muted overflow-auto rounded p-2 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
           {`*,*::before,*::after { box-sizing: border-box }\nhtml { line-height: 1.5; -webkit-text-size-adjust: 100% }\nbody { margin: 0 }\nbutton,input,textarea,select { font: inherit }`}
         </pre>
@@ -1923,7 +1923,7 @@ const [show, setShow] = useState(true);
     preview: () => (
       <div className="flex flex-col gap-2 w-full max-w-sm text-xs">
         <InitColorSchemeScript defaultMode="system" />
-        <span className="text-muted-foreground">Script injected into &lt;head&gt; before hydration:</span>
+        <Typography as="span" variant="muted">Script injected into &lt;head&gt; before hydration:</Typography>
         <pre className="bg-muted overflow-auto rounded p-2 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
           {`var m = localStorage.getItem("aura-ui-mode") || "system";\nif (m === "system") {\n  m = matchMedia("(prefers-color-scheme: dark)").matches\n    ? "dark" : "light";\n}\ndocument.documentElement.setAttribute("data-theme", m);`}
         </pre>
@@ -2900,8 +2900,8 @@ const options = [
             ) : (
               <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <Paper className="flex flex-col gap-2 p-4 shadow-md">
-                  <span className="text-sm font-medium">Panel is open</span>
-                  <span className="text-muted-foreground text-xs">Click outside to dismiss</span>
+                  <Typography as="span" variant="body2" className="text-sm font-medium">Panel is open</Typography>
+                  <Typography as="span" variant="muted" className="text-xs">Click outside to dismiss</Typography>
                   <Button variant="outline" size="sm" onClick={() => setOpen(false)}>Close</Button>
                 </Paper>
               </ClickAwayListener>
@@ -2909,7 +2909,7 @@ const options = [
           </div>
         );
       },
-      code: `import { ClickAwayListener, Paper, Button } from '@aura-ui/styled';
+      code: `import { ClickAwayListener, Paper, Button, Typography } from '@aura-ui/styled';
 
 const [open, setOpen] = useState(false);
 
@@ -2918,7 +2918,7 @@ const [open, setOpen] = useState(false);
 ) : (
   <ClickAwayListener onClickAway={() => setOpen(false)}>
     <Paper>
-      <p>Click outside to dismiss</p>
+      <Typography variant="body2">Click outside to dismiss</Typography>
       <Button onClick={() => setOpen(false)}>Close</Button>
     </Paper>
   </ClickAwayListener>
@@ -2937,9 +2937,9 @@ const [open, setOpen] = useState(false);
             {open && (
               <ClickAwayListener onClickAway={() => setOpen(false)}>
                 <Paper className="flex flex-col gap-1 p-2 text-xs shadow-md min-w-[140px]">
-                  <button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item A</button>
-                  <button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item B</button>
-                  <button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item C</button>
+                  <Button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item A</Button>
+                  <Button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item B</Button>
+                  <Button className="hover:bg-muted rounded px-3 py-1.5 text-left" onClick={() => setOpen(false)}>Item C</Button>
                 </Paper>
               </ClickAwayListener>
             )}
@@ -2954,8 +2954,8 @@ const [open, setOpen] = useState(false);
 {open && (
   <ClickAwayListener onClickAway={() => setOpen(false)}>
     <Paper>
-      <button onClick={() => setOpen(false)}>Item A</button>
-      <button onClick={() => setOpen(false)}>Item B</button>
+      <Button onClick={() => setOpen(false)}>Item A</Button>
+      <Button onClick={() => setOpen(false)}>Item B</Button>
     </Paper>
   </ClickAwayListener>
 )}`,
@@ -2968,20 +2968,20 @@ const [open, setOpen] = useState(false);
       preview: () => (
         <NoSsr fallback={
           <Paper className="flex flex-col gap-1 p-4 text-sm opacity-50">
-            <span>Rendering on server…</span>
+            <Typography as="span" variant="body2">Rendering on server…</Typography>
           </Paper>
         }>
           <Paper className="flex flex-col gap-1 p-4 text-sm">
-            <span className="font-medium">Rendered on client ✓</span>
-            <span className="text-muted-foreground text-xs">
+            <Typography as="span" variant="body2" className="font-medium">Rendered on client ✓</Typography>
+            <Typography as="span" variant="muted" className="text-xs">
               Viewport: {typeof window !== 'undefined' ? `${window.innerWidth}×${window.innerHeight}px` : ''}
-            </span>
+            </Typography>
           </Paper>
         </NoSsr>
       ),
-      code: `import { NoSsr } from '@aura-ui/styled';
+      code: `import { NoSsr, Typography } from '@aura-ui/styled';
 
-<NoSsr fallback={<span>Loading…</span>}>
+<NoSsr fallback={<Typography as="span">Loading…</Typography>}>
   Viewport: {window.innerWidth}×{window.innerHeight}px
 </NoSsr>`,
     },
@@ -3010,22 +3010,22 @@ const [open, setOpen] = useState(false);
         React.useEffect(() => { setMounted(true); }, []);
         return (
           <div ref={containerRef} className="border-border flex min-h-12 items-center gap-2 rounded-md border p-3 text-sm">
-            <span className="text-muted-foreground text-xs shrink-0">Container:</span>
+            <Typography as="span" variant="muted" className="text-xs shrink-0">Container:</Typography>
             {mounted && containerRef.current && (
               <Portal container={containerRef.current}>
-                <span className="text-primary font-medium text-xs">Portalled here ✓</span>
+                <Typography as="span" variant="caption" className="text-primary font-medium">Portalled here ✓</Typography>
               </Portal>
             )}
           </div>
         );
       },
-      code: `import { Portal } from '@aura-ui/styled';
+      code: `import { Portal, Typography } from '@aura-ui/styled';
 
 const containerRef = useRef<HTMLDivElement>(null);
 
 <div ref={containerRef}>
   <Portal container={containerRef.current}>
-    <span>Portalled here</span>
+    <Typography as="span">Portalled here</Typography>
   </Portal>
 </div>`,
     },
@@ -3245,7 +3245,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
             <Transition in={show} timeout={400}>
               {(status) => (
                 <div className="border-border rounded-md border p-3 text-xs font-mono">
-                  state: <span className="text-primary">{status}</span>
+                  state: <Typography as="span" variant="body2" className="text-primary">{status}</Typography>
                 </div>
               )}
             </Transition>
@@ -3539,7 +3539,7 @@ const materialPropExamples: Record<string, ComponentExample> = {
       <Stack direction="row" spacing="sm" flexWrap="wrap">
         <Chip label="Primary" color="primary" />
         <Chip label="Success" variant="outlined" color="success" />
-        <Chip label="Small" size="small" icon={<span>*</span>} onDelete={() => {}} />
+        <Chip label="Small" size="small" icon={<Typography as="span">*</Typography>} onDelete={() => {}} />
       </Stack>
     ),
     code: `<Chip label="Primary" color="primary" />
@@ -3778,8 +3778,8 @@ const materialPropExamples: Record<string, ComponentExample> = {
         showLabels
         className="border-border w-80 rounded-md border"
       >
-        <BottomNavigation.Item value="home" label="Home" icon={<span>*</span>} />
-        <BottomNavigation.Item value="search" label="Search" icon={<span>?</span>} />
+        <BottomNavigation.Item value="home" label="Home" icon={<Typography as="span" variant="body2">*</Typography>} />
+        <BottomNavigation.Item value="search" label="Search" icon={<Typography as="span" variant="body2">?</Typography>} />
       </BottomNavigation.Root>
     ),
     code: `<BottomNavigation.Root value={value} onValueChange={setValue} showLabels>
@@ -3859,8 +3859,8 @@ const materialPropExamples: Record<string, ComponentExample> = {
           ) : (
             <ClickAwayListener onClickAway={() => { setOpen(false); setCount(c => c + 1); }}>
               <Paper className="flex flex-col gap-1 p-3 text-xs shadow-md">
-                <span className="font-medium">Panel open</span>
-                <span className="text-muted-foreground">Click outside to close ({count} times)</span>
+                <Typography as="span" variant="body2" className="font-medium">Panel open</Typography>
+                <Typography as="span" variant="muted">Click outside to close ({count} times)</Typography>
               </Paper>
             </ClickAwayListener>
           )}
@@ -3882,7 +3882,7 @@ const materialPropExamples: Record<string, ComponentExample> = {
         <Chip label="Client render (deferred) ✓" />
       </NoSsr>
     ),
-    code: `<NoSsr fallback={<span>Loading...</span>} defer>
+    code: `<NoSsr fallback={<Typography as="span">Loading...</Typography>} defer>
   Client-only content
 </NoSsr>`,
   },
@@ -3895,10 +3895,10 @@ const materialPropExamples: Record<string, ComponentExample> = {
       React.useEffect(() => { setMounted(true); }, []);
       return (
         <div ref={containerRef} className="border-border flex min-h-10 items-center gap-2 rounded-md border p-3 text-sm">
-          <span className="text-muted-foreground text-xs">Container:</span>
+          <Typography as="span" variant="muted" className="text-xs">Container:</Typography>
           {mounted && containerRef.current && (
             <Portal container={containerRef.current}>
-              <span className="text-primary text-xs font-medium">Portalled ✓</span>
+              <Typography as="span" variant="body2" className="text-primary text-xs font-medium">Portalled ✓</Typography>
             </Portal>
           )}
         </div>
@@ -3954,9 +3954,9 @@ const materialPropExamples: Record<string, ComponentExample> = {
         <div className="flex flex-col items-center gap-3 w-full max-w-xs">
           <div className="flex flex-wrap justify-center gap-1">
             {ANIMS.map(a => (
-              <button key={a} onClick={() => setActive(a)} className={`rounded px-2 py-0.5 text-[11px] font-medium transition-colors ${active === a ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-accent'}`}>
+              <Button key={a} onClick={() => setActive(a)} className={`rounded px-2 py-0.5 text-[11px] font-medium transition-colors ${active === a ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-accent'}`}>
                 {a}
-              </button>
+              </Button>
             ))}
           </div>
           <Button variant="outline" size="sm" onClick={() => setShow(s => !s)}>
@@ -4244,9 +4244,9 @@ export default function Demo() {
             return (
               <div className="flex items-center gap-3">
                 <Button onClick={() => setOpen(true)}>Open dialog</Button>
-                <span className="text-muted-foreground text-xs">
+                <Typography as="span" variant="muted" className="text-xs">
                   State: {open ? 'open' : 'closed'}
-                </span>
+                </Typography>
                 <Dialog.Root open={open} onOpenChange={setOpen}>
                   <Dialog.Portal>
                     <Dialog.Overlay />
@@ -4442,13 +4442,13 @@ export default function Demo() {
         </Popover.Trigger>
         <Popover.Content>
           <div className="grid gap-2">
-            <h4 className="text-sm font-medium">Dimensions</h4>
-            <p className="text-muted-foreground text-xs">Set the dimensions for the layer.</p>
+            <Typography variant="h4" className="text-sm font-medium">Dimensions</Typography>
+            <Typography variant="muted" className="text-xs">Set the dimensions for the layer.</Typography>
           </div>
         </Popover.Content>
       </Popover.Root>
     ),
-    code: `import { Popover, Button } from '@aura-ui/styled';
+    code: `import { Popover, Button, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
@@ -4457,10 +4457,10 @@ export default function Demo() {
         <Button variant="outline">Open popover</Button>
       </Popover.Trigger>
       <Popover.Content>
-        <h4 className="font-medium text-sm">Dimensions</h4>
-        <p className="text-xs text-muted-foreground">
+        <Typography variant="h4" className="font-medium text-sm">Dimensions</Typography>
+        <Typography variant="muted" className="text-xs">
           Set the dimensions for the layer.
-        </p>
+        </Typography>
       </Popover.Content>
     </Popover.Root>
   );
@@ -4476,7 +4476,7 @@ export default function Demo() {
             </Popover.Trigger>
             <Popover.Content className="w-72">
               <div className="grid gap-3">
-                <p className="text-sm font-medium">Team settings</p>
+                <Typography variant="body2" className="text-sm font-medium">Team settings</Typography>
                 <div className="grid gap-1.5">
                   <Typography as="label" htmlFor="pop-name" variant="input-label">Team name</Typography>
                   <Input id="pop-name" defaultValue="Design Systems" />
@@ -4498,7 +4498,7 @@ export default function Demo() {
         <Button variant="outline">Team settings</Button>
       </Popover.Trigger>
       <Popover.Content className="w-72">
-        <p className="text-sm font-medium">Team settings</p>
+        <Typography variant="body2" className="text-sm font-medium">Team settings</Typography>
         <Typography as="label" htmlFor="name" variant="input-label">Team name</Typography>
         <Input id="name" defaultValue="Design Systems" />
         <div className="flex items-center justify-between text-sm">
@@ -4659,7 +4659,7 @@ export default function Demo() {
                     </Select.Group>
                   </Select.Content>
                 </Select.Root>
-                {val && <p className="text-muted-foreground text-xs">Selected: {val}</p>}
+                {val && <Typography variant="muted" className="text-xs">Selected: {val}</Typography>}
               </div>
             );
           }
@@ -4763,9 +4763,9 @@ export default function Demo() {
                   </MultiSelect.Trigger>
                   <MultiSelect.Content options={options} />
                 </MultiSelect.Root>
-                <p className="text-muted-foreground text-xs">
+                <Typography variant="muted" className="text-xs">
                   Selected: {values.join(', ') || 'none'}
-                </p>
+                </Typography>
               </div>
             );
           }
@@ -4843,9 +4843,9 @@ export default function Demo() {
                   />
                   <Typography as="label" htmlFor="s-notifications" variant="input-label">Email notifications</Typography>
                 </div>
-                <p className="text-muted-foreground text-xs">
+                <Typography variant="muted" className="text-xs">
                   Status: {enabled ? 'enabled' : 'disabled'}
-                </p>
+                </Typography>
               </div>
             );
           }
@@ -5165,9 +5165,9 @@ export default function Demo() {
                   max={100}
                   step={5}
                 />
-                <p className="text-muted-foreground text-xs text-center">
+                <Typography variant="muted" className="text-xs text-center">
                   {range[0]} – {range[1]}
-                </p>
+                </Typography>
               </div>
             );
           }
@@ -5525,7 +5525,7 @@ export default function Demo() {
         preview: () => (
           <div className="w-full max-w-sm space-y-2">
             <Progress value={null} className="w-full" />
-            <p className="text-muted-foreground text-xs text-center">Loading…</p>
+            <Typography variant="muted" className="text-xs text-center">Loading…</Typography>
           </div>
         ),
         code: `import { Progress } from '@aura-ui/styled';
@@ -5797,12 +5797,12 @@ export default function Demo() {
     features: ['Horizontal and vertical orientation.', 'Decorative or semantic.'],
     preview: () => (
       <div className="text-sm">
-        <p>aura-ui</p>
+        <Typography variant="body2">aura-ui</Typography>
         <Separator className="my-2" />
         <div className="flex h-5 items-center gap-3">
-          <span>Docs</span>
+          <Typography as="span" variant="body2">Docs</Typography>
           <Separator className="h-4 w-px" />
-          <span>Source</span>
+          <Typography as="span" variant="body2">Source</Typography>
         </div>
       </div>
     ),
@@ -5817,23 +5817,23 @@ export default function Demo() {
         description: 'Use orientation="vertical" to separate inline items like nav links.',
         preview: () => (
           <nav className="flex h-5 items-center gap-3 text-sm">
-            <a href="#" className="hover:underline">Home</a>
+            <AuraLink href="#" className="hover:underline">Home</AuraLink>
             <Separator orientation="vertical" />
-            <a href="#" className="hover:underline">Docs</a>
+            <AuraLink href="#" className="hover:underline">Docs</AuraLink>
             <Separator orientation="vertical" />
-            <a href="#" className="hover:underline">Blog</a>
+            <AuraLink href="#" className="hover:underline">Blog</AuraLink>
           </nav>
         ),
-        code: `import { Separator } from '@aura-ui/styled';
+        code: `import { Separator, AuraLink } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <nav className="flex h-5 items-center gap-3 text-sm">
-      <a href="/">Home</a>
+      <AuraLink href="/">Home</AuraLink>
       <Separator orientation="vertical" />
-      <a href="/docs">Docs</a>
+      <AuraLink href="/docs">Docs</AuraLink>
       <Separator orientation="vertical" />
-      <a href="/blog">Blog</a>
+      <AuraLink href="/blog">Blog</AuraLink>
     </nav>
   );
 }`,
@@ -5866,15 +5866,15 @@ export default function Demo() {
                   placeholder="Type your message…"
                   rows={3}
                 />
-                <p className={`text-xs text-right ${value.length >= max ? 'text-destructive' : 'text-muted-foreground'}`}>
+                <Typography variant="body2" className={`text-xs text-right ${value.length >= max ? 'text-destructive' : 'text-muted-foreground'}`}>
                   {value.length}/{max}
-                </p>
+                </Typography>
               </div>
             );
           }
           return <TextareaDemo />;
         },
-        code: `import { Textarea } from '@aura-ui/styled';
+        code: `import { Textarea, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   const [value, setValue] = React.useState('');
@@ -5887,7 +5887,7 @@ export default function Demo() {
         placeholder="Type your message…"
         rows={3}
       />
-      <p className="text-xs text-right text-muted-foreground">{value.length}/{max}</p>
+      <Typography variant="muted" className="text-xs text-right">{value.length}/{max}</Typography>
     </div>
   );
 }`,
@@ -5915,18 +5915,18 @@ export default function Demo() {
               <em>I</em>
             </Toggle>
             <Toggle variant="outline" aria-label="Underline">
-              <span className="underline">U</span>
+              <Typography as="span" className="underline">U</Typography>
             </Toggle>
           </div>
         ),
-        code: `import { Toggle } from '@aura-ui/styled';
+        code: `import { Toggle, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <div className="flex gap-1">
       <Toggle variant="outline" defaultPressed><strong>B</strong></Toggle>
       <Toggle variant="outline"><em>I</em></Toggle>
-      <Toggle variant="outline"><span className="underline">U</span></Toggle>
+      <Toggle variant="outline"><Typography as="span" className="underline">U</Typography></Toggle>
     </div>
   );
 }`,
@@ -5948,7 +5948,7 @@ export default function Demo() {
           <em>I</em>
         </ToggleGroup.Item>
         <ToggleGroup.Item value="underline">
-          <span className="underline">U</span>
+          <Typography as="span" className="underline">U</Typography>
         </ToggleGroup.Item>
       </ToggleGroup.Root>
     ),
@@ -5967,7 +5967,7 @@ export default function Demo() {
                   <ToggleGroup.Item value="center" aria-label="Center">C</ToggleGroup.Item>
                   <ToggleGroup.Item value="right" aria-label="Right">R</ToggleGroup.Item>
                 </ToggleGroup.Root>
-                <p className="text-muted-foreground text-xs">Alignment: {align}</p>
+                <Typography variant="muted" className="text-xs">Alignment: {align}</Typography>
               </div>
             );
           }
@@ -5996,12 +5996,12 @@ export default function Demo() {
     features: ['Roving focus.', 'Controlled or uncontrolled.'],
     preview: () => (
       <RadioGroup.Root defaultValue="a" className="grid gap-2">
-        <label className="flex items-center gap-2 text-sm">
+        <Typography as="label" variant="body2" className="flex items-center gap-2">
           <RadioGroup.Item value="a" id="ra" /> Option A
-        </label>
-        <label className="flex items-center gap-2 text-sm">
+        </Typography>
+        <Typography as="label" variant="body2" className="flex items-center gap-2">
           <RadioGroup.Item value="b" id="rb" /> Option B
-        </label>
+        </Typography>
       </RadioGroup.Root>
     ),
     code: `import { RadioGroup } from '@aura-ui/styled';\n\n<RadioGroup.Root defaultValue="a">\n  <RadioGroup.Item value="a" />\n  <RadioGroup.Item value="b" />\n</RadioGroup.Root>`,
@@ -6016,14 +6016,14 @@ export default function Demo() {
               ['comfortable', 'Comfortable'],
               ['spacious', 'Spacious'],
             ] as [string, string][]).map(([value, label]) => (
-              <label key={value} className="flex items-center gap-2 text-sm">
+              <Typography as="label" key={value} variant="body2" className="flex items-center gap-2">
                 <RadioGroup.Item value={value} />
                 {label}
-              </label>
+              </Typography>
             ))}
           </RadioGroup.Root>
         ),
-        code: `import { RadioGroup } from '@aura-ui/styled';
+        code: `import { RadioGroup, Typography } from '@aura-ui/styled';
 
 const options = [
   { value: 'compact', label: 'Compact' },
@@ -6035,10 +6035,10 @@ export default function Demo() {
   return (
     <RadioGroup.Root defaultValue="comfortable">
       {options.map(({ value, label }) => (
-        <label key={value} className="flex items-center gap-2 text-sm">
+        <Typography as="label" key={value} variant="body2" className="flex items-center gap-2">
           <RadioGroup.Item value={value} />
           {label}
-        </label>
+        </Typography>
       ))}
     </RadioGroup.Root>
   );
@@ -6236,20 +6236,20 @@ export default function Demo() {
         preview: () => (
           <div className="w-full max-w-sm space-y-2">
             <div className="flex justify-between text-xs">
-              <span>Storage</span>
-              <span className="text-muted-foreground">47 GB / 100 GB</span>
+              <Typography as="span" variant="caption">Storage</Typography>
+              <Typography as="span" variant="muted">47 GB / 100 GB</Typography>
             </div>
             <Meter value={47} max={100} low={20} high={80} optimum={50} className="w-full" />
           </div>
         ),
-        code: `import { Meter } from '@aura-ui/styled';
+        code: `import { Meter, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <div className="space-y-1">
       <div className="flex justify-between text-xs">
-        <span>Storage</span>
-        <span className="text-muted-foreground">47 GB / 100 GB</span>
+        <Typography as="span">Storage</Typography>
+        <Typography as="span" variant="muted">47 GB / 100 GB</Typography>
       </div>
       <Meter value={47} max={100} low={20} high={80} optimum={50} />
     </div>
@@ -6277,16 +6277,16 @@ export default function Demo() {
         description: 'Pair CopyButton with a styled code block — the typical documentation pattern.',
         preview: () => (
           <div className="flex items-center justify-between gap-2 rounded-md bg-muted px-3 py-2 font-mono text-sm w-full max-w-sm">
-            <span>pnpm add @aura-ui/styled</span>
+            <Typography as="span" variant="code">pnpm add @aura-ui/styled</Typography>
             <CopyButton value="pnpm add @aura-ui/styled" />
           </div>
         ),
-        code: `import { CopyButton } from '@aura-ui/styled';
+        code: `import { CopyButton, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <div className="flex items-center justify-between rounded-md bg-muted px-3 py-2 font-mono text-sm">
-      <span>pnpm add @aura-ui/styled</span>
+      <Typography as="span">pnpm add @aura-ui/styled</Typography>
       <CopyButton value="pnpm add @aura-ui/styled" />
     </div>
   );
@@ -6324,7 +6324,7 @@ export default function Demo() {
                 <Collapsible.Trigger asChild>
                   <Button variant="outline" className="w-full justify-between">
                     Release notes
-                    <span aria-hidden="true">{open ? '−' : '+'}</span>
+                    <Typography as="span" aria-hidden="true">{open ? '−' : '+'}</Typography>
                   </Button>
                 </Collapsible.Trigger>
                 <Collapsible.Content className="mt-2 rounded-md border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
@@ -6335,7 +6335,7 @@ export default function Demo() {
           }
           return <CollapsibleDemo />;
         },
-        code: `import { Collapsible, Button } from '@aura-ui/styled';
+        code: `import { Collapsible, Button, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   const [open, setOpen] = React.useState(true);
@@ -6343,7 +6343,7 @@ export default function Demo() {
     <Collapsible.Root open={open} onOpenChange={setOpen}>
       <Collapsible.Trigger asChild>
         <Button variant="outline" className="w-full justify-between">
-          Release notes <span>{open ? '−' : '+'}</span>
+          Release notes <Typography as="span">{open ? '−' : '+'}</Typography>
         </Button>
       </Collapsible.Trigger>
       <Collapsible.Content className="mt-2 rounded-md border p-4 text-sm">
@@ -6818,7 +6818,7 @@ export default function Demo() {
     preview: () => (
       <HoverCard.Root>
         <HoverCard.Trigger asChild>
-          <a href="#" className="text-sm font-medium underline underline-offset-4">@aura-ui</a>
+          <AuraLink href="#" className="text-sm font-medium underline underline-offset-4">@aura-ui</AuraLink>
         </HoverCard.Trigger>
         <HoverCard.Content>
           <div className="flex items-start gap-3">
@@ -6826,14 +6826,14 @@ export default function Demo() {
               <Avatar.Fallback>AU</Avatar.Fallback>
             </Avatar.Root>
             <div>
-              <h4 className="text-sm font-semibold">@aura-ui</h4>
-              <p className="text-xs text-muted-foreground">Accessible React components with Tailwind styling.</p>
+              <Typography variant="h4" className="text-sm font-semibold">@aura-ui</Typography>
+              <Typography variant="muted" className="text-xs">Accessible React components with Tailwind styling.</Typography>
             </div>
           </div>
         </HoverCard.Content>
       </HoverCard.Root>
     ),
-    code: `import { HoverCard, Avatar } from '@aura-ui/styled';\n\n<HoverCard.Root>\n  <HoverCard.Trigger asChild><a href="#">@aura-ui</a></HoverCard.Trigger>\n  <HoverCard.Content>\n    <div className="flex items-start gap-3">\n      <Avatar.Root><Avatar.Fallback>AU</Avatar.Fallback></Avatar.Root>\n      <div>\n        <h4 className="text-sm font-semibold">@aura-ui</h4>\n        <p className="text-xs text-muted-foreground">Accessible React components.</p>\n      </div>\n    </div>\n  </HoverCard.Content>\n</HoverCard.Root>`,
+    code: `import { HoverCard, Avatar, AuraLink, Typography } from '@aura-ui/styled';\n\n<HoverCard.Root>\n  <HoverCard.Trigger asChild><AuraLink href="#">@aura-ui</AuraLink></HoverCard.Trigger>\n  <HoverCard.Content>\n    <div className="flex items-start gap-3">\n      <Avatar.Root><Avatar.Fallback>AU</Avatar.Fallback></Avatar.Root>\n      <div>\n        <Typography variant="h4" className="text-sm font-semibold">@aura-ui</Typography>\n        <Typography variant="muted" className="text-xs">Accessible React components.</Typography>\n      </div>\n    </div>\n  </HoverCard.Content>\n</HoverCard.Root>`,
   },
   {
     slug: 'context-menu',
@@ -7226,7 +7226,7 @@ export default function Demo() {
                     <OneTimePasswordField.Input key={i} index={i} />
                   ))}
                 </OneTimePasswordField.Root>
-                {done && <p className="text-success text-xs">Code verified!</p>}
+                {done && <Typography variant="caption" className="text-success">Code verified!</Typography>}
               </div>
             );
           }
@@ -7271,9 +7271,9 @@ export default function Demo() {
               <PasswordToggleField.Input placeholder="Min. 8 characters" />
               <PasswordToggleField.Toggle />
             </PasswordToggleField.Root>
-            <p className="text-muted-foreground text-xs">
+            <Typography variant="muted" className="text-xs">
               Use at least 8 characters with letters and numbers.
-            </p>
+            </Typography>
           </div>
         ),
         code: `import { PasswordToggleField, Typography } from '@aura-ui/styled';
@@ -7286,9 +7286,9 @@ export default function Demo() {
         <PasswordToggleField.Input placeholder="Min. 8 characters" />
         <PasswordToggleField.Toggle />
       </PasswordToggleField.Root>
-      <p className="text-xs text-muted-foreground">
+      <Typography variant="muted" className="text-xs">
         Use at least 8 characters with letters and numbers.
-      </p>
+      </Typography>
     </div>
   );
 }`,
@@ -7403,9 +7403,9 @@ export default function Demo() {
                   maxDate={max}
                 />
                 {date && (
-                  <p className="text-muted-foreground text-xs">
+                  <Typography variant="muted" className="text-xs">
                     Selected: {date.toLocaleDateString()}
-                  </p>
+                  </Typography>
                 )}
               </div>
             );
@@ -7732,14 +7732,14 @@ export default function Demo() {
             <Toolbar.Button>Image</Toolbar.Button>
           </Toolbar.Root>
         ),
-        code: `import { Toolbar } from '@aura-ui/styled';
+        code: `import { Toolbar, Typography } from '@aura-ui/styled';
 
 export default function Demo() {
   return (
     <Toolbar.Root>
       <Toolbar.Button aria-label="Bold"><strong>B</strong></Toolbar.Button>
       <Toolbar.Button aria-label="Italic"><em>I</em></Toolbar.Button>
-      <Toolbar.Button aria-label="Underline"><span className="underline">U</span></Toolbar.Button>
+      <Toolbar.Button aria-label="Underline"><Typography as="span" className="underline">U</Typography></Toolbar.Button>
       <Toolbar.Separator />
       <Toolbar.Button>Link</Toolbar.Button>
       <Toolbar.Button>Image</Toolbar.Button>
@@ -7846,8 +7846,8 @@ export default function Demo() {
               ].map((item) => (
                 <Carousel.Item key={item.title}>
                   <div className="bg-card border-border flex h-28 flex-col items-center justify-center rounded-lg border p-4 text-center">
-                    <p className="text-sm font-semibold">{item.title}</p>
-                    <p className="text-muted-foreground mt-1 text-xs">{item.desc}</p>
+                    <Typography variant="body2" className="text-sm font-semibold">{item.title}</Typography>
+                    <Typography variant="muted" className="mt-1 text-xs">{item.desc}</Typography>
                   </div>
                 </Carousel.Item>
               ))}
@@ -7871,8 +7871,8 @@ export default function Demo() {
         {slides.map((slide) => (
           <Carousel.Item key={slide.title}>
             <div className="flex h-28 flex-col items-center justify-center rounded-lg border p-4 text-center">
-              <p className="text-sm font-semibold">{slide.title}</p>
-              <p className="mt-1 text-xs text-muted-foreground">{slide.desc}</p>
+              <Typography variant="body2" className="text-sm font-semibold">{slide.title}</Typography>
+              <Typography variant="muted" className="mt-1 text-xs">{slide.desc}</Typography>
             </div>
           </Carousel.Item>
         ))}
@@ -7987,7 +7987,7 @@ export default function Demo() {
                   <Editable.Preview className="text-lg font-semibold cursor-pointer hover:bg-accent/50 rounded px-1" />
                   <Editable.Input className="text-lg font-semibold" />
                 </Editable.Root>
-                <p className="text-muted-foreground text-xs">Click to rename</p>
+                <Typography variant="muted" className="text-xs">Click to rename</Typography>
               </div>
             );
           }
