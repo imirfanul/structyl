@@ -99,11 +99,12 @@ Checkbox.displayName = 'Checkbox';
 interface CheckboxIndicatorProps extends React.ComponentPropsWithoutRef<'span'> {
   asChild?: boolean;
   forceMount?: boolean;
+  'data-disabled'?: string | boolean;
 }
 
 const CheckboxIndicator = React.forwardRef<HTMLSpanElement, CheckboxIndicatorProps>(
   (props, forwardedRef) => {
-    const { forceMount, ...rest } = props;
+    const { forceMount, 'data-disabled': dataDisabled, ...rest } = props;
     const { checked } = React.useContext(CheckboxContext);
 
     if (!forceMount && !checked) return null;
@@ -111,7 +112,7 @@ const CheckboxIndicator = React.forwardRef<HTMLSpanElement, CheckboxIndicatorPro
     return (
       <Primitive.span
         data-state={checked === 'indeterminate' ? 'indeterminate' : checked ? 'checked' : 'unchecked'}
-        data-disabled={rest['data-disabled']}
+        data-disabled={dataDisabled}
         {...rest}
         ref={forwardedRef}
       />
