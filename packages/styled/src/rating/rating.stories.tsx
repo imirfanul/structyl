@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React, { useState } from 'react';
 import { Rating } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Rating',
@@ -21,7 +22,7 @@ export const Controlled: Story = {
     return (
       <div className="flex flex-col gap-3 p-4">
         <Rating value={value} onChange={setValue} name="controlled" />
-        <p className="text-sm text-muted-foreground">Rating: {value} / 5</p>
+        <Typography variant="muted">Rating: {value} / 5</Typography>
       </div>
     );
   },

@@ -6,6 +6,7 @@ import { Calendar as CalendarPrimitive, DatePicker as DatePickerPrimitive } from
 import { cn } from '@aura-ui/utils';
 import { buttonVariants } from '../button';
 import { Calendar as StyledCalendar } from '../calendar';
+import { Typography } from '../typography';
 
 const Root = DatePickerPrimitive.Root;
 
@@ -223,12 +224,13 @@ const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerProps>(
             />
           </Trigger>
           {helperText ? (
-            <p
+            <Typography
               id={helperId}
-              className={cn('text-xs text-muted-foreground', error && 'text-destructive')}
+              variant="muted"
+              className={cn('text-xs', error && 'text-destructive')}
             >
               {helperText}
-            </p>
+            </Typography>
           ) : null}
         </div>
         <Content className={contentClassName}>

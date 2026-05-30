@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Button } from '../button';
+import { Checkbox } from '../checkbox';
+import { Input } from '../input';
+import { Link as AuraLink } from '../material';
+import { Typography } from '../typography';
 import * as Sheet from './index';
 
 const meta = {
@@ -26,23 +30,23 @@ export const Default: Story = {
         </Sheet.Header>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="sheet-name" className="text-right text-sm font-medium">
+            <Typography as="label" variant="body2" htmlFor="sheet-name" className="text-right font-medium">
               Name
-            </label>
-            <input
+            </Typography>
+            <Input
               id="sheet-name"
               defaultValue="Pedro Duarte"
-              className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+              className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="sheet-username" className="text-right text-sm font-medium">
+            <Typography as="label" variant="body2" htmlFor="sheet-username" className="text-right font-medium">
               Username
-            </label>
-            <input
+            </Typography>
+            <Input
               id="sheet-username"
               defaultValue="@peduarte"
-              className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+              className="col-span-3"
             />
           </div>
         </div>
@@ -75,10 +79,10 @@ export const SideVariants: Story = {
               </Sheet.Description>
             </Sheet.Header>
             <div className="py-4">
-              <p className="text-sm text-muted-foreground">
+              <Typography variant="muted">
                 Content inside the {side} sheet. Use this for navigation menus, filters, or
                 detail panels.
-              </p>
+              </Typography>
             </div>
             <Sheet.Footer>
               <Sheet.Close asChild>
@@ -111,13 +115,13 @@ export const NavigationMenu: Story = {
         <nav className="mt-6 flex flex-col gap-1">
           {['Home', 'Components', 'Documentation', 'Examples', 'Blog', 'GitHub'].map((item) => (
             <Sheet.Close asChild key={item}>
-              <a
+              <AuraLink
                 href="#"
                 className="flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
                 onClick={(e) => e.preventDefault()}
               >
                 {item}
-              </a>
+              </AuraLink>
             </Sheet.Close>
           ))}
         </nav>
@@ -144,21 +148,21 @@ export const FilterPanel: Story = {
         </Sheet.Header>
         <div className="mt-6 space-y-6">
           <div className="space-y-2">
-            <h4 className="text-sm font-medium">Category</h4>
+            <Typography variant="h4" className="text-sm font-medium">Category</Typography>
             {['All', 'Components', 'Hooks', 'Utilities', 'Icons'].map((cat) => (
-              <label key={cat} className="flex items-center gap-2 text-sm">
-                <input type="checkbox" defaultChecked={cat === 'All'} className="h-4 w-4" />
+              <Typography as="label" key={cat} variant="body2" className="flex items-center gap-2">
+                <Checkbox defaultChecked={cat === 'All'} />
                 {cat}
-              </label>
+              </Typography>
             ))}
           </div>
           <div className="space-y-2">
-            <h4 className="text-sm font-medium">Status</h4>
+            <Typography variant="h4" className="text-sm font-medium">Status</Typography>
             {['Stable', 'Beta', 'Alpha'].map((status) => (
-              <label key={status} className="flex items-center gap-2 text-sm">
-                <input type="checkbox" className="h-4 w-4" />
+              <Typography as="label" key={status} variant="body2" className="flex items-center gap-2">
+                <Checkbox />
                 {status}
-              </label>
+              </Typography>
             ))}
           </div>
         </div>

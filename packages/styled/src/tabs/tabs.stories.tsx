@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { expect } from 'storybook/test';
 import { Root, List, Trigger, Content } from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   tags: ['ai-generated'],
@@ -28,26 +29,26 @@ export const Default: Story = {
         </List>
         <Content value="account">
           <div className="rounded-lg border border-border p-4 space-y-2">
-            <p className="text-sm font-medium">Account Settings</p>
-            <p className="text-sm text-muted-foreground">
+            <Typography variant="body2" className="font-medium">Account Settings</Typography>
+            <Typography variant="muted">
               Manage your account details, email address, and connected services.
-            </p>
+            </Typography>
           </div>
         </Content>
         <Content value="password">
           <div className="rounded-lg border border-border p-4 space-y-2">
-            <p className="text-sm font-medium">Change Password</p>
-            <p className="text-sm text-muted-foreground">
+            <Typography variant="body2" className="font-medium">Change Password</Typography>
+            <Typography variant="muted">
               Update your password. We recommend using a strong, unique passphrase.
-            </p>
+            </Typography>
           </div>
         </Content>
         <Content value="notifications">
           <div className="rounded-lg border border-border p-4 space-y-2">
-            <p className="text-sm font-medium">Notification Preferences</p>
-            <p className="text-sm text-muted-foreground">
+            <Typography variant="body2" className="font-medium">Notification Preferences</Typography>
+            <Typography variant="muted">
               Choose how and when you receive email, push, and in-app notifications.
-            </p>
+            </Typography>
           </div>
         </Content>
       </Root>
@@ -67,7 +68,7 @@ export const CodeExample: Story = {
         </List>
         <Content value="preview">
           <div className="flex items-center justify-center rounded-lg border border-border bg-muted/30 p-8 min-h-[120px]">
-            <span className="text-muted-foreground text-sm">Component renders here</span>
+            <Typography as="span" variant="muted">Component renders here</Typography>
           </div>
         </Content>
         <Content value="code">
@@ -78,19 +79,19 @@ export const CodeExample: Story = {
         <Content value="props">
           <div className="rounded-lg border border-border p-4 space-y-2 text-sm">
             <div className="grid grid-cols-3 gap-2 font-medium text-xs text-muted-foreground uppercase tracking-wide border-b border-border pb-2">
-              <span>Prop</span>
-              <span>Type</span>
-              <span>Default</span>
+              <Typography as="span">Prop</Typography>
+              <Typography as="span">Type</Typography>
+              <Typography as="span">Default</Typography>
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">
-              <span>variant</span>
-              <span className="font-mono text-muted-foreground">string</span>
-              <span className="font-mono">&quot;default&quot;</span>
+              <Typography as="span">variant</Typography>
+              <Typography as="span" className="font-mono text-muted-foreground">string</Typography>
+              <Typography as="span" className="font-mono">&quot;default&quot;</Typography>
             </div>
             <div className="grid grid-cols-3 gap-2 text-xs">
-              <span>size</span>
-              <span className="font-mono text-muted-foreground">string</span>
-              <span className="font-mono">&quot;md&quot;</span>
+              <Typography as="span">size</Typography>
+              <Typography as="span" className="font-mono text-muted-foreground">string</Typography>
+              <Typography as="span" className="font-mono">&quot;md&quot;</Typography>
             </div>
           </div>
         </Content>
@@ -112,19 +113,19 @@ export const WithDisabledTab: Story = {
           <Trigger value="archive">Archive</Trigger>
         </List>
         <Content value="active">
-          <p className="text-sm text-muted-foreground p-1">
+          <Typography variant="muted" className="p-1">
             Active tab content is always accessible.
-          </p>
+          </Typography>
         </Content>
         <Content value="beta">
-          <p className="text-sm text-muted-foreground p-1">
+          <Typography variant="muted" className="p-1">
             This tab is disabled and cannot be reached.
-          </p>
+          </Typography>
         </Content>
         <Content value="archive">
-          <p className="text-sm text-muted-foreground p-1">
+          <Typography variant="muted" className="p-1">
             Archived items are viewable in read-only mode.
-          </p>
+          </Typography>
         </Content>
       </Root>
     </div>

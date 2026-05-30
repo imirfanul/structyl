@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { Button } from '../button';
 import { Popconfirm } from './index';
 
 const meta = {
@@ -19,9 +20,9 @@ export const Default: Story = {
         description="This action cannot be undone."
         onConfirm={() => alert('Deleted!')}
       >
-        <button className="rounded-lg bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground">
+        <Button variant="destructive">
           Delete
-        </button>
+        </Button>
       </Popconfirm>
     </div>
   ),
@@ -37,9 +38,9 @@ export const CustomLabels: Story = {
         cancelLabel="Keep draft"
         onConfirm={() => alert('Published!')}
       >
-        <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+        <Button>
           Publish
-        </button>
+        </Button>
       </Popconfirm>
     </div>
   ),
@@ -50,9 +51,9 @@ export const Placements: Story = {
     <div className="flex flex-wrap justify-center gap-4 p-10">
       {(['top', 'right', 'bottom', 'left'] as const).map(side => (
         <Popconfirm key={side} title="Confirm?" side={side} onConfirm={() => {}}>
-          <button className="rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground capitalize">
+          <Button variant="outline" className="capitalize">
             {side}
-          </button>
+          </Button>
         </Popconfirm>
       ))}
     </div>
@@ -63,9 +64,9 @@ export const Disabled: Story = {
   render: () => (
     <div className="flex justify-center p-10">
       <Popconfirm title="Delete?" onConfirm={() => {}} disabled>
-        <button disabled className="rounded-lg bg-destructive/50 px-4 py-2 text-sm font-medium text-destructive-foreground opacity-50 cursor-not-allowed">
+        <Button variant="destructive" disabled>
           Delete (disabled)
-        </button>
+        </Button>
       </Popconfirm>
     </div>
   ),

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Group, Panel, Handle } from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Styled/Resizable',
@@ -82,16 +83,16 @@ export const CodeEditorLayout: Story = {
     <Group direction="vertical" className="h-96 w-[600px] rounded-md border border-border">
       <Panel id="editor" defaultSize={70} minSize={30}>
         <div className="flex h-full flex-col bg-muted/10 p-4">
-          <p className="mb-2 text-xs font-semibold text-muted-foreground">EDITOR</p>
+          <Typography variant="muted" className="mb-2 font-semibold">EDITOR</Typography>
           <pre className="text-xs text-fg/70">{'function hello() {\n  console.log("world");\n}'}</pre>
         </div>
       </Panel>
       <Handle between={['editor', 'terminal']} withHandle />
       <Panel id="terminal" defaultSize={30} minSize={15}>
         <div className="flex h-full flex-col bg-zinc-900 p-3">
-          <p className="mb-1 text-xs font-semibold text-zinc-400">TERMINAL</p>
-          <p className="text-xs text-green-400">{'> hello()'}</p>
-          <p className="text-xs text-zinc-300">world</p>
+          <Typography variant="muted" className="mb-1 font-semibold text-zinc-400">TERMINAL</Typography>
+          <Typography variant="muted" className="text-green-400">{'> hello()'}</Typography>
+          <Typography variant="muted" className="text-zinc-300">world</Typography>
         </div>
       </Panel>
     </Group>

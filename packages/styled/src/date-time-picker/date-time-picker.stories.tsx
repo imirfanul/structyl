@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { DateTimePicker } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/DateTimePicker',
@@ -19,7 +20,7 @@ export const Default: Story = {
           value={value}
           onChange={(date) => setValue(date)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected:{' '}
           {value
             ? value.toLocaleString([], {
@@ -27,7 +28,7 @@ export const Default: Story = {
                 timeStyle: 'short',
               })
             : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },

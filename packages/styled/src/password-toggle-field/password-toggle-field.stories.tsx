@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { Button } from '../button';
+import { Input as BaseInput } from '../input';
+import { Typography } from '../typography';
 import { Root, Input, Toggle } from './index';
 
 const meta: Meta = {
@@ -28,16 +31,16 @@ export const WithLabel: Story = {
   name: 'With label',
   render: () => (
     <div className="flex w-[320px] flex-col gap-1.5">
-      <label htmlFor="password" className="text-sm font-medium leading-none">
+      <Typography as="label" variant="input-label" htmlFor="password">
         Password
-      </label>
+      </Typography>
       <Root>
         <Input id="password" placeholder="••••••••" />
         <Toggle />
       </Root>
-      <p className="text-xs text-muted-foreground">
+      <Typography variant="muted" className="text-xs">
         Must be at least 8 characters.
-      </p>
+      </Typography>
     </div>
   ),
 };
@@ -64,17 +67,19 @@ export const Controlled: Story = {
           <Input placeholder="Controlled password" />
           <Toggle />
         </Root>
-        <p className="text-xs text-muted-foreground">
+        <Typography variant="muted" className="text-xs">
           Password is currently:{' '}
           <span className="font-medium">{visible ? 'visible' : 'hidden'}</span>
-        </p>
-        <button
+        </Typography>
+        <Button
           type="button"
+          variant="ghost"
+          size="sm"
           onClick={() => setVisible((v) => !v)}
-          className="self-start text-xs underline"
+          className="self-start text-xs underline px-0 h-auto"
         >
           Toggle from outside
-        </button>
+        </Button>
       </div>
     );
   },
@@ -84,34 +89,30 @@ export const InLoginForm: Story = {
   name: 'In a login form',
   render: () => (
     <div className="w-[360px] rounded-lg border border-border bg-card p-6 shadow-sm">
-      <h2 className="mb-6 text-xl font-semibold">Sign in</h2>
+      <Typography variant="h2" className="mb-6 text-xl font-semibold">Sign in</Typography>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="login-email" className="text-sm font-medium leading-none">
+          <Typography as="label" variant="input-label" htmlFor="login-email">
             Email
-          </label>
-          <input
+          </Typography>
+          <BaseInput
             id="login-email"
             type="email"
             placeholder="you@example.com"
-            className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="login-password" className="text-sm font-medium leading-none">
+          <Typography as="label" variant="input-label" htmlFor="login-password">
             Password
-          </label>
+          </Typography>
           <Root>
             <Input id="login-password" placeholder="••••••••" />
             <Toggle />
           </Root>
         </div>
-        <button
-          type="button"
-          className="mt-2 inline-flex h-9 w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow hover:bg-primary/90"
-        >
+        <Button type="button" className="mt-2 w-full">
           Sign in
-        </button>
+        </Button>
       </div>
     </div>
   ),

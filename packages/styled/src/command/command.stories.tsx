@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import * as Command from './index';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Components/Command',
@@ -79,23 +81,24 @@ export const CommandPalette: Story = {
 
     return (
       <div className="flex flex-col items-center gap-4">
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Press{' '}
           <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
             <span>⌘</span>K
           </kbd>{' '}
           to open the command palette
-        </p>
-        <button
+        </Typography>
+        <Button
+          variant="outline"
           onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-2 rounded-md border border-border bg-bg px-4 py-2 text-sm text-muted-foreground shadow-sm hover:bg-accent"
+          className="inline-flex items-center gap-2 text-muted-foreground shadow-sm"
         >
           <span>🔍</span>
           Search commands...
           <kbd className="ml-2 pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium">
             ⌘K
           </kbd>
-        </button>
+        </Button>
         {open && (
           <div className="fixed inset-0 z-50 flex items-start justify-center pt-[20vh]">
             <div

@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { within, expect, waitFor } from 'storybook/test';
 import { Button } from '../button';
+import { Input } from '../input';
+import { Typography } from '../typography';
 import * as Dialog from './index';
 
 const meta = {
@@ -29,23 +31,23 @@ export const Preview: Story = {
           </Dialog.Header>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="name-preview" className="text-right text-sm font-medium">
+              <Typography as="label" variant="body2" htmlFor="name-preview" className="text-right font-medium">
                 Name
-              </label>
-              <input
+              </Typography>
+              <Input
                 id="name-preview"
                 defaultValue="Pedro Duarte"
-                className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+                className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="username-preview" className="text-right text-sm font-medium">
+              <Typography as="label" variant="body2" htmlFor="username-preview" className="text-right font-medium">
                 Username
-              </label>
-              <input
+              </Typography>
+              <Input
                 id="username-preview"
                 defaultValue="@peduarte"
-                className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+                className="col-span-3"
               />
             </div>
           </div>
@@ -84,23 +86,23 @@ export const Default: Story = {
           </Dialog.Header>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="name" className="text-right text-sm font-medium">
+              <Typography as="label" variant="body2" htmlFor="name" className="text-right font-medium">
                 Name
-              </label>
-              <input
+              </Typography>
+              <Input
                 id="name"
                 defaultValue="Pedro Duarte"
-                className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+                className="col-span-3"
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
-              <label htmlFor="username" className="text-right text-sm font-medium">
+              <Typography as="label" variant="body2" htmlFor="username" className="text-right font-medium">
                 Username
-              </label>
-              <input
+              </Typography>
+              <Input
                 id="username"
                 defaultValue="@peduarte"
-                className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+                className="col-span-3"
               />
             </div>
           </div>
@@ -159,13 +161,13 @@ export const WithScrollableContent: Story = {
               Please read our terms of service carefully before continuing.
             </Dialog.Description>
           </Dialog.Header>
-          <div className="py-4 text-sm text-muted-foreground space-y-4">
+          <div className="py-4 space-y-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <p key={i}>
+              <Typography key={i} variant="muted">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
                 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
                 exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </p>
+              </Typography>
             ))}
           </div>
           <Dialog.Footer>
@@ -185,9 +187,9 @@ export const Controlled: Story = {
     const [open, setOpen] = React.useState(false);
     return (
       <div className="flex flex-col items-start gap-4">
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Dialog is: <strong>{open ? 'open' : 'closed'}</strong>
-        </p>
+        </Typography>
         <div className="flex gap-2">
           <Button onClick={() => setOpen(true)}>Open</Button>
           <Button variant="outline" onClick={() => setOpen(false)}>

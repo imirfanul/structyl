@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Item } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/ToggleGroup',
@@ -90,9 +91,9 @@ export const ControlledSingle: Story = {
           <Item value="grid">Grid</Item>
           <Item value="kanban">Kanban</Item>
         </Root>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           View: <span className="font-mono font-medium">{value}</span>
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -113,12 +114,12 @@ export const ControlledMultiple: Story = {
           <Item value="italic"><em>I</em></Item>
           <Item value="underline"><span className="underline">U</span></Item>
         </Root>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Active:{' '}
           <span className="font-mono">
             {values.length > 0 ? values.join(', ') : 'none'}
           </span>
-        </p>
+        </Typography>
       </div>
     );
   },

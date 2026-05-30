@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Button } from '../button';
+import { Typography } from '../typography';
 import * as Tooltip from './index';
 
 const meta = {
@@ -19,7 +20,7 @@ export const Default: Story = {
           <Button variant="outline">Hover me</Button>
         </Tooltip.Trigger>
         <Tooltip.Content>
-          <p>Add to library</p>
+          <Typography variant="body2">Add to library</Typography>
         </Tooltip.Content>
       </Tooltip.Root>
     </Tooltip.Provider>
@@ -38,7 +39,7 @@ export const Placements: Story = {
               </Button>
             </Tooltip.Trigger>
             <Tooltip.Content side={side}>
-              <p>Tooltip on the {side}</p>
+              <Typography variant="body2">Tooltip on the {side}</Typography>
             </Tooltip.Content>
           </Tooltip.Root>
         ))}
@@ -56,7 +57,7 @@ export const WithDelay: Story = {
             <Button variant="secondary">Delayed (800ms)</Button>
           </Tooltip.Trigger>
           <Tooltip.Content>
-            <p>Appears after 800ms delay</p>
+            <Typography variant="body2">Appears after 800ms delay</Typography>
           </Tooltip.Content>
         </Tooltip.Root>
         <Tooltip.Root delayDuration={0}>
@@ -64,7 +65,7 @@ export const WithDelay: Story = {
             <Button variant="secondary">Instant</Button>
           </Tooltip.Trigger>
           <Tooltip.Content>
-            <p>Appears instantly</p>
+            <Typography variant="body2">Appears instantly</Typography>
           </Tooltip.Content>
         </Tooltip.Root>
       </div>
@@ -126,7 +127,7 @@ export const DisabledElement: Story = {
           </span>
         </Tooltip.Trigger>
         <Tooltip.Content>
-          <p>This action is currently unavailable</p>
+          <Typography variant="body2">This action is currently unavailable</Typography>
         </Tooltip.Content>
       </Tooltip.Root>
     </Tooltip.Provider>

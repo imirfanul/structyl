@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Step, Title, Description, Separator } from './index';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Styled/Stepper',
@@ -63,25 +65,25 @@ export const Interactive: Story = {
         </Root>
 
         <div className="rounded-lg border border-border p-6 space-y-3">
-          <p className="text-sm font-medium">{steps[activeStep]?.title}</p>
-          <p className="text-sm text-muted-foreground">{steps[activeStep]?.description}</p>
+          <Typography variant="body2" className="font-medium">{steps[activeStep]?.title}</Typography>
+          <Typography variant="muted">{steps[activeStep]?.description}</Typography>
         </div>
 
         <div className="flex justify-between">
-          <button
-            className="rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors disabled:opacity-50"
+          <Button
+            variant="outline"
             disabled={activeStep === 0}
             onClick={() => setActiveStep((s) => s - 1)}
           >
             Back
-          </button>
-          <button
-            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-50"
+          </Button>
+          <Button
+            variant="default"
             disabled={activeStep === steps.length - 1}
             onClick={() => setActiveStep((s) => s + 1)}
           >
             {activeStep === steps.length - 2 ? 'Finish' : 'Continue'}
-          </button>
+          </Button>
         </div>
       </div>
     );

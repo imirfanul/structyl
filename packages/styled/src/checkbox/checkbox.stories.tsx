@@ -3,6 +3,8 @@ import React from 'react';
 import { expect } from 'storybook/test';
 import { Checkbox } from './index';
 import { Label } from '../label';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const meta = {
   component: Checkbox,
@@ -73,28 +75,31 @@ export const Controlled: Story = {
           />
           <Label htmlFor="controlled-cb">Controlled checkbox</Label>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           State: <span className="font-mono">{String(checked)}</span>
-        </p>
+        </Typography>
         <div className="flex gap-2">
-          <button
-            className="rounded border px-2 py-1 text-xs"
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => setChecked(true)}
           >
             Check
-          </button>
-          <button
-            className="rounded border px-2 py-1 text-xs"
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => setChecked(false)}
           >
             Uncheck
-          </button>
-          <button
-            className="rounded border px-2 py-1 text-xs"
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={() => setChecked('indeterminate')}
           >
             Indeterminate
-          </button>
+          </Button>
         </div>
       </div>
     );

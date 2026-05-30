@@ -2,6 +2,7 @@ import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CopyButton } from './index';
 import type { CopyButtonProps } from './index';
+import { Typography } from '../typography';
 
 const meta: Meta<CopyButtonProps> = {
   title: 'Styled/CopyButton',
@@ -75,7 +76,7 @@ export const MultipleButtons: Story = {
             className="flex items-center gap-2 rounded-md border border-border bg-muted px-3 py-2"
           >
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted-foreground">{snippet.label}</p>
+              <Typography variant="muted" className="text-xs">{snippet.label}</Typography>
               <code className="truncate font-mono text-sm">{snippet.code}</code>
             </div>
             <CopyButton value={snippet.code} resetAfter={2000} />

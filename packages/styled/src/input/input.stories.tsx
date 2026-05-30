@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { expect } from 'storybook/test';
 import { Input } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   component: Input,
@@ -83,9 +84,9 @@ export const Controlled: Story = {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Type something..."
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="body2" className="text-muted-foreground">
           Value: <span className="font-mono">{value || '(empty)'}</span>
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -103,7 +104,7 @@ export const WithLabel: Story = {
         Email address
       </label>
       <Input id="email-input" type="email" placeholder="you@example.com" />
-      <p className="text-xs text-muted-foreground">We&apos;ll never share your email.</p>
+      <Typography variant="muted">We&apos;ll never share your email.</Typography>
     </div>
   ),
 };

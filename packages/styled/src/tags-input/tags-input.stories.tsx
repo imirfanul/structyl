@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Input, Tag, Items } from './index';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Styled/TagsInput',
@@ -40,14 +42,14 @@ export const TechStack: Story = {
   name: 'Tech stack selector',
   render: () => (
     <div className="flex w-[480px] flex-col gap-1.5">
-      <label className="text-sm font-medium leading-none">Tech stack</label>
+      <Typography as="label" variant="body2" className="font-medium leading-none">Tech stack</Typography>
       <Root defaultValue={['Next.js', 'Prisma', 'PostgreSQL']}>
         <Items>{(tag, index) => <Tag key={tag} index={index} tag={tag} />}</Items>
         <Input placeholder="Add technology…" />
       </Root>
-      <p className="text-xs text-muted-foreground">
+      <Typography variant="muted">
         Press Enter or comma to add a tag. Backspace removes the last tag.
-      </p>
+      </Typography>
     </div>
   ),
 };
@@ -56,12 +58,12 @@ export const MaxTags: Story = {
   name: 'With max tags limit',
   render: () => (
     <div className="flex w-[480px] flex-col gap-1.5">
-      <label className="text-sm font-medium leading-none">Labels (max 3)</label>
+      <Typography as="label" variant="body2" className="font-medium leading-none">Labels (max 3)</Typography>
       <Root defaultValue={['bug', 'frontend']} maxTags={3}>
         <Items>{(tag, index) => <Tag key={tag} index={index} tag={tag} />}</Items>
         <Input placeholder="Add label…" />
       </Root>
-      <p className="text-xs text-muted-foreground">Maximum 3 labels allowed.</p>
+      <Typography variant="muted">Maximum 3 labels allowed.</Typography>
     </div>
   ),
 };
@@ -70,7 +72,7 @@ export const AllowDuplicates: Story = {
   name: 'Allow duplicate tags',
   render: () => (
     <div className="flex w-[480px] flex-col gap-1.5">
-      <label className="text-sm font-medium leading-none">Keywords (duplicates allowed)</label>
+      <Typography as="label" variant="body2" className="font-medium leading-none">Keywords (duplicates allowed)</Typography>
       <Root defaultValue={['sale']} duplicateTags>
         <Items>{(tag, index) => <Tag key={`${tag}-${index}`} index={index} tag={tag} />}</Items>
         <Input placeholder="Add keyword…" />
@@ -89,16 +91,18 @@ export const Controlled: Story = {
           <Items>{(tag, index) => <Tag key={tag} index={index} tag={tag} />}</Items>
           <Input placeholder="Add a tag…" />
         </Root>
-        <p className="text-xs text-muted-foreground">
+        <Typography variant="muted">
           Tags: {tags.join(', ') || '(none)'}
-        </p>
-        <button
+        </Typography>
+        <Button
           type="button"
-          className="self-start text-xs underline"
+          variant="ghost"
+          size="sm"
+          className="self-start"
           onClick={() => setTags([])}
         >
           Clear all
-        </button>
+        </Button>
       </div>
     );
   },
@@ -119,14 +123,14 @@ export const CustomDelimiters: Story = {
   name: 'Custom delimiters (space + semicolon)',
   render: () => (
     <div className="flex w-[480px] flex-col gap-1.5">
-      <label className="text-sm font-medium leading-none">Email recipients</label>
+      <Typography as="label" variant="body2" className="font-medium leading-none">Email recipients</Typography>
       <Root delimiters={[' ', ';', 'Enter']}>
         <Items>{(tag, index) => <Tag key={tag} index={index} tag={tag} />}</Items>
         <Input placeholder="Type an address and press Space or semicolon…" />
       </Root>
-      <p className="text-xs text-muted-foreground">
+      <Typography variant="muted">
         Use Space or semicolon as delimiters.
-      </p>
+      </Typography>
     </div>
   ),
 };

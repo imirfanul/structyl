@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Calendar } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Calendar',
@@ -20,9 +21,9 @@ export const Default: Story = {
           selected={selected}
           onSelect={(value) => setSelected(value as Date | undefined)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected: {selected ? selected.toLocaleDateString() : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -39,9 +40,9 @@ export const WithPreselectedDate: Story = {
           selected={selected}
           onSelect={(value) => setSelected(value as Date | undefined)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected: {selected ? selected.toLocaleDateString() : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -71,10 +72,10 @@ export const RangeSelection: Story = {
           selected={selected}
           onSelect={(value) => setSelected(value as { from?: Date; to?: Date } | undefined)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           From: {selected?.from ? selected.from.toLocaleDateString() : 'None'} &mdash; To:{' '}
           {selected?.to ? selected.to.toLocaleDateString() : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -90,12 +91,12 @@ export const MultipleSelection: Story = {
           selected={selected}
           onSelect={(value) => setSelected(value as Date[] | undefined)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected:{' '}
           {selected && selected.length > 0
             ? selected.map((d) => d.toLocaleDateString()).join(', ')
             : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -109,9 +110,9 @@ export const WithMinMaxDates: Story = {
     const [selected, setSelected] = React.useState<Date | undefined>(undefined);
     return (
       <div className="flex flex-col gap-4">
-        <p className="text-xs text-muted-foreground">
+        <Typography variant="muted" className="text-xs">
           Only dates within ±7 days from today are selectable.
-        </p>
+        </Typography>
         <Calendar
           mode="single"
           selected={selected}
@@ -119,9 +120,9 @@ export const WithMinMaxDates: Story = {
           minDate={minDate}
           maxDate={maxDate}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected: {selected ? selected.toLocaleDateString() : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },

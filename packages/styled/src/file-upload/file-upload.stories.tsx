@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { Typography } from '../typography';
 import { Root, Dropzone, Input, Trigger, Clear, List, Item } from './index';
 
 const meta: Meta = {
@@ -57,7 +58,7 @@ export const MultipleFiles: Story = {
     const [files, setFiles] = React.useState<File[]>([]);
     return (
       <div className="flex w-[480px] flex-col gap-1.5">
-        <label className="text-sm font-medium leading-none">Attachments</label>
+        <Typography as="label" variant="input-label">Attachments</Typography>
         <Root multiple value={files} onValueChange={setFiles}>
           <Dropzone>
             <svg
@@ -113,7 +114,7 @@ export const AcceptImages: Story = {
     const [files, setFiles] = React.useState<File[]>([]);
     return (
       <div className="flex w-[480px] flex-col gap-1.5">
-        <label className="text-sm font-medium leading-none">Profile picture</label>
+        <Typography as="label" variant="input-label">Profile picture</Typography>
         <Root accept="image/*" value={files} onValueChange={setFiles}>
           <Dropzone>
             <svg
@@ -185,7 +186,7 @@ export const MaxSize: Story = {
     const [errors, setErrors] = React.useState<string[]>([]);
     return (
       <div className="flex w-[480px] flex-col gap-1.5">
-        <label className="text-sm font-medium leading-none">Document (max 1 MB)</label>
+        <Typography as="label" variant="input-label">Document (max 1 MB)</Typography>
         <Root
           accept=".pdf,.doc,.docx"
           maxSize={1024 * 1024}

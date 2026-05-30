@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Trigger, Content } from './index';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Styled/Collapsible',
@@ -36,9 +38,9 @@ export const Default: Story = {
         </Trigger>
         <Content>
           <div className="space-y-2 pt-2">
-            <p className="text-sm text-muted-foreground">Timeout: 30s</p>
-            <p className="text-sm text-muted-foreground">Retries: 3</p>
-            <p className="text-sm text-muted-foreground">Cache: enabled</p>
+            <Typography variant="body2" className="text-muted-foreground">Timeout: 30s</Typography>
+            <Typography variant="body2" className="text-muted-foreground">Retries: 3</Typography>
+            <Typography variant="body2" className="text-muted-foreground">Cache: enabled</Typography>
           </div>
         </Content>
       </Root>
@@ -69,11 +71,11 @@ export const DefaultOpen: Story = {
           </svg>
         </Trigger>
         <Content>
-          <div className="space-y-2 pt-2 text-sm text-muted-foreground">
-            <p>Stars: 2.4k</p>
-            <p>Forks: 312</p>
-            <p>Open issues: 18</p>
-            <p>License: MIT</p>
+          <div className="space-y-2 pt-2">
+            <Typography variant="body2">Stars: 2.4k</Typography>
+            <Typography variant="body2">Forks: 312</Typography>
+            <Typography variant="body2">Open issues: 18</Typography>
+            <Typography variant="body2">License: MIT</Typography>
           </div>
         </Content>
       </Root>
@@ -89,12 +91,14 @@ export const Controlled: Story = {
       <div className="w-[360px] space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-sm font-medium">Open: {open ? 'true' : 'false'}</span>
-          <button
+          <Button
+            variant="ghost"
+            size="sm"
             className="text-xs underline text-muted-foreground"
             onClick={() => setOpen((v) => !v)}
           >
             Toggle externally
-          </button>
+          </Button>
         </div>
         <div className="rounded-lg border border-border p-4">
           <Root open={open} onOpenChange={setOpen}>
@@ -116,10 +120,10 @@ export const Controlled: Story = {
               </svg>
             </Trigger>
             <Content>
-              <p className="pt-2 text-sm text-muted-foreground">
+              <Typography variant="body2" className="pt-2 text-muted-foreground">
                 This panel&apos;s open state is driven by external React state, demonstrating controlled
                 usage of the Collapsible primitive.
-              </p>
+              </Typography>
             </Content>
           </Root>
         </div>

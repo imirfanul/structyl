@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Textarea, Suggestions, Items, Item } from './index';
 import type { MentionSuggestion } from '@aura-ui/primitives';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const TEAM_MEMBERS: MentionSuggestion[] = [
   { id: '1', label: 'alice' },
@@ -82,7 +84,7 @@ export const WithAvatars: Story = {
                       >
                         {item.label[0]?.toUpperCase()}
                       </span>
-                      <span>@{item.label}</span>
+                      <Typography as="span">@{item.label}</Typography>
                     </div>
                   </Item>
                 )}
@@ -120,9 +122,9 @@ export const Controlled: Story = {
             </div>
           </Suggestions>
         </Root>
-        <p className="text-xs text-muted-foreground">
-          Value: <span className="font-mono">{value || '(empty)'}</span>
-        </p>
+        <Typography variant="muted">
+          Value: <Typography as="span" className="font-mono">{value || '(empty)'}</Typography>
+        </Typography>
       </div>
     );
   },
@@ -211,7 +213,7 @@ export const InCommentBox: Story = {
     const [value, setValue] = React.useState('');
     return (
       <div className="w-[480px] rounded-lg border border-border bg-card p-4 shadow-sm">
-        <h3 className="mb-3 text-sm font-medium">Add a comment</h3>
+        <Typography variant="h3" className="mb-3 text-sm font-medium">Add a comment</Typography>
         <Root value={value} onValueChange={setValue}>
           <Textarea
             placeholder="Leave a comment… use @ to notify a team member"
@@ -236,13 +238,13 @@ export const InCommentBox: Story = {
           </Suggestions>
         </Root>
         <div className="mt-3 flex justify-end">
-          <button
+          <Button
             type="button"
             disabled={!value.trim()}
-            className="inline-flex h-8 items-center justify-center rounded-md bg-primary px-3 text-xs font-medium text-primary-foreground shadow hover:bg-primary/90 disabled:opacity-50"
+            size="sm"
           >
             Post comment
-          </button>
+          </Button>
         </div>
       </div>
     );

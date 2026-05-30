@@ -3,6 +3,7 @@ import React from 'react';
 import { expect } from 'storybook/test';
 import { Switch } from './index';
 import { Label } from '../label';
+import { Typography } from '../typography';
 
 const meta = {
   component: Switch,
@@ -85,9 +86,9 @@ export const Controlled: Story = {
             {checked ? 'Notifications on' : 'Notifications off'}
           </Label>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="body2" className="text-muted-foreground">
           State: <span className="font-mono">{String(checked)}</span>
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -105,8 +106,8 @@ export const SwitchList: Story = {
         {settings.map(({ id, label, description, defaultChecked }) => (
           <div key={id} className="flex items-center justify-between px-4 py-3 gap-4">
             <div>
-              <p className="text-sm font-medium">{label}</p>
-              <p className="text-xs text-muted-foreground">{description}</p>
+              <Typography variant="body2" className="font-medium">{label}</Typography>
+              <Typography variant="muted">{description}</Typography>
             </div>
             <Switch id={id} defaultChecked={defaultChecked} />
           </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Root as ScrollArea, Scrollbar } from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Styled/ScrollArea',
@@ -24,7 +25,7 @@ export const Vertical: Story = {
   render: () => (
     <ScrollArea className="h-72 w-48 rounded-md border border-border">
       <div className="p-4">
-        <h4 className="mb-4 text-sm font-semibold leading-none">Tags</h4>
+        <Typography variant="h4" className="mb-4 text-sm font-semibold leading-none">Tags</Typography>
         {tags.map((tag) => (
           <React.Fragment key={tag}>
             <div className="text-sm">{tag}</div>
@@ -58,7 +59,7 @@ export const Both: Story = {
   render: () => (
     <ScrollArea className="h-64 w-80 rounded-md border border-border">
       <div className="w-[600px] p-4">
-        <h4 className="mb-3 text-sm font-semibold">Wide + tall content</h4>
+        <Typography variant="h4" className="mb-3 text-sm font-semibold">Wide + tall content</Typography>
         {Array.from({ length: 30 }, (_, row) => (
           <div key={row} className="mb-1 flex gap-4">
             {Array.from({ length: 6 }, (_, col) => (
@@ -79,7 +80,7 @@ export const ShortContent: Story = {
   render: () => (
     <ScrollArea className="h-72 w-48 rounded-md border border-border">
       <div className="p-4">
-        <h4 className="mb-2 text-sm font-semibold">Short list</h4>
+        <Typography variant="h4" className="mb-2 text-sm font-semibold">Short list</Typography>
         {['Apple', 'Banana', 'Cherry'].map((item) => (
           <div key={item} className="py-1 text-sm">
             {item}

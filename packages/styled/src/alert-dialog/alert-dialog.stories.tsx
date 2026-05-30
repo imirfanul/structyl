@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Button } from '../button';
 import * as AlertDialog from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/AlertDialog',
@@ -97,7 +98,7 @@ export const WithCallback: Story = {
     const [status, setStatus] = React.useState<string>('No action taken yet.');
     return (
       <div className="flex flex-col items-start gap-4">
-        <p className="text-sm text-muted-foreground">{status}</p>
+        <Typography variant="muted">{status}</Typography>
         <AlertDialog.Root>
           <AlertDialog.Trigger asChild>
             <Button variant="outline">Confirm Action</Button>

@@ -11,6 +11,7 @@ import { cn } from '@aura-ui/utils';
 import { buttonVariants } from '../button';
 import { Calendar as StyledCalendar } from '../calendar';
 import { TimePickerPanel } from '../time-picker';
+import { Typography } from '../typography';
 
 const Root = DateTimePickerPrimitive.Root;
 const Value = DateTimePickerPrimitive.Value;
@@ -325,13 +326,14 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
             />
           </Trigger>
           {helperText ? (
-            <p
+            <Typography
               id={helperId}
-              className={cn('text-xs text-muted-foreground', error && 'text-destructive')}
+              variant="muted"
+              className={cn('text-xs', error && 'text-destructive')}
               suppressHydrationWarning
             >
               {helperText}
-            </p>
+            </Typography>
           ) : null}
         </div>
         <Content

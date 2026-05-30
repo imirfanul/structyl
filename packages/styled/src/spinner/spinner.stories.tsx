@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Spinner } from './index';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Spinner',
@@ -30,19 +32,19 @@ export const Sizes: Story = {
     <div className="flex flex-wrap items-center gap-6">
       <div className="flex flex-col items-center gap-2">
         <Spinner size="sm" />
-        <span className="text-muted-foreground text-xs">sm</span>
+        <Typography as="span" variant="muted">sm</Typography>
       </div>
       <div className="flex flex-col items-center gap-2">
         <Spinner size="md" />
-        <span className="text-muted-foreground text-xs">md</span>
+        <Typography as="span" variant="muted">md</Typography>
       </div>
       <div className="flex flex-col items-center gap-2">
         <Spinner size="lg" />
-        <span className="text-muted-foreground text-xs">lg</span>
+        <Typography as="span" variant="muted">lg</Typography>
       </div>
       <div className="flex flex-col items-center gap-2">
         <Spinner size="xl" />
-        <span className="text-muted-foreground text-xs">xl</span>
+        <Typography as="span" variant="muted">xl</Typography>
       </div>
     </div>
   ),
@@ -58,22 +60,21 @@ export const CustomLabel: Story = {
 export const InButton: Story = {
   render: () => (
     <div className="flex flex-wrap gap-3">
-      <button
+      <Button
         type="button"
         disabled
-        className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground opacity-75"
       >
         <Spinner size="sm" label="Saving" />
         Saving…
-      </button>
-      <button
+      </Button>
+      <Button
         type="button"
+        variant="outline"
         disabled
-        className="inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium opacity-75"
       >
         <Spinner size="sm" label="Loading" />
         Loading…
-      </button>
+      </Button>
     </div>
   ),
 };

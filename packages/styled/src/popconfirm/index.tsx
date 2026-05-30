@@ -3,7 +3,8 @@
 import * as React from 'react';
 import { Popover as PopoverPrimitive } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
-import { buttonVariants, type ButtonProps } from '../button';
+import { Button, type ButtonProps } from '../button';
+import { Typography } from '../typography';
 
 // ── Popconfirm ────────────────────────────────────────────────────────────────
 
@@ -99,27 +100,30 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
               </svg>
             </span>
             <div className="flex-1">
-              <p id={titleId} className="text-sm font-semibold text-fg">{title}</p>
+              <Typography id={titleId} variant="body2" className="font-semibold text-fg">{title}</Typography>
               {description && (
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{description}</p>
+                <Typography variant="muted" className="mt-1 text-xs leading-relaxed">{description}</Typography>
               )}
             </div>
           </div>
 
           {/* Actions */}
           <div className="mt-4 flex justify-end gap-2">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={handleCancel}
-              className={cn(buttonVariants({ variant: 'outline', size: 'sm' }))}
             >
               {cancelLabel}
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant={confirmVariant}
+              color={confirmColor}
+              size="sm"
               onClick={handleConfirm}
               disabled={loading}
-              className={cn(buttonVariants({ variant: confirmVariant, color: confirmColor, size: 'sm' }))}
             >
               {loading ? (
                 <span className="inline-flex items-center gap-1.5">
@@ -130,7 +134,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
                   {confirmLabel}
                 </span>
               ) : confirmLabel}
-            </button>
+            </Button>
           </div>
           <PopoverPrimitive.Arrow className="fill-border" width={10} height={5} />
         </PopoverPrimitive.Content>

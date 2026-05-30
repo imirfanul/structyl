@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import * as NavigationMenu from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Components/NavigationMenu',
@@ -28,7 +29,7 @@ const ListItem = ({
       className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
     >
       <div className="text-sm font-medium leading-none">{title}</div>
-      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+      <Typography variant="body2" className="line-clamp-2 leading-snug text-muted-foreground">{children}</Typography>
     </NavigationMenu.Link>
   </li>
 );
@@ -47,9 +48,9 @@ export const Default: Story = {
                   className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 >
                   <div className="mb-2 mt-4 text-lg font-medium">aura-ui</div>
-                  <p className="text-sm leading-tight text-muted-foreground">
+                  <Typography variant="body2" className="leading-tight text-muted-foreground">
                     Beautifully designed components built with Radix UI and Tailwind CSS.
-                  </p>
+                  </Typography>
                 </NavigationMenu.Link>
               </li>
               <ListItem title="Installation">Install and configure aura-ui in your project.</ListItem>

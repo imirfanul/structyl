@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { DateRangePicker } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/DateRangePicker',
@@ -19,10 +20,10 @@ export const Default: Story = {
           value={value}
           onValueChange={(range) => setValue(range)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="body2" className="text-muted-foreground">
           From: {value?.from ? value.from.toLocaleDateString() : 'None'} &mdash; To:{' '}
           {value?.to ? value.to.toLocaleDateString() : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -143,10 +144,10 @@ export const WithShortcuts: Story = {
           value={value}
           onValueChange={(range) => setValue(range)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="body2" className="text-muted-foreground">
           From: {value?.from ? value.from.toLocaleDateString() : 'None'} &mdash; To:{' '}
           {value?.to ? value.to.toLocaleDateString() : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },

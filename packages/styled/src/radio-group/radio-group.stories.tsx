@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Item } from './index';
 import { Label } from '../label';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/RadioGroup',
@@ -89,22 +90,24 @@ export const Controlled: Story = {
       <div className="flex flex-col gap-4">
         <Root value={value} onValueChange={setValue} className="flex flex-col gap-3">
           {plans.map((plan) => (
-            <label
+            <Typography
+              as="label"
+              variant="body2"
               key={plan.value}
               htmlFor={`plan-${plan.value}`}
               className="flex items-center gap-3 rounded-lg border border-border p-3 cursor-pointer has-[[data-state=checked]]:border-primary"
             >
               <Item value={plan.value} id={`plan-${plan.value}`} />
               <div>
-                <p className="text-sm font-medium">{plan.label}</p>
-                <p className="text-xs text-muted-foreground">{plan.description}</p>
+                <Typography variant="body2" className="font-medium">{plan.label}</Typography>
+                <Typography variant="muted">{plan.description}</Typography>
               </div>
-            </label>
+            </Typography>
           ))}
         </Root>
-        <p className="text-sm text-muted-foreground">
-          Selected plan: <span className="font-mono font-medium">{value}</span>
-        </p>
+        <Typography variant="muted">
+          Selected plan: <Typography as="span" className="font-mono font-medium">{value}</Typography>
+        </Typography>
       </div>
     );
   },

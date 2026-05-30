@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Button } from '../button';
+import { Input } from '../input';
+import { Typography } from '../typography';
+import { Checkbox } from '../checkbox';
 import * as Popover from './index';
 
 const meta = {
@@ -19,29 +22,33 @@ export const Default: Story = {
       </Popover.Trigger>
       <Popover.Content>
         <div className="space-y-2">
-          <h4 className="text-sm font-semibold">Dimensions</h4>
-          <p className="text-sm text-muted-foreground">
+          <Typography variant="h4" className="text-sm font-semibold">Dimensions</Typography>
+          <Typography variant="muted">
             Set the dimensions for the layer.
-          </p>
+          </Typography>
           <div className="grid grid-cols-3 items-center gap-4 pt-2">
-            <label className="text-sm">Width</label>
-            <input
-              className="col-span-2 h-8 rounded-md border border-border bg-transparent px-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            <Typography as="label" variant="body2">Width</Typography>
+            <Input
+              className="col-span-2"
+              size="sm"
               defaultValue="100%"
             />
-            <label className="text-sm">Max. width</label>
-            <input
-              className="col-span-2 h-8 rounded-md border border-border bg-transparent px-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            <Typography as="label" variant="body2">Max. width</Typography>
+            <Input
+              className="col-span-2"
+              size="sm"
               defaultValue="300px"
             />
-            <label className="text-sm">Height</label>
-            <input
-              className="col-span-2 h-8 rounded-md border border-border bg-transparent px-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            <Typography as="label" variant="body2">Height</Typography>
+            <Input
+              className="col-span-2"
+              size="sm"
               defaultValue="25px"
             />
-            <label className="text-sm">Max. height</label>
-            <input
-              className="col-span-2 h-8 rounded-md border border-border bg-transparent px-2 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            <Typography as="label" variant="body2">Max. height</Typography>
+            <Input
+              className="col-span-2"
+              size="sm"
               defaultValue="none"
             />
           </div>
@@ -62,7 +69,7 @@ export const Placements: Story = {
             </Button>
           </Popover.Trigger>
           <Popover.Content side={side}>
-            <p className="text-sm">Popover on the <strong>{side}</strong>.</p>
+            <Typography variant="body2">Popover on the <strong>{side}</strong>.</Typography>
           </Popover.Content>
         </Popover.Root>
       ))}
@@ -78,18 +85,18 @@ export const WithClose: Story = {
       </Popover.Trigger>
       <Popover.Content>
         <div className="space-y-3">
-          <h4 className="text-sm font-semibold">Notification settings</h4>
+          <Typography variant="h4" className="text-sm font-semibold">Notification settings</Typography>
           <div className="flex items-center justify-between">
-            <label className="text-sm text-muted-foreground">Email notifications</label>
-            <input type="checkbox" defaultChecked className="h-4 w-4" />
+            <Typography as="label" variant="muted">Email notifications</Typography>
+            <Checkbox defaultChecked />
           </div>
           <div className="flex items-center justify-between">
-            <label className="text-sm text-muted-foreground">Push notifications</label>
-            <input type="checkbox" className="h-4 w-4" />
+            <Typography as="label" variant="muted">Push notifications</Typography>
+            <Checkbox />
           </div>
           <div className="flex items-center justify-between">
-            <label className="text-sm text-muted-foreground">SMS alerts</label>
-            <input type="checkbox" className="h-4 w-4" />
+            <Typography as="label" variant="muted">SMS alerts</Typography>
+            <Checkbox />
           </div>
           <Popover.Close asChild>
             <Button size="sm" className="w-full">
@@ -113,7 +120,7 @@ export const AlignVariants: Story = {
             </Button>
           </Popover.Trigger>
           <Popover.Content align={align}>
-            <p className="text-sm">Aligned to <strong>{align}</strong>.</p>
+            <Typography variant="body2">Aligned to <strong>{align}</strong>.</Typography>
           </Popover.Content>
         </Popover.Root>
       ))}

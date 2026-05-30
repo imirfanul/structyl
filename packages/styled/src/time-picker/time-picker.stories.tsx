@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { TimePicker, TimePickerPanel } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/TimePicker',
@@ -19,12 +20,12 @@ export const Default: Story = {
           value={value}
           onChange={(date) => setValue(date)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected:{' '}
           {value
             ? value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -178,12 +179,12 @@ export const PanelOnly: Story = {
           onAccept={(date) => setValue(date)}
           onCancel={() => setValue(null)}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected:{' '}
           {value
             ? value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             : 'None'}
-        </p>
+        </Typography>
       </div>
     );
   },

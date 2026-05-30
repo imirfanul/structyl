@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Inbox, Search, FolderOpen } from '@aura-ui/icons';
+import { Button } from '../button';
 import { EmptyState } from './index';
 
 const meta = {
@@ -30,9 +31,9 @@ export const WithAction: Story = {
     icon: <FolderOpen className="h-10 w-10" />,
     description: 'Upload your first file to get started.',
     action: (
-      <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+      <Button>
         Upload file
-      </button>
+      </Button>
     ),
   },
 };
@@ -43,9 +44,9 @@ export const SearchEmpty: Story = {
     icon: <Search className="h-10 w-10" />,
     description: 'Try searching with different keywords or check for typos.',
     action: (
-      <button className="rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground">
+      <Button variant="outline">
         Clear search
-      </button>
+      </Button>
     ),
   },
 };
@@ -56,9 +57,9 @@ export const PageSize: Story = {
     description: 'Get started by creating your first project.',
     size: 'page',
     action: (
-      <button className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+      <Button>
         New project
-      </button>
+      </Button>
     ),
   },
 };

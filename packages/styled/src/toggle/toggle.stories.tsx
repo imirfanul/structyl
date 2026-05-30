@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Toggle } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Toggle',
@@ -75,9 +76,9 @@ export const Controlled: Story = {
         >
           {pressed ? 'Bold' : 'Bold'}
         </Toggle>
-        <p className="text-sm text-muted-foreground">
-          Pressed: <span className="font-mono">{String(pressed)}</span>
-        </p>
+        <Typography variant="muted">
+          Pressed: <Typography as="span" className="font-mono">{String(pressed)}</Typography>
+        </Typography>
       </div>
     );
   },
@@ -119,8 +120,8 @@ export const TextFormattingBar: Story = {
             <span className="underline">U</span>
           </Toggle>
         </div>
-        <p
-          className="text-sm"
+        <Typography
+          variant="body2"
           style={{
             fontWeight: bold ? 700 : 400,
             fontStyle: italic ? 'italic' : 'normal',
@@ -128,7 +129,7 @@ export const TextFormattingBar: Story = {
           }}
         >
           Preview text — toggle the buttons above to format this text.
-        </p>
+        </Typography>
       </div>
     );
   },

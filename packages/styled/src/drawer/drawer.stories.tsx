@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Button } from '../button';
+import { Input } from '../input';
+import { Typography } from '../typography';
 import * as Drawer from './index';
 
 const meta = {
@@ -26,23 +28,23 @@ export const Default: Story = {
         </Drawer.Header>
         <div className="grid gap-4 px-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="drawer-name" className="text-right text-sm font-medium">
+            <Typography as="label" variant="body2" htmlFor="drawer-name" className="text-right font-medium">
               Name
-            </label>
-            <input
+            </Typography>
+            <Input
               id="drawer-name"
               defaultValue="Pedro Duarte"
-              className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+              className="col-span-3"
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="drawer-username" className="text-right text-sm font-medium">
+            <Typography as="label" variant="body2" htmlFor="drawer-username" className="text-right font-medium">
               Username
-            </label>
-            <input
+            </Typography>
+            <Input
               id="drawer-username"
               defaultValue="@peduarte"
-              className="col-span-3 flex h-9 w-full rounded-md border border-border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+              className="col-span-3"
             />
           </div>
         </div>
@@ -81,20 +83,20 @@ export const ActionSheet: Story = {
             { label: 'Archive', icon: '📦' },
           ].map(({ label, icon }) => (
             <Drawer.Close asChild key={label}>
-              <button className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium hover:bg-accent transition-colors text-left">
+              <Button variant="ghost" className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors justify-start">
                 <span>{icon}</span>
                 {label}
-              </button>
+              </Button>
             </Drawer.Close>
           ))}
         </div>
         <div className="mx-4 my-2 h-px bg-border" />
         <div className="px-4 pb-2">
           <Drawer.Close asChild>
-            <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors text-left">
+            <Button variant="ghost" className="flex w-full items-center gap-3 px-3 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors justify-start">
               <span>🗑️</span>
               Delete
-            </button>
+            </Button>
           </Drawer.Close>
         </div>
         <Drawer.Footer>
@@ -130,10 +132,10 @@ export const WithScrollableContent: Story = {
           ].map(({ version, date, note }) => (
             <div key={version} className="border-b border-border pb-4 last:border-0">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold">{version}</span>
-                <span className="text-xs text-muted-foreground">{date}</span>
+                <Typography as="span" className="font-semibold">{version}</Typography>
+                <Typography as="span" variant="muted">{date}</Typography>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">{note}</p>
+              <Typography variant="muted" className="mt-1">{note}</Typography>
             </div>
           ))}
         </div>
@@ -152,9 +154,9 @@ export const Controlled: Story = {
     const [open, setOpen] = React.useState(false);
     return (
       <div className="flex flex-col items-start gap-4">
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Drawer is: <strong>{open ? 'open' : 'closed'}</strong>
-        </p>
+        </Typography>
         <div className="flex gap-2">
           <Button onClick={() => setOpen(true)}>Open</Button>
           <Button variant="outline" onClick={() => setOpen(false)}>

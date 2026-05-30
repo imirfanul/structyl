@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import * as Combobox from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Components/Combobox',
@@ -104,9 +105,9 @@ export const Controlled: Story = {
           </Combobox.Content>
         </Combobox.Root>
         {selectedValue && (
-          <p className="text-sm text-muted-foreground">
+          <Typography variant="muted">
             Selected: <strong>{selectedValue}</strong>
-          </p>
+          </Typography>
         )}
       </div>
     );

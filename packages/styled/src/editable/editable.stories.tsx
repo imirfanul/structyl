@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Preview, Input } from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Styled/Editable',
@@ -42,7 +43,7 @@ export const SubmitOnEnter: Story = {
   name: 'Submit on Enter',
   render: () => (
     <div className="flex flex-col gap-2">
-      <p className="text-xs text-muted-foreground">Press Enter to confirm, Escape to cancel.</p>
+      <Typography variant="muted">Press Enter to confirm, Escape to cancel.</Typography>
       <div className="flex items-center gap-2">
         <span className="text-sm text-muted-foreground">Task:</span>
         <Root defaultValue="Write unit tests" submitMode="enter">
@@ -58,7 +59,7 @@ export const SubmitOnBlur: Story = {
   name: 'Submit on blur',
   render: () => (
     <div className="flex flex-col gap-2">
-      <p className="text-xs text-muted-foreground">Click away to confirm, Escape to cancel.</p>
+      <Typography variant="muted">Click away to confirm, Escape to cancel.</Typography>
       <div className="flex items-center gap-2">
         <span className="text-sm text-muted-foreground">Description:</span>
         <Root defaultValue="Click me to edit" submitMode="blur">
@@ -88,13 +89,13 @@ export const Controlled: Story = {
             <Input />
           </Root>
         </div>
-        <p className="text-xs text-muted-foreground">
+        <Typography variant="muted">
           Current: <span className="font-medium">{value}</span>
-        </p>
+        </Typography>
         {submitted && (
-          <p className="text-xs text-success">
+          <Typography variant="muted" className="text-success">
             Last submitted: <span className="font-medium">{submitted}</span>
-          </p>
+          </Typography>
         )}
       </div>
     );

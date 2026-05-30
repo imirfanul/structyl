@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Slider } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Slider',
@@ -61,9 +62,9 @@ export const Controlled: Story = {
           max={100}
           step={1}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Value: <span className="font-mono font-medium">{value[0]}</span>
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -82,12 +83,12 @@ export const ControlledRange: Story = {
           step={5}
           thumbCount={2}
         />
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Range:{' '}
           <span className="font-mono font-medium">
             {range[0]} — {range[1]}
           </span>
-        </p>
+        </Typography>
       </div>
     );
   },

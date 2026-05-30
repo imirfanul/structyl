@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import * as MultiSelect from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Components/MultiSelect',
@@ -72,9 +73,9 @@ export const Controlled: Story = {
             <MultiSelect.Item value="ml">🤖 Machine Learning</MultiSelect.Item>
           </MultiSelect.Content>
         </MultiSelect.Root>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Selected: {values.length > 0 ? values.join(', ') : 'none'}
-        </p>
+        </Typography>
       </div>
     );
   },

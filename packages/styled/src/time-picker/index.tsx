@@ -5,8 +5,9 @@ import { ChevronLeft, ChevronRight, Clock } from '@aura-ui/icons';
 import { TimePicker as TimePickerPrimitive } from '@aura-ui/primitives';
 import type { PickerChangeContext, TimePickerView, TimeValidationError } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
-import { buttonVariants } from '../button';
+import { Button } from '../button';
 import * as Popover from '../popover';
+import { Typography } from '../typography';
 
 type PrimitiveRootProps = React.ComponentPropsWithoutRef<typeof TimePickerPrimitive.Root>;
 type TimePickerValue = PrimitiveRootProps['value'];
@@ -279,25 +280,29 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
           ) : null}
         </div>
         <div className="mt-4 flex items-center justify-between">
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             aria-label="Previous time view"
             disabled={!previousView}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
+            className="h-8 w-8 text-muted-foreground"
             onClick={() => previousView && setActiveView(previousView)}
           >
             <ChevronLeft className="h-4 w-4" />
-          </button>
+          </Button>
           <span className="sr-only">{getClockViewLabel(activeView)}</span>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="icon"
             aria-label="Next time view"
             disabled={!nextView}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40"
+            className="h-8 w-8 text-muted-foreground"
             onClick={() => nextView && setActiveView(nextView)}
           >
             <ChevronRight className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
         <div
           role="group"
@@ -365,20 +370,22 @@ const TimePickerPanel = React.forwardRef<HTMLDivElement, TimePickerPanelProps>(
         </div>
         {showActions ? (
           <div className="mt-4 flex justify-end gap-2">
-            <button
+            <Button
               type="button"
-              className={cn(buttonVariants({ variant: 'ghost' }), 'h-8 px-3 text-xs font-semibold uppercase text-primary')}
+              variant="ghost"
+              className="h-8 px-3 text-xs font-semibold uppercase text-primary"
               onClick={onCancel}
             >
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className={cn(buttonVariants({ variant: 'ghost' }), 'h-8 px-3 text-xs font-semibold uppercase text-primary')}
+              variant="ghost"
+              className="h-8 px-3 text-xs font-semibold uppercase text-primary"
               onClick={() => onAccept?.(currentValue)}
             >
               OK
-            </button>
+            </Button>
           </div>
         ) : null}
       </div>
@@ -487,17 +494,17 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
             </label>
           ) : null}
           <Popover.Trigger asChild>
-            <button
+            <Button
               id={triggerId}
               name={name}
               type="button"
+              variant="outline"
               disabled={disabled || disableOpenPicker}
               aria-invalid={error || undefined}
               aria-describedby={helperId}
               aria-label={labelText ?? 'Choose time'}
               suppressHydrationWarning
               className={cn(
-                buttonVariants({ variant: 'outline' }),
                 'w-[220px] justify-start text-left font-normal',
                 'disabled:pointer-events-none disabled:opacity-50',
                 triggerClassName,
@@ -505,16 +512,17 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
             >
               <Clock className="mr-2 h-4 w-4" />
               {value ? formatTime(value, format, locale, ampm) : placeholder}
-            </button>
+            </Button>
           </Popover.Trigger>
           {helperText ? (
-            <p
+            <Typography
               id={helperId}
-              className={cn('text-xs text-muted-foreground', error && 'text-destructive')}
+              variant="muted"
+              className={cn('text-xs', error && 'text-destructive')}
               suppressHydrationWarning
             >
               {helperText}
-            </p>
+            </Typography>
           ) : null}
         </div>
         <Popover.Content

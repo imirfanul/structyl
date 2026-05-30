@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Textarea } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Textarea',
@@ -55,9 +56,9 @@ export const Controlled: Story = {
           maxLength={maxLength}
           placeholder="Write up to 200 characters..."
         />
-        <p className="text-xs text-muted-foreground text-right">
+        <Typography variant="muted" className="text-right">
           {value.length} / {maxLength}
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -70,7 +71,7 @@ export const WithLabel: Story = {
         Bio
       </label>
       <Textarea id="bio" placeholder="Tell us about yourself..." rows={4} />
-      <p className="text-xs text-muted-foreground">Max 500 characters.</p>
+      <Typography variant="muted">Max 500 characters.</Typography>
     </div>
   ),
 };

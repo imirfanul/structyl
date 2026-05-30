@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { Button } from '../button';
+import { Link as AuraLink } from '../material';
+import { Typography } from '../typography';
 import { Badge } from './index';
 
 const meta = {
@@ -40,10 +43,10 @@ export const AsChild: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
       <Badge asChild variant="default">
-        <a href="#">Linked Badge</a>
+        <AuraLink href="#">Linked Badge</AuraLink>
       </Badge>
       <Badge asChild variant="outline">
-        <button type="button">Clickable Badge</button>
+        <Button type="button" variant="ghost" size="sm">Clickable Badge</Button>
       </Badge>
     </div>
   ),
@@ -52,11 +55,11 @@ export const AsChild: Story = {
 export const InContext: Story = {
   render: () => (
     <div className="flex items-center gap-2">
-      <span className="text-sm font-medium">Status:</span>
+      <Typography as="span" variant="body2" className="font-medium">Status:</Typography>
       <Badge variant="success">Active</Badge>
-      <span className="text-sm font-medium">Priority:</span>
+      <Typography as="span" variant="body2" className="font-medium">Priority:</Typography>
       <Badge variant="destructive">High</Badge>
-      <span className="text-sm font-medium">Type:</span>
+      <Typography as="span" variant="body2" className="font-medium">Type:</Typography>
       <Badge variant="secondary">Draft</Badge>
     </div>
   ),

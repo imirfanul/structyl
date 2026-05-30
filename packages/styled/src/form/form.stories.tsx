@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { Typography } from '../typography';
 import { Root, Field, Label, Control, Message, Submit } from './index';
 
 const meta: Meta = {
@@ -35,7 +36,7 @@ export const LoginForm: Story = {
   name: 'Login form',
   render: () => (
     <div className="w-[400px] rounded-lg border border-border bg-card p-6 shadow-sm">
-      <h2 className="mb-6 text-xl font-semibold">Sign in</h2>
+      <Typography variant="h2" className="mb-6 text-xl font-semibold">Sign in</Typography>
       <Root className="gap-5">
         <Field name="email">
           <Label>Email</Label>

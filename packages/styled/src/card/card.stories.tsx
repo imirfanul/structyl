@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { Button } from '../button';
+import { Input } from '../input';
+import { Typography } from '../typography';
 import { Root, Header, Title, Description, Content, Footer } from './index';
 
 const meta: Meta = {
@@ -23,35 +26,29 @@ export const Default: Story = {
       <Content>
         <div className="space-y-3">
           <div className="space-y-1">
-            <label className="text-sm font-medium" htmlFor="name">
+            <Typography as="label" variant="body2" className="font-medium" htmlFor="name">
               Name
-            </label>
-            <input
+            </Typography>
+            <Input
               id="name"
-              className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Jane Smith"
             />
           </div>
           <div className="space-y-1">
-            <label className="text-sm font-medium" htmlFor="email">
+            <Typography as="label" variant="body2" className="font-medium" htmlFor="email">
               Email
-            </label>
-            <input
+            </Typography>
+            <Input
               id="email"
               type="email"
-              className="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="jane@example.com"
             />
           </div>
         </div>
       </Content>
       <Footer>
-        <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
-          Create account
-        </button>
-        <button className="rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-muted transition-colors">
-          Cancel
-        </button>
+        <Button>Create account</Button>
+        <Button variant="outline">Cancel</Button>
       </Footer>
     </Root>
   ),
@@ -77,17 +74,17 @@ export const Notification: Story = {
                 className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${n.unread ? 'bg-primary' : 'bg-transparent'}`}
               />
               <div>
-                <p className="text-sm font-medium">{n.title}</p>
-                <p className="text-xs text-muted-foreground">{n.time}</p>
+                <Typography variant="body2" className="font-medium">{n.title}</Typography>
+                <Typography variant="muted" className="text-xs">{n.time}</Typography>
               </div>
             </div>
           ))}
         </div>
       </Content>
       <Footer>
-        <button className="text-sm text-muted-foreground hover:text-fg transition-colors ml-auto">
+        <Button variant="ghost" className="ml-auto text-muted-foreground hover:text-fg">
           Mark all as read
-        </button>
+        </Button>
       </Footer>
     </Root>
   ),
@@ -132,15 +129,13 @@ export const ImageCard: Story = {
         <Description>Everything you need to know to ship your first component.</Description>
       </Header>
       <Content>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           This guide walks you through scaffolding a headless primitive, wrapping it in a styled
           layer, and writing tests and docs.
-        </p>
+        </Typography>
       </Content>
       <Footer>
-        <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
-          Read guide
-        </button>
+        <Button>Read guide</Button>
       </Footer>
     </Root>
   ),

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React, { useEffect, useState } from 'react';
+import { Typography } from '../typography';
 import { Progress } from './index';
 
 const meta = {
@@ -33,23 +34,23 @@ export const Values: Story = {
   render: () => (
     <div className="flex w-80 flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium">0%</span>
+        <Typography as="span" variant="body2" className="text-xs font-medium">0%</Typography>
         <Progress value={0} />
       </div>
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium">25%</span>
+        <Typography as="span" variant="body2" className="text-xs font-medium">25%</Typography>
         <Progress value={25} />
       </div>
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium">50%</span>
+        <Typography as="span" variant="body2" className="text-xs font-medium">50%</Typography>
         <Progress value={50} />
       </div>
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium">75%</span>
+        <Typography as="span" variant="body2" className="text-xs font-medium">75%</Typography>
         <Progress value={75} />
       </div>
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-medium">100%</span>
+        <Typography as="span" variant="body2" className="text-xs font-medium">100%</Typography>
         <Progress value={100} />
       </div>
     </div>
@@ -77,8 +78,8 @@ function AnimatedProgress() {
   return (
     <div className="flex w-80 flex-col gap-2">
       <div className="flex justify-between text-xs">
-        <span>Uploading…</span>
-        <span>{value}%</span>
+        <Typography as="span" variant="body2">Uploading…</Typography>
+        <Typography as="span" variant="body2">{value}%</Typography>
       </div>
       <Progress value={value} />
     </div>

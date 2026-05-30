@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Area, HueSlider, AlphaSlider, Swatch } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/ColorPicker',
@@ -47,9 +48,9 @@ export const Default: Story = {
           <HueSlider />
           <AlphaSlider />
         </Root>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Hex: {hsvaToHex(value)} &mdash; Alpha: {Math.round(value.a * 100)}%
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -78,7 +79,7 @@ export const WithSwatches: Story = {
             ))}
           </div>
         </Root>
-        <p className="text-sm text-muted-foreground">Hex: {hsvaToHex(value)}</p>
+        <Typography variant="muted">Hex: {hsvaToHex(value)}</Typography>
       </div>
     );
   },
@@ -93,7 +94,7 @@ export const WithoutAlpha: Story = {
           <Area />
           <HueSlider />
         </Root>
-        <p className="text-sm text-muted-foreground">Hex: {hsvaToHex(value)}</p>
+        <Typography variant="muted">Hex: {hsvaToHex(value)}</Typography>
       </div>
     );
   },
@@ -156,9 +157,9 @@ export const SwatchesGrid: Story = {
             ))}
           </div>
         </Root>
-        <p className="text-sm text-muted-foreground">
+        <Typography variant="muted">
           Hex: {hsvaToHex(value)}
-        </p>
+        </Typography>
       </div>
     );
   },

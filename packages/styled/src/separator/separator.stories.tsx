@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Separator } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Separator',
@@ -35,11 +36,11 @@ export const Default: Story = {
 export const Horizontal: Story = {
   render: () => (
     <div className="flex w-64 flex-col gap-4">
-      <p className="text-sm">Section one</p>
+      <Typography variant="body2">Section one</Typography>
       <Separator orientation="horizontal" />
-      <p className="text-sm">Section two</p>
+      <Typography variant="body2">Section two</Typography>
       <Separator orientation="horizontal" />
-      <p className="text-sm">Section three</p>
+      <Typography variant="body2">Section three</Typography>
     </div>
   ),
 };
@@ -60,12 +61,12 @@ export const InCard: Story = {
   render: () => (
     <div className="border-border w-72 rounded-lg border p-4">
       <div className="mb-3">
-        <p className="text-sm font-semibold">Title</p>
-        <p className="text-muted-foreground text-xs">Subtitle goes here</p>
+        <Typography variant="body2" className="font-semibold">Title</Typography>
+        <Typography variant="muted">Subtitle goes here</Typography>
       </div>
       <Separator />
       <div className="mt-3">
-        <p className="text-sm">Body content below the separator.</p>
+        <Typography variant="body2">Body content below the separator.</Typography>
       </div>
     </div>
   ),

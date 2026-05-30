@@ -22,6 +22,7 @@ import {
   TextareaAutosize,
   Transition,
 } from './index';
+import { Button } from '../button';
 
 const meta: Meta = {
   title: 'Styled/Material',
@@ -216,19 +217,19 @@ export const ButtonGroupDemo: Story = {
   render: () => (
     <Stack direction="column" spacing="md" alignItems="start">
       <ButtonGroup>
-        <button>Left</button>
-        <button>Center</button>
-        <button>Right</button>
+        <Button>Left</Button>
+        <Button>Center</Button>
+        <Button>Right</Button>
       </ButtonGroup>
       <ButtonGroup variant="outlined" color="primary">
-        <button>Left</button>
-        <button>Center</button>
-        <button>Right</button>
+        <Button>Left</Button>
+        <Button>Center</Button>
+        <Button>Right</Button>
       </ButtonGroup>
       <ButtonGroup orientation="vertical">
-        <button>Top</button>
-        <button>Middle</button>
-        <button>Bottom</button>
+        <Button>Top</Button>
+        <Button>Middle</Button>
+        <Button>Bottom</Button>
       </ButtonGroup>
     </Stack>
   ),
@@ -483,13 +484,12 @@ export const BackdropDemo: Story = {
     const [open, setOpen] = React.useState(false);
     return (
       <div>
-        <button
-          type="button"
-          className="rounded-md border border-border px-4 py-2 text-sm hover:bg-accent"
+        <Button
+          variant="outline"
           onClick={() => setOpen(true)}
         >
           Show Backdrop
-        </button>
+        </Button>
         {open && (
           <Backdrop onClick={() => setOpen(false)}>
             <Paper elevation={3} className="p-6">
@@ -509,13 +509,12 @@ export const TransitionDemo: Story = {
     const [visible, setVisible] = React.useState(true);
     return (
       <Stack direction="column" spacing="md" alignItems="start">
-        <button
-          type="button"
-          className="rounded-md border border-border px-4 py-2 text-sm hover:bg-accent"
+        <Button
+          variant="outline"
           onClick={() => setVisible((v) => !v)}
         >
           Toggle
-        </button>
+        </Button>
         <Transition open={visible}>
           <Paper elevation={1} className="p-4 text-sm">
             Animated content — fades in/out

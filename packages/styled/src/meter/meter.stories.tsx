@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Meter } from './index';
+import { Typography } from '../typography';
 
 const meta = {
   title: 'Styled/Meter',
@@ -41,22 +42,22 @@ export const StatusColors: Story = {
     <div className="flex w-80 flex-col gap-4">
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between text-xs">
-          <span>Normal (in range)</span>
-          <span className="text-success font-medium">60%</span>
+          <Typography as="span">Normal (in range)</Typography>
+          <Typography as="span" className="text-success font-medium">60%</Typography>
         </div>
         <Meter value={60} min={0} max={100} low={20} high={80} label="Normal" />
       </div>
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between text-xs">
-          <span>Sub-optimal (below low)</span>
-          <span className="text-warning font-medium">10%</span>
+          <Typography as="span">Sub-optimal (below low)</Typography>
+          <Typography as="span" className="text-warning font-medium">10%</Typography>
         </div>
         <Meter value={10} min={0} max={100} low={20} high={80} label="Sub-optimal low" />
       </div>
       <div className="flex flex-col gap-1.5">
         <div className="flex justify-between text-xs">
-          <span>Sub-optimal (above high)</span>
-          <span className="text-warning font-medium">90%</span>
+          <Typography as="span">Sub-optimal (above high)</Typography>
+          <Typography as="span" className="text-warning font-medium">90%</Typography>
         </div>
         <Meter value={90} min={0} max={100} low={20} high={80} label="Sub-optimal high" />
       </div>
@@ -68,8 +69,8 @@ export const DiskUsage: Story = {
   render: () => (
     <div className="border-border w-80 rounded-lg border p-4">
       <div className="mb-3 flex justify-between text-sm">
-        <span className="font-medium">Disk Usage</span>
-        <span className="text-muted-foreground">75 GB / 100 GB</span>
+        <Typography as="span" className="font-medium">Disk Usage</Typography>
+        <Typography as="span" className="text-muted-foreground">75 GB / 100 GB</Typography>
       </div>
       <Meter
         value={75}
@@ -79,7 +80,7 @@ export const DiskUsage: Story = {
         high={85}
         label="Disk usage"
       />
-      <p className="text-muted-foreground mt-2 text-xs">25 GB remaining</p>
+      <Typography variant="muted" className="mt-2">25 GB remaining</Typography>
     </div>
   ),
 };
@@ -88,8 +89,8 @@ export const BatteryLevel: Story = {
   render: () => (
     <div className="border-border w-80 rounded-lg border p-4">
       <div className="mb-3 flex items-center justify-between text-sm">
-        <span className="font-medium">Battery</span>
-        <span className="text-muted-foreground">15%</span>
+        <Typography as="span" className="font-medium">Battery</Typography>
+        <Typography as="span" className="text-muted-foreground">15%</Typography>
       </div>
       <Meter
         value={15}
@@ -100,7 +101,7 @@ export const BatteryLevel: Story = {
         optimum={90}
         label="Battery level"
       />
-      <p className="text-warning mt-2 text-xs font-medium">Low battery — please charge</p>
+      <Typography variant="body2" className="text-warning mt-2 font-medium">Low battery — please charge</Typography>
     </div>
   ),
 };
@@ -110,7 +111,7 @@ export const RangeValues: Story = {
     <div className="flex w-80 flex-col gap-3">
       {[10, 30, 50, 70, 90].map((v) => (
         <div key={v} className="flex items-center gap-3">
-          <span className="w-8 text-right text-xs tabular-nums">{v}%</span>
+          <Typography as="span" className="w-8 text-right text-xs tabular-nums">{v}%</Typography>
           <Meter
             value={v}
             min={0}

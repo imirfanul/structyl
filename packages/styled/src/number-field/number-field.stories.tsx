@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { Typography } from '../typography';
 import { Root, Input, IncrementTrigger, DecrementTrigger } from './index';
 
 const meta: Meta = {
@@ -27,13 +28,13 @@ export const WithLabel: Story = {
   name: 'With label',
   render: () => (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium leading-none">Quantity</label>
+      <Typography as="label" variant="input-label">Quantity</Typography>
       <Root defaultValue={1} min={1} max={99}>
         <DecrementTrigger />
         <Input />
         <IncrementTrigger />
       </Root>
-      <p className="text-xs text-muted-foreground">Min: 1 — Max: 99</p>
+      <Typography variant="muted" className="text-xs">Min: 1 — Max: 99</Typography>
     </div>
   ),
 };
@@ -43,7 +44,7 @@ export const WithMinMax: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium leading-none">Age (18–120)</label>
+        <Typography as="label" variant="input-label">Age (18–120)</Typography>
         <Root defaultValue={25} min={18} max={120}>
           <DecrementTrigger />
           <Input />
@@ -51,7 +52,7 @@ export const WithMinMax: Story = {
         </Root>
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium leading-none">Rating (1–5)</label>
+        <Typography as="label" variant="input-label">Rating (1–5)</Typography>
         <Root defaultValue={3} min={1} max={5}>
           <DecrementTrigger />
           <Input />
@@ -67,7 +68,7 @@ export const CustomStep: Story = {
   render: () => (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium leading-none">Price (step: 0.50)</label>
+        <Typography as="label" variant="input-label">Price (step: 0.50)</Typography>
         <Root defaultValue={10} step={0.5} min={0}>
           <DecrementTrigger />
           <Input />
@@ -75,7 +76,7 @@ export const CustomStep: Story = {
         </Root>
       </div>
       <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium leading-none">Percentage (step: 5)</label>
+        <Typography as="label" variant="input-label">Percentage (step: 5)</Typography>
         <Root defaultValue={50} step={5} min={0} max={100}>
           <DecrementTrigger />
           <Input />
@@ -93,16 +94,16 @@ export const Controlled: Story = {
     return (
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium leading-none">Controlled value</label>
+          <Typography as="label" variant="input-label">Controlled value</Typography>
           <Root value={value} onValueChange={setValue} min={0} max={100}>
             <DecrementTrigger />
             <Input />
             <IncrementTrigger />
           </Root>
         </div>
-        <p className="text-xs text-muted-foreground">
+        <Typography variant="muted" className="text-xs">
           Current value: <span className="font-medium">{value ?? 'empty'}</span>
-        </p>
+        </Typography>
       </div>
     );
   },
@@ -112,7 +113,7 @@ export const ReadOnly: Story = {
   name: 'Read-only',
   render: () => (
     <div className="flex flex-col gap-1.5">
-      <label className="text-sm font-medium leading-none">Items in cart</label>
+      <Typography as="label" variant="input-label">Items in cart</Typography>
       <Root defaultValue={3} readOnly>
         <DecrementTrigger />
         <Input />
@@ -136,7 +137,7 @@ export const FormExample: Story = {
   name: 'In a form',
   render: () => (
     <div className="w-[340px] rounded-lg border border-border bg-card p-6 shadow-sm">
-      <h3 className="mb-4 font-semibold">Order details</h3>
+      <Typography variant="h3" className="mb-4 font-semibold">Order details</Typography>
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <span className="text-sm">Quantity</span>

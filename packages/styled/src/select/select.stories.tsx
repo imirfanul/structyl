@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { within, expect, waitFor } from 'storybook/test';
 import * as Select from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   tags: ['ai-generated'],
@@ -92,9 +93,9 @@ export const Controlled: Story = {
           </Select.Content>
         </Select.Root>
         {value && (
-          <p className="text-sm text-muted-foreground">
+          <Typography variant="muted">
             Selected: <strong>{value}</strong>
-          </p>
+          </Typography>
         )}
       </div>
     );

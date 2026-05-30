@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Root, Content, Item, Previous, Next } from './index';
+import { Typography } from '../typography';
 
 const meta: Meta = {
   title: 'Styled/Carousel',
@@ -53,8 +54,8 @@ export const ImageCarousel: Story = {
             <Item key={i}>
               <div className="relative flex h-64 items-end justify-start overflow-hidden rounded-lg bg-gradient-to-br from-slate-400 to-slate-700 p-4">
                 <div className="text-white">
-                  <p className="text-xs text-white/70">Photo {i + 1} of 6</p>
-                  <p className="text-base font-semibold">Landscape {i + 1}</p>
+                  <Typography variant="muted" className="text-white/70">Photo {i + 1} of 6</Typography>
+                  <Typography variant="body2" className="font-semibold">Landscape {i + 1}</Typography>
                 </div>
               </div>
             </Item>
@@ -84,8 +85,8 @@ export const ProductCards: Story = {
                 className={`flex h-48 flex-col items-center justify-center rounded-xl border border-border ${product.color} gap-2 p-6`}
               >
                 <div className="h-16 w-16 rounded-lg bg-white/60" />
-                <p className="text-sm font-semibold">{product.name}</p>
-                <p className="text-xs text-muted-foreground">{product.price}</p>
+                <Typography variant="body2" className="font-semibold">{product.name}</Typography>
+                <Typography variant="muted">{product.price}</Typography>
               </div>
             </Item>
           ))}

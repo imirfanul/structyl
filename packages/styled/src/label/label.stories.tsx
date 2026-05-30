@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Label } from './index';
+import { Input } from '../input';
 
 const meta = {
   title: 'Styled/Label',
@@ -22,11 +23,10 @@ export const WithInput: Story = {
   render: () => (
     <div className="flex flex-col gap-1.5">
       <Label htmlFor="name-input">Full name</Label>
-      <input
+      <Input
         id="name-input"
         type="text"
         placeholder="Enter your name"
-        className="border-border rounded-md border px-3 py-1.5 text-sm outline-none"
       />
     </div>
   ),
@@ -36,12 +36,12 @@ export const DisabledPeer: Story = {
   render: () => (
     <div className="flex flex-col gap-1.5">
       <Label htmlFor="disabled-input">Disabled field</Label>
-      <input
+      <Input
         id="disabled-input"
         type="text"
         placeholder="Cannot edit this"
         disabled
-        className="peer border-border rounded-md border px-3 py-1.5 text-sm outline-none disabled:opacity-50"
+        className="peer"
       />
       <Label htmlFor="disabled-input" className="peer-disabled:opacity-70">
         Label reflects disabled peer state
@@ -56,12 +56,11 @@ export const RequiredField: Story = {
       <Label htmlFor="required-input">
         Password <span className="text-destructive">*</span>
       </Label>
-      <input
+      <Input
         id="required-input"
         type="password"
         placeholder="••••••••"
         required
-        className="border-border rounded-md border px-3 py-1.5 text-sm outline-none"
       />
     </div>
   ),
