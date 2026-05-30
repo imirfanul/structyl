@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import {
-  Sparkles, Check, Copy, RotateCcw, Sun, Moon, Download, Plus, Trash2, Monitor,
+  Check, Copy, RotateCcw, Sun, Moon, Download, Plus, Trash2, Monitor,
   Link2, Upload, Undo2, ChevronDown, ChevronUp,
 } from '@aura-ui/icons';
 import { Button } from '@aura-ui/styled';
@@ -1779,11 +1779,9 @@ export default function ThemesPlayground() {
       {/* Header */}
       <header className="sticky top-0 z-40 border-b border-border/60 bg-bg/80 backdrop-blur-md">
         <div className="mx-auto flex h-[52px] max-w-[1500px] items-center gap-3 px-6">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-6 w-6 items-center justify-center rounded-[7px] bg-gradient-to-br from-primary to-primary/60 text-primary-foreground shadow-sm">
-              <Sparkles className="h-3.5 w-3.5" />
-            </div>
-            <span className="text-[13px] font-semibold tracking-tight">aura-ui</span>
+          <Link href="/" className="flex items-center">
+            <img src="/logo-light.svg" alt="aura-ui" className="h-7 dark:hidden" />
+            <img src="/logo.svg"       alt="aura-ui" className="hidden h-7 dark:block" />
           </Link>
           <span className="hidden text-sm text-muted-foreground md:block">/ Theme Builder</span>
           <div className="ml-auto flex items-center gap-2">

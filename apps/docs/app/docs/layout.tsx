@@ -24,6 +24,7 @@ import {
 } from '@aura-ui/icons';
 import { useTheme } from '@aura-ui/themes';
 import { COMPONENTS, CATEGORIES, HOOKS } from '../../lib/registry';
+import { ThemePresetPicker } from '../../components/theme-preset-picker';
 
 /* ── Navigation structure ────────────────────────────────────────────── */
 
@@ -140,6 +141,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
 
           {/* Right actions */}
           <div className="ml-auto flex items-center gap-2">
+            <ThemePresetPicker />
             {/* Global search trigger */}
             <button
               onClick={() => setPaletteOpen(true)}
