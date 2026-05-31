@@ -1,18 +1,13 @@
 /** Central site config — imported by server files (sitemap, metadata, JSON-LD). No React, no 'use client'. */
 
 /**
- * Canonical base URL. Drives metadataBase, OG/Twitter image URLs, canonical
- * links, sitemap, and JSON-LD — so it MUST resolve to a live domain.
- * Priority: explicit env → Vercel production domain → local dev fallback.
- * (Set NEXT_PUBLIC_SITE_URL once a custom domain like structyl.dev is live.)
+ * Canonical base URL — drives metadataBase, OG/Twitter images, canonical
+ * links, sitemap, robots, and JSON-LD, so it MUST be the live production
+ * origin. Hardcoded to the deployed domain so no missing or stale env var
+ * can ever re-point the site at an unregistered domain (e.g. structyl.dev).
+ * When a real custom domain goes live, set NEXT_PUBLIC_SITE_URL to it.
  */
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ??
-  (process.env.VERCEL_PROJECT_PRODUCTION_URL
-    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-    : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'https://structyl.vercel.app');
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://structyl.vercel.app';
 
 export const SITE_NAME = 'structyl';
 export const SITE_DESCRIPTION =
