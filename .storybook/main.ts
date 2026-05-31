@@ -26,14 +26,14 @@ const config: StorybookConfig = {
     config.resolve ??= {};
     config.resolve.alias = {
       ...(config.resolve.alias as Record<string, string>),
-      '@aura-ui/core': path.join(packagesDir, 'core/src'),
-      '@aura-ui/utils': path.join(packagesDir, 'utils/src'),
-      '@aura-ui/hooks': path.join(packagesDir, 'hooks/src'),
-      '@aura-ui/themes': path.join(packagesDir, 'themes/src'),
-      '@aura-ui/icons': path.join(packagesDir, 'icons/src'),
-      '@aura-ui/primitives': path.join(packagesDir, 'primitives/src'),
-      '@aura-ui/styled': path.join(packagesDir, 'styled/src'),
-      '@aura-ui/data-table': path.join(packagesDir, 'data-table/src'),
+      '@structyl/core': path.join(packagesDir, 'core/src'),
+      '@structyl/utils': path.join(packagesDir, 'utils/src'),
+      '@structyl/hooks': path.join(packagesDir, 'hooks/src'),
+      '@structyl/themes': path.join(packagesDir, 'themes/src'),
+      '@structyl/icons': path.join(packagesDir, 'icons/src'),
+      '@structyl/primitives': path.join(packagesDir, 'primitives/src'),
+      '@structyl/styled': path.join(packagesDir, 'styled/src'),
+      '@structyl/data-table': path.join(packagesDir, 'data-table/src'),
     };
     return config;
   }

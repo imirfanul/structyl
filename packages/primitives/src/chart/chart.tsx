@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { createContext } from '@aura-ui/core';
+import { createContext } from '@structyl/core';
 import type {
   CartesianContextValue,
   ChartAreaProps,

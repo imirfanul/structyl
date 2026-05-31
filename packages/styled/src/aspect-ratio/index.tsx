@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { AspectRatio as AspectRatioPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { AspectRatio as AspectRatioPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 interface AspectRatioProps extends React.ComponentPropsWithoutRef<'div'> {
   ratio?: number;

@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Minus, Plus } from '@aura-ui/icons';
-import { NumberField as NumberFieldPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Minus, Plus } from '@structyl/icons';
+import { NumberField as NumberFieldPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof NumberFieldPrimitive.Root>,

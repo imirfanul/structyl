@@ -75,7 +75,7 @@ export default function KeyboardShortcutsPage() {
       <p className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</p>
       <h1 className="mt-2 text-4xl font-semibold tracking-tight">Keyboard shortcuts</h1>
       <p className="mt-3 text-base text-muted-foreground">
-        aura-ui components are fully keyboard-navigable. Every interactive pattern follows the{' '}
+        structyl components are fully keyboard-navigable. Every interactive pattern follows the{' '}
         <a
           href="https://www.w3.org/WAI/ARIA/apg/"
           target="_blank"

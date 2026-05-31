@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useControllableState } from '@aura-ui/hooks';
+import { useControllableState } from '@structyl/hooks';
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   value?: string;

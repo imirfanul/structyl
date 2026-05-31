@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Form as FormPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Form as FormPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof FormPrimitive.Root>,

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { AlertDialog as AlertDialogPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { AlertDialog as AlertDialogPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { buttonVariants } from '../button';
 
 const Root = AlertDialogPrimitive.Root;

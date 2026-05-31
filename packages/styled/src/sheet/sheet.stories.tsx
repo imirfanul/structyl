@@ -3,7 +3,7 @@ import React from 'react';
 import { Button } from '../button';
 import { Checkbox } from '../checkbox';
 import { Input } from '../input';
-import { Link as AuraLink } from '../aura';
+import { Link as StructylLink } from '../structyl';
 import { Typography } from '../typography';
 import * as Sheet from './index';
 
@@ -115,13 +115,13 @@ export const NavigationMenu: Story = {
         <nav className="mt-6 flex flex-col gap-1">
           {['Home', 'Components', 'Documentation', 'Examples', 'Blog', 'GitHub'].map((item) => (
             <Sheet.Close asChild key={item}>
-              <AuraLink
+              <StructylLink
                 href="#"
                 className="flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
                 onClick={(e) => e.preventDefault()}
               >
                 {item}
-              </AuraLink>
+              </StructylLink>
             </Sheet.Close>
           ))}
         </nav>

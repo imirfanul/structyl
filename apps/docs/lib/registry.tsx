@@ -71,7 +71,7 @@ import {
   Grid,
   Paper,
   Typography,
-  Link as AuraLink,
+  Link as StructylLink,
   SvgIcon,
   Chart,
   Chip,
@@ -92,15 +92,15 @@ import {
   Timeline,
   ClickAwayListener,
   NoSsr,
-  AuraPortal as Portal,
+  StructylPortal as Portal,
   Popper,
   TextareaAutosize,
   Transition,
   CssBaseline,
   InitColorSchemeScript,
-} from '@aura-ui/styled';
-import { DataTable, type DataTableColumnDef, type DataTableFilterGroup } from '@aura-ui/data-table';
-import { VideoPlayer } from '@aura-ui/video-player';
+} from '@structyl/styled';
+import { DataTable, type DataTableColumnDef, type DataTableFilterGroup } from '@structyl/data-table';
+import { VideoPlayer } from '@structyl/video-player';
 import { componentUsageExamples } from './component-usage-examples';
 
 /* ── Types ──────────────────────────────────────────────────────────── */
@@ -235,26 +235,26 @@ const docsTableFilter: DataTableFilterGroup = {
   ],
 };
 
-const auraOptions = [
+const structylOptions = [
   { value: 'react', label: 'React' },
   { value: 'vue', label: 'Vue' },
   { value: 'svelte', label: 'Svelte' },
 ];
 
-const auraClassNameProp: ApiProp = {
+const structylClassNameProp: ApiProp = {
   name: 'className',
   type: 'string',
   description: 'Additional Tailwind classes merged with the component defaults.',
 };
 
-const auraAsChildProp: ApiProp = {
+const structylAsChildProp: ApiProp = {
   name: 'asChild',
   type: 'boolean',
   default: 'false',
   description: 'Merge props onto the immediate child instead of rendering the default element.',
 };
 
-const auraApi: Record<string, ApiPart[]> = {
+const structylApi: Record<string, ApiPart[]> = {
   box: [
     {
       name: 'Box',
@@ -275,8 +275,8 @@ const auraApi: Record<string, ApiPart[]> = {
           type: '0 | 1 | 2 | 3 | 4 | 5 | 6 | 8',
           description: 'Tokenized margin shortcut.',
         },
-        auraAsChildProp,
-        auraClassNameProp,
+        structylAsChildProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -289,7 +289,7 @@ const auraApi: Record<string, ApiPart[]> = {
           name: 'size',
           type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'full'",
           default: "'lg'",
-          description: 'Aura alias for maxWidth.',
+          description: 'Structyl alias for maxWidth.',
         },
         {
           name: 'maxWidth',
@@ -309,7 +309,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Use fixed breakpoint widths.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -346,7 +346,7 @@ const auraApi: Record<string, ApiPart[]> = {
           type: "'nowrap' | 'wrap' | 'wrap-reverse'",
           description: 'Flex wrapping behavior.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -392,7 +392,7 @@ const auraApi: Record<string, ApiPart[]> = {
           type: "'auto' | 'grow' | 1…12",
           description: 'Column span at each breakpoint.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -419,7 +419,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Remove rounded corners.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -463,7 +463,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Display as paragraph-like block spacing.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -489,8 +489,8 @@ const auraApi: Record<string, ApiPart[]> = {
           type: "'body2' | 'button' | 'caption' | Typography variant",
           description: 'Optional text variant.',
         },
-        auraAsChildProp,
-        auraClassNameProp,
+        structylAsChildProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -513,7 +513,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: "'inherit'",
           description: 'Tokenized icon color.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -685,7 +685,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Disable chip interactions.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -704,19 +704,19 @@ const auraApi: Record<string, ApiPart[]> = {
           name: 'variant',
           type: "'contained' | 'outlined' | 'text'",
           default: "'outlined'",
-          description: 'Variant applied to Aura Button children.',
+          description: 'Variant applied to Structyl Button children.',
         },
         {
           name: 'color',
           type: "'default' | 'primary' | 'secondary' | 'destructive' | 'muted'",
           default: "'default'",
-          description: 'Color mapped to Aura button variants.',
+          description: 'Color mapped to Structyl button variants.',
         },
         {
           name: 'size',
           type: "'small' | 'medium' | 'large'",
           default: "'medium'",
-          description: 'Size applied to Aura Button children.',
+          description: 'Size applied to Structyl Button children.',
         },
         { name: 'disabled', type: 'boolean', description: 'Disable child buttons.' },
         {
@@ -725,7 +725,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Stretch group and children.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -753,7 +753,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: "'medium'",
           description: 'Button size.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -807,7 +807,7 @@ const auraApi: Record<string, ApiPart[]> = {
           type: 'number',
           description: 'Documented precision marker for design parity.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -815,23 +815,23 @@ const auraApi: Record<string, ApiPart[]> = {
     {
       name: 'Autocomplete.Root',
       description: 'Combobox root; accepts controlled/uncontrolled combobox props.',
-      props: [auraClassNameProp],
+      props: [structylClassNameProp],
     },
     {
       name: 'Autocomplete.Input',
       description: 'Search input.',
       props: [
         { name: 'placeholder', type: 'string', description: 'Input placeholder.' },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
-    { name: 'Autocomplete.Content', description: 'Popup content.', props: [auraClassNameProp] },
+    { name: 'Autocomplete.Content', description: 'Popup content.', props: [structylClassNameProp] },
     {
       name: 'Autocomplete.Item',
       description: 'Selectable option.',
       props: [
         { name: 'value', type: 'string', description: 'Option value.' },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -860,7 +860,7 @@ const auraApi: Record<string, ApiPart[]> = {
           type: 'React.ReactNode',
           description: 'Panel headings.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -876,7 +876,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Remove root padding.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
@@ -890,7 +890,7 @@ const auraApi: Record<string, ApiPart[]> = {
           description: 'Remove item padding.',
         },
         { name: 'divider', type: 'boolean', default: 'false', description: 'Show bottom divider.' },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
@@ -906,7 +906,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: "'center'",
           description: 'Row alignment.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
@@ -920,13 +920,13 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Align text with icon rows.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
       name: 'List.ItemIcon / ItemAvatar / ItemSecondaryAction / Subheader',
       description: 'Additional list slots.',
-      props: [auraClassNameProp],
+      props: [structylClassNameProp],
     },
   ],
   'image-list': [
@@ -953,13 +953,13 @@ const auraApi: Record<string, ApiPart[]> = {
           default: "'standard'",
           description: 'Image layout mode.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
       name: 'ImageList.Item / Image / Caption',
       description: 'Image tile parts.',
-      props: [auraClassNameProp],
+      props: [structylClassNameProp],
     },
   ],
   table: [
@@ -979,13 +979,13 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Stick table header.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
       name: 'Table.Header / Body / Footer / Row / Head / Cell / Caption',
       description: 'Semantic table parts.',
-      props: [auraClassNameProp],
+      props: [structylClassNameProp],
     },
   ],
   backdrop: [
@@ -1006,7 +1006,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Remove visible scrim color.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1042,7 +1042,7 @@ const auraApi: Record<string, ApiPart[]> = {
           type: "(event, reason: 'timeout' | 'clickaway' | 'escapeKeyDown') => void",
           description: 'Close request callback.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1075,7 +1075,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'true',
           description: 'Remove rounded corners.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1100,7 +1100,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Show all labels instead of only selected labels.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
@@ -1111,7 +1111,7 @@ const auraApi: Record<string, ApiPart[]> = {
         { name: 'label', type: 'React.ReactNode', description: 'Visible label slot.' },
         { name: 'icon', type: 'React.ReactNode', description: 'Icon slot.' },
         { name: 'showLabel', type: 'boolean', description: 'Override root label visibility.' },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1142,7 +1142,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Unmount the speed dial.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
@@ -1150,7 +1150,7 @@ const auraApi: Record<string, ApiPart[]> = {
       description: 'Floating trigger.',
       props: [
         { name: 'icon | openIcon', type: 'React.ReactNode', description: 'Closed and open icons.' },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
@@ -1164,7 +1164,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: 'false',
           description: 'Force tooltip visible.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1185,7 +1185,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: '4',
           description: 'Column/item spacing.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1200,7 +1200,7 @@ const auraApi: Record<string, ApiPart[]> = {
           default: "'right'",
           description: 'Timeline content position.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
@@ -1219,13 +1219,13 @@ const auraApi: Record<string, ApiPart[]> = {
           default: "'filled'",
           description: 'Marker treatment.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
     {
       name: 'Timeline.Item / Separator / Content',
       description: 'Timeline composition parts.',
-      props: [auraClassNameProp],
+      props: [structylClassNameProp],
     },
   ],
   'click-away-listener': [
@@ -1280,7 +1280,7 @@ const auraApi: Record<string, ApiPart[]> = {
     {
       name: 'Popper.Root / Anchor / Content',
       description: 'Floating positioning primitives.',
-      props: [auraClassNameProp],
+      props: [structylClassNameProp],
     },
   ],
   'textarea-autosize': [
@@ -1290,7 +1290,7 @@ const auraApi: Record<string, ApiPart[]> = {
       props: [
         { name: 'minRows', type: 'number', default: '1', description: 'Minimum rows.' },
         { name: 'maxRows', type: 'number', description: 'Maximum rows before scrolling.' },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1312,7 +1312,7 @@ const auraApi: Record<string, ApiPart[]> = {
           type: 'number | { appear?: number; enter?: number; exit?: number }',
           description: 'Transition duration metadata.',
         },
-        auraClassNameProp,
+        structylClassNameProp,
       ],
     },
   ],
@@ -1338,7 +1338,7 @@ const auraApi: Record<string, ApiPart[]> = {
         {
           name: 'storageKey',
           type: 'string',
-          default: "'aura-ui-mode'",
+          default: "'structyl-mode'",
           description: 'LocalStorage key.',
         },
         {
@@ -1358,7 +1358,7 @@ const auraApi: Record<string, ApiPart[]> = {
   ],
 };
 
-const AURA_COMPONENTS_BASE: ComponentEntry[] = [
+const STRUCTYL_COMPONENTS_BASE: ComponentEntry[] = [
   {
     slug: 'box',
     name: 'Box',
@@ -1366,7 +1366,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
     description: 'A low-level layout primitive.',
     features: ['Renders a div by default.', 'Supports asChild composition.'],
     preview: () => <Box className="border-border rounded-md border p-4 text-sm">Box</Box>,
-    code: `import { Box } from '@aura-ui/styled';\n\n<Box>Content</Box>`,
+    code: `import { Box } from '@structyl/styled';\n\n<Box>Content</Box>`,
   },
   {
     slug: 'container',
@@ -1379,7 +1379,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         Container
       </Container>
     ),
-    code: `import { Container } from '@aura-ui/styled';\n\n<Container size="lg">Content</Container>`,
+    code: `import { Container } from '@structyl/styled';\n\n<Container size="lg">Content</Container>`,
   },
   {
     slug: 'stack',
@@ -1393,7 +1393,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <Chip label="Two" />
       </Stack>
     ),
-    code: `import { Stack } from '@aura-ui/styled';\n\n<Stack spacing="md">...</Stack>`,
+    code: `import { Stack } from '@structyl/styled';\n\n<Stack spacing="md">...</Stack>`,
   },
   {
     slug: 'grid',
@@ -1407,7 +1407,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <Paper className="p-3 text-sm">B</Paper>
       </Grid>
     ),
-    code: `import { Grid } from '@aura-ui/styled';\n\n<Grid columns={2}>...</Grid>`,
+    code: `import { Grid } from '@structyl/styled';\n\n<Grid columns={2}>...</Grid>`,
   },
   {
     slug: 'paper',
@@ -1420,7 +1420,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         Paper surface
       </Paper>
     ),
-    code: `import { Paper } from '@aura-ui/styled';\n\n<Paper elevation={2}>Content</Paper>`,
+    code: `import { Paper } from '@structyl/styled';\n\n<Paper elevation={2}>Content</Paper>`,
   },
   {
     slug: 'typography',
@@ -1434,7 +1434,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <Typography variant="muted">Supporting text</Typography>
       </Stack>
     ),
-    code: `import { Typography } from '@aura-ui/styled';\n\n<Typography variant="h3">Heading</Typography>`,
+    code: `import { Typography } from '@structyl/styled';\n\n<Typography variant="h3">Heading</Typography>`,
   },
   {
     slug: 'link',
@@ -1442,8 +1442,8 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
     category: 'Atoms',
     description: 'A styled anchor element.',
     features: ['Focus-visible ring.', 'Theme-aware color.'],
-    preview: () => <AuraLink href="#">Open documentation</AuraLink>,
-    code: `import { Link } from '@aura-ui/styled';\n\n<Link href="/docs">Docs</Link>`,
+    preview: () => <StructylLink href="#">Open documentation</StructylLink>,
+    code: `import { Link } from '@structyl/styled';\n\n<Link href="/docs">Docs</Link>`,
   },
   {
     slug: 'svg-icon',
@@ -1456,7 +1456,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <path d="M20 6 9 17l-5-5" />
       </SvgIcon>
     ),
-    code: `import { SvgIcon } from '@aura-ui/styled';\n\n<SvgIcon title="Check"><path d="M20 6 9 17l-5-5" /></SvgIcon>`,
+    code: `import { SvgIcon } from '@structyl/styled';\n\n<SvgIcon title="Check"><path d="M20 6 9 17l-5-5" /></SvgIcon>`,
   },
   {
     slug: 'chart',
@@ -1490,7 +1490,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <Chart.Tooltip />
       </Chart.Root>
     ),
-    code: `import { Chart } from '@aura-ui/styled';\n\n<Chart.Root data={data} height={300}>\n  <Chart.Grid />\n  <Chart.XAxis dataKey="month" />\n  <Chart.YAxis />\n  <Chart.Bar dataKey="revenue" name="Revenue" />\n  <Chart.Tooltip />\n  <Chart.Legend />\n</Chart.Root>`,
+    code: `import { Chart } from '@structyl/styled';\n\n<Chart.Root data={data} height={300}>\n  <Chart.Grid />\n  <Chart.XAxis dataKey="month" />\n  <Chart.YAxis />\n  <Chart.Bar dataKey="revenue" name="Revenue" />\n  <Chart.Tooltip />\n  <Chart.Legend />\n</Chart.Root>`,
   },
   {
     slug: 'chip',
@@ -1499,7 +1499,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
     description: 'A compact label with optional delete action.',
     features: ['Variant styles.', 'Optional delete button.'],
     preview: () => <Chip label="Ready" onDelete={() => {}} />,
-    code: `import { Chip } from '@aura-ui/styled';\n\n<Chip label="Ready" onDelete={remove} />`,
+    code: `import { Chip } from '@structyl/styled';\n\n<Chip label="Ready" onDelete={remove} />`,
   },
   {
     slug: 'button-group',
@@ -1513,7 +1513,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <Button variant="outline">Two</Button>
       </ButtonGroup>
     ),
-    code: `import { ButtonGroup, Button } from '@aura-ui/styled';\n\n<ButtonGroup><Button>One</Button><Button>Two</Button></ButtonGroup>`,
+    code: `import { ButtonGroup, Button } from '@structyl/styled';\n\n<ButtonGroup><Button>One</Button><Button>Two</Button></ButtonGroup>`,
   },
   {
     slug: 'floating-action-button',
@@ -1522,7 +1522,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
     description: 'A prominent circular action button.',
     features: ['Icon and extended modes.', 'Button variants.'],
     preview: () => <FloatingActionButton aria-label="Add">+</FloatingActionButton>,
-    code: `import { FloatingActionButton } from '@aura-ui/styled';\n\n<FloatingActionButton aria-label="Add">+</FloatingActionButton>`,
+    code: `import { FloatingActionButton } from '@structyl/styled';\n\n<FloatingActionButton aria-label="Add">+</FloatingActionButton>`,
   },
   {
     slug: 'rating',
@@ -1531,7 +1531,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
     description: 'Collects a numeric star rating.',
     features: ['Controlled or uncontrolled.', 'Keyboard-focusable items.'],
     preview: () => <Rating defaultValue={3} />,
-    code: `import { Rating } from '@aura-ui/styled';\n\n<Rating defaultValue={3} />`,
+    code: `import { Rating } from '@structyl/styled';\n\n<Rating defaultValue={3} />`,
   },
   {
     slug: 'autocomplete',
@@ -1543,7 +1543,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
       <Autocomplete.Root>
         <Autocomplete.Input placeholder="Search…" className="w-56" />
         <Autocomplete.Content>
-          {auraOptions.map((option) => (
+          {structylOptions.map((option) => (
             <Autocomplete.Item key={option.value} value={option.value}>
               {option.label}
             </Autocomplete.Item>
@@ -1551,7 +1551,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         </Autocomplete.Content>
       </Autocomplete.Root>
     ),
-    code: `import { Autocomplete } from '@aura-ui/styled';\n\n<Autocomplete.Root>\n  <Autocomplete.Input />\n  <Autocomplete.Content><Autocomplete.Item value="react">React</Autocomplete.Item></Autocomplete.Content>\n</Autocomplete.Root>`,
+    code: `import { Autocomplete } from '@structyl/styled';\n\n<Autocomplete.Root>\n  <Autocomplete.Input />\n  <Autocomplete.Content><Autocomplete.Item value="react">React</Autocomplete.Item></Autocomplete.Content>\n</Autocomplete.Root>`,
   },
   {
     slug: 'transfer-list',
@@ -1559,8 +1559,8 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
     category: 'Inputs',
     description: 'Moves options between available and selected lists.',
     features: ['Controlled or uncontrolled.', 'Checkbox selection.'],
-    preview: () => <TransferList options={auraOptions} defaultValue={['vue']} />,
-    code: `import { TransferList } from '@aura-ui/styled';\n\n<TransferList options={options} />`,
+    preview: () => <TransferList options={structylOptions} defaultValue={['vue']} />,
+    code: `import { TransferList } from '@structyl/styled';\n\n<TransferList options={options} />`,
   },
   {
     slug: 'list',
@@ -1578,7 +1578,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         </List.Item>
       </List.Root>
     ),
-    code: `import { List } from '@aura-ui/styled';\n\n<List.Root><List.Item><List.ItemText>Item</List.ItemText></List.Item></List.Root>`,
+    code: `import { List } from '@structyl/styled';\n\n<List.Root><List.Item><List.ItemText>Item</List.ItemText></List.Item></List.Root>`,
   },
   {
     slug: 'image-list',
@@ -1597,7 +1597,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         </ImageList.Item>
       </ImageList.Root>
     ),
-    code: `import { ImageList } from '@aura-ui/styled';\n\n<ImageList.Root><ImageList.Item><ImageList.Image src={src} alt="" /></ImageList.Item></ImageList.Root>`,
+    code: `import { ImageList } from '@structyl/styled';\n\n<ImageList.Root><ImageList.Item><ImageList.Image src={src} alt="" /></ImageList.Item></ImageList.Root>`,
   },
   {
     slug: 'table',
@@ -1619,7 +1619,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         </Table.Body>
       </Table.Root>
     ),
-    code: `import { Table } from '@aura-ui/styled';\n\n<Table.Root><Table.Body><Table.Row><Table.Cell>Cell</Table.Cell></Table.Row></Table.Body></Table.Root>`,
+    code: `import { Table } from '@structyl/styled';\n\n<Table.Root><Table.Body><Table.Row><Table.Cell>Cell</Table.Cell></Table.Row></Table.Body></Table.Root>`,
   },
   {
     slug: 'backdrop',
@@ -1628,7 +1628,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
     description: 'A full-screen scrim for modal states.',
     features: ['Open/closed mounting.', 'Theme-aware overlay.'],
     preview: () => <Backdrop open forceMount className="relative h-24 w-48 rounded-md" />,
-    code: `import { Backdrop } from '@aura-ui/styled';\n\n<Backdrop open />`,
+    code: `import { Backdrop } from '@structyl/styled';\n\n<Backdrop open />`,
   },
   {
     slug: 'snackbar',
@@ -1641,7 +1641,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         Saved successfully
       </Snackbar>
     ),
-    code: `import { Snackbar } from '@aura-ui/styled';\n\n<Snackbar open={open}>Saved</Snackbar>`,
+    code: `import { Snackbar } from '@structyl/styled';\n\n<Snackbar open={open}>Saved</Snackbar>`,
   },
   {
     slug: 'app-bar',
@@ -1654,7 +1654,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <Typography>App title</Typography>
       </AppBar>
     ),
-    code: `import { AppBar } from '@aura-ui/styled';\n\n<AppBar position="sticky">Title</AppBar>`,
+    code: `import { AppBar } from '@structyl/styled';\n\n<AppBar position="sticky">Title</AppBar>`,
   },
   {
     slug: 'bottom-navigation',
@@ -1668,7 +1668,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <BottomNavigation.Item value="search">Search</BottomNavigation.Item>
       </BottomNavigation.Root>
     ),
-    code: `import { BottomNavigation } from '@aura-ui/styled';\n\n<BottomNavigation.Root defaultValue="home"><BottomNavigation.Item value="home">Home</BottomNavigation.Item></BottomNavigation.Root>`,
+    code: `import { BottomNavigation } from '@structyl/styled';\n\n<BottomNavigation.Root defaultValue="home"><BottomNavigation.Item value="home">Home</BottomNavigation.Item></BottomNavigation.Root>`,
   },
   {
     slug: 'speed-dial',
@@ -1684,7 +1684,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         <SpeedDial.Trigger />
       </SpeedDial.Root>
     ),
-    code: `import { SpeedDial } from '@aura-ui/styled';\n\n<SpeedDial.Root><SpeedDial.Trigger /><SpeedDial.Content><SpeedDial.Action /></SpeedDial.Content></SpeedDial.Root>`,
+    code: `import { SpeedDial } from '@structyl/styled';\n\n<SpeedDial.Root><SpeedDial.Trigger /><SpeedDial.Content><SpeedDial.Action /></SpeedDial.Content></SpeedDial.Root>`,
   },
   {
     slug: 'masonry',
@@ -1701,7 +1701,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         ))}
       </Masonry>
     ),
-    code: `import { Masonry } from '@aura-ui/styled';\n\n<Masonry columns={3}>...</Masonry>`,
+    code: `import { Masonry } from '@structyl/styled';\n\n<Masonry columns={3}>...</Masonry>`,
   },
   {
     slug: 'timeline',
@@ -1719,7 +1719,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         </Timeline.Item>
       </Timeline.Root>
     ),
-    code: `import { Timeline } from '@aura-ui/styled';\n\n<Timeline.Root><Timeline.Item><Timeline.Dot /><Timeline.Content>Event</Timeline.Content></Timeline.Item></Timeline.Root>`,
+    code: `import { Timeline } from '@structyl/styled';\n\n<Timeline.Root><Timeline.Item><Timeline.Dot /><Timeline.Content>Event</Timeline.Content></Timeline.Item></Timeline.Root>`,
   },
   {
     slug: 'click-away-listener',
@@ -1744,7 +1744,7 @@ const AURA_COMPONENTS_BASE: ComponentEntry[] = [
         </div>
       );
     },
-    code: `import { ClickAwayListener, Paper } from '@aura-ui/styled';
+    code: `import { ClickAwayListener, Paper } from '@structyl/styled';
 
 const [open, setOpen] = useState(false);
 
@@ -1770,7 +1770,7 @@ const [open, setOpen] = useState(false);
         </Paper>
       </NoSsr>
     ),
-    code: `import { NoSsr, Typography } from '@aura-ui/styled';
+    code: `import { NoSsr, Typography } from '@structyl/styled';
 
 <NoSsr fallback={<Typography as="span">Rendering on server…</Typography>}>
   Window: {window.innerWidth}×{window.innerHeight}
@@ -1800,7 +1800,7 @@ const [open, setOpen] = useState(false);
         </div>
       );
     },
-    code: `import { Portal, Typography } from '@aura-ui/styled';
+    code: `import { Portal, Typography } from '@structyl/styled';
 
 const containerRef = useRef<HTMLDivElement>(null);
 
@@ -1835,7 +1835,7 @@ const containerRef = useRef<HTMLDivElement>(null);
         </div>
       );
     },
-    code: `import { Button, Popper } from '@aura-ui/styled';
+    code: `import { Button, Popper } from '@structyl/styled';
 
 const [open, setOpen] = useState(false);
 const anchorRef = useRef<HTMLButtonElement>(null);
@@ -1852,7 +1852,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
     description: 'A textarea that grows with its content.',
     features: ['Minimum and maximum row limits.', 'Native textarea props.'],
     preview: () => <TextareaAutosize minRows={2} placeholder="Type…" className="w-64" />,
-    code: `import { TextareaAutosize } from '@aura-ui/styled';\n\n<TextareaAutosize minRows={2} />`,
+    code: `import { TextareaAutosize } from '@structyl/styled';\n\n<TextareaAutosize minRows={2} />`,
   },
   {
     slug: 'transition',
@@ -1885,7 +1885,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
         </div>
       );
     },
-    code: `import { Button, Transition } from '@aura-ui/styled';
+    code: `import { Button, Transition } from '@structyl/styled';
 
 const [show, setShow] = useState(true);
 
@@ -1909,7 +1909,7 @@ const [show, setShow] = useState(true);
         </pre>
       </div>
     ),
-    code: `import { CssBaseline } from '@aura-ui/styled';
+    code: `import { CssBaseline } from '@structyl/styled';
 
 // Place once at your app root — injects a minimal CSS reset
 <CssBaseline />`,
@@ -1925,18 +1925,18 @@ const [show, setShow] = useState(true);
         <InitColorSchemeScript defaultMode="system" />
         <Typography as="span" variant="muted">Script injected into &lt;head&gt; before hydration:</Typography>
         <pre className="bg-muted overflow-auto rounded p-2 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
-          {`var m = localStorage.getItem("aura-ui-mode") || "system";\nif (m === "system") {\n  m = matchMedia("(prefers-color-scheme: dark)").matches\n    ? "dark" : "light";\n}\ndocument.documentElement.setAttribute("data-theme", m);`}
+          {`var m = localStorage.getItem("structyl-mode") || "system";\nif (m === "system") {\n  m = matchMedia("(prefers-color-scheme: dark)").matches\n    ? "dark" : "light";\n}\ndocument.documentElement.setAttribute("data-theme", m);`}
         </pre>
       </div>
     ),
-    code: `import { InitColorSchemeScript } from '@aura-ui/styled';
+    code: `import { InitColorSchemeScript } from '@structyl/styled';
 
 // In your root layout <head> — runs before hydration to prevent flash
 <InitColorSchemeScript defaultMode="system" />`,
   },
 ];
 
-const auraExamples: Record<string, ComponentExample[]> = {
+const structylExamples: Record<string, ComponentExample[]> = {
   box: [
     {
       title: 'As a layout wrapper',
@@ -1948,7 +1948,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Typography variant="muted">Build checks are running for the release branch.</Typography>
         </Box>
       ),
-      code: `import { Box, Typography } from '@aura-ui/styled';
+      code: `import { Box, Typography } from '@structyl/styled';
 
 <Box className="grid gap-2 rounded-md border border-border p-4">
   <Typography variant="h4">Project status</Typography>
@@ -1964,7 +1964,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <section aria-label="Release notes">Semantic section rendered through Box.</section>
         </Box>
       ),
-      code: `import { Box } from '@aura-ui/styled';
+      code: `import { Box } from '@structyl/styled';
 
 <Box asChild className="rounded-md bg-muted p-4">
   <section aria-label="Release notes">Semantic section</section>
@@ -1988,7 +1988,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           ))}
         </Stack>
       ),
-      code: `import { Container } from '@aura-ui/styled';
+      code: `import { Container } from '@structyl/styled';
 
 <Container size="sm">Small page</Container>
 <Container size="md">Docs page</Container>
@@ -2002,7 +2002,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           Full-width app section
         </Container>
       ),
-      code: `import { Container } from '@aura-ui/styled';
+      code: `import { Container } from '@structyl/styled';
 
 <Container size="full" className="bg-muted p-4">
   Full-width app section
@@ -2026,7 +2026,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           </Stack>
         </Stack>
       ),
-      code: `import { Chip, Stack, Typography } from '@aura-ui/styled';
+      code: `import { Chip, Stack, Typography } from '@structyl/styled';
 
 <Stack spacing="lg">
   <Stack direction="row" spacing="sm">
@@ -2051,7 +2051,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           </Button>
         </Stack>
       ),
-      code: `import { Button, Stack } from '@aura-ui/styled';
+      code: `import { Button, Stack } from '@structyl/styled';
 
 <Stack direction="row" spacing="sm">
   <Button size="sm">Save</Button>
@@ -2072,7 +2072,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           ))}
         </Grid>
       ),
-      code: `import { Grid, Paper } from '@aura-ui/styled';
+      code: `import { Grid, Paper } from '@structyl/styled';
 
 <Grid columns={3}>
   <Paper>Open</Paper>
@@ -2091,7 +2091,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Paper className="col-span-2 p-3 text-sm">Health</Paper>
         </Grid>
       ),
-      code: `import { Grid, Paper } from '@aura-ui/styled';
+      code: `import { Grid, Paper } from '@structyl/styled';
 
 <Grid columns={4}>
   <Paper className="col-span-3">Activity</Paper>
@@ -2114,7 +2114,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           ))}
         </Stack>
       ),
-      code: `import { Paper } from '@aura-ui/styled';
+      code: `import { Paper } from '@structyl/styled';
 
 <Paper elevation={0}>Flat</Paper>
 <Paper elevation={1}>Low</Paper>
@@ -2130,7 +2130,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Typography variant="muted">Invoices and payment methods.</Typography>
         </Paper>
       ),
-      code: `import { Paper, Typography } from '@aura-ui/styled';
+      code: `import { Paper, Typography } from '@structyl/styled';
 
 <Paper elevation={2} className="p-4">
   <Typography variant="h4">Billing</Typography>
@@ -2149,7 +2149,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Typography variant="muted">Muted copy for supporting context.</Typography>
         </Stack>
       ),
-      code: `import { Typography } from '@aura-ui/styled';
+      code: `import { Typography } from '@structyl/styled';
 
 <Typography variant="h2">Build components faster</Typography>
 <Typography variant="body">Compose primitives with Tailwind tokens.</Typography>
@@ -2163,7 +2163,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           Set <Typography variant="code">defaultOpen</Typography> for uncontrolled components.
         </Typography>
       ),
-      code: `import { Typography } from '@aura-ui/styled';
+      code: `import { Typography } from '@structyl/styled';
 
 <Typography>
   Set <Typography variant="code">defaultOpen</Typography> for uncontrolled components.
@@ -2175,11 +2175,11 @@ const auraExamples: Record<string, ComponentExample[]> = {
       title: 'External links',
       description: 'Links keep focus treatment and theme color consistent.',
       preview: () => (
-        <AuraLink href="https://github.com" target="_blank" rel="noreferrer">
+        <StructylLink href="https://github.com" target="_blank" rel="noreferrer">
           View source
-        </AuraLink>
+        </StructylLink>
       ),
-      code: `import { Link } from '@aura-ui/styled';
+      code: `import { Link } from '@structyl/styled';
 
 <Link href="https://github.com" target="_blank" rel="noreferrer">
   View source
@@ -2190,10 +2190,10 @@ const auraExamples: Record<string, ComponentExample[]> = {
       description: 'Link can sit naturally inside text without extra wrappers.',
       preview: () => (
         <Typography>
-          Read the <AuraLink href="/docs">component documentation</AuraLink> before shipping.
+          Read the <StructylLink href="/docs">component documentation</StructylLink> before shipping.
         </Typography>
       ),
-      code: `import { Link, Typography } from '@aura-ui/styled';
+      code: `import { Link, Typography } from '@structyl/styled';
 
 <Typography>
   Read the <Link href="/docs">component documentation</Link>.
@@ -2209,7 +2209,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <path d="M20 6 9 17l-5-5" />
         </SvgIcon>
       ),
-      code: `import { SvgIcon } from '@aura-ui/styled';
+      code: `import { SvgIcon } from '@structyl/styled';
 
 <SvgIcon title="Success" className="text-success">
   <path d="M20 6 9 17l-5-5" />
@@ -2226,7 +2226,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           Add item
         </Button>
       ),
-      code: `import { Button, SvgIcon } from '@aura-ui/styled';
+      code: `import { Button, SvgIcon } from '@structyl/styled';
 
 <Button variant="outline">
   <SvgIcon>
@@ -2248,7 +2248,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Chip label="Outline" variant="outline" />
         </Stack>
       ),
-      code: `import { Chip } from '@aura-ui/styled';
+      code: `import { Chip } from '@structyl/styled';
 
 <Chip label="Default" />
 <Chip label="Secondary" variant="secondary" />
@@ -2258,7 +2258,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
       title: 'Deletable chip',
       description: 'Pass onDelete to show the dismiss action.',
       preview: () => <Chip label="Removable" variant="outline" onDelete={() => {}} />,
-      code: `import { Chip } from '@aura-ui/styled';
+      code: `import { Chip } from '@structyl/styled';
 
 <Chip label="Removable" variant="outline" onDelete={removeTag} />`,
     },
@@ -2274,7 +2274,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Button variant="outline">Right</Button>
         </ButtonGroup>
       ),
-      code: `import { Button, ButtonGroup } from '@aura-ui/styled';
+      code: `import { Button, ButtonGroup } from '@structyl/styled';
 
 <ButtonGroup>
   <Button variant="outline">Left</Button>
@@ -2292,7 +2292,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Button variant="outline">Month</Button>
         </ButtonGroup>
       ),
-      code: `import { Button, ButtonGroup } from '@aura-ui/styled';
+      code: `import { Button, ButtonGroup } from '@structyl/styled';
 
 <ButtonGroup orientation="vertical">
   <Button variant="outline">Day</Button>
@@ -2306,7 +2306,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
       title: 'Circular action',
       description: 'Use a short accessible label when the visual child is only a symbol.',
       preview: () => <FloatingActionButton aria-label="Create">+</FloatingActionButton>,
-      code: `import { FloatingActionButton } from '@aura-ui/styled';
+      code: `import { FloatingActionButton } from '@structyl/styled';
 
 <FloatingActionButton aria-label="Create">+</FloatingActionButton>`,
     },
@@ -2314,7 +2314,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
       title: 'Extended action',
       description: 'Use extended for a prominent action that needs visible text.',
       preview: () => <FloatingActionButton extended>New report</FloatingActionButton>,
-      code: `import { FloatingActionButton } from '@aura-ui/styled';
+      code: `import { FloatingActionButton } from '@structyl/styled';
 
 <FloatingActionButton extended>New report</FloatingActionButton>`,
     },
@@ -2324,7 +2324,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
       title: 'Read-only rating',
       description: 'Use readOnly to display an existing score without interaction.',
       preview: () => <Rating value={4} readOnly />,
-      code: `import { Rating } from '@aura-ui/styled';
+      code: `import { Rating } from '@structyl/styled';
 
 <Rating value={4} readOnly />`,
     },
@@ -2334,7 +2334,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
       preview: () => (
         <Rating defaultValue={7} max={10} getLabelText={(value) => `${value} points`} />
       ),
-      code: `import { Rating } from '@aura-ui/styled';
+      code: `import { Rating } from '@structyl/styled';
 
 <Rating
   defaultValue={7}
@@ -2352,7 +2352,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
         <Autocomplete.Root>
           <Autocomplete.Input placeholder="Search framework" className="w-64" />
           <Autocomplete.Content>
-            {auraOptions.map((option) => (
+            {structylOptions.map((option) => (
               <Autocomplete.Item key={option.value} value={option.value}>
                 {option.label}
               </Autocomplete.Item>
@@ -2360,7 +2360,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           </Autocomplete.Content>
         </Autocomplete.Root>
       ),
-      code: `import { Autocomplete } from '@aura-ui/styled';
+      code: `import { Autocomplete } from '@structyl/styled';
 
 <Autocomplete.Root>
   <Autocomplete.Input placeholder="Search framework" />
@@ -2386,7 +2386,7 @@ const auraExamples: Record<string, ComponentExample[]> = {
           <Typography variant="muted">Type to filter available options.</Typography>
         </Stack>
       ),
-      code: `import { Autocomplete, Stack, Typography } from '@aura-ui/styled';
+      code: `import { Autocomplete, Stack, Typography } from '@structyl/styled';
 
 <Stack spacing="sm">
   <Typography as="label" htmlFor="framework" variant="input-label">Framework</Typography>
@@ -2406,13 +2406,13 @@ const auraExamples: Record<string, ComponentExample[]> = {
       description: 'Rename the source and target panels to match the workflow.',
       preview: () => (
         <TransferList
-          options={auraOptions}
+          options={structylOptions}
           defaultValue={['react']}
           sourceTitle="Available frameworks"
           targetTitle="Selected"
         />
       ),
-      code: `import { TransferList } from '@aura-ui/styled';
+      code: `import { TransferList } from '@structyl/styled';
 
 <TransferList
   options={options}
@@ -2426,11 +2426,11 @@ const auraExamples: Record<string, ComponentExample[]> = {
       description: 'Disable options that cannot be moved.',
       preview: () => (
         <TransferList
-          options={[...auraOptions, { value: 'solid', label: 'Solid', disabled: true }]}
+          options={[...structylOptions, { value: 'solid', label: 'Solid', disabled: true }]}
           defaultValue={['vue']}
         />
       ),
-      code: `import { TransferList } from '@aura-ui/styled';
+      code: `import { TransferList } from '@structyl/styled';
 
 const options = [
   { value: 'react', label: 'React' },
@@ -2464,7 +2464,7 @@ const options = [
           </List.Item>
         </List.Root>
       ),
-      code: `import { List } from '@aura-ui/styled';
+      code: `import { List } from '@structyl/styled';
 
 <List.Root>
   <List.Subheader>Workspace</List.Subheader>
@@ -2488,7 +2488,7 @@ const options = [
           </List.Item>
         </List.Root>
       ),
-      code: `import { List } from '@aura-ui/styled';
+      code: `import { List } from '@structyl/styled';
 
 <List.Root>
   <List.Item>
@@ -2517,7 +2517,7 @@ const options = [
           ))}
         </ImageList.Root>
       ),
-      code: `import { ImageList } from '@aura-ui/styled';
+      code: `import { ImageList } from '@structyl/styled';
 
 <ImageList.Root>
   <ImageList.Item>
@@ -2541,7 +2541,7 @@ const options = [
           ))}
         </ImageList.Root>
       ),
-      code: `import { ImageList } from '@aura-ui/styled';
+      code: `import { ImageList } from '@structyl/styled';
 
 <ImageList.Root className="grid-cols-2 gap-2">
   <ImageList.Item>
@@ -2580,7 +2580,7 @@ const options = [
           </Table.Footer>
         </Table.Root>
       ),
-      code: `import { Table } from '@aura-ui/styled';
+      code: `import { Table } from '@structyl/styled';
 
 <Table.Root>
   <Table.Header>
@@ -2608,7 +2608,7 @@ const options = [
           </Table.Body>
         </Table.Root>
       ),
-      code: `import { Table } from '@aura-ui/styled';
+      code: `import { Table } from '@structyl/styled';
 
 <Table.Root>
   <Table.Caption>Recent invoices</Table.Caption>
@@ -2626,7 +2626,7 @@ const options = [
       preview: () => (
         <Backdrop open forceMount className="relative inset-auto h-28 w-64 rounded-md" />
       ),
-      code: `import { Backdrop } from '@aura-ui/styled';
+      code: `import { Backdrop } from '@structyl/styled';
 
 <Backdrop open forceMount className="relative inset-auto h-28 w-64 rounded-md" />`,
     },
@@ -2639,7 +2639,7 @@ const options = [
           <Spinner className="relative z-10" />
         </Box>
       ),
-      code: `import { Backdrop, Spinner } from '@aura-ui/styled';
+      code: `import { Backdrop, Spinner } from '@structyl/styled';
 
 <div className="relative">
   <Backdrop open />
@@ -2656,7 +2656,7 @@ const options = [
           Profile updated
         </Snackbar>
       ),
-      code: `import { Snackbar } from '@aura-ui/styled';
+      code: `import { Snackbar } from '@structyl/styled';
 
 <Snackbar defaultOpen className="static translate-x-0">
   Profile updated
@@ -2670,7 +2670,7 @@ const options = [
           Saved for later
         </Snackbar>
       ),
-      code: `import { Snackbar } from '@aura-ui/styled';
+      code: `import { Snackbar } from '@structyl/styled';
 
 <Snackbar open={open} onOpenChange={setOpen} autoHideDuration={6000}>
   Saved for later
@@ -2684,17 +2684,17 @@ const options = [
       preview: () => (
         <AppBar className="relative w-80 rounded-md">
           <Typography variant="h4" className="flex-1">
-            Aura
+            Structyl
           </Typography>
           <Button size="sm" variant="outline">
             Docs
           </Button>
         </AppBar>
       ),
-      code: `import { AppBar, Button, Typography } from '@aura-ui/styled';
+      code: `import { AppBar, Button, Typography } from '@structyl/styled';
 
 <AppBar>
-  <Typography variant="h4" className="flex-1">Aura</Typography>
+  <Typography variant="h4" className="flex-1">Structyl</Typography>
   <Button size="sm" variant="outline">Docs</Button>
 </AppBar>`,
     },
@@ -2707,7 +2707,7 @@ const options = [
           Sticky page header
         </AppBar>
       ),
-      code: `import { AppBar } from '@aura-ui/styled';
+      code: `import { AppBar } from '@structyl/styled';
 
 <AppBar position="sticky">
   Sticky page header
@@ -2729,7 +2729,7 @@ const options = [
           <BottomNavigation.Item value="settings">Settings</BottomNavigation.Item>
         </BottomNavigation.Root>
       ),
-      code: `import { BottomNavigation } from '@aura-ui/styled';
+      code: `import { BottomNavigation } from '@structyl/styled';
 
 <BottomNavigation.Root defaultValue="activity">
   <BottomNavigation.Item value="home">Home</BottomNavigation.Item>
@@ -2746,7 +2746,7 @@ const options = [
           <BottomNavigation.Item value="search">Search</BottomNavigation.Item>
         </BottomNavigation.Root>
       ),
-      code: `import { BottomNavigation } from '@aura-ui/styled';
+      code: `import { BottomNavigation } from '@structyl/styled';
 
 <BottomNavigation.Root value={value} onValueChange={setValue}>
   <BottomNavigation.Item value="home">Home</BottomNavigation.Item>
@@ -2767,7 +2767,7 @@ const options = [
           <SpeedDial.Trigger />
         </SpeedDial.Root>
       ),
-      code: `import { SpeedDial } from '@aura-ui/styled';
+      code: `import { SpeedDial } from '@structyl/styled';
 
 <SpeedDial.Root defaultOpen>
   <SpeedDial.Content>
@@ -2785,7 +2785,7 @@ const options = [
           <SpeedDial.Trigger aria-label="Open actions" />
         </SpeedDial.Root>
       ),
-      code: `import { SpeedDial } from '@aura-ui/styled';
+      code: `import { SpeedDial } from '@structyl/styled';
 
 <SpeedDial.Root open={open} onOpenChange={setOpen}>
   <SpeedDial.Content>
@@ -2812,7 +2812,7 @@ const options = [
           ))}
         </Masonry>
       ),
-      code: `import { Masonry, Paper } from '@aura-ui/styled';
+      code: `import { Masonry, Paper } from '@structyl/styled';
 
 <Masonry columns={3}>
   {items.map((item) => (
@@ -2830,7 +2830,7 @@ const options = [
           <Paper className="p-3 text-sm">Compact</Paper>
         </Masonry>
       ),
-      code: `import { Masonry } from '@aura-ui/styled';
+      code: `import { Masonry } from '@structyl/styled';
 
 <Masonry columns={2}>
   ...
@@ -2853,7 +2853,7 @@ const options = [
           ))}
         </Timeline.Root>
       ),
-      code: `import { Timeline } from '@aura-ui/styled';
+      code: `import { Timeline } from '@structyl/styled';
 
 <Timeline.Root>
   <Timeline.Item>
@@ -2881,7 +2881,7 @@ const options = [
           </Timeline.Item>
         </Timeline.Root>
       ),
-      code: `import { Timeline } from '@aura-ui/styled';
+      code: `import { Timeline } from '@structyl/styled';
 
 <Timeline.Dot className="bg-success" />
 <Timeline.Dot className="bg-warning" />`,
@@ -2909,7 +2909,7 @@ const options = [
           </div>
         );
       },
-      code: `import { ClickAwayListener, Paper, Button, Typography } from '@aura-ui/styled';
+      code: `import { ClickAwayListener, Paper, Button, Typography } from '@structyl/styled';
 
 const [open, setOpen] = useState(false);
 
@@ -2946,7 +2946,7 @@ const [open, setOpen] = useState(false);
           </div>
         );
       },
-      code: `import { ClickAwayListener, Paper } from '@aura-ui/styled';
+      code: `import { ClickAwayListener, Paper } from '@structyl/styled';
 
 const [open, setOpen] = useState(false);
 
@@ -2979,7 +2979,7 @@ const [open, setOpen] = useState(false);
           </Paper>
         </NoSsr>
       ),
-      code: `import { NoSsr, Typography } from '@aura-ui/styled';
+      code: `import { NoSsr, Typography } from '@structyl/styled';
 
 <NoSsr fallback={<Typography as="span">Loading…</Typography>}>
   Viewport: {window.innerWidth}×{window.innerHeight}px
@@ -2993,7 +2993,7 @@ const [open, setOpen] = useState(false);
           <Chip label="Deferred client render ✓" />
         </NoSsr>
       ),
-      code: `import { Chip, NoSsr } from '@aura-ui/styled';
+      code: `import { Chip, NoSsr } from '@structyl/styled';
 
 <NoSsr fallback={<Chip label="Loading…" />} defer>
   <Chip label="Deferred client render" />
@@ -3019,7 +3019,7 @@ const [open, setOpen] = useState(false);
           </div>
         );
       },
-      code: `import { Portal, Typography } from '@aura-ui/styled';
+      code: `import { Portal, Typography } from '@structyl/styled';
 
 const containerRef = useRef<HTMLDivElement>(null);
 
@@ -3037,7 +3037,7 @@ const containerRef = useRef<HTMLDivElement>(null);
           Content portalled to document.body exits this preview container — useful for z-index isolation.
         </Typography>
       ),
-      code: `import { Portal } from '@aura-ui/styled';
+      code: `import { Portal } from '@structyl/styled';
 
 // renders into document.body
 <Portal>
@@ -3068,7 +3068,7 @@ const containerRef = useRef<HTMLDivElement>(null);
           </div>
         );
       },
-      code: `import { Button, Popper } from '@aura-ui/styled';
+      code: `import { Button, Popper } from '@structyl/styled';
 
 const [open, setOpen] = useState(false);
 const anchorRef = useRef<HTMLButtonElement>(null);
@@ -3099,7 +3099,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
           </div>
         );
       },
-      code: `import { Button, Popper } from '@aura-ui/styled';
+      code: `import { Button, Popper } from '@structyl/styled';
 
 <Popper open={open} anchorEl={el} placement="top">Top</Popper>
 <Popper open={open} anchorEl={el} placement="right">Right</Popper>`,
@@ -3112,7 +3112,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
       preview: () => (
         <TextareaAutosize minRows={3} placeholder="Write release notes..." className="w-72" />
       ),
-      code: `import { TextareaAutosize } from '@aura-ui/styled';
+      code: `import { TextareaAutosize } from '@structyl/styled';
 
 <TextareaAutosize minRows={3} placeholder="Write release notes..." />`,
     },
@@ -3127,7 +3127,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
           className="w-72"
         />
       ),
-      code: `import { TextareaAutosize } from '@aura-ui/styled';
+      code: `import { TextareaAutosize } from '@structyl/styled';
 
 <TextareaAutosize minRows={2} maxRows={4} />`,
     },
@@ -3162,7 +3162,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
           </div>
         );
       },
-      code: `import { Transition } from '@aura-ui/styled';
+      code: `import { Transition } from '@structyl/styled';
 
 <Transition in={show} timeout={300} animation="slide-up" unmountOnExit>
   Content
@@ -3194,7 +3194,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
           </div>
         );
       },
-      code: `import { Transition } from '@aura-ui/styled';
+      code: `import { Transition } from '@structyl/styled';
 
 <Transition in={show} timeout={250} animation="zoom" unmountOnExit>
   Content
@@ -3226,7 +3226,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
           </div>
         );
       },
-      code: `import { Transition } from '@aura-ui/styled';
+      code: `import { Transition } from '@structyl/styled';
 
 <Transition in={show} timeout={300} animation="collapse" unmountOnExit>
   Content
@@ -3252,7 +3252,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
           </div>
         );
       },
-      code: `import { Transition } from '@aura-ui/styled';
+      code: `import { Transition } from '@structyl/styled';
 
 <Transition in={show} timeout={400}>
   {(status) => (
@@ -3276,7 +3276,7 @@ const anchorRef = useRef<HTMLButtonElement>(null);
           </pre>
         </div>
       ),
-      code: `import { CssBaseline } from '@aura-ui/styled';
+      code: `import { CssBaseline } from '@structyl/styled';
 
 export function RootLayout() {
   return (
@@ -3298,7 +3298,7 @@ export function RootLayout() {
           </pre>
         </div>
       ),
-      code: `import { CssBaseline } from '@aura-ui/styled';
+      code: `import { CssBaseline } from '@structyl/styled';
 
 <CssBaseline enableColorScheme />`,
     },
@@ -3312,12 +3312,12 @@ export function RootLayout() {
           <InitColorSchemeScript defaultMode="system" />
           <Typography variant="muted">Generated inline script (runs before React hydrates):</Typography>
           <pre className="bg-muted rounded p-3 font-mono text-[10px] leading-relaxed whitespace-pre-wrap break-all">
-            {`var m = localStorage.getItem("aura-ui-mode") || "system";\nif (m === "system") {\n  m = matchMedia("(prefers-color-scheme: dark)").matches\n    ? "dark" : "light";\n}\ndocument.documentElement\n  .setAttribute("data-theme", m);`}
+            {`var m = localStorage.getItem("structyl-mode") || "system";\nif (m === "system") {\n  m = matchMedia("(prefers-color-scheme: dark)").matches\n    ? "dark" : "light";\n}\ndocument.documentElement\n  .setAttribute("data-theme", m);`}
           </pre>
         </div>
       ),
       code: `// In Next.js root layout.tsx <head>:
-import { InitColorSchemeScript } from '@aura-ui/styled';
+import { InitColorSchemeScript } from '@structyl/styled';
 
 export default function RootLayout({ children }) {
   return (
@@ -3342,7 +3342,7 @@ export default function RootLayout({ children }) {
           </pre>
         </div>
       ),
-      code: `import { InitColorSchemeScript } from '@aura-ui/styled';
+      code: `import { InitColorSchemeScript } from '@structyl/styled';
 
 <InitColorSchemeScript
   attribute="data-color-mode"
@@ -3353,7 +3353,7 @@ export default function RootLayout({ children }) {
   ],
 };
 
-const auraPropExamples: Record<string, ComponentExample> = {
+const structylPropExamples: Record<string, ComponentExample> = {
   box: {
     title: 'Supported props',
     description:
@@ -3369,7 +3369,7 @@ const auraPropExamples: Record<string, ComponentExample> = {
   },
   container: {
     title: 'Widths and gutters',
-    description: 'maxWidth mirrors the MUI naming, while size remains the Aura alias.',
+    description: 'maxWidth mirrors the MUI naming, while size remains the Structyl alias.',
     preview: () => (
       <Container
         maxWidth={false}
@@ -3466,12 +3466,12 @@ const auraPropExamples: Record<string, ComponentExample> = {
     description: 'Control underline behavior and text color while keeping anchor semantics.',
     preview: () => (
       <Stack direction="row" spacing="sm">
-        <AuraLink href="#" underline="always">
+        <StructylLink href="#" underline="always">
           Always
-        </AuraLink>
-        <AuraLink href="#" underline="none" color="muted">
+        </StructylLink>
+        <StructylLink href="#" underline="none" color="muted">
           None
-        </AuraLink>
+        </StructylLink>
       </Stack>
     ),
     code: `<Link href="/docs" underline="always" color="primary" variant="button">
@@ -3519,7 +3519,7 @@ const auraPropExamples: Record<string, ComponentExample> = {
         <Chart.Legend />
       </Chart.Root>
     ),
-    code: `import { Chart } from '@aura-ui/styled';
+    code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={300}>
   <Chart.Grid />
@@ -3549,7 +3549,7 @@ const auraPropExamples: Record<string, ComponentExample> = {
   'button-group': {
     title: 'Shared button props',
     description:
-      'ButtonGroup propagates variant, color, size, disabled and fullWidth to Aura Button children.',
+      'ButtonGroup propagates variant, color, size, disabled and fullWidth to Structyl Button children.',
     preview: () => (
       <ButtonGroup variant="contained" color="secondary" size="sm">
         <Button>One</Button>
@@ -3620,7 +3620,7 @@ const auraPropExamples: Record<string, ComponentExample> = {
     description: 'Use value and onValueChange when app state owns the selected side.',
     preview: () => (
       <TransferList
-        options={auraOptions}
+        options={structylOptions}
         value={['react']}
         sourceTitle="Available"
         targetTitle="Chosen"
@@ -3993,19 +3993,19 @@ const auraPropExamples: Record<string, ComponentExample> = {
     description: 'Configure storageKey, defaultMode and attribute before hydration.',
     preview: () => <Typography variant="muted">Place this script before app markup.</Typography>,
     code: `<InitColorSchemeScript
-  storageKey="aura-theme"
+  storageKey="structyl-theme"
   defaultMode="system"
   attribute="data-theme"
 />`,
   },
 };
 
-const AURA_COMPONENTS: ComponentEntry[] = AURA_COMPONENTS_BASE.map((entry) => {
-  const propExample = auraPropExamples[entry.slug];
+const STRUCTYL_COMPONENTS: ComponentEntry[] = STRUCTYL_COMPONENTS_BASE.map((entry) => {
+  const propExample = structylPropExamples[entry.slug];
   return {
     ...entry,
-    api: auraApi[entry.slug],
-    examples: [...(auraExamples[entry.slug] ?? []), ...(propExample ? [propExample] : [])],
+    api: structylApi[entry.slug],
+    examples: [...(structylExamples[entry.slug] ?? []), ...(propExample ? [propExample] : [])],
   };
 });
 
@@ -4033,7 +4033,7 @@ export const COMPONENTS: ComponentEntry[] = [
         <Button variant="destructive">Destructive</Button>
       </div>
     ),
-    code: `import { Button } from '@aura-ui/styled';
+    code: `import { Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4059,7 +4059,7 @@ export default function Demo() {
             <Button disabled>Disabled</Button>
           </div>
         ),
-        code: `import { Button } from '@aura-ui/styled';
+        code: `import { Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4149,7 +4149,7 @@ export default function Demo() {
         </Dialog.Portal>
       </Dialog.Root>
     ),
-    code: `import { Dialog, Button } from '@aura-ui/styled';
+    code: `import { Dialog, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4269,7 +4269,7 @@ export default function Demo() {
           }
           return <ControlledDialog />;
         },
-        code: `import { Dialog, Button } from '@aura-ui/styled';
+        code: `import { Dialog, Button } from '@structyl/styled';
 
 export default function Demo() {
   const [open, setOpen] = React.useState(false);
@@ -4336,7 +4336,7 @@ export default function Demo() {
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     ),
-    code: `import { DropdownMenu, Button } from '@aura-ui/styled';
+    code: `import { DropdownMenu, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4389,7 +4389,7 @@ export default function Demo() {
           }
           return <RichDropdown />;
         },
-        code: `import { DropdownMenu, Button } from '@aura-ui/styled';
+        code: `import { DropdownMenu, Button } from '@structyl/styled';
 
 export default function Demo() {
   const [autoDeploy, setAutoDeploy] = React.useState(true);
@@ -4448,7 +4448,7 @@ export default function Demo() {
         </Popover.Content>
       </Popover.Root>
     ),
-    code: `import { Popover, Button, Typography } from '@aura-ui/styled';
+    code: `import { Popover, Button, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4489,7 +4489,7 @@ export default function Demo() {
             </Popover.Content>
           </Popover.Root>
         ),
-        code: `import { Popover, Button, Typography, Input, Switch } from '@aura-ui/styled';
+        code: `import { Popover, Button, Typography, Input, Switch } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4538,7 +4538,7 @@ export default function Demo() {
         </Tooltip.Root>
       </Tooltip.Provider>
     ),
-    code: `import { Tooltip, Button } from '@aura-ui/styled';
+    code: `import { Tooltip, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4574,7 +4574,7 @@ export default function Demo() {
             </div>
           </Tooltip.Provider>
         ),
-        code: `import { Tooltip, Button } from '@aura-ui/styled';
+        code: `import { Tooltip, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4616,7 +4616,7 @@ export default function Demo() {
         </Select.Content>
       </Select.Root>
     ),
-    code: `import { Select } from '@aura-ui/styled';
+    code: `import { Select } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4665,7 +4665,7 @@ export default function Demo() {
           }
           return <SelectDemo />;
         },
-        code: `import { Select } from '@aura-ui/styled';
+        code: `import { Select } from '@structyl/styled';
 
 export default function Demo() {
   const [val, setVal] = React.useState('');
@@ -4724,7 +4724,7 @@ export default function Demo() {
         </MultiSelect.Root>
       );
     },
-    code: `import { MultiSelect } from '@aura-ui/styled';
+    code: `import { MultiSelect } from '@structyl/styled';
 
 const options = [
   { value: 'react', label: 'React' },
@@ -4771,7 +4771,7 @@ export default function Demo() {
           }
           return <MultiSelectDemo />;
         },
-        code: `import { MultiSelect } from '@aura-ui/styled';
+        code: `import { MultiSelect } from '@structyl/styled';
 
 const options = [
   { value: 'react', label: 'React' },
@@ -4816,7 +4816,7 @@ export default function Demo() {
         <Typography as="label" htmlFor="s1" variant="input-label">Airplane mode</Typography>
       </div>
     ),
-    code: `import { Switch, Typography } from '@aura-ui/styled';
+    code: `import { Switch, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4851,7 +4851,7 @@ export default function Demo() {
           }
           return <SwitchDemo />;
         },
-        code: `import { Switch, Typography } from '@aura-ui/styled';
+        code: `import { Switch, Typography } from '@structyl/styled';
 
 export default function Demo() {
   const [enabled, setEnabled] = React.useState(false);
@@ -4884,7 +4884,7 @@ export default function Demo() {
         <Typography as="label" htmlFor="c1" variant="input-label">Accept terms and conditions</Typography>
       </div>
     ),
-    code: `import { Checkbox, Typography } from '@aura-ui/styled';
+    code: `import { Checkbox, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -4931,7 +4931,7 @@ export default function Demo() {
           }
           return <CheckboxDemo />;
         },
-        code: `import { Checkbox, Typography } from '@aura-ui/styled';
+        code: `import { Checkbox, Typography } from '@structyl/styled';
 
 export default function Demo() {
   const [items, setItems] = React.useState([false, true, false]);
@@ -4984,7 +4984,7 @@ export default function Demo() {
         </Accordion.Item>
       </Accordion.Root>
     ),
-    code: `import { Accordion } from '@aura-ui/styled';
+    code: `import { Accordion } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5016,7 +5016,7 @@ export default function Demo() {
             ))}
           </Accordion.Root>
         ),
-        code: `import { Accordion } from '@aura-ui/styled';
+        code: `import { Accordion } from '@structyl/styled';
 
 const items = [
   { value: 'accessibility', label: 'Accessibility', body: 'Keyboard navigation and ARIA state are built in.' },
@@ -5071,7 +5071,7 @@ export default function Demo() {
         </Tabs.Content>
       </Tabs.Root>
     ),
-    code: `import { Tabs } from '@aura-ui/styled';
+    code: `import { Tabs } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5107,7 +5107,7 @@ export default function Demo() {
             </Tabs.Content>
           </Tabs.Root>
         ),
-        code: `import { Tabs } from '@aura-ui/styled';
+        code: `import { Tabs } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5144,7 +5144,7 @@ export default function Demo() {
     ],
     ariaPattern: 'https://www.w3.org/WAI/ARIA/apg/patterns/slider/',
     preview: () => <Slider defaultValue={[50]} max={100} className="w-full max-w-sm" />,
-    code: `import { Slider } from '@aura-ui/styled';
+    code: `import { Slider } from '@structyl/styled';
 
 export default function Demo() {
   return <Slider defaultValue={[50]} max={100} />;
@@ -5173,7 +5173,7 @@ export default function Demo() {
           }
           return <RangeDemo />;
         },
-        code: `import { Slider } from '@aura-ui/styled';
+        code: `import { Slider } from '@structyl/styled';
 
 export default function Demo() {
   const [range, setRange] = React.useState([20, 80]);
@@ -5211,7 +5211,7 @@ export default function Demo() {
         </Avatar.Root>
       </div>
     ),
-    code: `import { Avatar } from '@aura-ui/styled';
+    code: `import { Avatar } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5243,7 +5243,7 @@ export default function Demo() {
             </div>
           );
         },
-        code: `import { Avatar } from '@aura-ui/styled';
+        code: `import { Avatar } from '@structyl/styled';
 
 const people = [
   { initials: 'AL', src: '/al.jpg' },
@@ -5281,7 +5281,7 @@ export default function Demo() {
         <Badge variant="destructive">Destructive</Badge>
       </div>
     ),
-    code: `import { Badge } from '@aura-ui/styled';
+    code: `import { Badge } from '@structyl/styled';
 
 export default function Demo() {
   return <Badge variant="success">Success</Badge>;
@@ -5299,7 +5299,7 @@ export default function Demo() {
             <Badge variant="destructive">Failed</Badge>
           </div>
         ),
-        code: `import { Badge } from '@aura-ui/styled';
+        code: `import { Badge } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5338,7 +5338,7 @@ export default function Demo() {
         </Card.Footer>
       </Card.Root>
     ),
-    code: `import { Card, Button } from '@aura-ui/styled';
+    code: `import { Card, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5374,7 +5374,7 @@ export default function Demo() {
             </Card.Footer>
           </Card.Root>
         ),
-        code: `import { Card, Button, Typography, Input } from '@aura-ui/styled';
+        code: `import { Card, Button, Typography, Input } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5415,7 +5415,7 @@ export default function Demo() {
         </Alert.Root>
       </div>
     ),
-    code: `import { Alert } from '@aura-ui/styled';
+    code: `import { Alert } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5445,7 +5445,7 @@ export default function Demo() {
             </Alert.Root>
           </div>
         ),
-        code: `import { Alert } from '@aura-ui/styled';
+        code: `import { Alert } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5475,7 +5475,7 @@ export default function Demo() {
     description: 'A styled text input with focus ring and invalid state.',
     features: ['Hover and focus transitions.', 'aria-invalid styling.', 'Wraps the native input.'],
     preview: () => <Input placeholder="you@example.com" className="w-full max-w-sm" />,
-    code: `import { Input } from '@aura-ui/styled';
+    code: `import { Input } from '@structyl/styled';
 
 export default function Demo() {
   return <Input placeholder="you@example.com" />;
@@ -5491,7 +5491,7 @@ export default function Demo() {
             <Input placeholder="Invalid" aria-invalid />
           </div>
         ),
-        code: `import { Input } from '@aura-ui/styled';
+        code: `import { Input } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5513,7 +5513,7 @@ export default function Demo() {
     features: ['Smooth animated fill.', 'Supports indeterminate state.'],
     ariaPattern: 'https://www.w3.org/WAI/ARIA/apg/patterns/meter/',
     preview: () => <Progress value={66} className="w-full max-w-sm" />,
-    code: `import { Progress } from '@aura-ui/styled';
+    code: `import { Progress } from '@structyl/styled';
 
 export default function Demo() {
   return <Progress value={66} />;
@@ -5528,7 +5528,7 @@ export default function Demo() {
             <Typography variant="muted" className="text-xs text-center">Loading…</Typography>
           </div>
         ),
-        code: `import { Progress } from '@aura-ui/styled';
+        code: `import { Progress } from '@structyl/styled';
 
 export default function Demo() {
   return <Progress value={null} />;
@@ -5548,7 +5548,7 @@ export default function Demo() {
       'Exposes a hotkey to jump to the toast viewport.',
     ],
     preview: () => <ToastDemo />,
-    code: `import { toast, Button } from '@aura-ui/styled';
+    code: `import { toast, Button } from '@structyl/styled';
 // Add <Toaster /> once in your root layout
 
 export default function Demo() {
@@ -5570,7 +5570,7 @@ export default function Demo() {
             Save record
           </Button>
         ),
-        code: `import { toast, Button } from '@aura-ui/styled';
+        code: `import { toast, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5596,7 +5596,7 @@ export default function Demo() {
             Trigger error
           </Button>
         ),
-        code: `import { toast, Button } from '@aura-ui/styled';
+        code: `import { toast, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5637,7 +5637,7 @@ export default function Demo() {
             </div>
           );
         },
-        code: `import { toast, Button } from '@aura-ui/styled';
+        code: `import { toast, Button } from '@structyl/styled';
 // <Toaster /> in root layout handles all positions
 
 const verticals  = ['top', 'bottom'] as const;
@@ -5686,7 +5686,7 @@ export default function Demo() {
         </div>
       </div>
     ),
-    code: `import { Skeleton } from '@aura-ui/styled';
+    code: `import { Skeleton } from '@structyl/styled';
 
 export default function Demo() {
   return <Skeleton className="h-10 w-40" />;
@@ -5709,7 +5709,7 @@ export default function Demo() {
             <Skeleton className="h-8 w-24 rounded-md" />
           </div>
         ),
-        code: `import { Skeleton } from '@aura-ui/styled';
+        code: `import { Skeleton } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5748,7 +5748,7 @@ export default function Demo() {
         <Spinner size="xl" label="Loading large preview" />
       </div>
     ),
-    code: `import { Spinner } from '@aura-ui/styled';
+    code: `import { Spinner } from '@structyl/styled';
 
 export default function Demo() {
   return <Spinner label="Loading results" />;
@@ -5775,7 +5775,7 @@ export default function Demo() {
           }
           return <LoadingButtonDemo />;
         },
-        code: `import { Button, Spinner } from '@aura-ui/styled';
+        code: `import { Button, Spinner } from '@structyl/styled';
 
 export default function Demo() {
   const [loading, setLoading] = React.useState(false);
@@ -5797,7 +5797,7 @@ export default function Demo() {
     features: ['Horizontal and vertical orientation.', 'Decorative or semantic.'],
     preview: () => (
       <div className="text-sm">
-        <Typography variant="body2">aura-ui</Typography>
+        <Typography variant="body2">structyl</Typography>
         <Separator className="my-2" />
         <div className="flex h-5 items-center gap-3">
           <Typography as="span" variant="body2">Docs</Typography>
@@ -5806,7 +5806,7 @@ export default function Demo() {
         </div>
       </div>
     ),
-    code: `import { Separator } from '@aura-ui/styled';
+    code: `import { Separator } from '@structyl/styled';
 
 export default function Demo() {
   return <Separator />;
@@ -5817,23 +5817,23 @@ export default function Demo() {
         description: 'Use orientation="vertical" to separate inline items like nav links.',
         preview: () => (
           <nav className="flex h-5 items-center gap-3 text-sm">
-            <AuraLink href="#" className="hover:underline">Home</AuraLink>
+            <StructylLink href="#" className="hover:underline">Home</StructylLink>
             <Separator orientation="vertical" />
-            <AuraLink href="#" className="hover:underline">Docs</AuraLink>
+            <StructylLink href="#" className="hover:underline">Docs</StructylLink>
             <Separator orientation="vertical" />
-            <AuraLink href="#" className="hover:underline">Blog</AuraLink>
+            <StructylLink href="#" className="hover:underline">Blog</StructylLink>
           </nav>
         ),
-        code: `import { Separator, AuraLink } from '@aura-ui/styled';
+        code: `import { Separator, StructylLink } from '@structyl/styled';
 
 export default function Demo() {
   return (
     <nav className="flex h-5 items-center gap-3 text-sm">
-      <AuraLink href="/">Home</AuraLink>
+      <StructylLink href="/">Home</StructylLink>
       <Separator orientation="vertical" />
-      <AuraLink href="/docs">Docs</AuraLink>
+      <StructylLink href="/docs">Docs</StructylLink>
       <Separator orientation="vertical" />
-      <AuraLink href="/blog">Blog</AuraLink>
+      <StructylLink href="/blog">Blog</StructylLink>
     </nav>
   );
 }`,
@@ -5849,7 +5849,7 @@ export default function Demo() {
     description: 'A styled multi-line text input.',
     features: ['Smooth focus ring.', 'Wraps the native textarea.'],
     preview: () => <Textarea placeholder="Type your message…" className="w-full max-w-sm" />,
-    code: `import { Textarea } from '@aura-ui/styled';\n\n<Textarea placeholder="Type your message…" />`,
+    code: `import { Textarea } from '@structyl/styled';\n\n<Textarea placeholder="Type your message…" />`,
     examples: [
       {
         title: 'With character count',
@@ -5874,7 +5874,7 @@ export default function Demo() {
           }
           return <TextareaDemo />;
         },
-        code: `import { Textarea, Typography } from '@aura-ui/styled';
+        code: `import { Textarea, Typography } from '@structyl/styled';
 
 export default function Demo() {
   const [value, setValue] = React.useState('');
@@ -5901,7 +5901,7 @@ export default function Demo() {
     description: 'A two-state button that can be on or off.',
     features: ['Controlled or uncontrolled.', 'Two variants, three sizes.'],
     preview: () => <Toggle defaultPressed>Bold</Toggle>,
-    code: `import { Toggle } from '@aura-ui/styled';\n\n<Toggle defaultPressed>Bold</Toggle>`,
+    code: `import { Toggle } from '@structyl/styled';\n\n<Toggle defaultPressed>Bold</Toggle>`,
     examples: [
       {
         title: 'Outline variant',
@@ -5919,7 +5919,7 @@ export default function Demo() {
             </Toggle>
           </div>
         ),
-        code: `import { Toggle, Typography } from '@aura-ui/styled';
+        code: `import { Toggle, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -5952,7 +5952,7 @@ export default function Demo() {
         </ToggleGroup.Item>
       </ToggleGroup.Root>
     ),
-    code: `import { ToggleGroup } from '@aura-ui/styled';\n\n<ToggleGroup.Root type="multiple">\n  <ToggleGroup.Item value="bold">B</ToggleGroup.Item>\n  <ToggleGroup.Item value="italic">I</ToggleGroup.Item>\n</ToggleGroup.Root>`,
+    code: `import { ToggleGroup } from '@structyl/styled';\n\n<ToggleGroup.Root type="multiple">\n  <ToggleGroup.Item value="bold">B</ToggleGroup.Item>\n  <ToggleGroup.Item value="italic">I</ToggleGroup.Item>\n</ToggleGroup.Root>`,
     examples: [
       {
         title: 'Single selection (alignment)',
@@ -5973,7 +5973,7 @@ export default function Demo() {
           }
           return <AlignDemo />;
         },
-        code: `import { ToggleGroup } from '@aura-ui/styled';
+        code: `import { ToggleGroup } from '@structyl/styled';
 
 export default function Demo() {
   const [align, setAlign] = React.useState('left');
@@ -6004,7 +6004,7 @@ export default function Demo() {
         </Typography>
       </RadioGroup.Root>
     ),
-    code: `import { RadioGroup } from '@aura-ui/styled';\n\n<RadioGroup.Root defaultValue="a">\n  <RadioGroup.Item value="a" />\n  <RadioGroup.Item value="b" />\n</RadioGroup.Root>`,
+    code: `import { RadioGroup } from '@structyl/styled';\n\n<RadioGroup.Root defaultValue="a">\n  <RadioGroup.Item value="a" />\n  <RadioGroup.Item value="b" />\n</RadioGroup.Root>`,
     examples: [
       {
         title: 'Density selector',
@@ -6023,7 +6023,7 @@ export default function Demo() {
             ))}
           </RadioGroup.Root>
         ),
-        code: `import { RadioGroup, Typography } from '@aura-ui/styled';
+        code: `import { RadioGroup, Typography } from '@structyl/styled';
 
 const options = [
   { value: 'compact', label: 'Compact' },
@@ -6068,7 +6068,7 @@ export default function Demo() {
         </Form.Submit>
       </Form.Root>
     ),
-    code: `import { Form, Input, Button } from '@aura-ui/styled';\n\n<Form.Root>\n  <Form.Field name="email">\n    <Form.Label>Email</Form.Label>\n    <Form.Control asChild><Input type="email" required /></Form.Control>\n    <Form.Message match="valueMissing">Required</Form.Message>\n  </Form.Field>\n  <Form.Submit asChild><Button>Submit</Button></Form.Submit>\n</Form.Root>`,
+    code: `import { Form, Input, Button } from '@structyl/styled';\n\n<Form.Root>\n  <Form.Field name="email">\n    <Form.Label>Email</Form.Label>\n    <Form.Control asChild><Input type="email" required /></Form.Control>\n    <Form.Message match="valueMissing">Required</Form.Message>\n  </Form.Field>\n  <Form.Submit asChild><Button>Submit</Button></Form.Submit>\n</Form.Root>`,
     examples: [
       {
         title: 'Login form',
@@ -6101,7 +6101,7 @@ export default function Demo() {
             </Form.Submit>
           </Form.Root>
         ),
-        code: `import { Form, Input, Button } from '@aura-ui/styled';
+        code: `import { Form, Input, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6141,7 +6141,7 @@ export default function Demo() {
         </AspectRatio>
       </div>
     ),
-    code: `import { AspectRatio } from '@aura-ui/styled';\n\n<AspectRatio ratio={16 / 9}>\n  <img src="/photo.jpg" alt="" />\n</AspectRatio>`,
+    code: `import { AspectRatio } from '@structyl/styled';\n\n<AspectRatio ratio={16 / 9}>\n  <img src="/photo.jpg" alt="" />\n</AspectRatio>`,
     examples: [
       {
         title: 'Portrait and square',
@@ -6160,7 +6160,7 @@ export default function Demo() {
             </div>
           </div>
         ),
-        code: `import { AspectRatio } from '@aura-ui/styled';
+        code: `import { AspectRatio } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6193,7 +6193,7 @@ export default function Demo() {
         <CircularProgress value={66} />
       </div>
     ),
-    code: `import { CircularProgress } from '@aura-ui/styled';\n\n<CircularProgress value={66} />`,
+    code: `import { CircularProgress } from '@structyl/styled';\n\n<CircularProgress value={66} />`,
     examples: [
       {
         title: 'Sized with label',
@@ -6205,7 +6205,7 @@ export default function Demo() {
             <CircularProgress value={null} size={64} strokeWidth={6} />
           </div>
         ),
-        code: `import { CircularProgress } from '@aura-ui/styled';
+        code: `import { CircularProgress } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6228,7 +6228,7 @@ export default function Demo() {
     preview: () => (
       <Meter value={70} max={100} low={30} high={80} optimum={60} className="w-full max-w-sm" />
     ),
-    code: `import { Meter } from '@aura-ui/styled';\n\n<Meter value={70} low={30} high={80} optimum={60} />`,
+    code: `import { Meter } from '@structyl/styled';\n\n<Meter value={70} low={30} high={80} optimum={60} />`,
     examples: [
       {
         title: 'Storage usage',
@@ -6242,7 +6242,7 @@ export default function Demo() {
             <Meter value={47} max={100} low={20} high={80} optimum={50} className="w-full" />
           </div>
         ),
-        code: `import { Meter, Typography } from '@aura-ui/styled';
+        code: `import { Meter, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6266,35 +6266,35 @@ export default function Demo() {
     features: ['Animated check feedback.', 'Configurable reset delay.'],
     preview: () => (
       <div className="flex items-center gap-2">
-        <code className="bg-muted rounded px-2 py-1 text-sm">npx aura-ui init</code>
-        <CopyButton value="npx aura-ui init" />
+        <code className="bg-muted rounded px-2 py-1 text-sm">npx structyl init</code>
+        <CopyButton value="npx structyl init" />
       </div>
     ),
-    code: `import { CopyButton } from '@aura-ui/styled';\n\n<CopyButton value="npx aura-ui init" />`,
+    code: `import { CopyButton } from '@structyl/styled';\n\n<CopyButton value="npx structyl init" />`,
     examples: [
       {
         title: 'In a code block',
         description: 'Pair CopyButton with a styled code block — the typical documentation pattern.',
         preview: () => (
           <div className="flex items-center justify-between gap-2 rounded-md bg-muted px-3 py-2 font-mono text-sm w-full max-w-sm">
-            <Typography as="span" variant="code">pnpm add @aura-ui/styled</Typography>
-            <CopyButton value="pnpm add @aura-ui/styled" />
+            <Typography as="span" variant="code">pnpm add @structyl/styled</Typography>
+            <CopyButton value="pnpm add @structyl/styled" />
           </div>
         ),
-        code: `import { CopyButton, Typography } from '@aura-ui/styled';
+        code: `import { CopyButton, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
     <div className="flex items-center justify-between rounded-md bg-muted px-3 py-2 font-mono text-sm">
-      <Typography as="span">pnpm add @aura-ui/styled</Typography>
-      <CopyButton value="pnpm add @aura-ui/styled" />
+      <Typography as="span">pnpm add @structyl/styled</Typography>
+      <CopyButton value="pnpm add @structyl/styled" />
     </div>
   );
 }`,
       },
     ],
   },
-  ...AURA_COMPONENTS,
+  ...STRUCTYL_COMPONENTS,
   {
     slug: 'collapsible',
     name: 'Collapsible',
@@ -6311,7 +6311,7 @@ export default function Demo() {
         </Collapsible.Content>
       </Collapsible.Root>
     ),
-    code: `import { Collapsible, Button } from '@aura-ui/styled';\n\n<Collapsible.Root>\n  <Collapsible.Trigger asChild><Button>Toggle</Button></Collapsible.Trigger>\n  <Collapsible.Content>Hidden content.</Collapsible.Content>\n</Collapsible.Root>`,
+    code: `import { Collapsible, Button } from '@structyl/styled';\n\n<Collapsible.Root>\n  <Collapsible.Trigger asChild><Button>Toggle</Button></Collapsible.Trigger>\n  <Collapsible.Content>Hidden content.</Collapsible.Content>\n</Collapsible.Root>`,
     examples: [
       {
         title: 'Controlled',
@@ -6335,7 +6335,7 @@ export default function Demo() {
           }
           return <CollapsibleDemo />;
         },
-        code: `import { Collapsible, Button, Typography } from '@aura-ui/styled';
+        code: `import { Collapsible, Button, Typography } from '@structyl/styled';
 
 export default function Demo() {
   const [open, setOpen] = React.useState(true);
@@ -6374,7 +6374,7 @@ export default function Demo() {
         </Breadcrumb.List>
       </Breadcrumb.Root>
     ),
-    code: `import { Breadcrumb } from '@aura-ui/styled';\n\n<Breadcrumb.Root><Breadcrumb.List>\n  <Breadcrumb.Item><Breadcrumb.Link href="/">Home</Breadcrumb.Link></Breadcrumb.Item>\n  <Breadcrumb.Separator />\n  <Breadcrumb.Item><Breadcrumb.Page>Docs</Breadcrumb.Page></Breadcrumb.Item>\n</Breadcrumb.List></Breadcrumb.Root>`,
+    code: `import { Breadcrumb } from '@structyl/styled';\n\n<Breadcrumb.Root><Breadcrumb.List>\n  <Breadcrumb.Item><Breadcrumb.Link href="/">Home</Breadcrumb.Link></Breadcrumb.Item>\n  <Breadcrumb.Separator />\n  <Breadcrumb.Item><Breadcrumb.Page>Docs</Breadcrumb.Page></Breadcrumb.Item>\n</Breadcrumb.List></Breadcrumb.Root>`,
     examples: [
       {
         title: 'Multi-level navigation',
@@ -6396,7 +6396,7 @@ export default function Demo() {
             </Breadcrumb.List>
           </Breadcrumb.Root>
         ),
-        code: `import { Breadcrumb } from '@aura-ui/styled';
+        code: `import { Breadcrumb } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6435,7 +6435,7 @@ export default function Demo() {
       }
       return <PaginationPreview />;
     },
-    code: `import { Pagination } from '@aura-ui/styled';
+    code: `import { Pagination } from '@structyl/styled';
 
 const [page, setPage] = useState(1);
 
@@ -6469,7 +6469,7 @@ const [page, setPage] = useState(1);
           }
           return <PaginationWithSizeDemo />;
         },
-        code: `import { Pagination } from '@aura-ui/styled';
+        code: `import { Pagination } from '@structyl/styled';
 
 export default function Demo() {
   const [page, setPage] = useState(1);
@@ -6516,7 +6516,7 @@ export default function Demo() {
         </div>
       );
     },
-    code: `import { Stepper, Button } from '@aura-ui/styled';
+    code: `import { Stepper, Button } from '@structyl/styled';
 
 const [active, setActive] = useState(0);
 
@@ -6553,7 +6553,7 @@ const [active, setActive] = useState(0);
             </div>
           );
         },
-        code: `import { Stepper, Button } from '@aura-ui/styled';
+        code: `import { Stepper, Button } from '@structyl/styled';
 
 const [active, setActive] = useState(0);
 
@@ -6595,7 +6595,7 @@ const [active, setActive] = useState(0);
         </AlertDialog.Portal>
       </AlertDialog.Root>
     ),
-    code: `import { AlertDialog, Button } from '@aura-ui/styled';\n\n<AlertDialog.Root>\n  <AlertDialog.Trigger asChild><Button>Delete</Button></AlertDialog.Trigger>\n  <AlertDialog.Portal>\n    <AlertDialog.Overlay />\n    <AlertDialog.Content>\n      <AlertDialog.Title>Are you sure?</AlertDialog.Title>\n      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>\n      <AlertDialog.Action>Delete</AlertDialog.Action>\n    </AlertDialog.Content>\n  </AlertDialog.Portal>\n</AlertDialog.Root>`,
+    code: `import { AlertDialog, Button } from '@structyl/styled';\n\n<AlertDialog.Root>\n  <AlertDialog.Trigger asChild><Button>Delete</Button></AlertDialog.Trigger>\n  <AlertDialog.Portal>\n    <AlertDialog.Overlay />\n    <AlertDialog.Content>\n      <AlertDialog.Title>Are you sure?</AlertDialog.Title>\n      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>\n      <AlertDialog.Action>Delete</AlertDialog.Action>\n    </AlertDialog.Content>\n  </AlertDialog.Portal>\n</AlertDialog.Root>`,
     examples: [
       {
         title: 'With async action',
@@ -6637,7 +6637,7 @@ const [active, setActive] = useState(0);
           }
           return <AlertDialogDemo />;
         },
-        code: `import { AlertDialog, Button } from '@aura-ui/styled';
+        code: `import { AlertDialog, Button } from '@structyl/styled';
 
 export default function Demo() {
   const [loading, setLoading] = React.useState(false);
@@ -6692,7 +6692,7 @@ export default function Demo() {
         </Sheet.Content>
       </Sheet.Root>
     ),
-    code: `import { Sheet, Button } from '@aura-ui/styled';\n\n<Sheet.Root>\n  <Sheet.Trigger asChild><Button>Open</Button></Sheet.Trigger>\n  <Sheet.Content side="right">\n    <Sheet.Title>Sheet</Sheet.Title>\n  </Sheet.Content>\n</Sheet.Root>`,
+    code: `import { Sheet, Button } from '@structyl/styled';\n\n<Sheet.Root>\n  <Sheet.Trigger asChild><Button>Open</Button></Sheet.Trigger>\n  <Sheet.Content side="right">\n    <Sheet.Title>Sheet</Sheet.Title>\n  </Sheet.Content>\n</Sheet.Root>`,
     examples: [
       {
         title: 'Edit profile',
@@ -6721,7 +6721,7 @@ export default function Demo() {
             </Sheet.Content>
           </Sheet.Root>
         ),
-        code: `import { Sheet, Button, Typography, Input } from '@aura-ui/styled';
+        code: `import { Sheet, Button, Typography, Input } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6763,7 +6763,7 @@ export default function Demo() {
         </Drawer.Content>
       </Drawer.Root>
     ),
-    code: `import { Drawer, Button } from '@aura-ui/styled';\n\n<Drawer.Root>\n  <Drawer.Trigger asChild><Button>Open</Button></Drawer.Trigger>\n  <Drawer.Content>\n    <Drawer.Title>Drawer</Drawer.Title>\n  </Drawer.Content>\n</Drawer.Root>`,
+    code: `import { Drawer, Button } from '@structyl/styled';\n\n<Drawer.Root>\n  <Drawer.Trigger asChild><Button>Open</Button></Drawer.Trigger>\n  <Drawer.Content>\n    <Drawer.Title>Drawer</Drawer.Title>\n  </Drawer.Content>\n</Drawer.Root>`,
     examples: [
       {
         title: 'With footer actions',
@@ -6787,7 +6787,7 @@ export default function Demo() {
             </Drawer.Content>
           </Drawer.Root>
         ),
-        code: `import { Drawer, Button } from '@aura-ui/styled';
+        code: `import { Drawer, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6818,7 +6818,7 @@ export default function Demo() {
     preview: () => (
       <HoverCard.Root>
         <HoverCard.Trigger asChild>
-          <AuraLink href="#" className="text-sm font-medium underline underline-offset-4">@aura-ui</AuraLink>
+          <StructylLink href="#" className="text-sm font-medium underline underline-offset-4">@structyl</StructylLink>
         </HoverCard.Trigger>
         <HoverCard.Content>
           <div className="flex items-start gap-3">
@@ -6826,14 +6826,14 @@ export default function Demo() {
               <Avatar.Fallback>AU</Avatar.Fallback>
             </Avatar.Root>
             <div>
-              <Typography variant="h4" className="text-sm font-semibold">@aura-ui</Typography>
+              <Typography variant="h4" className="text-sm font-semibold">@structyl</Typography>
               <Typography variant="muted" className="text-xs">Accessible React components with Tailwind styling.</Typography>
             </div>
           </div>
         </HoverCard.Content>
       </HoverCard.Root>
     ),
-    code: `import { HoverCard, Avatar, AuraLink, Typography } from '@aura-ui/styled';\n\n<HoverCard.Root>\n  <HoverCard.Trigger asChild><AuraLink href="#">@aura-ui</AuraLink></HoverCard.Trigger>\n  <HoverCard.Content>\n    <div className="flex items-start gap-3">\n      <Avatar.Root><Avatar.Fallback>AU</Avatar.Fallback></Avatar.Root>\n      <div>\n        <Typography variant="h4" className="text-sm font-semibold">@aura-ui</Typography>\n        <Typography variant="muted" className="text-xs">Accessible React components.</Typography>\n      </div>\n    </div>\n  </HoverCard.Content>\n</HoverCard.Root>`,
+    code: `import { HoverCard, Avatar, StructylLink, Typography } from '@structyl/styled';\n\n<HoverCard.Root>\n  <HoverCard.Trigger asChild><StructylLink href="#">@structyl</StructylLink></HoverCard.Trigger>\n  <HoverCard.Content>\n    <div className="flex items-start gap-3">\n      <Avatar.Root><Avatar.Fallback>AU</Avatar.Fallback></Avatar.Root>\n      <div>\n        <Typography variant="h4" className="text-sm font-semibold">@structyl</Typography>\n        <Typography variant="muted" className="text-xs">Accessible React components.</Typography>\n      </div>\n    </div>\n  </HoverCard.Content>\n</HoverCard.Root>`,
   },
   {
     slug: 'context-menu',
@@ -6852,7 +6852,7 @@ export default function Demo() {
         </ContextMenu.Content>
       </ContextMenu.Root>
     ),
-    code: `import { ContextMenu } from '@aura-ui/styled';\n\n<ContextMenu.Root>\n  <ContextMenu.Trigger>Right-click here</ContextMenu.Trigger>\n  <ContextMenu.Content>\n    <ContextMenu.Item>Copy</ContextMenu.Item>\n  </ContextMenu.Content>\n</ContextMenu.Root>`,
+    code: `import { ContextMenu } from '@structyl/styled';\n\n<ContextMenu.Root>\n  <ContextMenu.Trigger>Right-click here</ContextMenu.Trigger>\n  <ContextMenu.Content>\n    <ContextMenu.Item>Copy</ContextMenu.Item>\n  </ContextMenu.Content>\n</ContextMenu.Root>`,
     examples: [
       {
         title: 'Rich context menu',
@@ -6873,7 +6873,7 @@ export default function Demo() {
             </ContextMenu.Content>
           </ContextMenu.Root>
         ),
-        code: `import { ContextMenu } from '@aura-ui/styled';
+        code: `import { ContextMenu } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -6919,7 +6919,7 @@ export default function Demo() {
         </Menubar.Menu>
       </Menubar.Root>
     ),
-    code: `import { Menubar } from '@aura-ui/styled';\n\n<Menubar.Root>\n  <Menubar.Menu>\n    <Menubar.Trigger>File</Menubar.Trigger>\n    <Menubar.Content><Menubar.Item>New</Menubar.Item></Menubar.Content>\n  </Menubar.Menu>\n</Menubar.Root>`,
+    code: `import { Menubar } from '@structyl/styled';\n\n<Menubar.Root>\n  <Menubar.Menu>\n    <Menubar.Trigger>File</Menubar.Trigger>\n    <Menubar.Content><Menubar.Item>New</Menubar.Item></Menubar.Content>\n  </Menubar.Menu>\n</Menubar.Root>`,
     examples: [
       {
         title: 'Full application menubar',
@@ -6954,7 +6954,7 @@ export default function Demo() {
             </Menubar.Menu>
           </Menubar.Root>
         ),
-        code: `import { Menubar } from '@aura-ui/styled';
+        code: `import { Menubar } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7002,7 +7002,7 @@ export default function Demo() {
         </NavigationMenu.List>
       </NavigationMenu.Root>
     ),
-    code: `import { NavigationMenu } from '@aura-ui/styled';\n\n<NavigationMenu.Root>\n  <NavigationMenu.List>\n    <NavigationMenu.Item value="docs">\n      <NavigationMenu.Trigger>Docs</NavigationMenu.Trigger>\n    </NavigationMenu.Item>\n  </NavigationMenu.List>\n</NavigationMenu.Root>`,
+    code: `import { NavigationMenu } from '@structyl/styled';\n\n<NavigationMenu.Root>\n  <NavigationMenu.List>\n    <NavigationMenu.Item value="docs">\n      <NavigationMenu.Trigger>Docs</NavigationMenu.Trigger>\n    </NavigationMenu.Item>\n  </NavigationMenu.List>\n</NavigationMenu.Root>`,
     examples: [
       {
         title: 'With viewport content',
@@ -7031,7 +7031,7 @@ export default function Demo() {
             <NavigationMenu.Viewport />
           </NavigationMenu.Root>
         ),
-        code: `import { NavigationMenu } from '@aura-ui/styled';
+        code: `import { NavigationMenu } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7078,7 +7078,7 @@ export default function Demo() {
         </Combobox.Content>
       </Combobox.Root>
     ),
-    code: `import { Combobox } from '@aura-ui/styled';\n\n<Combobox.Root>\n  <Combobox.Input placeholder="Search…" />\n  <Combobox.Content>\n    <Combobox.Item value="react">React</Combobox.Item>\n  </Combobox.Content>\n</Combobox.Root>`,
+    code: `import { Combobox } from '@structyl/styled';\n\n<Combobox.Root>\n  <Combobox.Input placeholder="Search…" />\n  <Combobox.Content>\n    <Combobox.Item value="react">React</Combobox.Item>\n  </Combobox.Content>\n</Combobox.Root>`,
     examples: [
       {
         title: 'Controlled value',
@@ -7105,7 +7105,7 @@ export default function Demo() {
           }
           return <ComboboxDemo />;
         },
-        code: `import { Combobox } from '@aura-ui/styled';
+        code: `import { Combobox } from '@structyl/styled';
 
 const frameworks = ['React', 'Vue', 'Svelte', 'Solid', 'Angular'];
 
@@ -7143,7 +7143,7 @@ export default function Demo() {
         </Command.List>
       </Command.Root>
     ),
-    code: `import { Command } from '@aura-ui/styled';\n\n<Command.Root>\n  <Command.Input placeholder="Type a command…" />\n  <Command.List>\n    <Command.Group heading="Suggestions">\n      <Command.Item>Search</Command.Item>\n    </Command.Group>\n  </Command.List>\n</Command.Root>`,
+    code: `import { Command } from '@structyl/styled';\n\n<Command.Root>\n  <Command.Input placeholder="Type a command…" />\n  <Command.List>\n    <Command.Group heading="Suggestions">\n      <Command.Item>Search</Command.Item>\n    </Command.Group>\n  </Command.List>\n</Command.Root>`,
     examples: [
       {
         title: 'With shortcuts and groups',
@@ -7171,7 +7171,7 @@ export default function Demo() {
             </Command.List>
           </Command.Root>
         ),
-        code: `import { Command } from '@aura-ui/styled';
+        code: `import { Command } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7207,7 +7207,7 @@ export default function Demo() {
         ))}
       </OneTimePasswordField.Root>
     ),
-    code: `import { OneTimePasswordField } from '@aura-ui/styled';\n\n<OneTimePasswordField.Root length={6}>\n  {[0,1,2,3,4,5].map((i) => (\n    <OneTimePasswordField.Input key={i} index={i} />\n  ))}\n</OneTimePasswordField.Root>`,
+    code: `import { OneTimePasswordField } from '@structyl/styled';\n\n<OneTimePasswordField.Root length={6}>\n  {[0,1,2,3,4,5].map((i) => (\n    <OneTimePasswordField.Input key={i} index={i} />\n  ))}\n</OneTimePasswordField.Root>`,
     examples: [
       {
         title: '6-digit OTP',
@@ -7232,7 +7232,7 @@ export default function Demo() {
           }
           return <OTPDemo />;
         },
-        code: `import { OneTimePasswordField } from '@aura-ui/styled';
+        code: `import { OneTimePasswordField } from '@structyl/styled';
 
 export default function Demo() {
   const [done, setDone] = React.useState(false);
@@ -7259,7 +7259,7 @@ export default function Demo() {
         <PasswordToggleField.Toggle />
       </PasswordToggleField.Root>
     ),
-    code: `import { PasswordToggleField } from '@aura-ui/styled';\n\n<PasswordToggleField.Root>\n  <PasswordToggleField.Input placeholder="Password" />\n  <PasswordToggleField.Toggle />\n</PasswordToggleField.Root>`,
+    code: `import { PasswordToggleField } from '@structyl/styled';\n\n<PasswordToggleField.Root>\n  <PasswordToggleField.Input placeholder="Password" />\n  <PasswordToggleField.Toggle />\n</PasswordToggleField.Root>`,
     examples: [
       {
         title: 'With label and strength hint',
@@ -7276,7 +7276,7 @@ export default function Demo() {
             </Typography>
           </div>
         ),
-        code: `import { PasswordToggleField, Typography } from '@aura-ui/styled';
+        code: `import { PasswordToggleField, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7308,7 +7308,7 @@ export default function Demo() {
         <NumberField.IncrementTrigger />
       </NumberField.Root>
     ),
-    code: `import { NumberField } from '@aura-ui/styled';\n\n<NumberField.Root defaultValue={5} min={0} max={20}>\n  <NumberField.DecrementTrigger />\n  <NumberField.Input />\n  <NumberField.IncrementTrigger />\n</NumberField.Root>`,
+    code: `import { NumberField } from '@structyl/styled';\n\n<NumberField.Root defaultValue={5} min={0} max={20}>\n  <NumberField.DecrementTrigger />\n  <NumberField.Input />\n  <NumberField.IncrementTrigger />\n</NumberField.Root>`,
     examples: [
       {
         title: 'Quantity selector',
@@ -7336,7 +7336,7 @@ export default function Demo() {
           }
           return <QuantityDemo />;
         },
-        code: `import { NumberField, Typography } from '@aura-ui/styled';
+        code: `import { NumberField, Typography } from '@structyl/styled';
 
 export default function Demo() {
   const [qty, setQty] = React.useState(1);
@@ -7361,13 +7361,13 @@ export default function Demo() {
     description: 'A standalone calendar for selecting dates.',
     features: ['Single / range / multiple.', 'Keyboard navigation.'],
     preview: () => <Calendar mode="single" />,
-    code: `import { Calendar } from '@aura-ui/styled';\n\n<Calendar mode="single" />`,
+    code: `import { Calendar } from '@structyl/styled';\n\n<Calendar mode="single" />`,
     examples: [
       {
         title: 'Range selection',
         description: 'Switch to mode="range" to allow selecting a start and end date.',
         preview: () => <Calendar mode="range" />,
-        code: `import { Calendar } from '@aura-ui/styled';
+        code: `import { Calendar } from '@structyl/styled';
 
 export default function Demo() {
   const [range, setRange] = React.useState(undefined);
@@ -7383,7 +7383,7 @@ export default function Demo() {
     description: 'A calendar inside a popover for picking a date.',
     features: ['MUI-style field API.', 'Popover-anchored calendar.', 'Controlled or uncontrolled.'],
     preview: () => <DatePicker label="Release date" defaultValue={new Date(2026, 4, 23)} />,
-    code: `import { DatePicker } from '@aura-ui/styled';\n\n<DatePicker\n  label="Release date"\n  value={date}\n  onChange={setDate}\n/>`,
+    code: `import { DatePicker } from '@structyl/styled';\n\n<DatePicker\n  label="Release date"\n  value={date}\n  onChange={setDate}\n/>`,
     examples: [
       {
         title: 'Controlled with min/max',
@@ -7412,7 +7412,7 @@ export default function Demo() {
           }
           return <DatePickerDemo />;
         },
-        code: `import { DatePicker } from '@aura-ui/styled';
+        code: `import { DatePicker } from '@structyl/styled';
 
 export default function Demo() {
   const [date, setDate] = React.useState(null);
@@ -7441,7 +7441,7 @@ export default function Demo() {
         defaultValue={[new Date(2026, 4, 20), new Date(2026, 4, 27)]}
       />
     ),
-    code: `import { DateRangePicker } from '@aura-ui/styled';\n\n<DateRangePicker\n  label="Sprint window"\n  value={range}\n  onChange={setRange}\n/>`,
+    code: `import { DateRangePicker } from '@structyl/styled';\n\n<DateRangePicker\n  label="Sprint window"\n  value={range}\n  onChange={setRange}\n/>`,
     examples: [
       {
         title: 'Controlled range',
@@ -7466,7 +7466,7 @@ export default function Demo() {
           }
           return <DateRangeDemo />;
         },
-        code: `import { DateRangePicker } from '@aura-ui/styled';
+        code: `import { DateRangePicker } from '@structyl/styled';
 
 export default function Demo() {
   const [range, setRange] = React.useState([null, null]);
@@ -7490,7 +7490,7 @@ export default function Demo() {
     preview: () => (
       <TimePicker label="Start time" defaultValue={new Date(2026, 4, 23, 9, 30)} ampm />
     ),
-    code: `import { TimePicker } from '@aura-ui/styled';\n\n<TimePicker\n  label="Start time"\n  value={time}\n  onChange={setTime}\n  ampm\n  minutesStep={15}\n/>`,
+    code: `import { TimePicker } from '@structyl/styled';\n\n<TimePicker\n  label="Start time"\n  value={time}\n  onChange={setTime}\n  ampm\n  minutesStep={15}\n/>`,
     examples: [
       {
         title: '24-hour with step',
@@ -7502,7 +7502,7 @@ export default function Demo() {
             minutesStep={30}
           />
         ),
-        code: `import { TimePicker } from '@aura-ui/styled';
+        code: `import { TimePicker } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7535,7 +7535,7 @@ export default function Demo() {
         helperText="Select the date, then choose the time."
       />
     ),
-    code: `import { DateTimePicker } from '@aura-ui/styled';\n\n<DateTimePicker\n  label="Deployment window"\n  value={dateTime}\n  onChange={setDateTime}\n  minDateTime={start}\n  maxDateTime={end}\n/>`,
+    code: `import { DateTimePicker } from '@structyl/styled';\n\n<DateTimePicker\n  label="Deployment window"\n  value={dateTime}\n  onChange={setDateTime}\n  minDateTime={start}\n  maxDateTime={end}\n/>`,
     examples: [
       {
         title: 'With AM/PM and helper text',
@@ -7549,7 +7549,7 @@ export default function Demo() {
             helperText="Pick the date and then the time."
           />
         ),
-        code: `import { DateTimePicker } from '@aura-ui/styled';
+        code: `import { DateTimePicker } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7580,7 +7580,7 @@ export default function Demo() {
         <ColorPicker.Swatch />
       </ColorPicker.Root>
     ),
-    code: `import { ColorPicker } from '@aura-ui/styled';\n\n<ColorPicker.Root>\n  <ColorPicker.Area />\n  <ColorPicker.HueSlider />\n  <ColorPicker.AlphaSlider />\n  <ColorPicker.Swatch />\n</ColorPicker.Root>`,
+    code: `import { ColorPicker } from '@structyl/styled';\n\n<ColorPicker.Root>\n  <ColorPicker.Area />\n  <ColorPicker.HueSlider />\n  <ColorPicker.AlphaSlider />\n  <ColorPicker.Swatch />\n</ColorPicker.Root>`,
     examples: [
       {
         title: 'Without alpha slider',
@@ -7592,7 +7592,7 @@ export default function Demo() {
             <ColorPicker.Swatch />
           </ColorPicker.Root>
         ),
-        code: `import { ColorPicker } from '@aura-ui/styled';
+        code: `import { ColorPicker } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7618,7 +7618,7 @@ export default function Demo() {
         <FileUpload.Input />
       </FileUpload.Root>
     ),
-    code: `import { FileUpload } from '@aura-ui/styled';\n\n<FileUpload.Root multiple maxFiles={3}>\n  <FileUpload.Dropzone />\n  <FileUpload.Input />\n</FileUpload.Root>`,
+    code: `import { FileUpload } from '@structyl/styled';\n\n<FileUpload.Root multiple maxFiles={3}>\n  <FileUpload.Dropzone />\n  <FileUpload.Input />\n</FileUpload.Root>`,
     examples: [
       {
         title: 'With accepted types and size limit',
@@ -7633,7 +7633,7 @@ export default function Demo() {
             <FileUpload.Input />
           </FileUpload.Root>
         ),
-        code: `import { FileUpload } from '@aura-ui/styled';
+        code: `import { FileUpload } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7664,7 +7664,7 @@ export default function Demo() {
         </div>
       </ScrollArea.Root>
     ),
-    code: `import { ScrollArea } from '@aura-ui/styled';\n\n<ScrollArea.Root className="h-48">\n  {/* long content */}\n</ScrollArea.Root>`,
+    code: `import { ScrollArea } from '@structyl/styled';\n\n<ScrollArea.Root className="h-48">\n  {/* long content */}\n</ScrollArea.Root>`,
     examples: [
       {
         title: 'Horizontal scroll',
@@ -7684,7 +7684,7 @@ export default function Demo() {
             <ScrollArea.Scrollbar orientation="horizontal" />
           </ScrollArea.Root>
         ),
-        code: `import { ScrollArea } from '@aura-ui/styled';
+        code: `import { ScrollArea } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7717,7 +7717,7 @@ export default function Demo() {
         <Toolbar.Button>Share</Toolbar.Button>
       </Toolbar.Root>
     ),
-    code: `import { Toolbar } from '@aura-ui/styled';\n\n<Toolbar.Root>\n  <Toolbar.Button>Bold</Toolbar.Button>\n  <Toolbar.Separator />\n  <Toolbar.Button>Share</Toolbar.Button>\n</Toolbar.Root>`,
+    code: `import { Toolbar } from '@structyl/styled';\n\n<Toolbar.Root>\n  <Toolbar.Button>Bold</Toolbar.Button>\n  <Toolbar.Separator />\n  <Toolbar.Button>Share</Toolbar.Button>\n</Toolbar.Root>`,
     examples: [
       {
         title: 'Rich text toolbar',
@@ -7732,7 +7732,7 @@ export default function Demo() {
             <Toolbar.Button>Image</Toolbar.Button>
           </Toolbar.Root>
         ),
-        code: `import { Toolbar, Typography } from '@aura-ui/styled';
+        code: `import { Toolbar, Typography } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7774,7 +7774,7 @@ export default function Demo() {
         </Resizable.Panel>
       </Resizable.Group>
     ),
-    code: `import { Resizable } from '@aura-ui/styled';\n\n<Resizable.Group>\n  <Resizable.Panel id="a" defaultSize={50}>A</Resizable.Panel>\n  <Resizable.Handle between={['a','b']} withHandle />\n  <Resizable.Panel id="b" defaultSize={50}>B</Resizable.Panel>\n</Resizable.Group>`,
+    code: `import { Resizable } from '@structyl/styled';\n\n<Resizable.Group>\n  <Resizable.Panel id="a" defaultSize={50}>A</Resizable.Panel>\n  <Resizable.Handle between={['a','b']} withHandle />\n  <Resizable.Panel id="b" defaultSize={50}>B</Resizable.Panel>\n</Resizable.Group>`,
     examples: [
       {
         title: 'Three-panel layout',
@@ -7794,7 +7794,7 @@ export default function Demo() {
             </Resizable.Panel>
           </Resizable.Group>
         ),
-        code: `import { Resizable } from '@aura-ui/styled';
+        code: `import { Resizable } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7831,7 +7831,7 @@ export default function Demo() {
         <Carousel.Next />
       </Carousel.Root>
     ),
-    code: `import { Carousel } from '@aura-ui/styled';\n\n<Carousel.Root>\n  <Carousel.Content>\n    <Carousel.Item>Slide 1</Carousel.Item>\n  </Carousel.Content>\n  <Carousel.Previous />\n  <Carousel.Next />\n</Carousel.Root>`,
+    code: `import { Carousel } from '@structyl/styled';\n\n<Carousel.Root>\n  <Carousel.Content>\n    <Carousel.Item>Slide 1</Carousel.Item>\n  </Carousel.Content>\n  <Carousel.Previous />\n  <Carousel.Next />\n</Carousel.Root>`,
     examples: [
       {
         title: 'Card carousel',
@@ -7856,7 +7856,7 @@ export default function Demo() {
             <Carousel.Next />
           </Carousel.Root>
         ),
-        code: `import { Carousel } from '@aura-ui/styled';
+        code: `import { Carousel } from '@structyl/styled';
 
 const slides = [
   { title: 'Components', desc: '50+ accessible primitives' },
@@ -7906,7 +7906,7 @@ export default function Demo() {
         </Tree.Item>
       </Tree.Root>
     ),
-    code: `import { Tree } from '@aura-ui/styled';\n\n<Tree.Root defaultExpanded={['root']}>\n  <Tree.Item id="root" hasChildren>\n    <Tree.Trigger hasChildren>src</Tree.Trigger>\n    <Tree.Group>\n      <Tree.Item id="a"><Tree.Trigger>index.ts</Tree.Trigger></Tree.Item>\n    </Tree.Group>\n  </Tree.Item>\n</Tree.Root>`,
+    code: `import { Tree } from '@structyl/styled';\n\n<Tree.Root defaultExpanded={['root']}>\n  <Tree.Item id="root" hasChildren>\n    <Tree.Trigger hasChildren>src</Tree.Trigger>\n    <Tree.Group>\n      <Tree.Item id="a"><Tree.Trigger>index.ts</Tree.Trigger></Tree.Item>\n    </Tree.Group>\n  </Tree.Item>\n</Tree.Root>`,
     examples: [
       {
         title: 'Multi-level file tree',
@@ -7934,7 +7934,7 @@ export default function Demo() {
             </Tree.Item>
           </Tree.Root>
         ),
-        code: `import { Tree } from '@aura-ui/styled';
+        code: `import { Tree } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -7970,7 +7970,7 @@ export default function Demo() {
         <Editable.Input />
       </Editable.Root>
     ),
-    code: `import { Editable } from '@aura-ui/styled';\n\n<Editable.Root defaultValue="Click to edit">\n  <Editable.Preview />\n  <Editable.Input />\n</Editable.Root>`,
+    code: `import { Editable } from '@structyl/styled';\n\n<Editable.Root defaultValue="Click to edit">\n  <Editable.Preview />\n  <Editable.Input />\n</Editable.Root>`,
     examples: [
       {
         title: 'Inline title editing',
@@ -7993,7 +7993,7 @@ export default function Demo() {
           }
           return <EditableDemo />;
         },
-        code: `import { Editable } from '@aura-ui/styled';
+        code: `import { Editable } from '@structyl/styled';
 
 export default function Demo() {
   const [title, setTitle] = React.useState('Untitled document');
@@ -8021,7 +8021,7 @@ export default function Demo() {
         <TagsInput.Input placeholder="Add tag…" />
       </TagsInput.Root>
     ),
-    code: `import { TagsInput } from '@aura-ui/styled';\n\n<TagsInput.Root defaultValue={['react']}>\n  <TagsInput.Items>\n    {(tag, i) => <TagsInput.Tag key={i} index={i} tag={tag} />}\n  </TagsInput.Items>\n  <TagsInput.Input placeholder="Add tag…" />\n</TagsInput.Root>`,
+    code: `import { TagsInput } from '@structyl/styled';\n\n<TagsInput.Root defaultValue={['react']}>\n  <TagsInput.Items>\n    {(tag, i) => <TagsInput.Tag key={i} index={i} tag={tag} />}\n  </TagsInput.Items>\n  <TagsInput.Input placeholder="Add tag…" />\n</TagsInput.Root>`,
     examples: [
       {
         title: 'Controlled with max tags',
@@ -8044,7 +8044,7 @@ export default function Demo() {
           }
           return <TagsDemo />;
         },
-        code: `import { TagsInput } from '@aura-ui/styled';
+        code: `import { TagsInput } from '@structyl/styled';
 
 export default function Demo() {
   const [tags, setTags] = React.useState(['react', 'typescript']);
@@ -8087,7 +8087,7 @@ export default function Demo() {
         </Mentions.Suggestions>
       </Mentions.Root>
     ),
-    code: `import { Mentions } from '@aura-ui/styled';\n\n<Mentions.Root>\n  <Mentions.Textarea placeholder="Try @ada…" />\n  <Mentions.Suggestions items={users}>\n    <Mentions.Items>\n      {(item, i) => <Mentions.Item key={item.id} suggestion={item} index={i}>@{item.label}</Mentions.Item>}\n    </Mentions.Items>\n  </Mentions.Suggestions>\n</Mentions.Root>`,
+    code: `import { Mentions } from '@structyl/styled';\n\n<Mentions.Root>\n  <Mentions.Textarea placeholder="Try @ada…" />\n  <Mentions.Suggestions items={users}>\n    <Mentions.Items>\n      {(item, i) => <Mentions.Item key={item.id} suggestion={item} index={i}>@{item.label}</Mentions.Item>}\n    </Mentions.Items>\n  </Mentions.Suggestions>\n</Mentions.Root>`,
     examples: [
       {
         title: 'With default value',
@@ -8118,7 +8118,7 @@ export default function Demo() {
             </Mentions.Root>
           );
         },
-        code: `import { Mentions } from '@aura-ui/styled';
+        code: `import { Mentions } from '@structyl/styled';
 
 const team = [
   { id: 'ada', label: 'ada' },
@@ -8198,7 +8198,7 @@ export default function Demo() {
         className="w-full max-w-4xl"
       />
     ),
-    code: `import { DataTable, type DataTableColumnDef } from '@aura-ui/data-table';
+    code: `import { DataTable, type DataTableColumnDef } from '@structyl/data-table';
 
 type User = { id: number; name: string; email: string; role: string; revenue: number };
 
@@ -8242,14 +8242,14 @@ export default function Demo({ data }: { data: User[] }) {
       'Thumbnail preview on progress-bar hover.',
       'Picture-in-Picture and Fullscreen APIs.',
       'Full keyboard shortcut set (Space, ←/→, ↑/↓, M, F, P, C).',
-      'Consumes @aura-ui/themes CSS tokens — respects your theme automatically.',
+      'Consumes @structyl/themes CSS tokens — respects your theme automatically.',
     ],
     preview: () => (
       <VideoPlayer
         src="https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4"
       />
     ),
-    code: `import { VideoPlayer } from '@aura-ui/video-player';
+    code: `import { VideoPlayer } from '@structyl/video-player';
 
 export default function Demo() {
   return (
@@ -8285,7 +8285,7 @@ export default function Demo() {
             ]}
           />
         ),
-        code: `import { VideoPlayer } from '@aura-ui/video-player';
+        code: `import { VideoPlayer } from '@structyl/video-player';
 
 const playlist = [
   { id: '1', title: 'Big Buck Bunny', src: '/video1.mp4', poster: '/poster1.jpg' },
@@ -8311,7 +8311,7 @@ export default function Demo() {
             ]}
           />
         ),
-        code: `import { VideoPlayer } from '@aura-ui/video-player';
+        code: `import { VideoPlayer } from '@structyl/video-player';
 
 const chapters = [
   { id: 'intro',  title: 'Introduction', startTime: 0,   endTime: 30  },
@@ -8332,7 +8332,7 @@ export default function Demo() {
             src="https://www.youtube.com/watch?v=wDchsz8nmbo"
           />
         ),
-        code: `import { VideoPlayer } from '@aura-ui/video-player';
+        code: `import { VideoPlayer } from '@structyl/video-player';
 
 export default function Demo() {
   return (
@@ -8522,12 +8522,12 @@ export const HOOKS: HookEntry[] = [
   {
     name: 'useTheme',
     signature: '() => { theme, setTheme, mode, setMode, resolvedMode, themes }',
-    description: 'Access and control the active aura-ui theme and color mode. Must be inside ThemeProvider. From @aura-ui/themes.',
+    description: 'Access and control the active structyl theme and color mode. Must be inside ThemeProvider. From @structyl/themes.',
   },
   {
     name: 'useColorPreset',
     signature: '(options?) => { presets, activeId, activePreset, setPreset, clearPreset }',
-    description: 'Manage an accent-color preset on top of the active theme. Persists to localStorage and re-applies after theme/mode changes. From @aura-ui/themes.',
+    description: 'Manage an accent-color preset on top of the active theme. Persists to localStorage and re-applies after theme/mode changes. From @structyl/themes.',
   },
 ];
 
@@ -8542,10 +8542,10 @@ export interface PackageEntry {
 
 export const PACKAGES: PackageEntry[] = [
   {
-    name: '@aura-ui/core',
+    name: '@structyl/core',
     description:
       'Internal foundation: Slot, Primitive, Portal, Presence, FocusScope, DismissableLayer, RovingFocusGroup, Popper and more.',
-    install: 'pnpm add @aura-ui/core',
+    install: 'pnpm add @structyl/core',
     highlights: [
       'Headless behaviour primitives',
       'Floating UI wrapper',
@@ -8553,63 +8553,63 @@ export const PACKAGES: PackageEntry[] = [
     ],
   },
   {
-    name: '@aura-ui/hooks',
+    name: '@structyl/hooks',
     description: '24 reusable, SSR-safe, tree-shakeable React hooks.',
-    install: 'pnpm add @aura-ui/hooks',
+    install: 'pnpm add @structyl/hooks',
     highlights: ['State, refs, DOM, browser utilities', 'Zero dependencies', 'Fully typed'],
   },
   {
-    name: '@aura-ui/utils',
+    name: '@structyl/utils',
     description:
       'Pure utility functions: cn, composeEventHandlers, type guards, array/object/string helpers.',
-    install: 'pnpm add @aura-ui/utils',
+    install: 'pnpm add @structyl/utils',
     highlights: ['Tree-shakeable named exports', 'No side effects', '< 2 KB gzip'],
   },
   {
-    name: '@aura-ui/themes',
+    name: '@structyl/themes',
     description: 'Runtime theming: ThemeProvider, useTheme, ThemeScript, 10 accent presets, and useColorPreset.',
-    install: 'pnpm add @aura-ui/themes',
+    install: 'pnpm add @structyl/themes',
     highlights: ['CSS-variable based', 'No flash of unstyled content', '10 built-in accent presets'],
   },
   {
-    name: '@aura-ui/primitives',
+    name: '@structyl/primitives',
     description: 'Headless, accessible behaviour components — the unstyled layer.',
-    install: 'pnpm add @aura-ui/primitives',
+    install: 'pnpm add @structyl/primitives',
     highlights: ['~50 components', 'WAI-ARIA APG compliant', 'asChild everywhere'],
   },
   {
-    name: '@aura-ui/styled',
+    name: '@structyl/styled',
     description: 'Tailwind-styled components, batteries included.',
-    install: 'pnpm add @aura-ui/styled',
+    install: 'pnpm add @structyl/styled',
     highlights: ['Apple-grade visuals', 'Theme-token driven', 'tailwind-variants API'],
   },
   {
-    name: '@aura-ui/data-table',
+    name: '@structyl/data-table',
     description: 'A full-featured DataTable built on TanStack Table.',
-    install: 'pnpm add @aura-ui/data-table',
+    install: 'pnpm add @structyl/data-table',
     highlights: ['Virtualization', 'Column resize / pin / reorder', 'CSV & JSON export'],
   },
   {
-    name: '@aura-ui/icons',
+    name: '@structyl/icons',
     description: 'Curated icon set, re-exported from lucide-react.',
-    install: 'pnpm add @aura-ui/icons',
+    install: 'pnpm add @structyl/icons',
     highlights: ['Tree-shakeable per-icon', '1000+ icons', 'Consistent stroke'],
   },
   {
-    name: '@aura-ui/cli',
+    name: '@structyl/cli',
     description: 'Scaffolding CLI — init a project and add components from the registry.',
-    install: 'pnpm add -D @aura-ui/cli',
+    install: 'pnpm add -D @structyl/cli',
     highlights: [
-      'npx aura-ui init',
-      'npx aura-ui add <component>',
+      'npx structyl init',
+      'npx structyl add <component>',
       'Transitive dependency resolution',
     ],
   },
   {
-    name: '@aura-ui/api-client',
+    name: '@structyl/api-client',
     description:
       'Lightweight Axios wrapper with React 18 cache, retries, SSR support, and zero extra dependencies.',
-    install: 'pnpm add @aura-ui/api-client',
+    install: 'pnpm add @structyl/api-client',
     highlights: [
       'No TanStack Query — custom useSyncExternalStore cache',
       'AbortController, polling, debounce, infinite scroll',

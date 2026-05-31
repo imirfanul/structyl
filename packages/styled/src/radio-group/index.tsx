@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Circle } from '@aura-ui/icons';
-import { RadioGroup as RadioGroupPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Circle } from '@structyl/icons';
+import { RadioGroup as RadioGroupPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 type RadioColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';
 

@@ -1,6 +1,6 @@
 {
-  "name": "aura-ui",
-  "short_name": "aura-ui",
+  "name": "structyl",
+  "short_name": "structyl",
   "description": "Accessible React component library — headless primitives, Tailwind-styled components, runtime theming.",
   "start_url": "/",
   "display": "standalone",

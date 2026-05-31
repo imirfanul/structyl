@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Dialog as DrawerPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Dialog as DrawerPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = DrawerPrimitive.Root;
 const Trigger = DrawerPrimitive.Trigger;

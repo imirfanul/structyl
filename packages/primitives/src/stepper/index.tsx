@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@aura-ui/core';
-import { useControllableState } from '@aura-ui/hooks';
+import { Primitive } from '@structyl/core';
+import { useControllableState } from '@structyl/hooks';
 import type { StepperProps } from './stepper.types';
 
 const Root = React.forwardRef<HTMLDivElement, StepperProps>((props, ref) => {

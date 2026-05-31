@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronRight } from '@aura-ui/icons';
-import { Tree as TreePrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { ChevronRight } from '@structyl/icons';
+import { Tree as TreePrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof TreePrimitive.Root>,

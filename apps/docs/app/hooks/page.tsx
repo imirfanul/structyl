@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Sparkles, Copy, Check, ChevronRight } from '@aura-ui/icons';
-import { useTheme } from '@aura-ui/themes';
-import { Button } from '@aura-ui/styled';
+import { Sparkles, Copy, Check, ChevronRight } from '@structyl/icons';
+import { useTheme } from '@structyl/themes';
+import { Button } from '@structyl/styled';
 import {
   useBoolean,
   useToggle,
@@ -23,7 +23,7 @@ import {
   useUnmount,
   useUpdateEffect,
   useId,
-} from '@aura-ui/hooks';
+} from '@structyl/hooks';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types
@@ -192,7 +192,7 @@ function UseLocalStorageDemo() {
 
 function UseCopyToClipboardDemo() {
   const { copy, copied } = useCopyToClipboard();
-  const sample = `import { useCopyToClipboard } from '@aura-ui/hooks';`;
+  const sample = `import { useCopyToClipboard } from '@structyl/hooks';`;
   return (
     <div className="flex w-full max-w-sm flex-col gap-3">
       <div className="flex items-center justify-between rounded-lg border border-border bg-muted/20 px-3 py-2 font-mono text-[11px]">
@@ -447,7 +447,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'initial', type: 'boolean', description: 'Starting value. Defaults to false.' }],
     returns: '{ value: boolean, on: () => void, off: () => void, toggle: () => void, set: Dispatch }',
     demo: UseBooleanDemo,
-    code: `import { useBoolean } from '@aura-ui/hooks';
+    code: `import { useBoolean } from '@structyl/hooks';
 
 function Demo() {
   const { value, on, off, toggle } = useBoolean(false);
@@ -469,7 +469,7 @@ function Demo() {
     params: [{ name: 'initial', type: 'boolean', description: 'Starting value. Defaults to false.' }],
     returns: '[value: boolean, toggle: () => void, setValue: (v: boolean) => void]',
     demo: UseToggleDemo,
-    code: `import { useToggle } from '@aura-ui/hooks';
+    code: `import { useToggle } from '@structyl/hooks';
 
 function Demo() {
   const [value, toggle] = useToggle(false);
@@ -484,7 +484,7 @@ function Demo() {
     params: [{ name: 'initial', type: 'number', description: 'Starting count. Defaults to 0.' }],
     returns: '{ count: number, increment: (by?: number) => void, decrement: (by?: number) => void, reset: () => void, set: Dispatch }',
     demo: UseCounterDemo,
-    code: `import { useCounter } from '@aura-ui/hooks';
+    code: `import { useCounter } from '@structyl/hooks';
 
 function Demo() {
   const { count, increment, decrement, reset } = useCounter(0);
@@ -507,7 +507,7 @@ function Demo() {
     params: [{ name: 'value', type: 'T', description: 'The value to track.' }],
     returns: 'T | undefined — undefined on the first render.',
     demo: UsePreviousDemo,
-    code: `import { usePrevious } from '@aura-ui/hooks';
+    code: `import { usePrevious } from '@structyl/hooks';
 
 function Demo() {
   const [count, setCount] = useState(0);
@@ -532,7 +532,7 @@ function Demo() {
     ],
     returns: 'T — the debounced value.',
     demo: UseDebounceDemo,
-    code: `import { useDebounce } from '@aura-ui/hooks';
+    code: `import { useDebounce } from '@structyl/hooks';
 
 function Search() {
   const [query, setQuery] = useState('');
@@ -556,7 +556,7 @@ function Search() {
     ],
     returns: 'T — the throttled value.',
     demo: UseThrottleDemo,
-    code: `import { useThrottle } from '@aura-ui/hooks';
+    code: `import { useThrottle } from '@structyl/hooks';
 
 function Scroller() {
   const [scrollY, setScrollY] = useState(0);
@@ -578,7 +578,7 @@ function Scroller() {
     ],
     returns: '[value: T, setValue: (v: T | ((prev: T) => T)) => void, remove: () => void]',
     demo: UseLocalStorageDemo,
-    code: `import { useLocalStorage } from '@aura-ui/hooks';
+    code: `import { useLocalStorage } from '@structyl/hooks';
 
 function Settings() {
   const [theme, setTheme, clear] = useLocalStorage('theme', 'light');
@@ -600,7 +600,7 @@ function Settings() {
     params: [],
     returns: '{ copy: (text: string) => Promise<boolean>, copied: boolean, reset: () => void }',
     demo: UseCopyToClipboardDemo,
-    code: `import { useCopyToClipboard } from '@aura-ui/hooks';
+    code: `import { useCopyToClipboard } from '@structyl/hooks';
 
 function CopyButton({ text }: { text: string }) {
   const { copy, copied } = useCopyToClipboard();
@@ -623,7 +623,7 @@ function CopyButton({ text }: { text: string }) {
     ],
     returns: 'boolean — whether the query currently matches.',
     demo: UseMediaQueryDemo,
-    code: `import { useMediaQuery } from '@aura-ui/hooks';
+    code: `import { useMediaQuery } from '@structyl/hooks';
 
 function Layout() {
   const isMobile = useMediaQuery('(max-width: 767px)');
@@ -640,7 +640,7 @@ function Layout() {
     params: [],
     returns: 'boolean — true when prefers-color-scheme: dark.',
     demo: UseDarkModeDemo,
-    code: `import { useDarkMode } from '@aura-ui/hooks';
+    code: `import { useDarkMode } from '@structyl/hooks';
 
 function ThemeIcon() {
   const isDark = useDarkMode();
@@ -655,7 +655,7 @@ function ThemeIcon() {
     params: [],
     returns: '{ width: number, height: number }',
     demo: UseWindowSizeDemo,
-    code: `import { useWindowSize } from '@aura-ui/hooks';
+    code: `import { useWindowSize } from '@structyl/hooks';
 
 function Responsive() {
   const { width, height } = useWindowSize();
@@ -678,7 +678,7 @@ function Responsive() {
     ],
     returns: 'void',
     demo: UseClickOutsideDemo,
-    code: `import { useClickOutside } from '@aura-ui/hooks';
+    code: `import { useClickOutside } from '@structyl/hooks';
 
 function Dropdown() {
   const [open, setOpen] = useState(false);
@@ -708,7 +708,7 @@ function Dropdown() {
     ],
     returns: 'void',
     demo: UseHotkeysDemo,
-    code: `import { useHotkeys } from '@aura-ui/hooks';
+    code: `import { useHotkeys } from '@structyl/hooks';
 
 function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -728,7 +728,7 @@ function CommandPalette() {
     params: [{ name: 'callback', type: '() => void', description: 'Function to run on mount.' }],
     returns: 'void',
     demo: UseMountDemo,
-    code: `import { useMount } from '@aura-ui/hooks';
+    code: `import { useMount } from '@structyl/hooks';
 
 function Analytics() {
   useMount(() => {
@@ -746,7 +746,7 @@ function Analytics() {
     params: [{ name: 'callback', type: '() => void', description: 'Cleanup function to run on unmount.' }],
     returns: 'void',
     demo: UseUnmountDemo,
-    code: `import { useUnmount } from '@aura-ui/hooks';
+    code: `import { useUnmount } from '@structyl/hooks';
 
 function Timer() {
   const intervalRef = useRef<number>();
@@ -771,7 +771,7 @@ function Timer() {
     ],
     returns: 'void',
     demo: UseUpdateEffectDemo,
-    code: `import { useUpdateEffect } from '@aura-ui/hooks';
+    code: `import { useUpdateEffect } from '@structyl/hooks';
 
 function SearchResults({ query }: { query: string }) {
   useUpdateEffect(() => {
@@ -789,7 +789,7 @@ function SearchResults({ query }: { query: string }) {
     params: [{ name: 'prefix', type: 'string', description: 'Optional string prepended to the ID.' }],
     returns: 'string — a stable, unique ID.',
     demo: UseIdDemo,
-    code: `import { useId } from '@aura-ui/hooks';
+    code: `import { useId } from '@structyl/hooks';
 
 function FormField({ label }: { label: string }) {
   const id = useId('field');
@@ -957,7 +957,7 @@ export default function HooksPage() {
             <div className="from-primary to-primary/70 text-primary-foreground flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br shadow-sm">
               <Sparkles className="h-4 w-4" />
             </div>
-            <span className="text-sm font-semibold tracking-tight">aura-ui</span>
+            <span className="text-sm font-semibold tracking-tight">structyl</span>
           </Link>
           <span className="text-muted-foreground text-sm">/ Hooks</span>
           <nav className="ml-4 hidden gap-5 text-sm md:flex">
@@ -1017,10 +1017,10 @@ export default function HooksPage() {
           </div>
 
           <div className="mt-6 rounded-lg border border-border bg-muted/20 p-3 text-[11px] text-muted-foreground">
-            <p className="font-semibold text-fg">@aura-ui/hooks</p>
+            <p className="font-semibold text-fg">@structyl/hooks</p>
             <p className="mt-0.5">Zero deps · SSR-safe · Fully typed</p>
             <code className="mt-2 block rounded bg-muted px-2 py-1 font-mono">
-              pnpm add @aura-ui/hooks
+              pnpm add @structyl/hooks
             </code>
           </div>
         </aside>
@@ -1029,7 +1029,7 @@ export default function HooksPage() {
         <main className="min-w-0 px-6 py-10 md:px-10">
           {/* Title */}
           <div className="mb-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary">@aura-ui/hooks</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary">@structyl/hooks</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight">Hooks</h1>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
               {HOOKS.length} reusable, SSR-safe, tree-shakeable React hooks. Zero dependencies.

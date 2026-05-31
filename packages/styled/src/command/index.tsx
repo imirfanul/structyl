@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Search } from '@aura-ui/icons';
-import { Command as CommandPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Search } from '@structyl/icons';
+import { Command as CommandPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Root>,

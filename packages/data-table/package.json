@@ -1,7 +1,9 @@
 {
-  "name": "@aura-ui/data-table",
+  "name": "@structyl/data-table",
   "version": "1.0.0",
-  "description": "A full-featured DataTable with sorting, filtering, virtualization, and server-side data",
+  "publishConfig": { "access": "public" },
+  "description": "Headless-powered React DataTable built on TanStack Table with sorting, filtering, virtualization, grouping, inline editing, and server-side data.",
+  "keywords": ["react", "typescript", "structyl", "data-table", "datagrid", "table", "tanstack-table", "virtualization", "sorting", "filtering", "server-side", "inline-editing", "csv-export"],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -28,11 +30,11 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@aura-ui/hooks": "workspace:*",
-    "@aura-ui/icons": "workspace:*",
-    "@aura-ui/primitives": "workspace:*",
-    "@aura-ui/styled": "workspace:*",
-    "@aura-ui/utils": "workspace:*",
+    "@structyl/hooks": "workspace:*",
+    "@structyl/icons": "workspace:*",
+    "@structyl/primitives": "workspace:*",
+    "@structyl/styled": "workspace:*",
+    "@structyl/utils": "workspace:*",
     "@tanstack/react-table": "^8.20.5",
     "@tanstack/react-virtual": "^3.10.8",
     "xlsx": "^0.18.5"

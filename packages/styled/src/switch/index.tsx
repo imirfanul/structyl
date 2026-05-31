@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Switch as SwitchPrimitive, type SwitchProps as SwitchPrimitiveProps } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Switch as SwitchPrimitive, type SwitchProps as SwitchPrimitiveProps } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 type SwitchColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';

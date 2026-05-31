@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronDown } from '@aura-ui/icons';
-import { NavigationMenu as NavigationMenuPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { ChevronDown } from '@structyl/icons';
+import { NavigationMenu as NavigationMenuPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
@@ -86,7 +86,7 @@ const Viewport = React.forwardRef<
     <NavigationMenuPrimitive.Viewport
       ref={ref}
       className={cn(
-        'origin-top-center relative mt-1.5 h-[var(--aura-ui-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow',
+        'origin-top-center relative mt-1.5 h-[var(--structyl-navigation-menu-viewport-height)] w-full overflow-hidden rounded-md border border-border bg-popover text-popover-foreground shadow',
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 md:w-[var(--radix-navigation-menu-viewport-width)]',
         className,

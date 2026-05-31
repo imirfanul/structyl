@@ -4,7 +4,7 @@ import {
   Settings, PictureInPicture, SkipBack, SkipForward,
   Subtitles, List, ChevronLeft, ChevronRight,
 } from 'lucide-react';
-import { Button, Slider, DropdownMenu } from '@aura-ui/styled';
+import { Button, Slider, DropdownMenu } from '@structyl/styled';
 import type { Chapter } from './useChapters';
 import { ChapterMarkers } from './ChapterMarkers';
 

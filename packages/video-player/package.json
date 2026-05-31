@@ -1,7 +1,9 @@
 {
-  "name": "@aura-ui/video-player",
+  "name": "@structyl/video-player",
   "version": "1.0.0",
-  "description": "A professional React video player with HLS/DASH streaming, subtitles, playlists, chapters, filters, and full keyboard controls",
+  "publishConfig": { "access": "public" },
+  "description": "React video player with HLS adaptive streaming (hls.js), SRT/VTT subtitles, playlists, chapters, video filters, and full keyboard control.",
+  "keywords": ["react", "typescript", "structyl", "video-player", "hls", "hls.js", "streaming", "subtitles", "vtt", "srt", "playlist", "chapters", "tailwindcss"],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -29,7 +31,7 @@
     "tailwindcss": "^3.4.0 || ^4.0.0"
   },
   "dependencies": {
-    "@aura-ui/styled": "workspace:*",
+    "@structyl/styled": "workspace:*",
     "hls.js": "^1.5.20",
     "lucide-react": "^0.460.0"
   },

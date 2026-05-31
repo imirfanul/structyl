@@ -54,8 +54,8 @@ export const InlineWithCode: Story = {
   name: 'Inline with Code Block',
   render: () => (
     <div className="flex items-center gap-2 rounded-md border border-border bg-muted px-3 py-2">
-      <code className="flex-1 font-mono text-sm">npm install @aura-ui/styled</code>
-      <CopyButton value="npm install @aura-ui/styled" />
+      <code className="flex-1 font-mono text-sm">npm install @structyl/styled</code>
+      <CopyButton value="npm install @structyl/styled" />
     </div>
   ),
 };
@@ -64,8 +64,8 @@ export const MultipleButtons: Story = {
   name: 'Multiple Copy Buttons',
   render: () => {
     const snippets = [
-      { label: 'Install package', code: 'pnpm add @aura-ui/styled' },
-      { label: 'Import component', code: "import { Button } from '@aura-ui/styled'" },
+      { label: 'Install package', code: 'pnpm add @structyl/styled' },
+      { label: 'Import component', code: "import { Button } from '@structyl/styled'" },
       { label: 'Add provider', code: "<ThemeProvider>...</ThemeProvider>" },
     ];
     return (

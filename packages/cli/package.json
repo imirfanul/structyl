@@ -1,11 +1,13 @@
 {
-  "name": "@aura-ui/cli",
+  "name": "@structyl/cli",
   "version": "1.0.0",
-  "description": "CLI for adding @aura-ui components to your project (shadcn-style)",
+  "publishConfig": { "access": "public" },
+  "description": "Command-line tool for scaffolding structyl projects and copying styled components into your codebase with automatic dependency resolution.",
+  "keywords": ["react", "typescript", "structyl", "cli", "shadcn", "scaffold", "components", "registry", "tailwind", "commander", "code-generation"],
   "license": "MIT",
   "type": "module",
   "bin": {
-    "aura-ui": "./dist/index.js"
+    "structyl": "./dist/index.js"
   },
   "files": ["dist"],
   "scripts": {

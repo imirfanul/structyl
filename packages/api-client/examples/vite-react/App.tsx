@@ -4,7 +4,7 @@
  *
  * Usage:
  *   npm create vite@latest my-app -- --template react-ts
- *   npm install @aura-ui/api-client @tanstack/react-query axios
+ *   npm install @structyl/api-client @tanstack/react-query axios
  */
 import React from 'react';
 import {
@@ -12,7 +12,7 @@ import {
   ApiProvider,
   useApiQuery,
   useApiMutation,
-} from '@aura-ui/api-client';
+} from '@structyl/api-client';
 
 const api = createApiClient({
   baseURL: 'https://jsonplaceholder.typicode.com',

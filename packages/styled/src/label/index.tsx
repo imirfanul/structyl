@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Label as LabelPrimitive, type LabelProps as LabelPrimitiveProps } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Label as LabelPrimitive, type LabelProps as LabelPrimitiveProps } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 export interface LabelProps extends LabelPrimitiveProps {}
 

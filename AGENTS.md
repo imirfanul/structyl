@@ -8,7 +8,7 @@ This is a **shared instruction surface** for all AI agents (Claude Code, Cursor,
 
 ## 1. Project Snapshot
 
-- **Name:** aura-ui
+- **Name:** structyl
 - **Type:** Open-source React component library (monorepo, pnpm + Turborepo)
 - **Languages:** TypeScript (strict), React 19+
 - **Styling:** Tailwind CSS v4 with CSS-variable-based theming
@@ -68,7 +68,7 @@ docs/        # project-level documentation
 5. Always add a changeset for user-visible changes.
 6. Always update docs for API changes.
 7. Always run `pnpm test` after edits to a package.
-8. Always use `cn()` from `@aura-ui/utils` to merge classNames.
+8. Always use `cn()` from `@structyl/utils` to merge classNames.
 
 ---
 
@@ -79,9 +79,9 @@ The canonical shape of a primitive component:
 ```tsx
 // packages/primitives/src/switch/switch.tsx
 import * as React from 'react';
-import { Primitive } from '@aura-ui/core';
-import { useControllableState } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+import { Primitive } from '@structyl/core';
+import { useControllableState } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 import type { SwitchProps } from './switch.types';
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, ref) => {
@@ -129,8 +129,8 @@ The styled wrapper:
 ```tsx
 // packages/styled/src/switch/switch.tsx
 import * as React from 'react';
-import { Switch as SwitchPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Switch as SwitchPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitive>,

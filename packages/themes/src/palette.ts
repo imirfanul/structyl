@@ -3,7 +3,7 @@ import type { StaticPalette } from './palette.types';
 
 // ── Shared semantic sub-tokens ────────────────────────────────────────────────
 // error/warning/info/success are semantic colors that don't change between
-// UI themes (slate/zinc/rose/aura). Only light/dark mode changes their values.
+// UI themes (slate/zinc/rose/structyl). Only light/dark mode changes their values.
 
 export const sharedSemanticLight: Partial<ThemeTokens> = {
   // Error
@@ -111,10 +111,10 @@ export const sharedSemanticDark: Partial<ThemeTokens> = {
   'rating-active': '251 191 36',
 };
 
-// ── Aura theme token values ───────────────────────────────────────────────────
+// ── Structyl theme token values ───────────────────────────────────────────────────
 // Light mode values derived from MUI colorsLight palette
 
-export const auraSubTokensLight: Partial<ThemeTokens> = {
+export const structylSubTokensLight: Partial<ThemeTokens> = {
   // Primary (#5754A3)
   'primary-light': '195 192 250',
   'primary-dark': '27 20 100',
@@ -171,7 +171,7 @@ export const auraSubTokensLight: Partial<ThemeTokens> = {
 
 // Dark mode values derived from MUI colorsDark palette
 
-export const auraSubTokensDark: Partial<ThemeTokens> = {
+export const structylSubTokensDark: Partial<ThemeTokens> = {
   // Primary (#C3C0FA in dark)
   'primary-light': '75 72 150',
   'primary-dark': '219 226 252',

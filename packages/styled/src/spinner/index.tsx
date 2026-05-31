@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { tv } from 'tailwind-variants';
-import { cn } from '@aura-ui/utils';
+import { cn } from '@structyl/utils';
 
 // ── Shared size/color variants ────────────────────────────────────────────────
 

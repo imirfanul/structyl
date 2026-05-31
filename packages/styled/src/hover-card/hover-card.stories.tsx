@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { Link as AuraLink } from '../aura';
+import { Link as StructylLink } from '../structyl';
 import { Typography } from '../typography';
 import * as HoverCard from './index';
 
@@ -16,13 +16,13 @@ export const Default: Story = {
   render: () => (
     <HoverCard.Root>
       <HoverCard.Trigger asChild>
-        <AuraLink
+        <StructylLink
           href="#"
           className="text-sm font-medium underline underline-offset-4 hover:text-muted-foreground"
           onClick={(e) => e.preventDefault()}
         >
-          @aura_ui
-        </AuraLink>
+          @structyl_ui
+        </StructylLink>
       </HoverCard.Trigger>
       <HoverCard.Content>
         <div className="flex justify-between space-x-4">
@@ -30,7 +30,7 @@ export const Default: Story = {
             AU
           </div>
           <div className="space-y-1">
-            <Typography variant="h4" className="text-sm font-semibold">@aura_ui</Typography>
+            <Typography variant="h4" className="text-sm font-semibold">@structyl_ui</Typography>
             <Typography variant="muted">
               The open-source React component library — built for accessibility and DX.
             </Typography>
@@ -56,13 +56,13 @@ export const UserProfile: Story = {
       <Typography as="span" variant="muted">Posted by</Typography>
       <HoverCard.Root>
         <HoverCard.Trigger asChild>
-          <AuraLink
+          <StructylLink
             href="#"
             className="text-sm font-semibold hover:underline"
             onClick={(e) => e.preventDefault()}
           >
             Jane Smith
-          </AuraLink>
+          </StructylLink>
         </HoverCard.Trigger>
         <HoverCard.Content>
           <div className="space-y-3">
@@ -96,13 +96,13 @@ export const Placements: Story = {
       {(['top', 'bottom', 'left', 'right'] as const).map((side) => (
         <HoverCard.Root key={side} openDelay={0}>
           <HoverCard.Trigger asChild>
-            <AuraLink
+            <StructylLink
               href="#"
               className="text-sm font-medium underline underline-offset-4 capitalize"
               onClick={(e) => e.preventDefault()}
             >
               Hover ({side})
-            </AuraLink>
+            </StructylLink>
           </HoverCard.Trigger>
           <HoverCard.Content side={side}>
             <Typography variant="body2">Card appears on the <strong>{side}</strong>.</Typography>
@@ -118,13 +118,13 @@ export const WithOpenCloseDelay: Story = {
     <div className="flex gap-6">
       <HoverCard.Root openDelay={0} closeDelay={0}>
         <HoverCard.Trigger asChild>
-          <AuraLink
+          <StructylLink
             href="#"
             className="text-sm font-medium underline underline-offset-4"
             onClick={(e) => e.preventDefault()}
           >
             No delay
-          </AuraLink>
+          </StructylLink>
         </HoverCard.Trigger>
         <HoverCard.Content>
           <Typography variant="body2">Opens and closes instantly.</Typography>
@@ -133,13 +133,13 @@ export const WithOpenCloseDelay: Story = {
 
       <HoverCard.Root openDelay={500} closeDelay={300}>
         <HoverCard.Trigger asChild>
-          <AuraLink
+          <StructylLink
             href="#"
             className="text-sm font-medium underline underline-offset-4"
             onClick={(e) => e.preventDefault()}
           >
             With delay (500ms open / 300ms close)
-          </AuraLink>
+          </StructylLink>
         </HoverCard.Trigger>
         <HoverCard.Content>
           <Typography variant="body2">Opens after 500ms, closes after 300ms.</Typography>

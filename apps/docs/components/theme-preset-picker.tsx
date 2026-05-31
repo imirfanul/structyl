@@ -7,7 +7,7 @@ import {
   clearColorPreset,
   useColorPreset,
   type ColorPresetId,
-} from '@aura-ui/themes';
+} from '@structyl/themes';
 
 // Re-export so existing imports from this module keep working
 export { COLOR_PRESETS, applyColorPreset, clearColorPreset };

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Slider as SliderPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Slider as SliderPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 type SliderColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';
 

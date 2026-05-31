@@ -1,6 +1,6 @@
 import React from 'react';
 import { RotateCcw } from 'lucide-react';
-import { Button, Slider } from '@aura-ui/styled';
+import { Button, Slider } from '@structyl/styled';
 import type { VideoFilters as VideoFiltersType } from './useVideoFilters';
 
 interface VideoFiltersProps {

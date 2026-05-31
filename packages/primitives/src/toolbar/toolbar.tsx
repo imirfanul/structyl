@@ -7,7 +7,7 @@ import {
   RovingFocusGroup,
   RovingFocusItem,
   useDirection,
-} from '@aura-ui/core';
+} from '@structyl/core';
 
 interface ToolbarContextValue {
   orientation: 'horizontal' | 'vertical';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip } from '@aura-ui/styled';
+import { Tooltip } from '@structyl/styled';
 import type { Chapter } from './useChapters';
 
 interface ChapterMarkersProps {

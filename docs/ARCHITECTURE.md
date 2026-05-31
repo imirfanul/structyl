@@ -10,8 +10,8 @@ This document explains **why** the codebase is shaped the way it is. Read this b
 
 The biggest architectural decision in this library is the strict separation between:
 
-- **Behavior** (`@aura-ui/primitives`) — focus management, ARIA, keyboard, state
-- **Presentation** (`@aura-ui/styled`) — visual styling, animations, theming
+- **Behavior** (`@structyl/primitives`) — focus management, ARIA, keyboard, state
+- **Presentation** (`@structyl/styled`) — visual styling, animations, theming
 
 This separation enables:
 - Users who want full styling control can use primitives directly
@@ -101,15 +101,15 @@ Why: No JavaScript-driven styles, no className spaghetti, CSS-only animations.
 ┌─────────────────────────────────────────┐
 │  Apps (docs, playground)                │
 ├─────────────────────────────────────────┤
-│  @aura-ui/styled                       │
-│  @aura-ui/data-table                   │
+│  @structyl/styled                       │
+│  @structyl/data-table                   │
 ├─────────────────────────────────────────┤
-│  @aura-ui/primitives                   │
+│  @structyl/primitives                   │
 ├─────────────────────────────────────────┤
-│  @aura-ui/core                         │
-│  @aura-ui/hooks                        │
-│  @aura-ui/utils                        │
-│  @aura-ui/themes                       │
+│  @structyl/core                         │
+│  @structyl/hooks                        │
+│  @structyl/utils                        │
+│  @structyl/themes                       │
 └─────────────────────────────────────────┘
 ```
 
@@ -119,7 +119,7 @@ Why: No JavaScript-driven styles, no className spaghetti, CSS-only animations.
 
 ## Package responsibilities
 
-### `@aura-ui/core`
+### `@structyl/core`
 Internal primitives that power other packages. Not meant for end-user import (though it's published).
 
 - `Primitive` — Polymorphic base
@@ -127,29 +127,29 @@ Internal primitives that power other packages. Not meant for end-user import (th
 - `createContextScope` — Scoped React contexts
 - `Portal`, `Presence`, `FocusScope`, `DismissableLayer`, `RovingFocusGroup`
 
-### `@aura-ui/hooks`
+### `@structyl/hooks`
 50+ reusable React hooks. Each hook in its own folder with tests.
 
-### `@aura-ui/utils`
+### `@structyl/utils`
 Pure utility functions. Tree-shakeable. No React imports.
 
-### `@aura-ui/themes`
+### `@structyl/themes`
 The theme system. Exports `ThemeProvider`, `useTheme`, the CSS variable contracts, and built-in themes.
 
-### `@aura-ui/primitives`
+### `@structyl/primitives`
 The headless behavior layer. Every component from the catalog has a headless implementation here.
 
-### `@aura-ui/styled`
+### `@structyl/styled`
 Tailwind-styled wrappers over primitives. Uses `tailwind-variants` for variant API.
 
-### `@aura-ui/data-table`
+### `@structyl/data-table`
 The DataTable component. Built on `@tanstack/table-core` for the engine + custom UI + virtualization + accessibility on top.
 
-### `@aura-ui/icons`
+### `@structyl/icons`
 Icon set. Either custom SVGs or a thin re-export of `lucide-react`.
 
-### `@aura-ui/cli`
-Optional shadcn-style CLI: `npx aura-ui add button` copies source into the user's project.
+### `@structyl/cli`
+Optional shadcn-style CLI: `npx structyl add button` copies source into the user's project.
 
 ---
 

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Copy, Check } from '@aura-ui/icons';
+import { Copy, Check } from '@structyl/icons';
 
 /* ── Token definitions ───────────────────────────────────────────────── */
 

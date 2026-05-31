@@ -16,7 +16,7 @@ import {
   TransferList,
 } from './index';
 
-describe('Aura parity primitives', () => {
+describe('Structyl parity primitives', () => {
   it('renders simple building blocks', () => {
     render(
       <Box>

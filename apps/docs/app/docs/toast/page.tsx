@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy } from '@aura-ui/icons';
-import { Button } from '@aura-ui/styled';
-import { toast, Toaster } from '@aura-ui/styled';
+import { Check, Copy } from '@structyl/icons';
+import { Button } from '@structyl/styled';
+import { toast, Toaster } from '@structyl/styled';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
 
@@ -124,7 +124,7 @@ export default function ToastPage() {
       {/* Header */}
       <div className="mb-10">
         <div className="mb-3 flex items-center gap-2">
-          <span className="rounded-full border border-border bg-muted/40 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">@aura-ui/styled</span>
+          <span className="rounded-full border border-border bg-muted/40 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">@structyl/styled</span>
         </div>
         <h1 className="mb-3 text-3xl font-bold tracking-tight">Toast</h1>
         <p className="text-lg text-muted-foreground">
@@ -133,7 +133,7 @@ export default function ToastPage() {
       </div>
 
       {/* Install */}
-      <CodeBlock lang="bash" code="pnpm add @aura-ui/styled" />
+      <CodeBlock lang="bash" code="pnpm add @structyl/styled" />
 
       {/* ── Setup ── */}
       <SectionHeading id="setup">Setup</SectionHeading>
@@ -141,7 +141,7 @@ export default function ToastPage() {
         Add <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">&lt;Toaster /&gt;</code> once anywhere in your component tree — typically the root layout. Toasts fired anywhere in your app will render there.
       </p>
       <CodeBlock code={`// app/layout.tsx
-import { Toaster } from '@aura-ui/styled';
+import { Toaster } from '@structyl/styled';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -160,7 +160,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <div className="mb-4">
         <VariantsDemo />
       </div>
-      <CodeBlock code={`import { toast } from '@aura-ui/styled';
+      <CodeBlock code={`import { toast } from '@structyl/styled';
 
 toast.success('Changes saved', { description: 'Your profile has been updated.' });
 toast.error('Upload failed', { retry: () => upload() });
@@ -269,7 +269,7 @@ toast.dismiss();     // dismiss ALL toasts`} />
       <p className="mb-4 text-sm text-muted-foreground">
         Subscribe to the toast store from inside a React component. Useful for building a custom <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">Toaster</code> or reading the current toast list.
       </p>
-      <CodeBlock code={`import { useToast } from '@aura-ui/styled';
+      <CodeBlock code={`import { useToast } from '@structyl/styled';
 
 function CustomToaster() {
   const { toasts, dismiss, remove } = useToast();

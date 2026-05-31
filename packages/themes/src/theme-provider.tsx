@@ -30,7 +30,7 @@ export function ThemeProvider(props: ThemeProviderProps): React.JSX.Element {
     children,
     defaultTheme = 'slate',
     defaultMode = 'system',
-    storageKey = 'aura-ui-theme',
+    storageKey = 'structyl-theme',
     enableTransitions = true,
     themes: customThemes,
     attribute = 'data-theme',

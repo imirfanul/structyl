@@ -1,5 +1,5 @@
 /**
- * @aura-ui/data-table
+ * @structyl/data-table
  *
  * Full-featured DataTable with sorting, filtering, pagination, virtualization,
  * column resize/pin/reorder/visibility, row selection, expanding, grouping,

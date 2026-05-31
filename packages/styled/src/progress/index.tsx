@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Progress as ProgressPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Progress as ProgressPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 // ── Variants ─────────────────────────────────────────────────────────────────

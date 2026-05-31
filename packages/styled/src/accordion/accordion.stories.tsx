@@ -18,9 +18,9 @@ export const Default: Story = {
     <div className="w-[480px]">
       <Root type="single" collapsible>
         <Item value="item-1">
-          <Trigger>What is aura-ui?</Trigger>
+          <Trigger>What is structyl?</Trigger>
           <Content>
-            aura-ui is an open-source React component library that provides accessible behavior
+            structyl is an open-source React component library that provides accessible behavior
             primitives, Tailwind-styled components, and a first-class DataTable.
           </Content>
         </Item>
@@ -50,10 +50,10 @@ export const MultipleOpen: Story = {
     <div className="w-[480px]">
       <Root type="multiple">
         <Item value="q1">
-          <Trigger>How do I install aura-ui?</Trigger>
+          <Trigger>How do I install structyl?</Trigger>
           <Content>
-            Run <code>pnpm add @aura-ui/styled</code> then wrap your app with{' '}
-            <code>ThemeProvider</code> from <code>@aura-ui/themes</code>.
+            Run <code>pnpm add @structyl/styled</code> then wrap your app with{' '}
+            <code>ThemeProvider</code> from <code>@structyl/themes</code>.
           </Content>
         </Item>
         <Item value="q2">
@@ -83,7 +83,7 @@ export const DefaultOpen: Story = {
         <Item value="answer-1">
           <Trigger>Who maintains this library?</Trigger>
           <Content>
-            aura-ui is maintained by a team of open-source contributors. Contributions are welcome
+            structyl is maintained by a team of open-source contributors. Contributions are welcome
             — please read the contributing guide before opening a pull request.
           </Content>
         </Item>

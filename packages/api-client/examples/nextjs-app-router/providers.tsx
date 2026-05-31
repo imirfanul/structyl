@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { createApiClient, ApiProvider } from '@aura-ui/api-client';
+import { createApiClient, ApiProvider } from '@structyl/api-client';
 
 const api = createApiClient({
   baseURL: process.env['NEXT_PUBLIC_API_URL']!,

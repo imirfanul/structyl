@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Button } from '../button';
-import { Link as AuraLink } from '../aura';
+import { Link as StructylLink } from '../structyl';
 import { Typography } from '../typography';
 import { Badge } from './index';
 
@@ -43,7 +43,7 @@ export const AsChild: Story = {
   render: () => (
     <div className="flex flex-wrap gap-2">
       <Badge asChild variant="default">
-        <AuraLink href="#">Linked Badge</AuraLink>
+        <StructylLink href="#">Linked Badge</StructylLink>
       </Badge>
       <Badge asChild variant="outline">
         <Button type="button" variant="ghost" size="sm">Clickable Badge</Button>

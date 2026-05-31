@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * @aura-ui/styled — Chart
+ * @structyl/styled — Chart
  *
  * Tailwind-styled wrappers around the headless chart primitives.
  * Applies CSS variable–based color tokens and Tailwind classes.
@@ -13,7 +13,7 @@
  *
  * @example
  * ```tsx
- * import * as Chart from '@aura-ui/styled';
+ * import * as Chart from '@structyl/styled';
  *
  * function MyChart() {
  *   return (
@@ -30,10 +30,10 @@
  */
 
 import * as React from 'react';
-import { cn } from '@aura-ui/utils';
+import { cn } from '@structyl/utils';
 // Chart components are imported from the primitives package.
 // Run `pnpm build` in packages/primitives to generate the dist before typechecking this file.
-import * as Primitives from '@aura-ui/primitives';
+import * as Primitives from '@structyl/primitives';
 
 // The Chart namespace is re-exported from primitives as `export * as Chart from './chart'`
 type ChartNS = typeof Primitives.Chart;
@@ -488,4 +488,4 @@ export type {
   SankeyNode,
   SankeyLink,
   GanttTask,
-} from '@aura-ui/primitives';
+} from '@structyl/primitives';

@@ -1,7 +1,9 @@
 {
-  "name": "@aura-ui/hooks",
+  "name": "@structyl/hooks",
   "version": "1.0.0",
-  "description": "50+ reusable React hooks: state, DOM, browser, performance, async",
+  "publishConfig": { "access": "public" },
+  "description": "SSR-safe, tree-shakeable React hooks for state, refs, DOM, browser APIs, and performance, including useControllableState for headless UI",
+  "keywords": ["react", "typescript", "structyl", "hooks", "react-hooks", "ssr", "use-controllable-state", "use-debounce", "use-media-query", "use-local-storage", "tree-shakeable"],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronRight, Circle } from '@aura-ui/icons';
-import { DropdownMenu as DropdownMenuPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Check, ChevronRight, Circle } from '@structyl/icons';
+import { DropdownMenu as DropdownMenuPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = DropdownMenuPrimitive.Root;
 const Trigger = DropdownMenuPrimitive.Trigger;
@@ -14,7 +14,7 @@ const RadioGroup = DropdownMenuPrimitive.RadioGroup;
 
 const menuPanelCls = [
   'z-50 min-w-[10rem] overflow-hidden rounded-lg border border-border bg-popover/95 backdrop-blur-glass p-1 text-popover-foreground shadow-overlay',
-  'origin-[var(--aura-ui-popper-transform-origin,center)]',
+  'origin-[var(--structyl-popper-transform-origin,center)]',
   'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
   'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
   'data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1',

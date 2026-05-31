@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { Root, Textarea, Suggestions, Items, Item } from './index';
-import type { MentionSuggestion } from '@aura-ui/primitives';
+import type { MentionSuggestion } from '@structyl/primitives';
 import { Button } from '../button';
 import { Typography } from '../typography';
 

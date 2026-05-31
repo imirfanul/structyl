@@ -1,7 +1,9 @@
 {
-  "name": "@aura-ui/themes",
+  "name": "@structyl/themes",
   "version": "1.0.0",
-  "description": "Runtime theme system with CSS variables, ThemeProvider, and built-in themes",
+  "publishConfig": { "access": "public" },
+  "description": "Runtime theming for React: a ThemeProvider and CSS-variable token system with light/dark modes, SSR-safe anti-flash script, and accent presets.",
+  "keywords": ["react", "typescript", "structyl", "theme", "theming", "dark-mode", "css-variables", "design-tokens", "themeprovider", "ssr", "tailwind", "color-scheme"],
   "license": "MIT",
   "type": "module",
   "sideEffects": ["**/*.css"],

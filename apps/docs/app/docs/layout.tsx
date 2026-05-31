@@ -21,8 +21,8 @@ import {
   Clock,
   Database,
   Paintbrush,
-} from '@aura-ui/icons';
-import { useTheme } from '@aura-ui/themes';
+} from '@structyl/icons';
+import { useTheme } from '@structyl/themes';
 import { COMPONENTS, CATEGORIES, HOOKS } from '../../lib/registry';
 import { ThemePresetPicker } from '../../components/theme-preset-picker';
 
@@ -64,7 +64,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   React.useEffect(() => {
     if (typeof window === 'undefined') return;
     try {
-      const stored = JSON.parse(window.localStorage.getItem('aura-recently-viewed') ?? '[]') as RecentItem[];
+      const stored = JSON.parse(window.localStorage.getItem('structyl-recently-viewed') ?? '[]') as RecentItem[];
       setRecentlyViewed(stored);
     } catch { /* ignore */ }
   }, []);
@@ -80,7 +80,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
     setRecentlyViewed((prev) => {
       const filtered = prev.filter((item) => item.slug !== slug);
       const next = [{ slug, name: component.name }, ...filtered].slice(0, 5);
-      try { window.localStorage.setItem('aura-recently-viewed', JSON.stringify(next)); } catch { /* ignore */ }
+      try { window.localStorage.setItem('structyl-recently-viewed', JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
   }, [pathname]);
@@ -107,9 +107,9 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center">
             {/* dark logo (light text on dark squircle) */}
-            <img src="/logo.svg" alt="aura-ui" className="hidden h-7 w-auto dark:block" />
+            <img src="/logo.svg" alt="structyl" className="hidden h-7 w-auto dark:block" />
             {/* light logo (dark text on dark squircle) */}
-            <img src="/logo-light.svg" alt="aura-ui" className="block h-7 w-auto dark:hidden" />
+            <img src="/logo-light.svg" alt="structyl" className="block h-7 w-auto dark:hidden" />
           </Link>
 
           <span className="hidden text-lg text-border/80 md:block">/</span>
@@ -267,7 +267,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           {/* Install badge */}
           <div className="border-t border-border/40 px-3 py-3">
             <div className="rounded-lg border border-border/60 bg-muted/20 px-3 py-2.5 text-[11px]">
-              <p className="font-mono font-medium text-muted-foreground">pnpm add @aura-ui/styled</p>
+              <p className="font-mono font-medium text-muted-foreground">pnpm add @structyl/styled</p>
             </div>
           </div>
         </aside>
@@ -299,7 +299,7 @@ const QUICK_LINKS = [
 const STATIC_PAGES = [
   { name: 'Themes',           sub: 'Runtime theming, dark mode, custom themes, CSS token reference',       href: '/docs/themes',          keywords: ['theme', 'dark', 'light', 'color', 'mode', 'css', 'variable', 'token', 'custom', 'palette', 'brand', 'ssr', 'flash'] },
   { name: 'API Client',       sub: 'Axios wrapper with React 18 cache, retries, mutations, SSR',          href: '/docs/api-client',      keywords: ['api', 'client', 'axios', 'fetch', 'query', 'mutation', 'cache', 'infinite', 'suspense', 'ssr', 'data'] },
-  { name: 'Getting started',  sub: 'Install aura-ui and render your first component',                     href: '/docs/getting-started', keywords: ['start', 'install', 'setup', 'begin'] },
+  { name: 'Getting started',  sub: 'Install structyl and render your first component',                     href: '/docs/getting-started', keywords: ['start', 'install', 'setup', 'begin'] },
   { name: 'Hooks',            sub: '24 reusable, SSR-safe, tree-shakeable React hooks',                   href: '/docs/hooks',            keywords: ['hook', 'use', 'react'] },
   { name: 'Packages',         sub: 'Nine focused, independently-versioned packages',                      href: '/docs/packages',        keywords: ['package', 'monorepo', 'core', 'styled', 'themes', 'icons'] },
   { name: 'Accessibility',    sub: 'WAI-ARIA compliant keyboard navigation and screen reader support',    href: '/docs/accessibility',   keywords: ['a11y', 'aria', 'keyboard', 'screen reader', 'wcag'] },

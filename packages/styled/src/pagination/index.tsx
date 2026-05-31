@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@aura-ui/icons';
-import { cn } from '@aura-ui/utils';
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@structyl/icons';
+import { cn } from '@structyl/utils';
 import { Button } from '../button';
 import * as Select from '../select';
 

@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { X } from '@aura-ui/icons';
-import { Dialog as DialogPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { X } from '@structyl/icons';
+import { Dialog as DialogPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 export const Root = DialogPrimitive.Root;
 export const Trigger = DialogPrimitive.Trigger;

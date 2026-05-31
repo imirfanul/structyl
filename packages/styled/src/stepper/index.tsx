@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Check } from '@aura-ui/icons';
-import { cn } from '@aura-ui/utils';
+import { Check } from '@structyl/icons';
+import { cn } from '@structyl/utils';
 
 type StepStatus = 'complete' | 'current' | 'upcoming';
 export type StepperColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';

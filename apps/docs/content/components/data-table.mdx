@@ -5,18 +5,18 @@ description: A full-featured data grid with column configuration, tree data, cop
 
 # DataTable
 
-DataTable is the Aura grid surface for large, interactive datasets. It uses TanStack Table for the table model and adds styled UI for the full set of features you expect from a production grid: column type system, rich column definition API, tree data, copy/paste, density toggle, toolbar actions, search, nested filters, row and column virtualization, configuration menus, pinning, selection, reordering, inline creation, totals, loaders, localization and server-side state.
+DataTable is the Structyl grid surface for large, interactive datasets. It uses TanStack Table for the table model and adds styled UI for the full set of features you expect from a production grid: column type system, rich column definition API, tree data, copy/paste, density toggle, toolbar actions, search, nested filters, row and column virtualization, configuration menus, pinning, selection, reordering, inline creation, totals, loaders, localization and server-side state.
 
 ## Installation
 
 ```bash
-npx aura-ui add data-table
+npx structyl add data-table
 ```
 
 ## Basic Usage
 
 ```tsx
-import { DataTable, type DataTableColumnDef } from '@aura-ui/data-table';
+import { DataTable, type DataTableColumnDef } from '@structyl/data-table';
 
 type User = {
   id: string;
@@ -52,7 +52,7 @@ export function Example({ rows }: { rows: User[] }) {
 `DataTableColumnDef` extends the standard TanStack `ColumnDef` with a rich set of column-level options covering header, type, alignment, flex sizing, value getter/setter, custom cell/header renderers, description tooltip, and per-column filter operators.
 
 ```tsx
-import type { DataTableColumnDef } from '@aura-ui/data-table';
+import type { DataTableColumnDef } from '@structyl/data-table';
 
 const columns: DataTableColumnDef<User>[] = [
   {
@@ -349,7 +349,7 @@ Add `enableDensityToggle` to show a Density menu in the toolbar. You can also co
 Pass custom `toolbarActions` to add icon/label buttons with tooltips to the right toolbar section. Each action receives the live `table` instance so you can trigger exports, open dialogs, or run custom logic.
 
 ```tsx
-import { exportToCSV, exportToJSON } from '@aura-ui/data-table';
+import { exportToCSV, exportToJSON } from '@structyl/data-table';
 
 <DataTable
   columns={columns}
@@ -382,7 +382,7 @@ import { exportToCSV, exportToJSON } from '@aura-ui/data-table';
 You can also use `DataTableToolbarButton` directly in the `toolbarEnd` slot for fully custom controls:
 
 ```tsx
-import { DataTableToolbarButton } from '@aura-ui/data-table';
+import { DataTableToolbarButton } from '@structyl/data-table';
 
 <DataTable
   columns={columns}
@@ -415,7 +415,7 @@ Column pinning (left/right) and column grouping are available via the column men
 `exportToCSV` and `exportToJSON` are standalone helpers you call against the live `table` instance — typically from a toolbar action or a button outside the grid.
 
 ```tsx
-import { exportToCSV, exportToJSON } from '@aura-ui/data-table';
+import { exportToCSV, exportToJSON } from '@structyl/data-table';
 
 // All visible rows
 exportToCSV(table, 'report.csv');
@@ -435,7 +435,7 @@ exportToJSON(table, 'report.json', { onlySelected: true });
 `EditableCell` renders a span that switches to an `<input>` on click or Enter, then calls `onCommit` on blur or Enter.
 
 ```tsx
-import { EditableCell } from '@aura-ui/data-table';
+import { EditableCell } from '@structyl/data-table';
 
 const columns: DataTableColumnDef<User>[] = [
   {
@@ -501,7 +501,7 @@ The built-in pagination bar includes a page-number dropdown, an items-per-page s
 When rows are selected and `bulkActions` is provided, a panel appears above the table with user-supplied action buttons and a **Clear selection** link.
 
 ```tsx
-import type { DataTableBulkAction } from '@aura-ui/data-table';
+import type { DataTableBulkAction } from '@structyl/data-table';
 
 const bulkActions: DataTableBulkAction<User>[] = [
   {
@@ -541,7 +541,7 @@ Two structured action column types are available, in addition to the legacy `row
 Renders a ⋮ button that opens a dropdown with item labels, icons, optional separators, and per-item `disabled`/`hidden` guards.
 
 ```tsx
-import type { DataTableRowActionItem } from '@aura-ui/data-table';
+import type { DataTableRowActionItem } from '@structyl/data-table';
 
 <DataTable
   columns={columns}
@@ -609,7 +609,7 @@ Enable `enableRowCopy` to add a **Copy row** option to the row pinning menu. Ena
 Replace any built-in sub-component with your own via the `slots` prop. Each slot receives typed props matching the built-in component's signature.
 
 ```tsx
-import type { DataTableSlots } from '@aura-ui/data-table';
+import type { DataTableSlots } from '@structyl/data-table';
 
 function MyToolbar({ table, localeText }) {
   return (
@@ -696,7 +696,7 @@ The table renders with `role="grid"`, keyboard-reachable buttons and form contro
 
 ## Theming
 
-Styles consume Aura theme tokens such as `bg`, `foreground`, `muted`, `border`, `primary`, `popover`, `accent`, `destructive` and `ring`. Use `className`, `tableClassName`, row callbacks and column definitions for additional customization.
+Styles consume Structyl theme tokens such as `bg`, `foreground`, `muted`, `border`, `primary`, `popover`, `accent`, `destructive` and `ring`. Use `className`, `tableClassName`, row callbacks and column definitions for additional customization.
 
 ## Built-in Cell Type Renderers
 
@@ -807,7 +807,7 @@ Enable `enableFilterChips` to render active column filters as removable chip pil
 `exportToXLSX` produces a real `.xlsx` file via SheetJS. It accepts the same options as `exportToCSV` (`onlySelected`, `includeHidden`).
 
 ```tsx
-import { exportToXLSX } from '@aura-ui/data-table';
+import { exportToXLSX } from '@structyl/data-table';
 
 <DataTable
   columns={columns}

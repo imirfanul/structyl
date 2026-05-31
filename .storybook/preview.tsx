@@ -1,7 +1,7 @@
 import type { Preview, Decorator } from '@storybook/react-vite';
 import React from 'react';
 import { initialize, mswLoader } from 'msw-storybook-addon';
-import { ThemeProvider } from '@aura-ui/themes';
+import { ThemeProvider } from '@structyl/themes';
 import { mswHandlers } from './msw-handlers';
 import './globals.css';
 
@@ -66,8 +66,8 @@ const preview: Preview = {
     // ThemeProvider reads this key on mount. Seed it so stories start in a
     // known state instead of whatever the previous story left in storage.
     // storageKey={false} on the decorator's ThemeProvider skips persistence,
-    // so this seed only affects components that directly read 'aura-ui-theme'.
-    localStorage.setItem('aura-ui-theme', JSON.stringify({ theme: 'slate', mode: 'light' }));
+    // so this seed only affects components that directly read 'structyl-theme'.
+    localStorage.setItem('structyl-theme', JSON.stringify({ theme: 'slate', mode: 'light' }));
   },
 };
 

@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { GripVertical } from '@aura-ui/icons';
-import { Resizable as ResizablePrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { GripVertical } from '@structyl/icons';
+import { Resizable as ResizablePrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Group = React.forwardRef<
   React.ElementRef<typeof ResizablePrimitive.Group>,

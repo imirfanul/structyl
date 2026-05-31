@@ -1,7 +1,9 @@
 {
-  "name": "@aura-ui/styled",
+  "name": "@structyl/styled",
   "version": "1.0.0",
-  "description": "Tailwind-styled React components, batteries included",
+  "publishConfig": { "access": "public" },
+  "description": "Tailwind CSS v4 styled React components built on accessible WAI-ARIA primitives, with a token-driven theme preset and type-safe variants.",
+  "keywords": ["react", "typescript", "structyl", "ui-components", "tailwindcss", "tailwind-variants", "design-system", "accessible", "wai-aria", "headless", "compound-components", "theming", "rsc"],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -33,11 +35,11 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@aura-ui/core": "workspace:*",
-    "@aura-ui/primitives": "workspace:*",
-    "@aura-ui/themes": "workspace:*",
-    "@aura-ui/utils": "workspace:*",
-    "@aura-ui/icons": "workspace:*",
+    "@structyl/core": "workspace:*",
+    "@structyl/primitives": "workspace:*",
+    "@structyl/themes": "workspace:*",
+    "@structyl/utils": "workspace:*",
+    "@structyl/icons": "workspace:*",
     "tailwind-variants": "^0.3.0"
   },
   "peerDependencies": {

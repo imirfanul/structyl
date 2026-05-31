@@ -1,5 +1,5 @@
 /**
- * @aura-ui/core
+ * @structyl/core
  *
  * Internal primitives powering the library: Slot, Primitive, contexts,
  * focus management, presence, popper, etc.

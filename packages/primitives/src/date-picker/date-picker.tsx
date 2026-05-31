@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { createContext } from '@aura-ui/core';
-import { useControllableState } from '@aura-ui/hooks';
+import { createContext } from '@structyl/core';
+import { useControllableState } from '@structyl/hooks';
 import * as PopoverPrimitive from '../popover';
 import * as CalendarPrimitive from '../calendar';
 import {

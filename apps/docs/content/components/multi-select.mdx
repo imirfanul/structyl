@@ -10,14 +10,14 @@ A multi-value select with keyboard support, optional search, creation, and virtu
 ## Installation
 
 ```bash
-npx aura-ui add multi-select
+npx structyl add multi-select
 ```
 
 ## Usage
 
 ```tsx
 import * as React from 'react';
-import { MultiSelect } from '@aura-ui/styled';
+import { MultiSelect } from '@structyl/styled';
 
 export function Example() {
   const [options, setOptions] = React.useState([
@@ -43,7 +43,7 @@ export function Example() {
 
 ## API Reference
 
-See the [primitive types](https://github.com/your-org/aura-ui/tree/main/packages/primitives/src/multi-select) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+See the [primitive types](https://github.com/your-org/structyl/tree/main/packages/primitives/src/multi-select) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
 
 ## Accessibility
 
@@ -51,4 +51,4 @@ Uses a combobox trigger and a multi-selectable listbox popup. All interactive co
 
 ## Theming
 
-Styles consume CSS variables from `@aura-ui/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.
+Styles consume CSS variables from `@structyl/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

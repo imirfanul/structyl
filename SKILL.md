@@ -1,11 +1,11 @@
 ---
-name: aura-ui-development
-description: Use this skill when working on the aura-ui React component library codebase. This includes adding new components (primitives or styled wrappers), adding hooks or utilities, modifying the theme system, working on the DataTable, writing tests, or any other development task within this monorepo. Triggers when you see files like CLAUDE.md, AGENTS.md, or the packages/{core,hooks,utils,themes,primitives,styled,data-table} structure.
+name: structyl-development
+description: Use this skill when working on the structyl React component library codebase. This includes adding new components (primitives or styled wrappers), adding hooks or utilities, modifying the theme system, working on the DataTable, writing tests, or any other development task within this monorepo. Triggers when you see files like CLAUDE.md, AGENTS.md, or the packages/{core,hooks,utils,themes,primitives,styled,data-table} structure.
 ---
 
-# aura-ui Development Skill
+# structyl Development Skill
 
-This skill teaches how to work productively on the `aura-ui` component library.
+This skill teaches how to work productively on the `structyl` component library.
 
 ---
 
@@ -24,10 +24,10 @@ If you skip these, you will violate conventions.
 ## Step 2: Understand the layered architecture
 
 ```
-@aura-ui/utils  ──┐
-@aura-ui/hooks  ──┤
-@aura-ui/core   ──┴─→ @aura-ui/primitives ──→ @aura-ui/styled ──→ apps
-@aura-ui/themes ────────────────────────────────↗
+@structyl/utils  ──┐
+@structyl/hooks  ──┤
+@structyl/core   ──┴─→ @structyl/primitives ──→ @structyl/styled ──→ apps
+@structyl/themes ────────────────────────────────↗
 ```
 
 **Dependency direction is downward only.** A package may depend on anything below it, never above.
@@ -77,7 +77,7 @@ pnpm changeset
 - Never roll your own controlled-state logic
 
 ### Compound components (Dialog, Tabs, etc.):
-- Use `createContext` from `@aura-ui/core`
+- Use `createContext` from `@structyl/core`
 - Export as namespace: `export * as Dialog from './dialog'`
 - Pattern: `<Dialog.Root>`, `<Dialog.Trigger>`, `<Dialog.Content>`, etc.
 

@@ -22,7 +22,7 @@ export interface AlertPaletteColor extends PaletteColor {
   };
 }
 
-export interface AuraScale {
+export interface StructylScale {
   '50': string;
   '100': string;
   '200': string;
@@ -40,23 +40,23 @@ export interface AuraScale {
 }
 
 export interface StaticPalette {
-  yellow: AuraScale;
-  amber: AuraScale;
-  blue: AuraScale;
-  blueGrey: AuraScale;
-  brown: AuraScale;
-  teal: AuraScale;
-  red: AuraScale;
-  purple: AuraScale;
-  pink: AuraScale;
-  orange: AuraScale;
-  lime: AuraScale;
-  lightGreen: AuraScale;
-  cyan: AuraScale;
-  deepOrange: AuraScale;
-  deepPurple: AuraScale;
-  green: AuraScale;
-  grey: AuraScale;
-  indigo: AuraScale;
-  lightBlue: AuraScale;
+  yellow: StructylScale;
+  amber: StructylScale;
+  blue: StructylScale;
+  blueGrey: StructylScale;
+  brown: StructylScale;
+  teal: StructylScale;
+  red: StructylScale;
+  purple: StructylScale;
+  pink: StructylScale;
+  orange: StructylScale;
+  lime: StructylScale;
+  lightGreen: StructylScale;
+  cyan: StructylScale;
+  deepOrange: StructylScale;
+  deepPurple: StructylScale;
+  green: StructylScale;
+  grey: StructylScale;
+  indigo: StructylScale;
+  lightBlue: StructylScale;
 }

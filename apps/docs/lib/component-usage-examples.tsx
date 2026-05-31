@@ -10,7 +10,7 @@ import {
   Search,
   Settings,
   Users,
-} from '@aura-ui/icons';
+} from '@structyl/icons';
 import {
   Accordion,
   Alert,
@@ -80,7 +80,7 @@ import {
   Stat,
   StatGroup,
   Popconfirm,
-} from '@aura-ui/styled';
+} from '@structyl/styled';
 import {
   DataTable,
   type DataTableBulkAction,
@@ -92,7 +92,7 @@ import {
   type DataTablePivotConfig,
   type DataTableSavedView,
   type DataTableCellSelection,
-} from '@aura-ui/data-table';
+} from '@structyl/data-table';
 
 export interface UsageExample {
   title: string;
@@ -113,24 +113,24 @@ type ProjectRow = {
 };
 
 const people = [
-  { id: 'ada', name: 'Ada Lovelace', role: 'Admin', email: 'ada@aura.dev', initials: 'AL' },
-  { id: 'grace', name: 'Grace Hopper', role: 'Engineer', email: 'grace@aura.dev', initials: 'GH' },
+  { id: 'ada', name: 'Ada Lovelace', role: 'Admin', email: 'ada@structyl.dev', initials: 'AL' },
+  { id: 'grace', name: 'Grace Hopper', role: 'Engineer', email: 'grace@structyl.dev', initials: 'GH' },
   {
     id: 'margaret',
     name: 'Margaret Hamilton',
     role: 'Reviewer',
-    email: 'margaret@aura.dev',
+    email: 'margaret@structyl.dev',
     initials: 'MH',
   },
-  { id: 'alan', name: 'Alan Turing', role: 'Research', email: 'alan@aura.dev', initials: 'AT' },
+  { id: 'alan', name: 'Alan Turing', role: 'Research', email: 'alan@structyl.dev', initials: 'AT' },
   {
     id: 'katherine',
     name: 'Katherine Johnson',
     role: 'Analyst',
-    email: 'katherine@aura.dev',
+    email: 'katherine@structyl.dev',
     initials: 'KJ',
   },
-  { id: 'radia', name: 'Radia Perlman', role: 'Network', email: 'radia@aura.dev', initials: 'RP' },
+  { id: 'radia', name: 'Radia Perlman', role: 'Network', email: 'radia@structyl.dev', initials: 'RP' },
 ];
 
 const projectRows: ProjectRow[] = Array.from({ length: 24 }, (_, index) => {
@@ -1950,7 +1950,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
                 <Label htmlFor="dialog-name">Name</Label>
                 <Input id="dialog-name" defaultValue="Ada Lovelace" />
                 <Label htmlFor="dialog-email">Email</Label>
-                <Input id="dialog-email" defaultValue="ada@aura.dev" />
+                <Input id="dialog-email" defaultValue="ada@structyl.dev" />
               </div>
               <Dialog.Footer>
                 <Dialog.Close asChild>
@@ -2333,7 +2333,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           </Tabs.List>
           <Tabs.Content value="profile" className="grid gap-3 text-sm">
             <Input aria-label="Profile name" defaultValue="Ada Lovelace" />
-            <Input aria-label="Profile email" defaultValue="ada@aura.dev" />
+            <Input aria-label="Profile email" defaultValue="ada@structyl.dev" />
           </Tabs.Content>
           <Tabs.Content value="security" className="text-muted-foreground text-sm">
             Two-factor authentication is enabled.
@@ -2562,13 +2562,13 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       preview: () => (
         <div className="grid w-full max-w-sm gap-3">
           <Input aria-label="Search customers" placeholder="Search customers" />
-          <Input aria-label="Contact email" type="email" defaultValue="ada@aura.dev" />
+          <Input aria-label="Contact email" type="email" defaultValue="ada@structyl.dev" />
           <Input aria-label="Invalid email" aria-invalid defaultValue="invalid-email" />
           <Input aria-label="Disabled sample" disabled placeholder="Disabled input" />
         </div>
       ),
       code: `<Input placeholder="Search customers" />
-<Input type="email" defaultValue="ada@aura.dev" />
+<Input type="email" defaultValue="ada@structyl.dev" />
 <Input aria-invalid defaultValue="invalid-email" />
 <Input disabled placeholder="Disabled input" />`,
     },
@@ -2614,7 +2614,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       description:
         'Fire success, error, warning, info and loading toasts from anywhere with the imperative API.',
       preview: () => <ToastVariantsExample />,
-      code: `import { toast, Button } from '@aura-ui/styled';
+      code: `import { toast, Button } from '@structyl/styled';
 // Requires <Toaster /> in your root layout
 
 export default function Demo() {
@@ -2650,7 +2650,7 @@ export default function Demo() {
           Upload (1.8s)
         </Button>
       ),
-      code: `import { toast, Button } from '@aura-ui/styled';
+      code: `import { toast, Button } from '@structyl/styled';
 
 export default function Demo() {
   return (
@@ -3034,20 +3034,20 @@ export default function Demo() {
       preview: () => (
         <div className="grid gap-3">
           <div className="border-border bg-muted/40 flex items-center gap-2 rounded-md border p-2">
-            <code className="text-sm">pnpm add @aura-ui/styled</code>
+            <code className="text-sm">pnpm add @structyl/styled</code>
             <CopyButton
-              value="pnpm add @aura-ui/styled"
+              value="pnpm add @structyl/styled"
               size="icon-sm"
               aria-label="Copy install command"
             />
           </div>
-          <CopyButton value="AURA_PUBLIC_TOKEN" variant="outline">
+          <CopyButton value="STRUCTYL_PUBLIC_TOKEN" variant="outline">
             Copy token
           </CopyButton>
         </div>
       ),
-      code: `<CopyButton value="pnpm add @aura-ui/styled" size="icon-sm" />
-<CopyButton value="AURA_PUBLIC_TOKEN" variant="outline">Copy token</CopyButton>`,
+      code: `<CopyButton value="pnpm add @structyl/styled" size="icon-sm" />
+<CopyButton value="STRUCTYL_PUBLIC_TOKEN" variant="outline">Copy token</CopyButton>`,
     },
   ],
   collapsible: [
@@ -3705,7 +3705,7 @@ export default function Demo() {
   'date-range-picker': [
     {
       title: 'MUI-style range field',
-      description: 'Use tuple values for MUI parity or the Aura range object for compound usage.',
+      description: 'Use tuple values for MUI parity or the Structyl range object for compound usage.',
       preview: () => (
         <DateRangePicker
           label="Sprint window"
@@ -4333,7 +4333,7 @@ export default function Demo() {
       description:
         'DataTableColumnDef extends TanStack ColumnDef with field, headerName, type, align, flex, renderCell, renderHeader, description and filterOperators.',
       preview: () => <DataTableColumnDefExample />,
-      code: `import type { DataTableColumnDef } from '@aura-ui/data-table';
+      code: `import type { DataTableColumnDef } from '@structyl/data-table';
 
 const columns: DataTableColumnDef<User>[] = [
   {
@@ -4420,7 +4420,7 @@ const columns: DataTableColumnDef<User>[] = [
       description:
         'rowActionMenu renders a ⋮ dropdown per row (supports separators, disabled/hidden guards, destructive variants). rowActionButtons renders inline buttons. bulkActions shows a panel when rows are selected. loadingRowIds dims individual rows during async mutations. onRowContextMenu / onCellContextMenu handle right-click events.',
       preview: () => <DataTableRowActionsExample />,
-      code: `import type { DataTableRowActionItem, DataTableBulkAction } from '@aura-ui/data-table';
+      code: `import type { DataTableRowActionItem, DataTableBulkAction } from '@structyl/data-table';
 
 const menu: DataTableRowActionItem<User>[] = [
   { id: 'edit', label: 'Edit', onClick: (row) => edit(row) },
@@ -4605,7 +4605,7 @@ const bulk: DataTableBulkAction<User>[] = [
       description:
         'enableToolPanel adds a collapsible right-side panel with Columns, Filters, and Stats tabs. enableHeaderStats pins an aggregated stats row below column headers (count / sum / avg / min / max / unique — configurable per column via headerStatsConfig). enableSavedViews adds a drawer to save, load, update and delete named table states.',
       preview: () => <DataTableAnalyticsFeaturesExample />,
-      code: `import type { DataTableSavedView } from '@aura-ui/data-table';
+      code: `import type { DataTableSavedView } from '@structyl/data-table';
 
 const [savedViews, setSavedViews] = React.useState<DataTableSavedView[]>([]);
 
@@ -4654,7 +4654,7 @@ const [savedViews, setSavedViews] = React.useState<DataTableSavedView[]>([]);
       description:
         'Set enablePivot to add a Pivot toolbar button. Clicking it opens a configuration drawer where you choose the row group field, pivot field, value field and aggregation function. The table re-renders as a cross-tabulation view. Pass pivotConfig + onPivotConfigChange for controlled state.',
       preview: () => <DataTablePivotExample />,
-      code: `import type { DataTablePivotConfig } from '@aura-ui/data-table';
+      code: `import type { DataTablePivotConfig } from '@structyl/data-table';
 
 // No initial config — table shows raw data; click Pivot in toolbar to configure
 const [pivotConfig, setPivotConfig] = React.useState<DataTablePivotConfig | undefined>(undefined);
@@ -4701,7 +4701,7 @@ const [pivotConfig, setPivotConfig] = React.useState<DataTablePivotConfig | unde
       description:
         'NoRowsOverlay renders when the data source is empty. NoResultsOverlay renders when filters/search produce zero matches from a non-empty dataset. Both accept any ReactNode — render illustrations, calls to action, or upload prompts.',
       preview: () => <DataTableSlotsExample />,
-      code: `import type { DataTableSlots } from '@aura-ui/data-table';
+      code: `import type { DataTableSlots } from '@structyl/data-table';
 
 const slots: DataTableSlots<User> = {
   NoRowsOverlay: () => (
@@ -4727,7 +4727,7 @@ const slots: DataTableSlots<User> = {
       description:
         'A vertical bar chart with grid lines, labelled axes and an interactive tooltip. The chart is responsive — omit the width prop to let it fill its container.',
       preview: () => <ChartBarExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { month: 'Jan', revenue: 4200 },
@@ -4752,7 +4752,7 @@ const data = [
       description:
         'Combine Chart.Bar and Chart.Line inside the same Chart.Root to overlay series with different mark types. The stacked bars use the same stackId.',
       preview: () => <ChartMultiSeriesExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={300}>
   <Chart.Grid />
@@ -4770,7 +4770,7 @@ const data = [
       description:
         'Chart.Area with a shared stackId renders a stacked area chart. fillOpacity controls the fill transparency independently per series.',
       preview: () => <ChartAreaExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={300}>
   <Chart.Grid />
@@ -4787,7 +4787,7 @@ const data = [
       description:
         'Wrap Chart.Pie in Chart.PieRoot. Set innerRadius > 0 to make a donut chart. padAngle and cornerRadius add spacing and rounded corners between segments.',
       preview: () => <ChartPieExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { category: 'Direct',   value: 3200 },
@@ -4814,7 +4814,7 @@ const data = [
       description:
         'Multiple Chart.Line components inside one Chart.Root. Each series picks the next color from the palette automatically, or accepts an explicit color prop.',
       preview: () => <ChartLineExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={300}>
   <Chart.Grid />
@@ -4832,7 +4832,7 @@ const data = [
       description:
         'Chart.Scatter maps xKey to the horizontal axis and yKey to the vertical axis. Multiple series are supported inside one Chart.Root.',
       preview: () => <ChartScatterExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={300}>
   <Chart.Grid />
@@ -4848,7 +4848,7 @@ const data = [
       description:
         'Chart.RadarRoot with PolarGrid, PolarAngleAxis and one or more Radar series. Each row in data represents one axis spoke.',
       preview: () => <ChartRadarExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { subject: 'Speed',     alice: 80, bob: 60 },
@@ -4871,7 +4871,7 @@ const data = [
       description:
         'Chart.Heatmap renders a grid of colored cells. Provide xKey, yKey and valueKey to map your data. Width and height are explicit.',
       preview: () => <ChartHeatmapExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 // data: Array<{ day: string; hour: string; count: number }>
 <Chart.Heatmap
@@ -4888,7 +4888,7 @@ const data = [
       description:
         'Chart.Treemap uses the squarify algorithm. Top-level items may contain a children array for nested groups. Omit children for a flat treemap.',
       preview: () => <ChartTreemapExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   {
@@ -4912,7 +4912,7 @@ const data = [
       description:
         'Chart.Funnel renders a top-down funnel. Each stage needs a name and value. Stages are rendered in the order provided.',
       preview: () => <ChartFunnelExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { name: 'Visitors',  value: 10000 },
@@ -4928,7 +4928,7 @@ const data = [
       description:
         'Chart.Gauge renders a half-circle arc gauge. Use the label prop to annotate the center. Combine multiple gauges side by side for a dashboard widget.',
       preview: () => <ChartGaugeExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <div className="flex gap-4">
   <Chart.Gauge value={72} min={0} max={100} width={200} height={150} label="CPU Load" />
@@ -4941,7 +4941,7 @@ const data = [
       description:
         'Chart.Candlestick expects data with open, high, low and close fields. Use upColor / downColor to customise bullish and bearish candle fills.',
       preview: () => <ChartCandlestickExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { date: 'Mon', open: 100, high: 115, low: 95,  close: 112 },
@@ -4964,7 +4964,7 @@ const data = [
       description:
         'Chart.SparkLine is a standalone mini-chart designed to fit inside table cells, cards or KPI widgets. Use type="line" (default) or type="bar". Width and height are explicit.',
       preview: () => <ChartSparkLineExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [12, 45, 28, 60, 35, 72, 48, 55, 40, 68];
 
@@ -4979,7 +4979,7 @@ const data = [12, 45, 28, 60, 35, 72, 48, 55, 40, 68];
       description:
         'Chart.RangeBar renders floating bars that span from lowKey to highKey. Use it for temperature ranges, confidence intervals or availability windows.',
       preview: () => <ChartRangeBarExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { month: 'Jan', low: 10, high: 30 },
@@ -5002,7 +5002,7 @@ const data = [
       description:
         'Chart.ReferenceLine draws a horizontal (y) or vertical (x) rule across the plot area. Use it to mark thresholds, averages or target values.',
       preview: () => <ChartReferenceLineExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={300}>
   <Chart.Grid />
@@ -5019,7 +5019,7 @@ const data = [
       description:
         'Chart.ReferenceArea shades a rectangular region of the chart bounded by y1/y2 (or x1/x2). Combine with ReferenceLine to highlight acceptable ranges.',
       preview: () => <ChartReferenceAreaExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={300}>
   <Chart.Grid />
@@ -5038,7 +5038,7 @@ const data = [
       description:
         'Wrap Chart.RadialBar in Chart.RadialBarRoot. Each row in data becomes a concentric arc ring. Provide dataKey for arc length and nameKey for labels.',
       preview: () => <ChartRadialBarExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { name: 'Task A', completion: 85 },
@@ -5056,7 +5056,7 @@ const data = [
       description:
         'Chart.Waterfall renders a bridge / waterfall chart where each bar starts from the running total of the previous bars. Negative values are styled differently.',
       preview: () => <ChartWaterfallExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { name: 'Q1 Start',  value: 120 },
@@ -5074,7 +5074,7 @@ const data = [
       description:
         'Chart.Sankey visualises flow between nodes using proportional-width links. Provide a nodes array (id + optional color) and a links array (source, target, value).',
       preview: () => <ChartSankeyExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const nodes = [{ id: 'A' }, { id: 'B' }, { id: 'C' }, { id: 'D' }, { id: 'E' }];
 
@@ -5094,7 +5094,7 @@ const links = [
       description:
         'Chart.Pyramid is an inverted funnel — the widest segment is at the bottom. Use it for hierarchical data or population pyramids where the largest value is the base.',
       preview: () => <ChartPyramidExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { name: 'Awareness', value: 10000 },
@@ -5110,7 +5110,7 @@ const data = [
       description:
         'Chart.Gantt renders a horizontal timeline where each task bar spans from start to end on a numeric time axis. Add a group field to visually cluster related tasks.',
       preview: () => <ChartGanttExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const tasks = [
   { id: '1', name: 'Design',      start: 0,  end: 5  },
@@ -5126,7 +5126,7 @@ const tasks = [
       description:
         'Chart.Histogram bins a flat array of numbers into equal-width buckets and renders them as a bar chart. Use bins to control the number of buckets.',
       preview: () => <ChartHistogramExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [14, 22, 8, 45, 31, 67, 52, 19, 73, 38, 61, 27, 84, 43, 16, 55, 29, 71, 48, 63];
 
@@ -5137,7 +5137,7 @@ const data = [14, 22, 8, 45, 31, 67, 52, 19, 73, 38, 61, 27, 84, 43, 16, 55, 29,
       description:
         'Chart.Boxplot renders standard box-and-whisker plots. Each entry needs min, q1, median, q3 and max. Add an outliers array for individual outlier dots.',
       preview: () => <ChartBoxplotExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { name: 'Q1 Sales', min: 12, q1: 28, median: 42, q3: 58, max: 74 },
@@ -5153,7 +5153,7 @@ const data = [
       description:
         'Chart.Chord visualises relationships between groups using a square matrix. Each cell [i][j] is the flow strength from group i to group j.',
       preview: () => <ChartChordExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const matrix = [
   [0,  12, 8,  5 ],
@@ -5169,7 +5169,7 @@ const matrix = [
       description:
         'Chart.Sunburst renders a multi-level donut chart. Pass a nested data tree — each node can have a value (leaf) or children (branch). Click a segment to zoom in.',
       preview: () => <ChartSunburstExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = {
   name: 'Root',
@@ -5198,7 +5198,7 @@ const data = {
       description:
         'Chart.LinearGauge is a horizontal progress-bar style gauge. Use colorStops to apply a traffic-light palette — each stop is [percentage, color].',
       preview: () => <ChartLinearGaugeExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 // Traffic-light color stops: [percentageThreshold, color]
 <Chart.LinearGauge
@@ -5217,7 +5217,7 @@ const data = {
       description:
         'Chart.RadialLineRoot + Chart.RadialLine plots data on a circular axis — useful for cyclic data like months or weekdays. Use closePath and area for a spider-web fill.',
       preview: () => <ChartRadialLineExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { month: 'Jan', value: 42 }, { month: 'Feb', value: 58 },
@@ -5235,7 +5235,7 @@ const data = [
       description:
         'Chart.RangeArea fills the band between a low and high series. Use it for confidence intervals, temperature ranges, or min/max envelopes.',
       preview: () => <ChartRangeAreaExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 const data = [
   { month: 'Jan', low: 2,  high: 8  },
@@ -5258,7 +5258,7 @@ const data = [
       description:
         'Compose a gauge from GaugeContainer + GaugeReferenceArc + GaugeValueArc + GaugePointer for full control over colors, thickness and pointer style.',
       preview: () => <ChartGaugeCompositionExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.GaugeContainer value={65} min={0} max={100} width={240} height={200}>
   <Chart.GaugeReferenceArc />
@@ -5271,7 +5271,7 @@ const data = [
       description:
         'Restrict the arc sweep with startAngle and endAngle to produce a semi-circle pie. Any angular range is supported — not just a full 360°.',
       preview: () => <ChartSemiCirclePieExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.PieRoot data={data} width={360} height={220}>
   <Chart.Pie
@@ -5288,7 +5288,7 @@ const data = [
       description:
         'Set arcLabel="percentage" to render the percentage of total directly on each arc segment. Use arcLabelMinAngle to suppress labels on tiny slices.',
       preview: () => <ChartPieArcLabelExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.PieRoot data={data} width={360} height={360}>
   <Chart.Pie
@@ -5305,7 +5305,7 @@ const data = [
       description:
         'Combine a donut (innerRadius > 0) with Chart.PieCenterLabel to render arbitrary content — text, icons or KPI values — in the hollow center.',
       preview: () => <ChartPieCenterLabelExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.PieRoot data={data} width={360} height={360}>
   <Chart.Pie dataKey="value" nameKey="category" innerRadius={80} padAngle={0.02} cornerRadius={4} />
@@ -5324,7 +5324,7 @@ const data = [
       description:
         'Enable showLabel on Chart.Bar to print the value on every bar. Use labelPosition="outside" to place the label above the bar, inside to place it within.',
       preview: () => <ChartBarWithLabelsExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 <Chart.Root data={data} height={340}>
   <Chart.Grid />
@@ -5340,7 +5340,7 @@ const data = [
       description:
         'Set fillByValue on Chart.Area to automatically use the chart-1 color above zero and the chart-3 color below zero — useful for P&L or delta charts.',
       preview: () => <ChartAreaFillByValueExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 // data has negative values
 <Chart.Root data={data} height={300}>
@@ -5356,7 +5356,7 @@ const data = [
       description:
         'Chart.Funnel supports a variant prop (filled / outlined) and a curve prop (linear / bump / step). Combine them for different visual styles.',
       preview: () => <ChartFunnelVariantsExample />,
-      code: `import { Chart } from '@aura-ui/styled';
+      code: `import { Chart } from '@structyl/styled';
 
 // Outlined funnel
 <Chart.Funnel data={data} width={300} height={240} variant="outlined" />

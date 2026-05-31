@@ -21,7 +21,7 @@ import {
   User,
   Mail,
   ChevronDown,
-} from '@aura-ui/icons';
+} from '@structyl/icons';
 import { COMPONENTS, HOOKS, PACKAGES, type ComponentEntry } from '../../../lib/registry';
 import { API } from '../../../lib/api-data';
 
@@ -310,10 +310,10 @@ const PMS: PM[] = ['pnpm', 'npm', 'yarn', 'bun'];
 function InstallBlock({ slug }: { slug: string }) {
   const [pm, setPm] = React.useState<PM>('pnpm');
   const cmds: Record<PM, string> = {
-    pnpm: `pnpm dlx aura-ui add ${slug}`,
-    npm: `npx aura-ui add ${slug}`,
-    yarn: `yarn dlx aura-ui add ${slug}`,
-    bun: `bunx aura-ui add ${slug}`,
+    pnpm: `pnpm dlx structyl add ${slug}`,
+    npm: `npx structyl add ${slug}`,
+    yarn: `yarn dlx structyl add ${slug}`,
+    bun: `bunx structyl add ${slug}`,
   };
   return (
     <div>
@@ -503,7 +503,7 @@ function NavFooter({ prev, next }: { prev: ComponentEntry | null; next: Componen
     <div className="mt-14 space-y-6">
       <div className="flex justify-end">
         <a
-          href="https://github.com/your-org/aura-ui"
+          href="https://github.com/your-org/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -559,17 +559,17 @@ function GettingStarted() {
       <p className="text-xs font-semibold uppercase tracking-widest text-primary">Overview</p>
       <h1 className="mt-2 text-4xl font-semibold tracking-tight">Getting started</h1>
       <p className="mt-3 text-base text-muted-foreground">
-        Install aura-ui and render your first component.
+        Install structyl and render your first component.
       </p>
 
       <Section title="1. Install">
-        <CodeBlock code={`pnpm add @aura-ui/styled @aura-ui/themes`} lang="bash" />
+        <CodeBlock code={`pnpm add @structyl/styled @structyl/themes`} lang="bash" />
       </Section>
 
       <Section title="2. Add the Tailwind preset">
         <CodeBlock
           code={`// tailwind.config.ts
-import preset from '@aura-ui/styled/tailwind-preset';
+import preset from '@structyl/styled/tailwind-preset';
 
 export default {
   presets: [preset],
@@ -581,7 +581,7 @@ export default {
 
       <Section title="3. Wrap your app in ThemeProvider">
         <CodeBlock
-          code={`import { ThemeProvider } from '@aura-ui/themes';
+          code={`import { ThemeProvider } from '@structyl/themes';
 
 export default function App({ children }) {
   return <ThemeProvider defaultTheme="slate">{children}</ThemeProvider>;
@@ -592,10 +592,10 @@ export default function App({ children }) {
 
       <Section title="4. Use a component">
         <CodeBlock
-          code={`import { Button } from '@aura-ui/styled';
+          code={`import { Button } from '@structyl/styled';
 
 export default function Page() {
-  return <Button>Hello aura-ui</Button>;
+  return <Button>Hello structyl</Button>;
 }`}
           lang="tsx"
         />
@@ -605,12 +605,12 @@ export default function Page() {
         <p className="mb-2 text-sm text-muted-foreground">
           Scaffold a project and copy component source directly into your codebase.
         </p>
-        <CodeBlock code={`npx aura-ui init\nnpx aura-ui add button dialog select`} lang="bash" />
+        <CodeBlock code={`npx structyl init\nnpx structyl add button dialog select`} lang="bash" />
       </Section>
 
       <div className="mt-14 flex justify-end">
         <a
-          href="https://github.com/your-org/aura-ui"
+          href="https://github.com/your-org/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -647,7 +647,7 @@ function AccessibilityPage() {
       </Section>
       <div className="mt-14 flex justify-end">
         <a
-          href="https://github.com/your-org/aura-ui"
+          href="https://github.com/your-org/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -663,7 +663,7 @@ function HooksPage() {
   return (
     <article className="mx-auto max-w-3xl">
       <p className="text-xs font-semibold uppercase tracking-widest text-primary">
-        @aura-ui/hooks
+        @structyl/hooks
       </p>
       <h1 className="mt-2 text-4xl font-semibold tracking-tight">Hooks</h1>
       <p className="mt-3 text-base text-muted-foreground">
@@ -693,7 +693,7 @@ function HooksPage() {
       </div>
       <div className="mt-14 flex justify-end">
         <a
-          href="https://github.com/your-org/aura-ui"
+          href="https://github.com/your-org/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -718,15 +718,15 @@ type PkgExtra = {
 const SAMPLE_ICONS = [Star, Heart, Home, Settings, Bell, Search, User, Mail] as const;
 
 const PKG_EXTRA: Record<string, PkgExtra> = {
-  '@aura-ui/core': {
+  '@structyl/core': {
     stats: [{ label: 'Bundle', value: '~8 kB' }, { label: 'Exports', value: '12' }, { label: 'Deps', value: '1' }],
-    code: `import { Slot, Primitive } from '@aura-ui/core';\n\n// Render any element while keeping behavior\nconst Button = React.forwardRef(({ asChild, ...props }, ref) => {\n  const Comp = asChild ? Slot : 'button';\n  return <Comp ref={ref} {...props} />;\n});`,
+    code: `import { Slot, Primitive } from '@structyl/core';\n\n// Render any element while keeping behavior\nconst Button = React.forwardRef(({ asChild, ...props }, ref) => {\n  const Comp = asChild ? Slot : 'button';\n  return <Comp ref={ref} {...props} />;\n});`,
     lang: 'tsx',
     exports: ['Slot', 'Primitive', 'Portal', 'Presence', 'FocusScope', 'DismissableLayer', 'RovingFocusGroup', 'Popper', 'createContext', 'composeRefs', 'useId', 'useControllableState'],
   },
-  '@aura-ui/hooks': {
+  '@structyl/hooks': {
     stats: [{ label: 'Bundle', value: '~3 kB' }, { label: 'Hooks', value: '24' }, { label: 'Deps', value: '0' }],
-    code: `import { useBoolean, useDebounce, useHotkeys } from '@aura-ui/hooks';\n\nconst { value: open, on, off } = useBoolean(false);\nconst debouncedQuery = useDebounce(query, 300);\nuseHotkeys('mod+k', () => setOpen(true));`,
+    code: `import { useBoolean, useDebounce, useHotkeys } from '@structyl/hooks';\n\nconst { value: open, on, off } = useBoolean(false);\nconst debouncedQuery = useDebounce(query, 300);\nuseHotkeys('mod+k', () => setOpen(true));`,
     lang: 'ts',
     exports: ['useBoolean', 'useToggle', 'useCounter', 'usePrevious', 'useDebounce', 'useThrottle', 'useLocalStorage', 'useCopyToClipboard', 'useMediaQuery', 'useDarkMode', 'useWindowSize', 'useClickOutside', 'useEventListener', 'useKeyPress', 'useHotkeys', 'useMount', 'useUnmount', 'useUpdateEffect', 'useId', 'useLatest', 'useCallbackRef', 'useComposedRefs', 'useControllableState', 'useIsomorphicLayoutEffect'],
     preview: () => {
@@ -746,15 +746,15 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
       return <CounterDemo />;
     },
   },
-  '@aura-ui/utils': {
+  '@structyl/utils': {
     stats: [{ label: 'Bundle', value: '<1.5 kB' }, { label: 'Exports', value: '15' }, { label: 'Side effects', value: 'none' }],
-    code: `import { cn, composeEventHandlers } from '@aura-ui/utils';\n\n// Merge Tailwind classes safely\nconst cls = cn('px-4 py-2 rounded-lg', variant === 'ghost' && 'bg-transparent', className);\n\n// Compose multiple onClick handlers\nconst onClick = composeEventHandlers(userOnClick, internalOnClick);`,
+    code: `import { cn, composeEventHandlers } from '@structyl/utils';\n\n// Merge Tailwind classes safely\nconst cls = cn('px-4 py-2 rounded-lg', variant === 'ghost' && 'bg-transparent', className);\n\n// Compose multiple onClick handlers\nconst onClick = composeEventHandlers(userOnClick, internalOnClick);`,
     lang: 'ts',
     exports: ['cn', 'composeEventHandlers', 'isFunction', 'isObject', 'isString', 'clamp', 'noop', 'pick', 'omit', 'chunk', 'uniq', 'groupBy', 'camelCase', 'kebabCase', 'capitalize'],
   },
-  '@aura-ui/themes': {
+  '@structyl/themes': {
     stats: [{ label: 'Bundle', value: '~2 kB' }, { label: 'Themes', value: '3' }, { label: 'Tokens', value: '30+' }],
-    code: `import { ThemeProvider, useTheme } from '@aura-ui/themes';\n\n// Wrap your app\nexport default function Root({ children }) {\n  return (\n    <ThemeProvider defaultTheme="slate" defaultMode="system">\n      {children}\n    </ThemeProvider>\n  );\n}\n\n// Use anywhere\nconst { theme, setTheme, resolvedMode } = useTheme();`,
+    code: `import { ThemeProvider, useTheme } from '@structyl/themes';\n\n// Wrap your app\nexport default function Root({ children }) {\n  return (\n    <ThemeProvider defaultTheme="slate" defaultMode="system">\n      {children}\n    </ThemeProvider>\n  );\n}\n\n// Use anywhere\nconst { theme, setTheme, resolvedMode } = useTheme();`,
     lang: 'tsx',
     exports: ['ThemeProvider', 'useTheme', 'ThemeScript', 'defaultThemes', 'type Theme', 'type ThemeMode'],
     preview: () => (
@@ -770,15 +770,15 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
       </div>
     ),
   },
-  '@aura-ui/primitives': {
+  '@structyl/primitives': {
     stats: [{ label: 'Bundle', value: '~15 kB' }, { label: 'Components', value: '50+' }, { label: 'A11y', value: 'WAI-ARIA' }],
-    code: `import { Dialog } from '@aura-ui/primitives';\n\n<Dialog.Root open={open} onOpenChange={setOpen}>\n  <Dialog.Trigger asChild>\n    <button>Open</button>\n  </Dialog.Trigger>\n  <Dialog.Portal>\n    <Dialog.Overlay />\n    <Dialog.Content>\n      <Dialog.Title>Title</Dialog.Title>\n      <Dialog.Close />\n    </Dialog.Content>\n  </Dialog.Portal>\n</Dialog.Root>`,
+    code: `import { Dialog } from '@structyl/primitives';\n\n<Dialog.Root open={open} onOpenChange={setOpen}>\n  <Dialog.Trigger asChild>\n    <button>Open</button>\n  </Dialog.Trigger>\n  <Dialog.Portal>\n    <Dialog.Overlay />\n    <Dialog.Content>\n      <Dialog.Title>Title</Dialog.Title>\n      <Dialog.Close />\n    </Dialog.Content>\n  </Dialog.Portal>\n</Dialog.Root>`,
     lang: 'tsx',
     exports: ['Button', 'Dialog', 'Tooltip', 'Popover', 'Select', 'Tabs', 'Accordion', 'Checkbox', 'RadioGroup', 'Switch', 'Slider', 'Separator', 'Avatar', 'Badge', 'Label', '+ 35 more'],
   },
-  '@aura-ui/styled': {
+  '@structyl/styled': {
     stats: [{ label: 'Bundle', value: '~22 kB' }, { label: 'Components', value: '45+' }, { label: 'Variants', value: 'tailwind-variants' }],
-    code: `import { Button, Dialog, Badge } from '@aura-ui/styled';\n\n<Button variant="outline" size="sm">Cancel</Button>\n<Button>Save changes</Button>\n<Badge variant="success">Published</Badge>`,
+    code: `import { Button, Dialog, Badge } from '@structyl/styled';\n\n<Button variant="outline" size="sm">Cancel</Button>\n<Button>Save changes</Button>\n<Badge variant="success">Published</Badge>`,
     lang: 'tsx',
     exports: ['Button', 'Dialog', 'Drawer', 'Sheet', 'Tooltip', 'Popover', 'Select', 'Combobox', 'Tabs', 'Accordion', 'Input', 'Textarea', 'Checkbox', 'RadioGroup', 'Switch', 'Slider', 'Badge', 'Avatar', 'Card', 'Skeleton', 'DatePicker', '+ 24 more'],
     preview: () => (
@@ -796,9 +796,9 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
       </div>
     ),
   },
-  '@aura-ui/data-table': {
+  '@structyl/data-table': {
     stats: [{ label: 'Bundle', value: '~38 kB' }, { label: 'Engine', value: 'TanStack' }, { label: 'Rows', value: '100k+ virtual' }],
-    code: `import { DataTable } from '@aura-ui/data-table';\n\n<DataTable\n  data={users}\n  columns={columns}\n  enableSorting\n  enableFiltering\n  enablePagination\n  enableColumnPinning\n  enableVirtualization\n/>`,
+    code: `import { DataTable } from '@structyl/data-table';\n\n<DataTable\n  data={users}\n  columns={columns}\n  enableSorting\n  enableFiltering\n  enablePagination\n  enableColumnPinning\n  enableVirtualization\n/>`,
     lang: 'tsx',
     exports: ['DataTable', 'useDataTable', 'createColumnHelper', 'type DataTableColumn', 'type DataTableFilterGroup', 'type DataTableBulkAction', 'type DataTableView', 'DataTablePagination'],
     preview: () => (
@@ -818,9 +818,9 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
       </div>
     ),
   },
-  '@aura-ui/icons': {
+  '@structyl/icons': {
     stats: [{ label: 'Icons', value: '1000+' }, { label: 'Per-icon', value: '~0.5 kB' }, { label: 'Source', value: 'lucide-react' }],
-    code: `import { Star, Heart, Settings } from '@aura-ui/icons';\n\n// Fully tree-shakeable — only imported icons are bundled\n<Star className="h-5 w-5 text-amber-500" />\n<Heart className="h-5 w-5 text-red-500" strokeWidth={1.5} />`,
+    code: `import { Star, Heart, Settings } from '@structyl/icons';\n\n// Fully tree-shakeable — only imported icons are bundled\n<Star className="h-5 w-5 text-amber-500" />\n<Heart className="h-5 w-5 text-red-500" strokeWidth={1.5} />`,
     lang: 'tsx',
     exports: SAMPLE_ICONS.map(I => I.displayName ?? 'Icon').concat(['…1000+ more']),
     preview: () => (
@@ -834,20 +834,20 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
       </div>
     ),
   },
-  '@aura-ui/cli': {
+  '@structyl/cli': {
     stats: [{ label: 'Type', value: 'devDependency' }, { label: 'Commands', value: '3' }, { label: 'Node', value: '>=18' }],
-    code: `# Initialize a new project\nnpx aura-ui init\n\n# Add components to your project\nnpx aura-ui add button dialog select combobox\n\n# Add multiple at once\nnpx aura-ui add --all`,
+    code: `# Initialize a new project\nnpx structyl init\n\n# Add components to your project\nnpx structyl add button dialog select combobox\n\n# Add multiple at once\nnpx structyl add --all`,
     lang: 'bash',
-    exports: ['aura-ui init', 'aura-ui add <component>', 'aura-ui add --all'],
+    exports: ['structyl init', 'structyl add <component>', 'structyl add --all'],
   },
-  '@aura-ui/api-client': {
+  '@structyl/api-client': {
     stats: [
       { label: 'Bundle', value: '~6 kB' },
       { label: 'Peer deps', value: 'axios + react' },
       { label: 'Cache', value: 'useSyncExternalStore' },
     ],
-    code: `import { ApiProvider, useApiQuery, useApiMutation } from '@aura-ui/api-client';
-import { createApiClient } from '@aura-ui/api-client';
+    code: `import { ApiProvider, useApiQuery, useApiMutation } from '@structyl/api-client';
+import { createApiClient } from '@structyl/api-client';
 
 // 1. Create a client
 const apiClient = createApiClient({
@@ -1007,11 +1007,11 @@ const { mutate } = useApiMutation('/users', {
 };
 
 const ARCH_LAYERS = [
-  { label: 'Foundation', pkgs: ['@aura-ui/core', '@aura-ui/utils'], color: 'bg-blue-500/10 border-blue-500/20 text-blue-600' },
-  { label: 'Behavior',   pkgs: ['@aura-ui/hooks', '@aura-ui/themes', '@aura-ui/primitives'], color: 'bg-violet-500/10 border-violet-500/20 text-violet-600' },
-  { label: 'UI',         pkgs: ['@aura-ui/styled', '@aura-ui/icons'], color: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' },
-  { label: 'Data',       pkgs: ['@aura-ui/data-table', '@aura-ui/api-client'], color: 'bg-amber-500/10 border-amber-500/20 text-amber-600' },
-  { label: 'Tooling',    pkgs: ['@aura-ui/cli'], color: 'bg-muted border-border text-muted-foreground' },
+  { label: 'Foundation', pkgs: ['@structyl/core', '@structyl/utils'], color: 'bg-blue-500/10 border-blue-500/20 text-blue-600' },
+  { label: 'Behavior',   pkgs: ['@structyl/hooks', '@structyl/themes', '@structyl/primitives'], color: 'bg-violet-500/10 border-violet-500/20 text-violet-600' },
+  { label: 'UI',         pkgs: ['@structyl/styled', '@structyl/icons'], color: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' },
+  { label: 'Data',       pkgs: ['@structyl/data-table', '@structyl/api-client'], color: 'bg-amber-500/10 border-amber-500/20 text-amber-600' },
+  { label: 'Tooling',    pkgs: ['@structyl/cli'], color: 'bg-muted border-border text-muted-foreground' },
 ];
 
 function PackageCard({ pkg }: { pkg: typeof PACKAGES[number] }) {
@@ -1157,7 +1157,7 @@ function PackagesPage() {
       </div>
 
       <div className="mt-14 flex justify-end">
-        <a href="https://github.com/your-org/aura-ui" target="_blank" rel="noreferrer"
+        <a href="https://github.com/your-org/structyl" target="_blank" rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
           Edit on GitHub <ArrowUpRight className="h-3 w-3" />
         </a>

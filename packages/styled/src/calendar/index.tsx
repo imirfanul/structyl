@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight } from '@aura-ui/icons';
-import { Calendar as CalendarPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { ChevronLeft, ChevronRight } from '@structyl/icons';
+import { Calendar as CalendarPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 interface CalendarProps
   extends React.ComponentPropsWithoutRef<typeof CalendarPrimitive.Root> {

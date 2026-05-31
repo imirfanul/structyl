@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { Info as InfoIcon, CheckCircle2, AlertTriangle, XCircle } from '@aura-ui/icons';
+import { Info as InfoIcon, CheckCircle2, AlertTriangle, XCircle } from '@structyl/icons';
 import { Callout } from './index';
 
 const meta = {

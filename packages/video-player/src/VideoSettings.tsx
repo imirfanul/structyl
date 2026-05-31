@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Slider, Tabs } from '@aura-ui/styled';
+import { Button, Slider, Tabs } from '@structyl/styled';
 import type { SubtitleStyle } from './SubtitleDisplay';
 import type { SubtitleTrack } from './subtitleParser';
 import type { VideoFilters as VideoFiltersType } from './useVideoFilters';

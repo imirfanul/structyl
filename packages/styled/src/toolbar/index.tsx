@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Toolbar as ToolbarPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Toolbar as ToolbarPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof ToolbarPrimitive.Root>,

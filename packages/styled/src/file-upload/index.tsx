@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Upload } from '@aura-ui/icons';
-import { FileUpload as FileUploadPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Upload } from '@structyl/icons';
+import { FileUpload as FileUploadPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = FileUploadPrimitive.Root;
 

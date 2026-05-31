@@ -47,13 +47,13 @@ export const Default: Story = {
                   href="#"
                   className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
                 >
-                  <div className="mb-2 mt-4 text-lg font-medium">aura-ui</div>
+                  <div className="mb-2 mt-4 text-lg font-medium">structyl</div>
                   <Typography variant="body2" className="leading-tight text-muted-foreground">
                     Beautifully designed components built with Radix UI and Tailwind CSS.
                   </Typography>
                 </NavigationMenu.Link>
               </li>
-              <ListItem title="Installation">Install and configure aura-ui in your project.</ListItem>
+              <ListItem title="Installation">Install and configure structyl in your project.</ListItem>
               <ListItem title="Typography">Styles for headings, paragraphs, lists, and more.</ListItem>
               <ListItem title="Components">Browse all available components and their usage.</ListItem>
             </ul>

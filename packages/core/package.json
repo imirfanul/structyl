@@ -1,7 +1,9 @@
 {
-  "name": "@aura-ui/core",
+  "name": "@structyl/core",
   "version": "1.0.0",
-  "description": "Internal primitives powering @aura-ui (Slot, Primitive, contexts, focus management)",
+  "publishConfig": { "access": "public" },
+  "description": "Headless React primitives powering structyl: Slot/asChild, polymorphic Primitive, scoped contexts, focus management, presence, Floating UI poppers.",
+  "keywords": ["react", "typescript", "structyl", "headless", "primitives", "slot", "aschild", "focus-trap", "presence", "popper", "floating-ui", "accessibility", "wai-aria"],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

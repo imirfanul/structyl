@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { Inbox, Search, FolderOpen } from '@aura-ui/icons';
+import { Inbox, Search, FolderOpen } from '@structyl/icons';
 import { Button } from '../button';
 import { EmptyState } from './index';
 

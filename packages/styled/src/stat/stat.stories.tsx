@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { Users } from '@aura-ui/icons';
+import { Users } from '@structyl/icons';
 import { Stat, StatGroup, TrendBadge } from './index';
 
 const meta = {

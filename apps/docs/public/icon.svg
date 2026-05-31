@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="structyl">
+  <defs>
+    <linearGradient id="sky" x1="40" y1="20" x2="472" y2="492" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#131F36"/>
+      <stop offset="1" stop-color="#070B18"/>
+    </linearGradient>
+    <linearGradient id="aurora" x1="150" y1="70" x2="360" y2="440" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4DF6C9"/>
+      <stop offset="0.42" stop-color="#23C7D6"/>
+      <stop offset="0.78" stop-color="#6E8BFF"/>
+      <stop offset="1" stop-color="#A973FF"/>
+    </linearGradient>
+    <radialGradient id="coreLum" cx="0.40" cy="0.36" r="0.72">
+      <stop offset="0" stop-color="#ECFFFB" stop-opacity="0.92"/>
+      <stop offset="0.45" stop-color="#ECFFFB" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bloom" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#33E2D2" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#33E2D2" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="fade" x1="418" y1="92" x2="120" y2="430" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#2b2b2b"/>
+    </linearGradient>
+    <mask id="ringfade"><rect width="512" height="512" fill="url(#fade)"/></mask>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="softglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <clipPath id="sq"><rect width="512" height="512" rx="116" ry="116"/></clipPath>
+  </defs>
+  <g clip-path="url(#sq)">
+    <rect width="512" height="512" fill="url(#sky)"/>
+    <circle cx="256" cy="256" r="168" fill="url(#bloom)"/>
+    <g mask="url(#ringfade)">
+      <g filter="url(#glow)" opacity="0.75">
+        <circle cx="256" cy="256" r="152" fill="none" stroke="url(#aurora)" stroke-width="11"/>
+        <circle cx="256" cy="256" r="200" fill="none" stroke="url(#aurora)" stroke-width="9"/>
+      </g>
+      <circle cx="256" cy="256" r="152" fill="none" stroke="url(#aurora)" stroke-width="10"/>
+      <circle cx="256" cy="256" r="200" fill="none" stroke="url(#aurora)" stroke-width="8"/>
+    </g>
+    <circle cx="256" cy="256" r="96" fill="url(#aurora)" filter="url(#softglow)" opacity="0.55"/>
+    <circle cx="256" cy="256" r="90" fill="url(#aurora)"/>
+    <circle cx="256" cy="256" r="90" fill="url(#coreLum)"/>
+  </g>
+</svg>

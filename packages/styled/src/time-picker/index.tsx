@@ -1,10 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight, Clock } from '@aura-ui/icons';
-import { TimePicker as TimePickerPrimitive } from '@aura-ui/primitives';
-import type { PickerChangeContext, TimePickerView, TimeValidationError } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { ChevronLeft, ChevronRight, Clock } from '@structyl/icons';
+import { TimePicker as TimePickerPrimitive } from '@structyl/primitives';
+import type { PickerChangeContext, TimePickerView, TimeValidationError } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { Button } from '../button';
 import * as Popover from '../popover';
 import { Typography } from '../typography';

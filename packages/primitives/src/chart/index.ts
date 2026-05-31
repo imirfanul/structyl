@@ -1,5 +1,5 @@
 /**
- * @aura-ui/primitives — Chart
+ * @structyl/primitives — Chart
  *
  * Headless SVG chart primitives. No external chart library dependencies.
  * Provides all layout algorithms, scale functions, and path generators.

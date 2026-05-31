@@ -1,20 +1,20 @@
 ---
 title: Migrating from Chakra UI
-description: How to move from Chakra UI to aura-ui.
+description: How to move from Chakra UI to structyl.
 ---
 
 # Migrating from Chakra UI
 
-Chakra is style-props + theme tokens. `aura-ui` is Tailwind utility classes + theme tokens via CSS variables.
+Chakra is style-props + theme tokens. `structyl` is Tailwind utility classes + theme tokens via CSS variables.
 
 ## Theming
 
 - **Chakra:** `extendTheme({...})` with `tokens` object.
-- **aura-ui:** CSS variables in a Tailwind preset (`@aura-ui/themes`). Override by writing your own `--primary`, `--bg`, `--fg`, etc.
+- **structyl:** CSS variables in a Tailwind preset (`@structyl/themes`). Override by writing your own `--primary`, `--bg`, `--fg`, etc.
 
 ## Component map
 
-| Chakra                       | aura-ui                                              |
+| Chakra                       | structyl                                              |
 | ---------------------------- | ----------------------------------------------------- |
 | `Button`                     | `Button`                                              |
 | `Input`                      | `Input`                                               |
