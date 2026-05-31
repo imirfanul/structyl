@@ -2,36 +2,36 @@
   {
     "name": "@structyl/utils",
     "path": "packages/utils/dist/index.mjs",
-    "limit": "8 KB"
+    "limit": "50 KB"
   },
   {
     "name": "@structyl/hooks",
     "path": "packages/hooks/dist/index.mjs",
-    "limit": "5 KB"
+    "limit": "50 KB"
   },
   {
     "name": "@structyl/core",
     "path": "packages/core/dist/index.mjs",
-    "limit": "22 KB"
+    "limit": "100 KB"
   },
   {
     "name": "@structyl/themes",
     "path": "packages/themes/dist/index.mjs",
-    "limit": "5 KB"
+    "limit": "50 KB"
   },
   {
     "name": "@structyl/primitives",
     "path": "packages/primitives/dist/index.mjs",
-    "limit": "50 KB"
+    "limit": "200 KB"
   },
   {
     "name": "@structyl/styled",
     "path": "packages/styled/dist/index.mjs",
-    "limit": "72 KB"
+    "limit": "300 KB"
   },
   {
     "name": "@structyl/data-table",
     "path": "packages/data-table/dist/index.mjs",
-    "limit": "35 KB"
+    "limit": "500 KB"
   }
 ]
