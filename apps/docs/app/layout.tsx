@@ -41,13 +41,13 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: `${SITE_NAME} — Accessible React Component Library`,
     description: SITE_DESCRIPTION,
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: `${SITE_NAME} — Accessible React Component Library` }],
+    // og:image is auto-wired from app/opengraph-image.png (static file convention)
   },
   twitter: {
     card: 'summary_large_image',
     title: `${SITE_NAME} — Accessible React Component Library`,
     description: SITE_DESCRIPTION,
-    images: ['/opengraph-image'],
+    // twitter:image is auto-wired from app/twitter-image.png (static file convention)
   },
   robots: {
     index: true,
@@ -60,7 +60,10 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: { canonical: SITE_URL },
+  // NOTE: no site-wide `alternates.canonical` here — a blanket canonical is
+  // inherited by every route and would make all pages canonicalize to `/`.
+  // Each route declares its own self-referential canonical; the homepage
+  // self-canonicalizes by absence.
   manifest: '/site.webmanifest',
   icons: {
     icon: [

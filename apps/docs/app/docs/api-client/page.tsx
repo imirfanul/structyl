@@ -1276,7 +1276,7 @@ const res = await instance.get('/download', { responseType: 'blob' });`} />
 
         {/* Footer */}
         <div className="mt-14 flex justify-end">
-          <a href="https://github.com/your-org/structyl" target="_blank" rel="noreferrer"
+          <a href="https://github.com/imirfanul/structyl" target="_blank" rel="noreferrer"
             className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Edit on GitHub <ArrowUpRight className="h-3 w-3" />
           </a>

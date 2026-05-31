@@ -503,7 +503,7 @@ function NavFooter({ prev, next }: { prev: ComponentEntry | null; next: Componen
     <div className="mt-14 space-y-6">
       <div className="flex justify-end">
         <a
-          href="https://github.com/your-org/structyl"
+          href="https://github.com/imirfanul/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -610,7 +610,7 @@ export default function Page() {
 
       <div className="mt-14 flex justify-end">
         <a
-          href="https://github.com/your-org/structyl"
+          href="https://github.com/imirfanul/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -647,7 +647,7 @@ function AccessibilityPage() {
       </Section>
       <div className="mt-14 flex justify-end">
         <a
-          href="https://github.com/your-org/structyl"
+          href="https://github.com/imirfanul/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -693,7 +693,7 @@ function HooksPage() {
       </div>
       <div className="mt-14 flex justify-end">
         <a
-          href="https://github.com/your-org/structyl"
+          href="https://github.com/imirfanul/structyl"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg"
@@ -1157,7 +1157,7 @@ function PackagesPage() {
       </div>
 
       <div className="mt-14 flex justify-end">
-        <a href="https://github.com/your-org/structyl" target="_blank" rel="noreferrer"
+        <a href="https://github.com/imirfanul/structyl" target="_blank" rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
           Edit on GitHub <ArrowUpRight className="h-3 w-3" />
         </a>

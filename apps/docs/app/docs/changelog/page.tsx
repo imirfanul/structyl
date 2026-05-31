@@ -174,7 +174,7 @@ export default function ChangelogPage() {
       <div className="mt-14 rounded-xl border border-border bg-muted/20 p-5 text-sm text-muted-foreground">
         For the full git history, see the{' '}
         <a
-          href="https://github.com/your-org/structyl/commits/main"
+          href="https://github.com/imirfanul/structyl/commits/main"
           target="_blank"
           rel="noreferrer"
           className="text-primary underline-offset-2 hover:underline"

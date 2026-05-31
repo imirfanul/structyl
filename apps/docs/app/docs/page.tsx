@@ -1,8 +1,21 @@
-'use client';
-
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowUpRight } from '@structyl/icons';
 import { COMPONENTS } from '../../lib/registry';
+import { SITE_URL } from '../../lib/site-config';
+
+const url = `${SITE_URL}/docs`;
+const title = 'Documentation';
+const description =
+  'structyl documentation — install the packages, browse 90+ accessible components with live previews, and learn the theming system, hooks, and DataTable.';
+
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: { canonical: url },
+  openGraph: { title: `${title} | structyl`, description, url, type: 'website' },
+  twitter: { card: 'summary_large_image', title: `${title} | structyl`, description },
+};
 
 export default function DocsHome() {
   return (
