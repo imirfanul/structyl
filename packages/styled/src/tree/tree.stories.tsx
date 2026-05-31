@@ -14,7 +14,6 @@ export default meta;
 type Story = StoryObj;
 
 export const FileTree: Story = {
-  name: 'File Tree',
   render: () => (
     <Root className="w-64 rounded-md border border-border p-2">
       <Item value="src">
@@ -74,7 +73,6 @@ export const FileTree: Story = {
 };
 
 export const OrgChart: Story = {
-  name: 'Org Chart',
   render: () => (
     <Root className="w-72 rounded-md border border-border p-2">
       <Item value="ceo">
@@ -122,7 +120,6 @@ export const ShallowTree: Story = {
 };
 
 export const DeepNesting: Story = {
-  name: 'Deep Nesting',
   render: () => (
     <Root className="w-64 rounded-md border border-border p-2">
       <Item value="level1">

@@ -26,7 +26,6 @@ type Story = StoryObj<typeof meta>;
 // ── Basic variants ────────────────────────────────────────────────────────────
 
 export const Success: Story = {
-  name: 'Success',
   render: () => (
     <Button variant="outline" onClick={() => toast.success('Changes saved successfully!')}>
       Show success
@@ -35,7 +34,6 @@ export const Success: Story = {
 };
 
 export const Error: Story = {
-  name: 'Error',
   render: () => (
     <Button
       variant="destructive"
@@ -51,7 +49,6 @@ export const Error: Story = {
 };
 
 export const Warning: Story = {
-  name: 'Warning',
   render: () => (
     <Button
       variant="outline"
@@ -67,7 +64,6 @@ export const Warning: Story = {
 };
 
 export const Info: Story = {
-  name: 'Info',
   render: () => (
     <Button
       variant="outline"
