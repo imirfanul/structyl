@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback, RefObject } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import type { RefObject } from 'react';
 
 interface UseVideoPlayerProps {
   videoRef: RefObject<HTMLVideoElement | null>;

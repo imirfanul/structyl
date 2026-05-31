@@ -55,7 +55,7 @@ export const VideoSettings: React.FC<VideoSettingsProps> = ({
 
       {/* Main tabs */}
       <Tabs.Root defaultValue="subtitles" className="flex flex-col flex-1 overflow-hidden">
-        <Tabs.List variant="pills" className="px-3 py-2 flex-shrink-0">
+        <Tabs.List className="px-3 py-2 flex-shrink-0">
           <Tabs.Trigger value="subtitles">Subtitles</Tabs.Trigger>
           <Tabs.Trigger value="filters">Filters</Tabs.Trigger>
           <Tabs.Trigger value="quality">Quality</Tabs.Trigger>
