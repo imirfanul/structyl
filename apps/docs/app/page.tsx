@@ -481,9 +481,9 @@ export default function Page() {
           <h1 className="animate-fade-up delay-100 text-balance text-5xl font-bold tracking-tight md:text-7xl">
             The React UI library
             <br />
-            with an{' '}
+            with{' '}
             <span className="animate-shimmer bg-gradient-to-r from-[#4DF6C9] via-[#6E8BFF] to-[#A973FF] bg-clip-text text-transparent">
-              structyl.
+              structure.
             </span>
           </h1>
 

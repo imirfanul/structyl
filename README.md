@@ -7,7 +7,7 @@
 </picture>
 <!-- markdownlint-enable MD033 -->
 
-> A world-class React component library — accessible headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable.
+> **The React UI library with structure.** Accessible headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -16,7 +16,7 @@
 
 ## ✨ What is this?
 
-**structyl** is a complete React component system built on three layers:
+**structyl** — *struct* (structure, structured primitives) + *-yl* (the chemistry suffix marking an elemental building block, as in methyl, ethyl) — is a complete React component system built on three layers:
 
 1. **Headless primitives** — Accessible, unstyled behavior (like Radix UI)
 2. **Styled components** — Tailwind-styled wrappers with variant API

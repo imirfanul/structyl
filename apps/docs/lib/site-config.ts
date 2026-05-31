@@ -6,7 +6,7 @@ export const SITE_NAME = 'structyl';
 export const SITE_DESCRIPTION =
   'Accessible headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable. TypeScript-first, WAI-ARIA compliant, dark-mode ready.';
 
-export const GITHUB_URL = 'https://github.com/structyl/structyl';
+export const GITHUB_URL = 'https://github.com/imirfanul/structyl';
 export const NPM_URL    = 'https://www.npmjs.com/org/structyl';
 
 /** All /docs/[slug] component pages */

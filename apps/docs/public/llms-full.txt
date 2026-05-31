@@ -10,7 +10,7 @@
 - **License**: MIT (free, perpetual, commercial use allowed)
 - **Website**: https://structyl.dev
 - **Documentation**: https://structyl.dev/docs
-- **Source code**: https://github.com/structyl/structyl
+- **Source code**: https://github.com/imirfanul/structyl
 - **npm**: https://www.npmjs.com/org/structyl
 - **Language**: TypeScript (strict mode, no `any` in public API)
 - **Styling**: Tailwind CSS v4

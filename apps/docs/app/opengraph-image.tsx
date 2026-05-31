@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'structyl — The React UI library with an structyl';
+export const alt = 'structyl — The React UI library with structure.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -118,8 +118,8 @@ export default function OGImage() {
           <AuroraOrb s={320} />
 
           <div style={{ display: 'flex', fontSize: '44px', fontWeight: 700, letterSpacing: '-1px' }}>
-            <span style={{ color: '#EEF3FA' }}>structyl</span>
-            <span style={{ color: '#4DF6C9' }}>-ui</span>
+            <span style={{ color: '#EEF3FA' }}>struct</span>
+            <span style={{ color: '#4DF6C9' }}>yl</span>
           </div>
         </div>
 
@@ -160,7 +160,7 @@ export default function OGImage() {
               }}
             >
               The React UI
-              {'\n'}library with an
+              {'\n'}library with
             </span>
             <span
               style={{
@@ -171,7 +171,7 @@ export default function OGImage() {
                 lineHeight: 1.15,
               }}
             >
-              structyl.
+              structure.
             </span>
           </div>
 

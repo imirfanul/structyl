@@ -9,7 +9,7 @@ structyl is an open-source TypeScript-first React component library. It is struc
 Current version: 1.0.0
 License: MIT
 Documentation: https://structyl.dev
-Source: https://github.com/structyl/structyl
+Source: https://github.com/imirfanul/structyl
 npm: https://www.npmjs.com/org/structyl
 
 ## Installation
