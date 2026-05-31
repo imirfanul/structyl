@@ -44,3 +44,4 @@ pnpm-debug.log*
 *.tsbuildinfo
 .cache/
 .eslintcache
+.vercel
