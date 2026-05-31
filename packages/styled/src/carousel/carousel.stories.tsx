@@ -45,7 +45,6 @@ export const Default: Story = {
 };
 
 export const ImageCarousel: Story = {
-  name: 'Image Carousel',
   render: () => (
     <div className="w-[500px] px-12">
       <Root>
@@ -69,7 +68,6 @@ export const ImageCarousel: Story = {
 };
 
 export const ProductCards: Story = {
-  name: 'Product Cards',
   render: () => (
     <div className="w-[600px] px-12">
       <Root>
@@ -99,7 +97,6 @@ export const ProductCards: Story = {
 };
 
 export const SingleSlide: Story = {
-  name: 'Single Slide',
   render: () => (
     <div className="w-[400px] px-12">
       <Root>

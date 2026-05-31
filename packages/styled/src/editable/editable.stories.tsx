@@ -72,7 +72,6 @@ export const SubmitOnBlur: Story = {
 };
 
 export const Controlled: Story = {
-  name: 'Controlled',
   render: () => {
     const [value, setValue] = React.useState('Initial value');
     const [submitted, setSubmitted] = React.useState<string | null>(null);

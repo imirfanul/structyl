@@ -59,7 +59,6 @@ export interface AlertRootProps
 }
 
 const Root = React.forwardRef<HTMLDivElement, AlertRootProps>(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ className, variant, color, filled, onClose: _onClose, ...props }, ref) => (
     <div ref={ref} role="alert" className={cn(alertVariants({ variant, color, filled }), className)} {...props} />
   ),

@@ -62,7 +62,6 @@ const radarData = [
 /* ─── Stories ───────────────────────────────────────────────────── */
 
 export const BarChart: Story = {
-  name: 'Bar Chart',
   render: () => (
     <Root data={monthlyRevenue} height={320} margin={{ top: 16, right: 24, bottom: 32, left: 48 }}>
       <Grid />
@@ -91,7 +90,6 @@ export const GroupedBar: Story = {
 };
 
 export const LineChart: Story = {
-  name: 'Line Chart',
   render: () => (
     <Root data={monthlyRevenue} height={320} margin={{ top: 16, right: 24, bottom: 32, left: 48 }}>
       <Grid />
@@ -106,7 +104,6 @@ export const LineChart: Story = {
 };
 
 export const AreaChart: Story = {
-  name: 'Area Chart',
   render: () => (
     <Root data={monthlyRevenue} height={320} margin={{ top: 16, right: 24, bottom: 32, left: 48 }}>
       <Grid />
@@ -131,7 +128,6 @@ export const AreaChart: Story = {
 };
 
 export const PieChart: Story = {
-  name: 'Pie Chart',
   render: () => (
     <PieRoot data={pieData} height={320} width={420}>
       <Pie
@@ -152,7 +148,6 @@ export const PieChart: Story = {
 };
 
 export const RadarChart: Story = {
-  name: 'Radar Chart',
   render: () => (
     <RadarRoot data={radarData} height={360} width={420}>
       <PolarGrid />

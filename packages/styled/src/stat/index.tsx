@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '@aura-ui/utils';
-import { tv, type VariantProps } from 'tailwind-variants';
+import { tv } from 'tailwind-variants';
 
 // ── Trend indicator ───────────────────────────────────────────────────────────
 

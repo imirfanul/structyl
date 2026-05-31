@@ -82,7 +82,6 @@ export const AllowDuplicates: Story = {
 };
 
 export const Controlled: Story = {
-  name: 'Controlled',
   render: () => {
     const [tags, setTags] = React.useState<string[]>(['React', 'CSS']);
     return (

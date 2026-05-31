@@ -88,7 +88,6 @@ export const CustomStep: Story = {
 };
 
 export const Controlled: Story = {
-  name: 'Controlled',
   render: () => {
     const [value, setValue] = React.useState<number | undefined>(10);
     return (

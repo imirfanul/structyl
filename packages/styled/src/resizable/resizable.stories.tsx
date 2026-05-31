@@ -53,7 +53,6 @@ export const TwoPanelsVertical: Story = {
 };
 
 export const ThreePanels: Story = {
-  name: 'Three Panels',
   render: () => (
     <Group className="h-64 w-[700px] rounded-md border border-border">
       <Panel id="sidebar" defaultSize={25} minSize={15}>
@@ -78,7 +77,6 @@ export const ThreePanels: Story = {
 };
 
 export const CodeEditorLayout: Story = {
-  name: 'Code Editor Layout',
   render: () => (
     <Group direction="vertical" className="h-96 w-[600px] rounded-md border border-border">
       <Panel id="editor" defaultSize={70} minSize={30}>

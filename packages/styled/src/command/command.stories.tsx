@@ -155,22 +155,22 @@ export const CommandPalette: Story = {
   },
 };
 
+const allResults = [
+  'Apple',
+  'Banana',
+  'Cherry',
+  'Date',
+  'Elderberry',
+  'Fig',
+  'Grape',
+  'Honeydew',
+];
+
 export const WithLoading: Story = {
   render: () => {
     const [query, setQuery] = React.useState('');
     const [loading, setLoading] = React.useState(false);
     const [results, setResults] = React.useState<string[]>([]);
-
-    const allResults = [
-      'Apple',
-      'Banana',
-      'Cherry',
-      'Date',
-      'Elderberry',
-      'Fig',
-      'Grape',
-      'Honeydew',
-    ];
 
     React.useEffect(() => {
       if (!query) {
@@ -186,7 +186,7 @@ export const WithLoading: Story = {
       }, 500);
 
       return () => clearTimeout(timeout);
-    }, [query]);
+    }, [query, allResults]);
 
     return (
       <div className="w-[400px] rounded-lg border border-border shadow-md">

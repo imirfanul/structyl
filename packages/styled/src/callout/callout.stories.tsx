@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
-import { Info, CheckCircle2, AlertTriangle, XCircle } from '@aura-ui/icons';
+import { Info as InfoIcon, CheckCircle2, AlertTriangle, XCircle } from '@aura-ui/icons';
 import { Callout } from './index';
 
 const meta = {
@@ -19,7 +19,7 @@ export const Default: Story = {
 export const Info: Story = {
   args: {
     variant: 'info',
-    icon: <Info className="h-4 w-4" />,
+    icon: <InfoIcon className="h-4 w-4" />,
     title: 'Did you know?',
     children: 'You can customise the theme using the Theme Builder.',
   },

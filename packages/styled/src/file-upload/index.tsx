@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Upload, X } from '@aura-ui/icons';
+import { Upload } from '@aura-ui/icons';
 import { FileUpload as FileUploadPrimitive } from '@aura-ui/primitives';
 import { cn } from '@aura-ui/utils';
 
