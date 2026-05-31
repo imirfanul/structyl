@@ -2,7 +2,8 @@
   "name": "@structyl/cli",
   "version": "1.0.0",
   "publishConfig": { "access": "public" },
-  "description": "CLI for adding @structyl components to your project (shadcn-style)",
+  "description": "Command-line tool for scaffolding structyl projects and copying styled components into your codebase with automatic dependency resolution.",
+  "keywords": ["react", "typescript", "structyl", "cli", "shadcn", "scaffold", "components", "registry", "tailwind", "commander", "code-generation"],
   "license": "MIT",
   "type": "module",
   "bin": {
