@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { ThemeProvider, ThemeScript } from '@aura-ui/themes';
 import { Toaster } from '@aura-ui/styled';
+import { Analytics } from '@vercel/analytics/next';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, GITHUB_URL, NPM_URL, COMPONENT_SLUGS } from '../lib/site-config';
 import './globals.css';
 
@@ -312,6 +313,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
           <Toaster />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
