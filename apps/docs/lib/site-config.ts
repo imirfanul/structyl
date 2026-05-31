@@ -12,7 +12,7 @@ export const SITE_URL =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : 'https://structyl.dev');
+      : 'https://structyl.vercel.app');
 
 export const SITE_NAME = 'structyl';
 export const SITE_DESCRIPTION =
@@ -126,7 +126,6 @@ export const COMPONENT_SLUGS: { slug: string; name: string; description: string;
 
 /** Static /docs/[slug] pages that are not components */
 export const STATIC_DOC_SLUGS = [
-  'introduction',
   'getting-started',
   'accessibility',
   'icons',

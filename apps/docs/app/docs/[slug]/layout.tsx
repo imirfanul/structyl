@@ -10,8 +10,12 @@ export async function generateMetadata(
   const entry = COMPONENT_SLUGS.find((c) => c.slug === slug);
 
   if (!entry) {
+    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    const url = `${SITE_URL}/docs/${slug}`;
     return {
-      title: slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+      title,
+      alternates: { canonical: url },
+      openGraph: { title: `${title} | structyl`, url, type: 'article' },
     };
   }
 

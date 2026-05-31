@@ -60,7 +60,10 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  alternates: { canonical: SITE_URL },
+  // NOTE: no site-wide `alternates.canonical` here — a blanket canonical is
+  // inherited by every route and would make all pages canonicalize to `/`.
+  // Each route declares its own self-referential canonical; the homepage
+  // self-canonicalizes by absence.
   manifest: '/site.webmanifest',
   icons: {
     icon: [

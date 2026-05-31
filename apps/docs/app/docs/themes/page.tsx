@@ -1106,7 +1106,7 @@ interface ThemeTokens {
           <a href="/themes" className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Open themes playground <ArrowUpRight className="h-3 w-3" />
           </a>
-          <a href="https://github.com/your-org/structyl" target="_blank" rel="noreferrer"
+          <a href="https://github.com/imirfanul/structyl" target="_blank" rel="noreferrer"
             className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Edit on GitHub <ArrowUpRight className="h-3 w-3" />
           </a>
