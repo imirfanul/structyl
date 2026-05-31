@@ -15,14 +15,14 @@ let count = 0;
 function useFocusGuards() {
   React.useEffect(() => {
     if (typeof document === 'undefined') return;
-    const edgeGuards = document.querySelectorAll('[data-aura-ui-focus-guard]');
+    const edgeGuards = document.querySelectorAll('[data-structyl-focus-guard]');
     document.body.insertAdjacentElement('afterbegin', edgeGuards[0] ?? createFocusGuard());
     document.body.insertAdjacentElement('beforeend', edgeGuards[1] ?? createFocusGuard());
     count++;
     return () => {
       if (count === 1) {
         document
-          .querySelectorAll('[data-aura-ui-focus-guard]')
+          .querySelectorAll('[data-structyl-focus-guard]')
           .forEach((node) => node.remove());
       }
       count--;
@@ -32,7 +32,7 @@ function useFocusGuards() {
 
 function createFocusGuard(): HTMLSpanElement {
   const element = document.createElement('span');
-  element.setAttribute('data-aura-ui-focus-guard', '');
+  element.setAttribute('data-structyl-focus-guard', '');
   element.tabIndex = 0;
   element.style.cssText =
     'outline: none; opacity: 0; position: fixed; pointer-events: none';

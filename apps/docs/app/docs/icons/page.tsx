@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import * as AuraIcons from '@aura-ui/icons';
-import { Search, X, Copy, Check } from '@aura-ui/icons';
-import { Button } from '@aura-ui/styled';
+import * as StructylIcons from '@structyl/icons';
+import { Search, X, Copy, Check } from '@structyl/icons';
+import { Button } from '@structyl/styled';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types & constants
@@ -81,7 +81,7 @@ function isIcon(key: string, val: unknown): boolean {
   return false;
 }
 
-const REGISTRY: IconEntry[] = Object.entries(AuraIcons)
+const REGISTRY: IconEntry[] = Object.entries(StructylIcons)
   .filter(([k, v]) => isIcon(k, v))
   .map(([name, Component]) => ({ name, Component: Component as IconComp, category: categorize(name) }))
   .sort((a, b) => a.name.localeCompare(b.name));
@@ -146,7 +146,7 @@ function IconModal({
 
   React.useEffect(() => { ref.current?.focus(); }, []);
 
-  const importCode = `import { ${name} } from '@aura-ui/icons';`;
+  const importCode = `import { ${name} } from '@structyl/icons';`;
   const usageCode = `<${name} />\n<${name} size={24} className="text-primary" />`;
   const styledCode = style !== 'Regular' ? `<${name} ${STYLE_CODE[style]} />` : null;
 
@@ -172,7 +172,7 @@ function IconModal({
               <span className="font-mono text-[15px] font-semibold">{name}</span>
               <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{category}</span>
             </div>
-            <p className="mt-0.5 text-[11px] text-muted-foreground">@aura-ui/icons · lucide-react</p>
+            <p className="mt-0.5 text-[11px] text-muted-foreground">@structyl/icons · lucide-react</p>
           </div>
           <button onClick={onClose} aria-label="Close" className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-fg">
             <X className="h-4 w-4" />
@@ -287,7 +287,7 @@ export default function IconsPage() {
 
       {/* Page header */}
       <div className="mb-8 border-b border-border/40 pb-6">
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@aura-ui/icons</p>
+        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@structyl/icons</p>
         <h1 className="text-[28px] font-semibold tracking-tight">Icons</h1>
         <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
           {REGISTRY.length.toLocaleString()} icons from{' '}

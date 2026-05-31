@@ -1,6 +1,7 @@
 {
-  "name": "@aura-ui/hooks",
+  "name": "@structyl/hooks",
   "version": "1.0.0",
+  "publishConfig": { "access": "public" },
   "description": "50+ reusable React hooks: state, DOM, browser, performance, async",
   "license": "MIT",
   "type": "module",

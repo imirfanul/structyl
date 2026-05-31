@@ -93,7 +93,7 @@ export const CustomSeparator: Story = {
     <Root>
       <List>
         <Item>
-          <Link href="#">aura-ui</Link>
+          <Link href="#">structyl</Link>
         </Item>
         <Separator>
           <span className="text-muted-foreground">/</span>

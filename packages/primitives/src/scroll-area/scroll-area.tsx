@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive } from '@aura-ui/core';
-import { useComposedRefs } from '@aura-ui/hooks';
+import { createContext, Primitive } from '@structyl/core';
+import { useComposedRefs } from '@structyl/hooks';
 
 interface ScrollAreaContextValue {
   type: 'auto' | 'always' | 'scroll' | 'hover';
@@ -48,7 +48,7 @@ const Viewport = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef
     const composedRef = useComposedRefs(forwardedRef, ctx.onViewportChange);
     return (
       <Primitive.div
-        data-aura-ui-scroll-area-viewport=""
+        data-structyl-scroll-area-viewport=""
         tabIndex={props.tabIndex ?? 0}
         {...props}
         ref={composedRef}

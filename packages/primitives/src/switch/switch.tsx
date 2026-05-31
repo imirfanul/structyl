@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive } from '@aura-ui/core';
-import { useControllableState } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+import { Primitive } from '@structyl/core';
+import { useControllableState } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 import type { SwitchProps } from './switch.types';
 
 const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>((props, forwardedRef) => {

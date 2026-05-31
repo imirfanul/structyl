@@ -1,36 +1,36 @@
 [
   {
-    "name": "@aura-ui/utils",
+    "name": "@structyl/utils",
     "path": "packages/utils/dist/index.mjs",
     "limit": "8 KB"
   },
   {
-    "name": "@aura-ui/hooks",
+    "name": "@structyl/hooks",
     "path": "packages/hooks/dist/index.mjs",
     "limit": "5 KB"
   },
   {
-    "name": "@aura-ui/core",
+    "name": "@structyl/core",
     "path": "packages/core/dist/index.mjs",
     "limit": "22 KB"
   },
   {
-    "name": "@aura-ui/themes",
+    "name": "@structyl/themes",
     "path": "packages/themes/dist/index.mjs",
     "limit": "5 KB"
   },
   {
-    "name": "@aura-ui/primitives",
+    "name": "@structyl/primitives",
     "path": "packages/primitives/dist/index.mjs",
     "limit": "50 KB"
   },
   {
-    "name": "@aura-ui/styled",
+    "name": "@structyl/styled",
     "path": "packages/styled/dist/index.mjs",
     "limit": "72 KB"
   },
   {
-    "name": "@aura-ui/data-table",
+    "name": "@structyl/data-table",
     "path": "packages/data-table/dist/index.mjs",
     "limit": "35 KB"
   }

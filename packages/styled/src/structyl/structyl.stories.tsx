@@ -25,7 +25,7 @@ import {
 import { Button } from '../button';
 
 const meta: Meta = {
-  title: 'Styled/Aura',
+  title: 'Styled/Structyl',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
@@ -366,7 +366,7 @@ export const AppBarDemo: Story = {
   name: 'AppBar',
   render: () => (
     <AppBar className="w-[600px]">
-      <Typography variant="h6">aura-ui</Typography>
+      <Typography variant="h6">structyl</Typography>
       <Stack direction="row" spacing="sm" className="ml-auto" alignItems="center">
         <Link href="#" underline="none" color="default" className="text-sm">
           Docs

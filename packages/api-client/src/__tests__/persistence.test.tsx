@@ -38,7 +38,7 @@ describe('persistCache', () => {
       updatedAt: Date.now(),
       staleTime: 60_000,
     };
-    storage.store['aura-ui-cache'] = JSON.stringify({
+    storage.store['structyl-cache'] = JSON.stringify({
       entries: { [key]: entry },
       savedAt: Date.now(),
     });
@@ -62,7 +62,7 @@ describe('persistCache', () => {
       staleTime: 60_000,
     };
     // savedAt is 2 days ago
-    storage.store['aura-ui-cache'] = JSON.stringify({
+    storage.store['structyl-cache'] = JSON.stringify({
       entries: { [key]: entry },
       savedAt: Date.now() - 2 * 24 * 60 * 60_000,
     });
@@ -89,7 +89,7 @@ describe('persistCache', () => {
     vi.advanceTimersByTime(1001);
 
     expect(setItemSpy).toHaveBeenCalledOnce();
-    const written = storage.store['aura-ui-cache'];
+    const written = storage.store['structyl-cache'];
     expect(written).toBeTruthy();
     const parsed = JSON.parse(written) as { entries: Record<string, unknown>; savedAt: number };
     expect(parsed.entries[serializeKey(['/written'])]).toBeTruthy();
@@ -123,7 +123,7 @@ describe('persistCache', () => {
     vi.advanceTimersByTime(1001);
 
     expect(storage.store['my-custom-cache-key']).toBeTruthy();
-    expect(storage.store['aura-ui-cache']).toBeUndefined();
+    expect(storage.store['structyl-cache']).toBeUndefined();
 
     cleanup();
   });

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Popover as PopoverPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Popover as PopoverPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { Button, type ButtonProps } from '../button';
 import { Typography } from '../typography';
 

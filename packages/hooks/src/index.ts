@@ -1,5 +1,5 @@
 /**
- * @aura-ui/hooks
+ * @structyl/hooks
  *
  * Reusable React hooks. SSR-safe, tree-shakeable.
  */

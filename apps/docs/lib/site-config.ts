@@ -1,13 +1,13 @@
 /** Central site config — imported by server files (sitemap, metadata, JSON-LD). No React, no 'use client'. */
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aura-ui.dev';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://structyl.dev';
 
-export const SITE_NAME = 'aura-ui';
+export const SITE_NAME = 'structyl';
 export const SITE_DESCRIPTION =
   'Accessible headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable. TypeScript-first, WAI-ARIA compliant, dark-mode ready.';
 
-export const GITHUB_URL = 'https://github.com/aura-ui/aura-ui';
-export const NPM_URL    = 'https://www.npmjs.com/org/aura-ui';
+export const GITHUB_URL = 'https://github.com/structyl/structyl';
+export const NPM_URL    = 'https://www.npmjs.com/org/structyl';
 
 /** All /docs/[slug] component pages */
 export const COMPONENT_SLUGS: { slug: string; name: string; description: string; category: string }[] = [

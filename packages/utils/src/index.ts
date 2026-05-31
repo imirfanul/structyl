@@ -1,5 +1,5 @@
 /**
- * @aura-ui/utils
+ * @structyl/utils
  *
  * Pure utility functions. No React imports. Tree-shakeable.
  */

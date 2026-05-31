@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowUpRight } from '@aura-ui/icons';
+import { ArrowUpRight } from '@structyl/icons';
 import { COMPONENTS } from '../../lib/registry';
 
 export default function DocsHome() {
@@ -10,7 +10,7 @@ export default function DocsHome() {
       <p className="text-xs font-semibold uppercase tracking-widest text-primary">Documentation</p>
       <h1 className="mt-2 text-4xl font-semibold tracking-tight">Introduction</h1>
       <p className="mt-3 text-base text-muted-foreground">
-        aura-ui is an open-source React component library with three layers — headless
+        structyl is an open-source React component library with three layers — headless
         behaviour primitives, Tailwind-styled components, and a runtime theme system —
         plus a first-class DataTable.
       </p>

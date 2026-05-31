@@ -1,5 +1,5 @@
 import type * as React from 'react';
-import type { PointerDownOutsideEvent, FocusOutsideEvent } from '@aura-ui/core';
+import type { PointerDownOutsideEvent, FocusOutsideEvent } from '@structyl/core';
 
 export interface PopoverRootProps {
   children?: React.ReactNode;

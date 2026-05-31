@@ -2,8 +2,8 @@ import type { ThemeConfig } from './types';
 import {
   sharedSemanticLight,
   sharedSemanticDark,
-  auraSubTokensLight,
-  auraSubTokensDark,
+  structylSubTokensLight,
+  structylSubTokensDark,
 } from './palette';
 
 // ── Helper: build per-theme primary/secondary sub-tokens ─────────────────────
@@ -345,10 +345,10 @@ const rose: ThemeConfig = {
   },
 };
 
-// ── Aura ─────────────────────────────────────────────────────────────────────
+// ── Structyl ─────────────────────────────────────────────────────────────────────
 // Full MUI-inspired palette with exact colorsLight/colorsDark values
 
-const aura: ThemeConfig = {
+const structyl: ThemeConfig = {
   light: {
     bg: '0 0% 98%',
     fg: '217 11% 18%',
@@ -380,7 +380,7 @@ const aura: ThemeConfig = {
     ring: '242 32% 48%',
     overlay: '217 11% 18%',
     shadow: '217 11% 18%',
-    ...auraSubTokensLight,
+    ...structylSubTokensLight,
   },
   dark: {
     bg: '217 11% 18%',
@@ -413,8 +413,8 @@ const aura: ThemeConfig = {
     ring: '243 85% 87%',
     overlay: '0 0% 0%',
     shadow: '0 0% 0%',
-    ...auraSubTokensDark,
+    ...structylSubTokensDark,
   },
 };
 
-export const defaultThemes: Record<string, ThemeConfig> = { slate, zinc, rose, aura };
+export const defaultThemes: Record<string, ThemeConfig> = { slate, zinc, rose, structyl };

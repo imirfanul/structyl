@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy, ChevronRight, ArrowUpRight, AlertCircle } from '@aura-ui/icons';
+import { Check, Copy, ChevronRight, ArrowUpRight, AlertCircle } from '@structyl/icons';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
 
@@ -505,12 +505,12 @@ export default function ApiClientPage() {
           <ChevronRight className="h-3 w-3 opacity-40" />
           <span>Data Fetching</span>
           <ChevronRight className="h-3 w-3 opacity-40" />
-          <span className="font-medium text-fg">@aura-ui/api-client</span>
+          <span className="font-medium text-fg">@structyl/api-client</span>
         </nav>
 
         <div id="overview" className="scroll-mt-20">
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-4xl font-semibold tracking-tight">@aura-ui/api-client</h1>
+            <h1 className="text-4xl font-semibold tracking-tight">@structyl/api-client</h1>
             <span className="inline-flex items-center rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-blue-500">beta</span>
           </div>
           <p className="mt-3 text-base text-muted-foreground">
@@ -551,7 +551,7 @@ export default function ApiClientPage() {
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
                   <th className="px-3 py-2 font-medium">Feature</th>
-                  <th className="px-3 py-2 font-medium">@aura-ui/api-client</th>
+                  <th className="px-3 py-2 font-medium">@structyl/api-client</th>
                   <th className="px-3 py-2 font-medium">TanStack Query</th>
                   <th className="px-3 py-2 font-medium">SWR</th>
                 </tr>
@@ -583,7 +583,7 @@ export default function ApiClientPage() {
         {/* ── Quick Start ──────────────────────────────────────────────── */}
         <Section id="quick-start" title="Quick Start">
           <SubSection id="install" title="1. Install">
-            <CodeBlock lang="bash" code={`pnpm add @aura-ui/api-client axios`} />
+            <CodeBlock lang="bash" code={`pnpm add @structyl/api-client axios`} />
           </SubSection>
 
           <SubSection id="create-client" title="2. Create a client">
@@ -592,7 +592,7 @@ export default function ApiClientPage() {
               The client handles Axios instance creation, auth headers, and token refresh automatically.
             </p>
             <CodeBlock lang="ts" code={`// lib/api.ts
-import { createApiClient, QueryClient } from '@aura-ui/api-client';
+import { createApiClient, QueryClient } from '@structyl/api-client';
 
 export const apiClient = createApiClient({
   baseURL: 'https://api.example.com',
@@ -623,7 +623,7 @@ export const queryClient = new QueryClient({
 
           <SubSection id="wrap-app" title="3. Wrap your app">
             <CodeBlock lang="tsx" code={`// app/layout.tsx  (or _app.tsx in pages router)
-import { ApiProvider } from '@aura-ui/api-client';
+import { ApiProvider } from '@structyl/api-client';
 import { apiClient, queryClient } from '@/lib/api';
 
 export default function RootLayout({ children }) {
@@ -636,7 +636,7 @@ export default function RootLayout({ children }) {
           </SubSection>
 
           <SubSection id="first-query" title="4. Fetch data">
-            <CodeBlock lang="tsx" code={`import { useApiQuery } from '@aura-ui/api-client';
+            <CodeBlock lang="tsx" code={`import { useApiQuery } from '@structyl/api-client';
 
 interface User { id: number; name: string; email: string }
 
@@ -787,7 +787,7 @@ const { data: activeUsers } = useApiQuery<ApiResponse, User[]>(
           </p>
 
           <SubSection id="basic-mutation" title="Basic usage">
-            <CodeBlock lang="tsx" code={`import { useApiMutation } from '@aura-ui/api-client';
+            <CodeBlock lang="tsx" code={`import { useApiMutation } from '@structyl/api-client';
 
 interface CreateUser { name: string; email: string }
 
@@ -977,7 +977,7 @@ await queryClient.cancelQueries({ queryKey: ['/users', 1] });`} />
             <code className="rounded bg-muted px-1 text-[12px]">useApiQueries</code> runs multiple queries
             in parallel and returns a stable-snapshot array — updating only when at least one entry changes.
           </p>
-          <CodeBlock lang="tsx" code={`import { useApiQueries } from '@aura-ui/api-client';
+          <CodeBlock lang="tsx" code={`import { useApiQueries } from '@structyl/api-client';
 
 function Dashboard({ userId }: { userId: string }) {
   const results = useApiQueries([
@@ -1021,7 +1021,7 @@ function Dashboard({ userId }: { userId: string }) {
             the URL for each page. Pass a custom <code className="rounded bg-muted px-1 text-[12px]">fetchPage</code> for
             offset/page-number pagination.
           </p>
-          <CodeBlock lang="tsx" code={`import { useInfiniteApiQuery } from '@aura-ui/api-client';
+          <CodeBlock lang="tsx" code={`import { useInfiniteApiQuery } from '@structyl/api-client';
 
 interface PostsPage { posts: Post[]; nextCursor: string | null }
 
@@ -1095,7 +1095,7 @@ function Feed() {
 
           <CodeBlock lang="tsx" code={`import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { useSuspenseApiQuery } from '@aura-ui/api-client';
+import { useSuspenseApiQuery } from '@structyl/api-client';
 
 // Child component — data is guaranteed non-null
 function UserProfile({ id }: { id: string }) {
@@ -1145,9 +1145,9 @@ function UserPage({ id }: { id: string }) {
 
           <SubSection id="ssr-nextjs" title="Next.js App Router">
             <CodeBlock lang="tsx" code={`// app/users/page.tsx  (Server Component)
-import { prefetchApiQuery, dehydrate } from '@aura-ui/api-client/server';
+import { prefetchApiQuery, dehydrate } from '@structyl/api-client/server';
 import { apiClient, queryClient } from '@/lib/api';
-import { HydrationBoundary } from '@aura-ui/api-client';
+import { HydrationBoundary } from '@structyl/api-client';
 import { UserList } from './UserList';
 
 export default async function UsersPage() {
@@ -1172,7 +1172,7 @@ function UserList() {
 
           <SubSection id="ssr-pages" title="Pages Router (getServerSideProps)">
             <CodeBlock lang="tsx" code={`// pages/users.tsx
-import { prefetchApiQuery, dehydrate } from '@aura-ui/api-client/server';
+import { prefetchApiQuery, dehydrate } from '@structyl/api-client/server';
 import { apiClient, queryClient } from '@/lib/api';
 
 export async function getServerSideProps() {
@@ -1198,13 +1198,13 @@ export default function UsersPage({ dehydratedState }) {
             so data survives page refreshes.
           </p>
 
-          <CodeBlock lang="tsx" code={`import { persistCache } from '@aura-ui/api-client';
+          <CodeBlock lang="tsx" code={`import { persistCache } from '@structyl/api-client';
 import { queryClient } from '@/lib/api';
 
 // Call once before ApiProvider renders, e.g. in app.tsx
 await persistCache(queryClient, {
   storage: window.localStorage, // or AsyncStorage, IndexedDB wrapper, etc.
-  key: 'my-app-cache',           // storage key (default: 'aura-ui-cache')
+  key: 'my-app-cache',           // storage key (default: 'structyl-cache')
   maxAge: 24 * 60 * 60_000,      // discard entries older than 24 h
 });
 
@@ -1276,7 +1276,7 @@ const res = await instance.get('/download', { responseType: 'blob' });`} />
 
         {/* Footer */}
         <div className="mt-14 flex justify-end">
-          <a href="https://github.com/your-org/aura-ui" target="_blank" rel="noreferrer"
+          <a href="https://github.com/your-org/structyl" target="_blank" rel="noreferrer"
             className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Edit on GitHub <ArrowUpRight className="h-3 w-3" />
           </a>

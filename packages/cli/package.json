@@ -1,11 +1,12 @@
 {
-  "name": "@aura-ui/cli",
+  "name": "@structyl/cli",
   "version": "1.0.0",
-  "description": "CLI for adding @aura-ui components to your project (shadcn-style)",
+  "publishConfig": { "access": "public" },
+  "description": "CLI for adding @structyl components to your project (shadcn-style)",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "aura-ui": "./dist/index.js"
+    "structyl": "./dist/index.js"
   },
   "files": ["dist"],
   "scripts": {

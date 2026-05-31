@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { ColorPicker as ColorPickerPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { ColorPicker as ColorPickerPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof ColorPickerPrimitive.Root>,

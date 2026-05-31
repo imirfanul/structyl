@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Tabs as TabsPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Tabs as TabsPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 export type TabsVariant = 'default' | 'underline' | 'pills' | 'enclosed';
 export type TabsColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';

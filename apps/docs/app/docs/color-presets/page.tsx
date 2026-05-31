@@ -1,12 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy } from '@aura-ui/icons';
+import { Check, Copy } from '@structyl/icons';
 import {
   COLOR_PRESETS,
   useColorPreset,
   createColorPreset,
-} from '@aura-ui/themes';
+} from '@structyl/themes';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
 
@@ -139,7 +139,7 @@ export default function ColorPresetsPage() {
       {/* Header */}
       <div className="mb-10">
         <div className="mb-3 flex items-center gap-2">
-          <span className="rounded-full border border-border bg-muted/40 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">@aura-ui/themes</span>
+          <span className="rounded-full border border-border bg-muted/40 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">@structyl/themes</span>
         </div>
         <h1 className="mb-3 text-3xl font-bold tracking-tight">Color Presets</h1>
         <p className="text-lg text-muted-foreground">
@@ -148,17 +148,17 @@ export default function ColorPresetsPage() {
       </div>
 
       {/* Install */}
-      <CodeBlock lang="bash" code="pnpm add @aura-ui/themes" />
+      <CodeBlock lang="bash" code="pnpm add @structyl/themes" />
 
       {/* ── Built-in presets ── */}
       <SectionHeading id="built-in-presets">Built-in presets</SectionHeading>
       <p className="mb-4 text-sm text-muted-foreground">
         <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">COLOR_PRESETS</code> is a typed <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">as const</code> array of all 10 built-in accent colors. Import it for rendering your own picker UI.
       </p>
-      <CodeBlock code={`import { COLOR_PRESETS } from '@aura-ui/themes';
+      <CodeBlock code={`import { COLOR_PRESETS } from '@structyl/themes';
 
 // [
-//   { id: 'aura',   name: 'Aura',   hex: '#5754a3' },
+//   { id: 'structyl',   name: 'Structyl',   hex: '#5754a3' },
 //   { id: 'indigo', name: 'Indigo', hex: '#6366f1' },
 //   { id: 'ocean',  name: 'Ocean',  hex: '#0284c7' },
 //   { id: 'rose',   name: 'Rose',   hex: '#e11d48' },
@@ -181,7 +181,7 @@ export default function ColorPresetsPage() {
       </div>
 
       <CodeBlock code={`'use client';
-import { useColorPreset, COLOR_PRESETS } from '@aura-ui/themes';
+import { useColorPreset, COLOR_PRESETS } from '@structyl/themes';
 
 function AccentPicker() {
   const { activeId, setPreset, clearPreset } = useColorPreset();
@@ -218,7 +218,7 @@ function AccentPicker() {
           </thead>
           <tbody className="px-3">
             <PropRow name="extraPresets" type="ColorPreset[]" def="[]" desc="Additional presets to add on top of the 10 built-ins. Built-ins always come first." />
-            <PropRow name="storageKey" type="string" def="'aura-color-preset'" desc="localStorage key used to persist the active preset. Override when you need multiple independent pickers on the same origin." />
+            <PropRow name="storageKey" type="string" def="'structyl-color-preset'" desc="localStorage key used to persist the active preset. Override when you need multiple independent pickers on the same origin." />
           </tbody>
         </table>
       </div>
@@ -273,7 +273,7 @@ function AccentPicker() {
         <CustomPresetDemo />
       </div>
 
-      <CodeBlock code={`import { createColorPreset, useColorPreset } from '@aura-ui/themes';
+      <CodeBlock code={`import { createColorPreset, useColorPreset } from '@structyl/themes';
 
 const brandPreset = createColorPreset('brand', 'Brand Blue', '#1a6cf0');
 const seasonalPreset = createColorPreset('holiday', 'Holiday Red', '#c0392b');
@@ -290,7 +290,7 @@ function MyPicker() {
       <p className="mb-4 text-sm text-muted-foreground">
         Use these utilities outside of React (e.g. in event handlers, server actions, or non-React contexts). Both are no-ops in SSR environments.
       </p>
-      <CodeBlock code={`import { applyColorPreset, clearColorPreset } from '@aura-ui/themes';
+      <CodeBlock code={`import { applyColorPreset, clearColorPreset } from '@structyl/themes';
 
 // Apply any hex color as the primary accent
 applyColorPreset('#6366f1');
@@ -302,7 +302,7 @@ clearColorPreset();`} />
 
       {/* ── Types ── */}
       <SectionHeading id="types">Types</SectionHeading>
-      <CodeBlock lang="ts" code={`import type { ColorPreset, ColorPresetId } from '@aura-ui/themes';
+      <CodeBlock lang="ts" code={`import type { ColorPreset, ColorPresetId } from '@structyl/themes';
 
 // Interface for any preset object (built-in or custom)
 interface ColorPreset {
@@ -313,7 +313,7 @@ interface ColorPreset {
 
 // Union of all built-in preset IDs
 type ColorPresetId =
-  | 'aura' | 'indigo' | 'ocean' | 'rose' | 'forest'
+  | 'structyl' | 'indigo' | 'ocean' | 'rose' | 'forest'
   | 'sunset' | 'violet' | 'slate' | 'ember' | 'zinc';`} />
 
       {/* ── Next.js note ── */}
@@ -326,7 +326,7 @@ type ColorPresetId =
       </div>
       <CodeBlock code={`'use client'; // required
 
-import { useColorPreset } from '@aura-ui/themes';
+import { useColorPreset } from '@structyl/themes';
 
 export function AccentPicker() {
   const { activeId, setPreset } = useColorPreset();

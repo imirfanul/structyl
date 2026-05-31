@@ -20,7 +20,7 @@ import {
   Typography,
 } from './index';
 
-describe('Aura parity styled components', () => {
+describe('Structyl parity styled components', () => {
   it('renders exported components', () => {
     render(
       <Container maxWidth={false} disableGutters>

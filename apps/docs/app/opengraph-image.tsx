@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'aura-ui — The React UI library with an aura';
+export const alt = 'structyl — The React UI library with an structyl';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -118,7 +118,7 @@ export default function OGImage() {
           <AuroraOrb s={320} />
 
           <div style={{ display: 'flex', fontSize: '44px', fontWeight: 700, letterSpacing: '-1px' }}>
-            <span style={{ color: '#EEF3FA' }}>aura</span>
+            <span style={{ color: '#EEF3FA' }}>structyl</span>
             <span style={{ color: '#4DF6C9' }}>-ui</span>
           </div>
         </div>
@@ -171,7 +171,7 @@ export default function OGImage() {
                 lineHeight: 1.15,
               }}
             >
-              aura.
+              structyl.
             </span>
           </div>
 

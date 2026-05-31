@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shuffle, Repeat, Repeat1, X } from 'lucide-react';
-import { Button, ScrollArea } from '@aura-ui/styled';
+import { Button, ScrollArea } from '@structyl/styled';
 import type { PlaylistItem } from './usePlaylist';
 
 interface PlaylistPanelProps {

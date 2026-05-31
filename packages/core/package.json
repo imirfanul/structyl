@@ -1,7 +1,8 @@
 {
-  "name": "@aura-ui/core",
+  "name": "@structyl/core",
   "version": "1.0.0",
-  "description": "Internal primitives powering @aura-ui (Slot, Primitive, contexts, focus management)",
+  "publishConfig": { "access": "public" },
+  "description": "Internal primitives powering @structyl (Slot, Primitive, contexts, focus management)",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

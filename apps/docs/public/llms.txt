@@ -1,36 +1,36 @@
-# aura-ui
+# structyl
 
 > Accessible React component library — headless primitives, Tailwind-styled components, runtime theming, and a first-class DataTable.
 
 ## Overview
 
-aura-ui is an open-source TypeScript-first React component library. It is structured as a monorepo with independently-versioned packages. The library is WAI-ARIA compliant, supports dark mode out of the box, and is compatible with Next.js App Router and SSR.
+structyl is an open-source TypeScript-first React component library. It is structured as a monorepo with independently-versioned packages. The library is WAI-ARIA compliant, supports dark mode out of the box, and is compatible with Next.js App Router and SSR.
 
 Current version: 1.0.0
 License: MIT
-Documentation: https://aura-ui.dev
-Source: https://github.com/aura-ui/aura-ui
-npm: https://www.npmjs.com/org/aura-ui
+Documentation: https://structyl.dev
+Source: https://github.com/structyl/structyl
+npm: https://www.npmjs.com/org/structyl
 
 ## Installation
 
 ```bash
-pnpm add @aura-ui/styled
+pnpm add @structyl/styled
 # or
-npm install @aura-ui/styled
+npm install @structyl/styled
 ```
 
 ## Packages
 
-- `@aura-ui/styled` — Tailwind-styled component layer (main package for most users)
-- `@aura-ui/primitives` — Unstyled, accessible headless behavior primitives
-- `@aura-ui/themes` — Runtime theming system with CSS variables and ThemeProvider
-- `@aura-ui/hooks` — 24+ SSR-safe, tree-shakeable React hooks
-- `@aura-ui/data-table` — First-class DataTable with sorting, filtering, pagination, virtualization
-- `@aura-ui/icons` — Icon set (Lucide re-export)
-- `@aura-ui/utils` — Pure utility functions (cn, type guards, etc.)
-- `@aura-ui/core` — Internal primitives (Slot, Primitive, createContext)
-- `@aura-ui/cli` — shadcn-style installer CLI
+- `@structyl/styled` — Tailwind-styled component layer (main package for most users)
+- `@structyl/primitives` — Unstyled, accessible headless behavior primitives
+- `@structyl/themes` — Runtime theming system with CSS variables and ThemeProvider
+- `@structyl/hooks` — 24+ SSR-safe, tree-shakeable React hooks
+- `@structyl/data-table` — First-class DataTable with sorting, filtering, pagination, virtualization
+- `@structyl/icons` — Icon set (Lucide re-export)
+- `@structyl/utils` — Pure utility functions (cn, type guards, etc.)
+- `@structyl/core` — Internal primitives (Slot, Primitive, createContext)
+- `@structyl/cli` — shadcn-style installer CLI
 
 ## Key Features
 
@@ -72,7 +72,7 @@ Click Away Listener, CSS Baseline, Init Color Scheme Script, No SSR, Popper, Por
 ## Basic Usage
 
 ```tsx
-import { Button } from '@aura-ui/styled';
+import { Button } from '@structyl/styled';
 
 export default function App() {
   return <Button variant="default">Click me</Button>;
@@ -83,7 +83,7 @@ export default function App() {
 
 ```tsx
 // In your root layout
-import { ThemeProvider } from '@aura-ui/themes';
+import { ThemeProvider } from '@structyl/themes';
 
 export default function RootLayout({ children }) {
   return (
@@ -100,20 +100,20 @@ export default function RootLayout({ children }) {
 
 ## Frequently Asked Questions
 
-**Q: What is aura-ui?**
-A: aura-ui is an accessible, TypeScript-first React component library with 90+ components. It provides headless primitives and Tailwind-styled wrappers, similar to Radix UI + shadcn/ui but as a full package.
+**Q: What is structyl?**
+A: structyl is an accessible, TypeScript-first React component library with 90+ components. It provides headless primitives and Tailwind-styled wrappers, similar to Radix UI + shadcn/ui but as a full package.
 
-**Q: How does aura-ui differ from shadcn/ui?**
-A: aura-ui ships as actual npm packages you install, not copy-paste code. It also includes a runtime theming system, a first-class DataTable, and more components out of the box.
+**Q: How does structyl differ from shadcn/ui?**
+A: structyl ships as actual npm packages you install, not copy-paste code. It also includes a runtime theming system, a first-class DataTable, and more components out of the box.
 
-**Q: Is aura-ui compatible with Next.js App Router?**
+**Q: Is structyl compatible with Next.js App Router?**
 A: Yes. All components with React hooks are marked with 'use client'. The library is SSR-safe and compatible with React Server Components.
 
-**Q: Does aura-ui support dark mode?**
+**Q: Does structyl support dark mode?**
 A: Yes. The theming system supports system, light, and dark modes out of the box. Theme switches happen without a page reload using CSS custom properties.
 
 **Q: How do I customize the theme?**
-A: Use the Theme Builder at https://aura-ui.dev/themes to generate custom CSS variables, or configure via ThemeProvider props.
+A: Use the Theme Builder at https://structyl.dev/themes to generate custom CSS variables, or configure via ThemeProvider props.
 
-**Q: Is aura-ui free?**
+**Q: Is structyl free?**
 A: Yes. MIT license, free forever.

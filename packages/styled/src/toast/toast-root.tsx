@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { X } from '@aura-ui/icons';
-import { Toast as ToastPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { X } from '@structyl/icons';
+import { Toast as ToastPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 const Provider = ToastPrimitive.Provider;
@@ -27,7 +27,7 @@ Viewport.displayName = 'Toast.Viewport';
 export const toastVariants = tv({
   base: [
     'group pointer-events-auto relative flex w-full items-center justify-between gap-2 overflow-hidden rounded-md border p-4 pr-6 shadow-lg transition-all',
-    'data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--aura-ui-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--aura-ui-toast-swipe-move-x)] data-[swipe=move]:transition-none',
+    'data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--structyl-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--structyl-toast-swipe-move-x)] data-[swipe=move]:transition-none',
     'data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out',
     'data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
   ],

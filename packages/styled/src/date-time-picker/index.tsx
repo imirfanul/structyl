@@ -1,13 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { CalendarClock, ChevronLeft, ChevronRight } from '@aura-ui/icons';
+import { CalendarClock, ChevronLeft, ChevronRight } from '@structyl/icons';
 import {
   Calendar as CalendarPrimitive,
   DateTimePicker as DateTimePickerPrimitive,
-} from '@aura-ui/primitives';
-import type { TimePickerView } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+} from '@structyl/primitives';
+import type { TimePickerView } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { buttonVariants } from '../button';
 import { Calendar as StyledCalendar } from '../calendar';
 import { TimePickerPanel } from '../time-picker';
@@ -165,7 +165,7 @@ const Content = React.forwardRef<
         sideOffset={sideOffset}
         className={cn(
           'z-50 rounded-md border border-border bg-popover p-0 text-popover-foreground shadow-md outline-none',
-          'origin-[var(--aura-ui-popper-transform-origin,center)]',
+          'origin-[var(--structyl-popper-transform-origin,center)]',
           'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
           'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
           className,

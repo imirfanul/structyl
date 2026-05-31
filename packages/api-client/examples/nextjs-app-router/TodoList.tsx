@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useApiQuery } from '@aura-ui/api-client';
+import { useApiQuery } from '@structyl/api-client';
 
 interface Todo {
   id: number;

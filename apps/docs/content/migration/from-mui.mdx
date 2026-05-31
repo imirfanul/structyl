@@ -1,20 +1,20 @@
 ---
 title: Migrating from MUI
-description: How to move from Material UI to aura-ui.
+description: How to move from Material UI to structyl.
 ---
 
 # Migrating from MUI
 
-`aura-ui` is Tailwind-styled and headless — quite different from MUI's emotion-based theming. The migration is mostly a styling rewrite.
+`structyl` is Tailwind-styled and headless — quite different from MUI's emotion-based theming. The migration is mostly a styling rewrite.
 
 ## Theming
 
 - **MUI:** `<ThemeProvider theme={createTheme(...)}>` with emotion in the background.
-- **aura-ui:** `<ThemeProvider theme="slate">` (or your custom theme) consumed via CSS variables. No CSS-in-JS at runtime.
+- **structyl:** `<ThemeProvider theme="slate">` (or your custom theme) consumed via CSS variables. No CSS-in-JS at runtime.
 
 ## Component map
 
-| MUI                          | aura-ui                                              |
+| MUI                          | structyl                                              |
 | ---------------------------- | ----------------------------------------------------- |
 | `Button`                     | `Button`                                              |
 | `TextField`                  | `Input` (+ `Label` + `Form` for validation)           |

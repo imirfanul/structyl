@@ -2,14 +2,14 @@
 
 import { useState, useRef, useEffect, type ReactNode } from 'react';
 import Link from 'next/link';
-import { useTheme } from '@aura-ui/themes';
+import { useTheme } from '@structyl/themes';
 import {
   ArrowUpRight, Sun, Moon, Copy, Check,
   Layers, Palette, Table2, Zap, Shield, Code2,
   ChevronRight, ChevronDown, ChevronUp,
   Accessibility, Package, Database,
-} from '@aura-ui/icons';
-import { Button } from '@aura-ui/styled';
+} from '@structyl/icons';
+import { Button } from '@structyl/styled';
 import { GITHUB_URL } from '../lib/site-config';
 import { ThemePresetPicker, COLOR_PRESETS, applyColorPreset, clearColorPreset, type PresetId } from '../components/theme-preset-picker';
 
@@ -322,7 +322,7 @@ function ThemePresetsSection() {
   // Hydrate from storage on mount
   useEffect(() => {
     try {
-      const stored = localStorage.getItem('aura-color-preset') as PresetId | null;
+      const stored = localStorage.getItem('structyl-color-preset') as PresetId | null;
       if (stored && COLOR_PRESETS.some(p => p.id === stored)) setActiveId(stored);
     } catch { /* ignore */ }
   }, []);
@@ -330,13 +330,13 @@ function ThemePresetsSection() {
   const select = (id: PresetId, hex: string) => {
     setActiveId(id);
     applyColorPreset(hex);
-    try { localStorage.setItem('aura-color-preset', id); } catch { /* ignore */ }
+    try { localStorage.setItem('structyl-color-preset', id); } catch { /* ignore */ }
   };
 
   const reset = () => {
     setActiveId(null);
     clearColorPreset();
-    try { localStorage.removeItem('aura-color-preset'); } catch { /* ignore */ }
+    try { localStorage.removeItem('structyl-color-preset'); } catch { /* ignore */ }
   };
 
   return (
@@ -426,8 +426,8 @@ export default function Page() {
       <header className="sticky top-0 z-50 border-b border-border/50 bg-bg/80 backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <Link href="/" className="flex items-center">
-            <img src="/logo.svg"       alt="aura-ui" className="hidden h-7 w-auto dark:block" />
-            <img src="/logo-light.svg" alt="aura-ui" className="block  h-7 w-auto dark:hidden" />
+            <img src="/logo.svg"       alt="structyl" className="hidden h-7 w-auto dark:block" />
+            <img src="/logo-light.svg" alt="structyl" className="block  h-7 w-auto dark:hidden" />
           </Link>
           <nav className="flex items-center gap-1">
             <Link href="/docs" className="rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-fg">
@@ -483,7 +483,7 @@ export default function Page() {
             <br />
             with an{' '}
             <span className="animate-shimmer bg-gradient-to-r from-[#4DF6C9] via-[#6E8BFF] to-[#A973FF] bg-clip-text text-transparent">
-              aura.
+              structyl.
             </span>
           </h1>
 
@@ -511,8 +511,8 @@ export default function Page() {
           <div className="animate-fade-up delay-400 mx-auto mt-6 flex w-fit items-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-4 py-2.5 font-mono text-sm text-muted-foreground">
             <span className="text-muted-foreground/50">$</span>
             <span className="text-fg">pnpm add</span>
-            <span>@aura-ui/styled @aura-ui/themes</span>
-            <CopyButton text="pnpm add @aura-ui/styled @aura-ui/themes" />
+            <span>@structyl/styled @structyl/themes</span>
+            <CopyButton text="pnpm add @structyl/styled @structyl/themes" />
           </div>
         </div>
 
@@ -546,7 +546,7 @@ export default function Page() {
       <section className="py-28">
         <div className="mx-auto max-w-6xl px-6">
           <FadeIn className="mb-14 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Why aura-ui</p>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Why structyl</p>
             <h2 className="text-4xl font-bold tracking-tight">Everything you need. Nothing you don&apos;t.</h2>
             <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
               Four layers working together so you spend time building products, not configuring UI infrastructure.
@@ -630,8 +630,8 @@ export default function Page() {
                 <thead>
                   <tr className="border-b border-border/60 bg-muted/40">
                     <th className="px-6 py-4 text-left font-semibold">Feature</th>
-                    {['aura-ui', 'Radix UI', 'shadcn/ui', 'MUI'].map(lib => (
-                      <th key={lib} className={`px-6 py-4 text-center font-semibold ${lib === 'aura-ui' ? 'text-[#4DF6C9]' : ''}`}>
+                    {['structyl', 'Radix UI', 'shadcn/ui', 'MUI'].map(lib => (
+                      <th key={lib} className={`px-6 py-4 text-center font-semibold ${lib === 'structyl' ? 'text-[#4DF6C9]' : ''}`}>
                         {lib}
                       </th>
                     ))}
@@ -682,19 +682,19 @@ export default function Page() {
                 step: '01',
                 title: 'Install packages',
                 lang: 'bash',
-                code: 'pnpm add @aura-ui/styled\npnpm add @aura-ui/themes',
+                code: 'pnpm add @structyl/styled\npnpm add @structyl/themes',
               },
               {
                 step: '02',
                 title: 'Wrap with ThemeProvider',
                 lang: 'tsx',
-                code: `import { ThemeProvider } from '@aura-ui/themes';\n\nexport default function Layout({ children }) {\n  return (\n    <ThemeProvider defaultTheme="slate">\n      {children}\n    </ThemeProvider>\n  );\n}`,
+                code: `import { ThemeProvider } from '@structyl/themes';\n\nexport default function Layout({ children }) {\n  return (\n    <ThemeProvider defaultTheme="slate">\n      {children}\n    </ThemeProvider>\n  );\n}`,
               },
               {
                 step: '03',
                 title: 'Use components',
                 lang: 'tsx',
-                code: `import { Button } from '@aura-ui/styled';\n\nexport default function Page() {\n  return (\n    <Button variant="outline">\n      Hello, aura-ui\n    </Button>\n  );\n}`,
+                code: `import { Button } from '@structyl/styled';\n\nexport default function Page() {\n  return (\n    <Button variant="outline">\n      Hello, structyl\n    </Button>\n  );\n}`,
               },
             ].map(({ step, title, code }) => (
               <FadeIn key={step}>
@@ -737,15 +737,15 @@ export default function Page() {
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { name: '@aura-ui/primitives', desc: 'Headless WAI-ARIA primitives',             icon: Accessibility, color: 'text-[#4DF6C9]', glow: 'rgba(77,246,201,0.08)'   },
-              { name: '@aura-ui/styled',     desc: 'Tailwind-styled component layer',          icon: Layers,        color: 'text-[#6E8BFF]', glow: 'rgba(110,139,255,0.08)' },
-              { name: '@aura-ui/themes',     desc: 'ThemeProvider + runtime token system',     icon: Palette,       color: 'text-[#A973FF]', glow: 'rgba(169,115,255,0.08)' },
-              { name: '@aura-ui/data-table', desc: 'Feature-complete DataTable component',     icon: Table2,        color: 'text-[#fb7185]', glow: 'rgba(251,113,133,0.08)' },
-              { name: '@aura-ui/hooks',      desc: '24 SSR-safe, tree-shakeable hooks',        icon: Zap,           color: 'text-amber-400',  glow: 'rgba(251,191,36,0.08)'  },
-              { name: '@aura-ui/icons',      desc: 'Lucide icon set, typed and consistent',    icon: Shield,        color: 'text-[#4DF6C9]', glow: 'rgba(77,246,201,0.08)'  },
-              { name: '@aura-ui/utils',      desc: 'cn(), type guards, and pure utilities',    icon: Code2,         color: 'text-[#6E8BFF]', glow: 'rgba(110,139,255,0.08)' },
-              { name: '@aura-ui/core',       desc: 'Slot, Primitive, createContext helpers',   icon: Package,       color: 'text-[#A973FF]', glow: 'rgba(169,115,255,0.08)' },
-              { name: '@aura-ui/cli',        desc: 'shadcn-style component installer',         icon: Database,      color: 'text-[#fb7185]', glow: 'rgba(251,113,133,0.08)' },
+              { name: '@structyl/primitives', desc: 'Headless WAI-ARIA primitives',             icon: Accessibility, color: 'text-[#4DF6C9]', glow: 'rgba(77,246,201,0.08)'   },
+              { name: '@structyl/styled',     desc: 'Tailwind-styled component layer',          icon: Layers,        color: 'text-[#6E8BFF]', glow: 'rgba(110,139,255,0.08)' },
+              { name: '@structyl/themes',     desc: 'ThemeProvider + runtime token system',     icon: Palette,       color: 'text-[#A973FF]', glow: 'rgba(169,115,255,0.08)' },
+              { name: '@structyl/data-table', desc: 'Feature-complete DataTable component',     icon: Table2,        color: 'text-[#fb7185]', glow: 'rgba(251,113,133,0.08)' },
+              { name: '@structyl/hooks',      desc: '24 SSR-safe, tree-shakeable hooks',        icon: Zap,           color: 'text-amber-400',  glow: 'rgba(251,191,36,0.08)'  },
+              { name: '@structyl/icons',      desc: 'Lucide icon set, typed and consistent',    icon: Shield,        color: 'text-[#4DF6C9]', glow: 'rgba(77,246,201,0.08)'  },
+              { name: '@structyl/utils',      desc: 'cn(), type guards, and pure utilities',    icon: Code2,         color: 'text-[#6E8BFF]', glow: 'rgba(110,139,255,0.08)' },
+              { name: '@structyl/core',       desc: 'Slot, Primitive, createContext helpers',   icon: Package,       color: 'text-[#A973FF]', glow: 'rgba(169,115,255,0.08)' },
+              { name: '@structyl/cli',        desc: 'shadcn-style component installer',         icon: Database,      color: 'text-[#fb7185]', glow: 'rgba(251,113,133,0.08)' },
             ].map((pkg, i) => (
               <FadeIn key={pkg.name} delay={i * 50}>
                 <div
@@ -796,9 +796,9 @@ export default function Page() {
         <div className="mx-auto max-w-6xl px-6 py-10">
           <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
             <div className="flex items-center gap-3">
-              <img src="/logo.svg"       alt="aura-ui" className="hidden h-6 w-auto dark:block" />
-              <img src="/logo-light.svg" alt="aura-ui" className="block  h-6 w-auto dark:hidden" />
-              <span className="text-xs text-muted-foreground">MIT © 2025 aura-ui contributors</span>
+              <img src="/logo.svg"       alt="structyl" className="hidden h-6 w-auto dark:block" />
+              <img src="/logo-light.svg" alt="structyl" className="block  h-6 w-auto dark:hidden" />
+              <span className="text-xs text-muted-foreground">MIT © 2025 structyl contributors</span>
             </div>
             <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
               <Link href="/docs" className="transition-colors hover:text-fg">Docs</Link>

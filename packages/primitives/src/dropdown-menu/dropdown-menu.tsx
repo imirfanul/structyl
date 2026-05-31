@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive } from '@aura-ui/core';
-import { useControllableState, useId, useComposedRefs } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+import { createContext, Primitive } from '@structyl/core';
+import { useControllableState, useId, useComposedRefs } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 import * as MenuPrimitive from '../menu';
 
 interface DropdownMenuContextValue {

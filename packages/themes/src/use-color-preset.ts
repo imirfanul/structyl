@@ -7,7 +7,7 @@ import {
   type ColorPreset,
 } from './color-presets';
 
-const DEFAULT_STORAGE_KEY = 'aura-color-preset';
+const DEFAULT_STORAGE_KEY = 'structyl-color-preset';
 
 /* ── Types ─────────────────────────────────────────────────────────────────── */
 
@@ -26,7 +26,7 @@ export interface UseColorPresetOptions {
    * localStorage key used to persist the active preset across page loads.
    * Override if you need multiple independent pickers on the same origin.
    *
-   * @default 'aura-color-preset'
+   * @default 'structyl-color-preset'
    */
   storageKey?: string;
 }
@@ -53,7 +53,7 @@ export interface UseColorPresetReturn {
 /* ── Hook ───────────────────────────────────────────────────────────────────── */
 
 /**
- * Manages an accent-color preset on top of the active aura-ui theme.
+ * Manages an accent-color preset on top of the active structyl theme.
  *
  * Must be used inside a `<ThemeProvider>`. Persists the selection to
  * localStorage and re-applies it whenever the base theme or color-mode

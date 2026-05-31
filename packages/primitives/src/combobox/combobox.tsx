@@ -9,9 +9,9 @@ import {
   DismissableLayer,
   Popper,
   useDirection,
-} from '@aura-ui/core';
-import { useControllableState, useId, useComposedRefs } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+} from '@structyl/core';
+import { useControllableState, useId, useComposedRefs } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 
 interface ComboboxContextValue {
   open: boolean;

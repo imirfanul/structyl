@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive, Portal as PortalPrimitive, Presence } from '@aura-ui/core';
-import { useControllableState, useComposedRefs } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+import { createContext, Primitive, Portal as PortalPrimitive, Presence } from '@structyl/core';
+import { useControllableState, useComposedRefs } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 
 export interface MentionSuggestion {
   id: string;

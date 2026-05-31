@@ -140,7 +140,7 @@ export interface PersistenceStorage {
 
 export interface PersistenceConfig {
   storage: PersistenceStorage;
-  /** Storage key, default 'aura-ui-cache' */
+  /** Storage key, default 'structyl-cache' */
   key?: string;
   /** Max age in ms, default 24h */
   maxAge?: number;

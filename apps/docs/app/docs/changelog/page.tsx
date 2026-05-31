@@ -17,13 +17,13 @@ const RELEASES: ChangeEntry[] = [
     version: '0.5.0',
     date: 'May 2026',
     changes: [
-      { type: 'feat',     package: '@aura-ui/data-table', description: 'Add virtual scrolling with @tanstack/react-virtual for 100k+ row datasets' },
-      { type: 'feat',     package: '@aura-ui/data-table', description: 'Column pinning — pin columns left or right with drag-and-drop reorder' },
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Combobox component with multi-select and async search support' },
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add DatePicker and DateRangePicker components' },
-      { type: 'feat',     package: '@aura-ui/hooks',      description: 'Add useIntersectionObserver, useResizeObserver, useEventListener hooks' },
-      { type: 'perf',     package: '@aura-ui/styled',     description: 'Tree-shake unused variant classes at build time via tailwind-variants v0.3' },
-      { type: 'fix',      package: '@aura-ui/themes',     description: 'Fix color-scheme flash on initial page load in dark mode' },
+      { type: 'feat',     package: '@structyl/data-table', description: 'Add virtual scrolling with @tanstack/react-virtual for 100k+ row datasets' },
+      { type: 'feat',     package: '@structyl/data-table', description: 'Column pinning — pin columns left or right with drag-and-drop reorder' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Combobox component with multi-select and async search support' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add DatePicker and DateRangePicker components' },
+      { type: 'feat',     package: '@structyl/hooks',      description: 'Add useIntersectionObserver, useResizeObserver, useEventListener hooks' },
+      { type: 'perf',     package: '@structyl/styled',     description: 'Tree-shake unused variant classes at build time via tailwind-variants v0.3' },
+      { type: 'fix',      package: '@structyl/themes',     description: 'Fix color-scheme flash on initial page load in dark mode' },
       { type: 'docs',     package: 'docs',                description: 'Add interactive design tokens page and component status badges' },
     ],
   },
@@ -31,25 +31,25 @@ const RELEASES: ChangeEntry[] = [
     version: '0.4.0',
     date: 'April 2026',
     changes: [
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Skeleton component with animated pulse and wave variants' },
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Select component with search, groups, and virtualised options' },
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Slider, Switch, and Checkbox with indeterminate state' },
-      { type: 'feat',     package: '@aura-ui/hooks',      description: 'Add useDarkMode, useHotkeys, useClickOutside, useCopyToClipboard' },
-      { type: 'breaking', package: '@aura-ui/primitives', description: 'Rename Dialog.Panel → Dialog.Content to align with Radix naming' },
-      { type: 'fix',      package: '@aura-ui/styled',     description: 'Fix focus-ring not visible in high-contrast mode' },
-      { type: 'fix',      package: '@aura-ui/data-table', description: 'Fix row selection state not preserved across paginated views' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Skeleton component with animated pulse and wave variants' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Select component with search, groups, and virtualised options' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Slider, Switch, and Checkbox with indeterminate state' },
+      { type: 'feat',     package: '@structyl/hooks',      description: 'Add useDarkMode, useHotkeys, useClickOutside, useCopyToClipboard' },
+      { type: 'breaking', package: '@structyl/primitives', description: 'Rename Dialog.Panel → Dialog.Content to align with Radix naming' },
+      { type: 'fix',      package: '@structyl/styled',     description: 'Fix focus-ring not visible in high-contrast mode' },
+      { type: 'fix',      package: '@structyl/data-table', description: 'Fix row selection state not preserved across paginated views' },
     ],
   },
   {
     version: '0.3.0',
     date: 'March 2026',
     changes: [
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Dialog, Sheet, and Drawer components with focus trapping' },
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Tabs and Accordion with compound component API' },
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Tooltip and Popover via @floating-ui/react' },
-      { type: 'feat',     package: '@aura-ui/data-table', description: 'Initial DataTable release with sorting, filtering, and pagination' },
-      { type: 'feat',     package: '@aura-ui/themes',     description: 'Add zinc and rose theme presets in addition to the default slate' },
-      { type: 'perf',     package: '@aura-ui/icons',      description: 'Lazy-load icons via dynamic import to reduce initial bundle' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Dialog, Sheet, and Drawer components with focus trapping' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Tabs and Accordion with compound component API' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Tooltip and Popover via @floating-ui/react' },
+      { type: 'feat',     package: '@structyl/data-table', description: 'Initial DataTable release with sorting, filtering, and pagination' },
+      { type: 'feat',     package: '@structyl/themes',     description: 'Add zinc and rose theme presets in addition to the default slate' },
+      { type: 'perf',     package: '@structyl/icons',      description: 'Lazy-load icons via dynamic import to reduce initial bundle' },
       { type: 'docs',     package: 'docs',                description: 'Launch interactive icon browser with search and copy-to-clipboard' },
     ],
   },
@@ -57,22 +57,22 @@ const RELEASES: ChangeEntry[] = [
     version: '0.2.0',
     date: 'February 2026',
     changes: [
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Badge, Card, Avatar, and Separator components' },
-      { type: 'feat',     package: '@aura-ui/styled',     description: 'Add Input, Textarea, and Label with form integration' },
-      { type: 'feat',     package: '@aura-ui/hooks',      description: 'Add useDebounce, useThrottle, useLocalStorage, useMediaQuery' },
-      { type: 'feat',     package: '@aura-ui/themes',     description: 'Initial ThemeProvider with CSS variable injection and system mode support' },
-      { type: 'breaking', package: '@aura-ui/styled',     description: 'Move Button variants from class strings to tailwind-variants API' },
-      { type: 'fix',      package: '@aura-ui/core',       description: 'Fix Slot component not merging event handlers correctly' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Badge, Card, Avatar, and Separator components' },
+      { type: 'feat',     package: '@structyl/styled',     description: 'Add Input, Textarea, and Label with form integration' },
+      { type: 'feat',     package: '@structyl/hooks',      description: 'Add useDebounce, useThrottle, useLocalStorage, useMediaQuery' },
+      { type: 'feat',     package: '@structyl/themes',     description: 'Initial ThemeProvider with CSS variable injection and system mode support' },
+      { type: 'breaking', package: '@structyl/styled',     description: 'Move Button variants from class strings to tailwind-variants API' },
+      { type: 'fix',      package: '@structyl/core',       description: 'Fix Slot component not merging event handlers correctly' },
     ],
   },
   {
     version: '0.1.0',
     date: 'January 2026',
     changes: [
-      { type: 'feat', package: '@aura-ui/core',       description: 'Initial release with Slot, Primitive, and createContext utilities' },
-      { type: 'feat', package: '@aura-ui/primitives', description: 'Initial headless primitives: Button, Dialog (partial), Tooltip' },
-      { type: 'feat', package: '@aura-ui/styled',     description: 'Initial styled layer: Button with size/variant/shape axes' },
-      { type: 'feat', package: '@aura-ui/hooks',      description: 'Initial hooks: useBoolean, useToggle, useCounter, usePrevious, useMount' },
+      { type: 'feat', package: '@structyl/core',       description: 'Initial release with Slot, Primitive, and createContext utilities' },
+      { type: 'feat', package: '@structyl/primitives', description: 'Initial headless primitives: Button, Dialog (partial), Tooltip' },
+      { type: 'feat', package: '@structyl/styled',     description: 'Initial styled layer: Button with size/variant/shape axes' },
+      { type: 'feat', package: '@structyl/hooks',      description: 'Initial hooks: useBoolean, useToggle, useCounter, usePrevious, useMount' },
       { type: 'docs', package: 'docs',                description: 'Launch docs site with getting-started guide and component API reference' },
     ],
   },
@@ -104,7 +104,7 @@ export default function ChangelogPage() {
       <p className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</p>
       <h1 className="mt-2 text-4xl font-semibold tracking-tight">Changelog</h1>
       <p className="mt-3 text-base text-muted-foreground">
-        All notable changes to aura-ui packages. We follow{' '}
+        All notable changes to structyl packages. We follow{' '}
         <a
           href="https://semver.org"
           target="_blank"
@@ -174,7 +174,7 @@ export default function ChangelogPage() {
       <div className="mt-14 rounded-xl border border-border bg-muted/20 p-5 text-sm text-muted-foreground">
         For the full git history, see the{' '}
         <a
-          href="https://github.com/your-org/aura-ui/commits/main"
+          href="https://github.com/your-org/structyl/commits/main"
           target="_blank"
           rel="noreferrer"
           className="text-primary underline-offset-2 hover:underline"

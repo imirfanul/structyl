@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { ThemeProvider, ThemeScript } from '@aura-ui/themes';
-import { Toaster } from '@aura-ui/styled';
+import { ThemeProvider, ThemeScript } from '@structyl/themes';
+import { Toaster } from '@structyl/styled';
 import { Analytics } from '@vercel/analytics/next';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, GITHUB_URL, NPM_URL, COMPONENT_SLUGS } from '../lib/site-config';
 import './globals.css';
@@ -155,82 +155,82 @@ const faqJsonLd = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: 'What is aura-ui?',
+      name: 'What is structyl?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'aura-ui is an open-source, TypeScript-first React component library with 90+ accessible components. It combines WAI-ARIA compliant headless primitives with Tailwind CSS v4 styled wrappers, a runtime theming system, and a first-class DataTable — all in independently-versioned npm packages.',
+        text: 'structyl is an open-source, TypeScript-first React component library with 90+ accessible components. It combines WAI-ARIA compliant headless primitives with Tailwind CSS v4 styled wrappers, a runtime theming system, and a first-class DataTable — all in independently-versioned npm packages.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How does aura-ui differ from shadcn/ui?',
+      name: 'How does structyl differ from shadcn/ui?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'aura-ui ships as actual npm packages (pnpm add @aura-ui/styled) rather than copy-paste code snippets. It adds a runtime theming system that switches themes without a page reload, a feature-complete DataTable, 24+ React hooks, and 90+ components — significantly more than shadcn/ui out of the box.',
+        text: 'structyl ships as actual npm packages (pnpm add @structyl/styled) rather than copy-paste code snippets. It adds a runtime theming system that switches themes without a page reload, a feature-complete DataTable, 24+ React hooks, and 90+ components — significantly more than shadcn/ui out of the box.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How does aura-ui compare to Radix UI?',
+      name: 'How does structyl compare to Radix UI?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'aura-ui builds on the same headless-first philosophy as Radix UI but adds a complete Tailwind-styled layer, runtime theming with CSS variables, dark mode, a DataTable, and chart components. Radix is primitives-only; aura-ui is a full component library ready to use.',
+        text: 'structyl builds on the same headless-first philosophy as Radix UI but adds a complete Tailwind-styled layer, runtime theming with CSS variables, dark mode, a DataTable, and chart components. Radix is primitives-only; structyl is a full component library ready to use.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Is aura-ui compatible with Next.js App Router?',
+      name: 'Is structyl compatible with Next.js App Router?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: "Yes. All aura-ui components that use React hooks are marked with 'use client'. The library is SSR-safe and fully compatible with Next.js 15 App Router and React Server Components.",
+        text: "Yes. All structyl components that use React hooks are marked with 'use client'. The library is SSR-safe and fully compatible with Next.js 15 App Router and React Server Components.",
       },
     },
     {
       '@type': 'Question',
-      name: 'Does aura-ui support dark mode?',
+      name: 'Does structyl support dark mode?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. aura-ui includes a ThemeProvider that supports system, light, and dark modes. Theme switches happen instantly using CSS custom properties — no page reload required and no flash of unstyled content.',
+        text: 'Yes. structyl includes a ThemeProvider that supports system, light, and dark modes. Theme switches happen instantly using CSS custom properties — no page reload required and no flash of unstyled content.',
       },
     },
     {
       '@type': 'Question',
-      name: 'How do I install aura-ui?',
+      name: 'How do I install structyl?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Install the main package with: pnpm add @aura-ui/styled (or npm install @aura-ui/styled). Then wrap your app in ThemeProvider from @aura-ui/themes and add Toaster from @aura-ui/styled to your root layout.',
+        text: 'Install the main package with: pnpm add @structyl/styled (or npm install @structyl/styled). Then wrap your app in ThemeProvider from @structyl/themes and add Toaster from @structyl/styled to your root layout.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Is aura-ui free and open source?',
+      name: 'Is structyl free and open source?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. aura-ui is MIT licensed and completely free. All packages are published to npm under the @aura-ui scope.',
+        text: 'Yes. structyl is MIT licensed and completely free. All packages are published to npm under the @structyl scope.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Does aura-ui support TypeScript?',
+      name: 'Does structyl support TypeScript?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. aura-ui is built with TypeScript strict mode throughout. All components export their prop types and the library ships with full type definitions. There is no any usage in the public API.',
+        text: 'Yes. structyl is built with TypeScript strict mode throughout. All components export their prop types and the library ships with full type definitions. There is no any usage in the public API.',
       },
     },
     {
       '@type': 'Question',
-      name: 'What styling system does aura-ui use?',
+      name: 'What styling system does structyl use?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'aura-ui uses Tailwind CSS v4 for styling, tailwind-variants for type-safe variant APIs, and tailwind-merge for class conflict resolution. All colors and design tokens are CSS custom properties that integrate with the runtime theming system.',
+        text: 'structyl uses Tailwind CSS v4 for styling, tailwind-variants for type-safe variant APIs, and tailwind-merge for class conflict resolution. All colors and design tokens are CSS custom properties that integrate with the runtime theming system.',
       },
     },
     {
       '@type': 'Question',
-      name: 'Does aura-ui have a DataTable component?',
+      name: 'Does structyl have a DataTable component?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Yes. aura-ui includes a first-class DataTable in the @aura-ui/data-table package, built on @tanstack/table-core. It supports sorting, multi-column filtering, pagination, row selection, column resizing, and row virtualization via @tanstack/react-virtual.',
+        text: 'Yes. structyl includes a first-class DataTable in the @structyl/data-table package, built on @tanstack/table-core. It supports sorting, multi-column filtering, pagination, row selection, column resizing, and row virtualization via @tanstack/react-virtual.',
       },
     },
   ],
@@ -241,8 +241,8 @@ const faqJsonLd = {
 const howToJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'HowTo',
-  name: 'How to install and set up aura-ui',
-  description: 'Step-by-step guide to install aura-ui React component library and render your first component.',
+  name: 'How to install and set up structyl',
+  description: 'Step-by-step guide to install structyl React component library and render your first component.',
   totalTime: 'PT5M',
   supply: [{ '@type': 'HowToSupply', name: 'Node.js 18+' }, { '@type': 'HowToSupply', name: 'React 18+ or 19+' }],
   tool: [{ '@type': 'HowToTool', name: 'pnpm, npm, or yarn' }],
@@ -251,28 +251,28 @@ const howToJsonLd = {
       '@type': 'HowToStep',
       position: 1,
       name: 'Install the package',
-      text: 'Run: pnpm add @aura-ui/styled @aura-ui/themes',
+      text: 'Run: pnpm add @structyl/styled @structyl/themes',
       url: `${SITE_URL}/docs/getting-started`,
     },
     {
       '@type': 'HowToStep',
       position: 2,
       name: 'Add ThemeProvider to your root layout',
-      text: "Import ThemeProvider from @aura-ui/themes and wrap your app. Add the ThemeScript before ThemeProvider to prevent flash of unstyled content.",
+      text: "Import ThemeProvider from @structyl/themes and wrap your app. Add the ThemeScript before ThemeProvider to prevent flash of unstyled content.",
       url: `${SITE_URL}/docs/getting-started`,
     },
     {
       '@type': 'HowToStep',
       position: 3,
       name: 'Add Toaster for toast notifications',
-      text: 'Import Toaster from @aura-ui/styled and place it inside your root layout body. This enables the imperative toast API anywhere in your app.',
+      text: 'Import Toaster from @structyl/styled and place it inside your root layout body. This enables the imperative toast API anywhere in your app.',
       url: `${SITE_URL}/docs/getting-started`,
     },
     {
       '@type': 'HowToStep',
       position: 4,
       name: 'Import and use a component',
-      text: "Import any component from @aura-ui/styled, for example: import { Button } from '@aura-ui/styled'; Then render it: <Button variant=\"default\">Hello</Button>",
+      text: "Import any component from @structyl/styled, for example: import { Button } from '@structyl/styled'; Then render it: <Button variant=\"default\">Hello</Button>",
       url: `${SITE_URL}/docs/getting-started`,
     },
   ],
@@ -283,8 +283,8 @@ const howToJsonLd = {
 const itemListJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'aura-ui React components',
-  description: 'Complete list of 90+ accessible React components in the aura-ui library.',
+  name: 'structyl React components',
+  description: 'Complete list of 90+ accessible React components in the structyl library.',
   url: `${SITE_URL}/docs`,
   numberOfItems: COMPONENT_SLUGS.length,
   itemListElement: COMPONENT_SLUGS.map(({ name, description, slug }, i) => ({

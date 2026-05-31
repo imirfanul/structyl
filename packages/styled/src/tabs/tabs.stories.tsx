@@ -73,7 +73,7 @@ export const CodeExample: Story = {
         </Content>
         <Content value="code">
           <pre className="rounded-lg border border-border bg-muted/30 p-4 text-xs overflow-auto">
-            {`import { Button } from '@aura-ui/styled';\n\nexport function Example() {\n  return <Button>Click me</Button>;\n}`}
+            {`import { Button } from '@structyl/styled';\n\nexport function Example() {\n  return <Button>Click me</Button>;\n}`}
           </pre>
         </Content>
         <Content value="props">

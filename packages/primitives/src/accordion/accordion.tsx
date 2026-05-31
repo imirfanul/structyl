@@ -6,9 +6,9 @@ import {
   Primitive,
   RovingFocusGroup,
   RovingFocusItem,
-} from '@aura-ui/core';
-import { useControllableState, useId } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+} from '@structyl/core';
+import { useControllableState, useId } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 import * as CollapsiblePrimitive from '../collapsible';
 import type {
   AccordionRootProps,
@@ -257,10 +257,10 @@ const Content = React.forwardRef<HTMLDivElement, AccordionContentProps>(
         {...props}
         ref={forwardedRef}
         style={{
-          ['--aura-ui-accordion-content-height' as string]:
-            'var(--aura-ui-collapsible-content-height)',
-          ['--aura-ui-accordion-content-width' as string]:
-            'var(--aura-ui-collapsible-content-width)',
+          ['--structyl-accordion-content-height' as string]:
+            'var(--structyl-collapsible-content-height)',
+          ['--structyl-accordion-content-width' as string]:
+            'var(--structyl-collapsible-content-width)',
           ...props.style,
         }}
       />

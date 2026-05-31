@@ -1,13 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Minus } from '@aura-ui/icons';
+import { Check, Minus } from '@structyl/icons';
 import {
   Checkbox as CheckboxPrimitive,
   CheckboxIndicator,
   type CheckboxProps as CheckboxPrimitiveProps,
-} from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+} from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 type CheckboxColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success';
 

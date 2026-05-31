@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronRight, Circle } from '@aura-ui/icons';
-import { ContextMenu as ContextMenuPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Check, ChevronRight, Circle } from '@structyl/icons';
+import { ContextMenu as ContextMenuPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = ContextMenuPrimitive.Root;
 const Trigger = ContextMenuPrimitive.Trigger;

@@ -1706,7 +1706,7 @@ export const API: Record<string, ApiPart[]> = {
         {
           name: 'onValueChange',
           type: '(date?: Date) => void',
-          description: 'Aura-style change callback.',
+          description: 'Structyl-style change callback.',
         },
       ],
     },
@@ -2236,7 +2236,7 @@ export const API: Record<string, ApiPart[]> = {
         {
           name: 'onValueChange',
           type: '(value: TimeValue) => void',
-          description: 'Aura-style segment callback.',
+          description: 'Structyl-style segment callback.',
         },
       ],
     },
@@ -2339,7 +2339,7 @@ export const API: Record<string, ApiPart[]> = {
         {
           name: 'onValueChange',
           type: '(range) => void',
-          description: 'Aura-style change callback.',
+          description: 'Structyl-style change callback.',
         },
       ],
     },

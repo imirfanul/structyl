@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy, ChevronRight, ArrowUpRight, Sun, Moon, Monitor } from '@aura-ui/icons';
-import { useTheme } from '@aura-ui/themes';
+import { Check, Copy, ChevronRight, ArrowUpRight, Sun, Moon, Monitor } from '@structyl/icons';
+import { useTheme } from '@structyl/themes';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
 
@@ -139,7 +139,7 @@ function PropsTable({ rows }: { rows: { prop: string; type: string; default?: st
 
 /* ── Theme preview with simulated token application ──────────────────────── */
 
-type ThemeName = 'slate' | 'zinc' | 'rose' | 'aura';
+type ThemeName = 'slate' | 'zinc' | 'rose' | 'structyl';
 type ModeName = 'light' | 'dark';
 
 const THEME_PALETTES: Record<ThemeName, Record<ModeName, {
@@ -158,7 +158,7 @@ const THEME_PALETTES: Record<ThemeName, Record<ModeName, {
     light: { bg: '#ffffff', fg: '#09090b', card: '#ffffff', primary: '#e11d48', primaryFg: '#fff1f2', muted: '#f4f4f5', mutedFg: '#71717a', border: '#e4e4e7', success: '#22c55e', destructive: '#ef4444', warning: '#f59e0b', accent: '#f4f4f5' },
     dark:  { bg: '#0d0a0b', fg: '#f2f2f2', card: '#180f10', primary: '#e11d48', primaryFg: '#fff1f2', muted: '#262020', mutedFg: '#a1a1aa', border: '#2d2323', success: '#4ade80', destructive: '#f87171', warning: '#fbbf24', accent: '#261e1e' },
   },
-  aura: {
+  structyl: {
     light: { bg: '#f9f9fb', fg: '#2c2f38', card: '#ffffff', primary: '#5b5fc7', primaryFg: '#ffffff', muted: '#f5f5f6', mutedFg: '#9e9e9e', border: '#e5e5e8', success: '#66bb6a', destructive: '#e05675', warning: '#ff6d2d', accent: '#ede9fd' },
     dark:  { bg: '#2c2f38', fg: '#ffffff', card: '#333744', primary: '#c3c4f5', primaryFg: '#3b2d8a', muted: '#3b3f4d', mutedFg: '#9ba8b5', border: '#525252', success: '#81c784', destructive: '#f48fb1', warning: '#cc9966', accent: '#383c4a' },
   },
@@ -168,7 +168,7 @@ const THEME_DESCRIPTIONS: Record<ThemeName, string> = {
   slate: 'Cool blue-slate — the default. Professional, clean, high contrast.',
   zinc: 'Pure neutral gray. Minimal and versatile for any brand color.',
   rose: 'Bold rose primary on a neutral base. Energetic and modern.',
-  aura: 'Full MUI-inspired palette with indigo primary and rich semantic tokens.',
+  structyl: 'Full MUI-inspired palette with indigo primary and rich semantic tokens.',
 };
 
 /* ── Live demos ──────────────────────────────────────────────────────────── */
@@ -176,7 +176,7 @@ const THEME_DESCRIPTIONS: Record<ThemeName, string> = {
 function ThemeSwitcherDemo() {
   const { theme, setTheme, resolvedMode, setMode } = useTheme();
 
-  const themes: ThemeName[] = ['slate', 'zinc', 'rose', 'aura'];
+  const themes: ThemeName[] = ['slate', 'zinc', 'rose', 'structyl'];
   const pal = THEME_PALETTES[theme as ThemeName]?.[resolvedMode] ?? THEME_PALETTES.slate.light;
 
   return (
@@ -336,7 +336,7 @@ function CustomThemeDemo() {
   const isDark = parseInt(primaryHex.slice(5,7),16) + parseInt(primaryHex.slice(3,5),16) + parseInt(primaryHex.slice(1,3),16) < 380;
   const fgHex = isDark ? '#ffffff' : '#0f172a';
 
-  const themeCode = `import type { ThemeConfig } from '@aura-ui/themes';
+  const themeCode = `import type { ThemeConfig } from '@structyl/themes';
 
 const myTheme: ThemeConfig = {
   light: {
@@ -498,7 +498,7 @@ export default function ThemesDocsPage() {
           <ChevronRight className="h-3 w-3 opacity-40" />
           <span>Theming</span>
           <ChevronRight className="h-3 w-3 opacity-40" />
-          <span className="font-medium text-fg">@aura-ui/themes</span>
+          <span className="font-medium text-fg">@structyl/themes</span>
         </nav>
 
         <div id="overview" className="scroll-mt-20">
@@ -554,7 +554,7 @@ export default function ThemesDocsPage() {
         {/* ── Setup ──────────────────────────────────────────────────── */}
         <Section id="setup" title="Setup">
           <SubSection id="install" title="1. Install">
-            <CodeBlock lang="bash" code={`pnpm add @aura-ui/themes`} />
+            <CodeBlock lang="bash" code={`pnpm add @structyl/themes`} />
           </SubSection>
 
           <SubSection id="provider" title="2. Wrap your app">
@@ -563,7 +563,7 @@ export default function ThemesDocsPage() {
               above any component that reads theme tokens or calls <code className="rounded bg-muted px-1 text-[12px]">useTheme</code>.
             </p>
             <CodeBlock lang="tsx" code={`// app/layout.tsx  (Next.js App Router)
-import { ThemeProvider } from '@aura-ui/themes';
+import { ThemeProvider } from '@structyl/themes';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -598,10 +598,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </p>
             <CodeBlock lang="ts" code={`// tailwind.config.ts
 import type { Config } from 'tailwindcss';
-import auraPreset from '@aura-ui/styled/tailwind-preset'; // or your own
+import structylPreset from '@structyl/styled/tailwind-preset'; // or your own
 
 export default {
-  presets: [auraPreset],
+  presets: [structylPreset],
   content: ['./src/**/*.{ts,tsx}', './app/**/*.{ts,tsx}'],
 } satisfies Config;`} />
           </SubSection>
@@ -614,7 +614,7 @@ export default {
             <code className="rounded bg-muted px-1 text-[12px]">useTheme()</code> to switch the active palette at runtime.
             All CSS variables update instantly — no page reload needed.
           </p>
-          <CodeBlock lang="tsx" code={`import { useTheme } from '@aura-ui/themes';
+          <CodeBlock lang="tsx" code={`import { useTheme } from '@structyl/themes';
 
 function ThemePicker() {
   const { theme, setTheme, themes } = useTheme();
@@ -658,8 +658,8 @@ function ThemePicker() {
             The resolved mode is always either <code className="rounded bg-muted px-1 text-[12px]">&apos;light&apos;</code> or{' '}
             <code className="rounded bg-muted px-1 text-[12px]">&apos;dark&apos;</code>.
           </p>
-          <CodeBlock lang="tsx" code={`import { useTheme } from '@aura-ui/themes';
-import { Sun, Moon, Monitor } from '@aura-ui/icons';
+          <CodeBlock lang="tsx" code={`import { useTheme } from '@structyl/themes';
+import { Sun, Moon, Monitor } from '@structyl/icons';
 
 function ModeToggle() {
   const { mode, setMode, resolvedMode } = useTheme();
@@ -863,7 +863,7 @@ document.documentElement.style.setProperty('--color-primary', '270 60% 50%');`} 
           <PreviewBlock
             title="Interactive theme builder"
             description="Pick a primary color and see the generated ThemeConfig code"
-            code={`import type { ThemeConfig } from '@aura-ui/themes';
+            code={`import type { ThemeConfig } from '@structyl/themes';
 
 const myTheme: ThemeConfig = {
   light: { primary: '270 60% 50%', ... },
@@ -878,8 +878,8 @@ const myTheme: ThemeConfig = {
               Only override the tokens you need — spread from a built-in theme to inherit everything else.
               This is the easiest way to create a branded variant.
             </p>
-            <CodeBlock lang="ts" code={`import { defaultThemes } from '@aura-ui/themes';
-import type { ThemeConfig } from '@aura-ui/themes';
+            <CodeBlock lang="ts" code={`import { defaultThemes } from '@structyl/themes';
+import type { ThemeConfig } from '@structyl/themes';
 
 // Brand theme — only the primary changes, everything else from slate
 const brandTheme: ThemeConfig = {
@@ -903,8 +903,8 @@ const brandTheme: ThemeConfig = {
 
           <SubSection id="runtime-switching" title="Using custom themes at runtime">
             <CodeBlock lang="tsx" code={`// app/layout.tsx
-import { ThemeProvider } from '@aura-ui/themes';
-import { defaultThemes } from '@aura-ui/themes';
+import { ThemeProvider } from '@structyl/themes';
+import { defaultThemes } from '@structyl/themes';
 import { brandTheme } from '@/lib/brand-theme';
 
 export default function RootLayout({ children }) {
@@ -922,7 +922,7 @@ export default function RootLayout({ children }) {
 // Any component
 function ThemePicker() {
   const { theme, setTheme, themes } = useTheme();
-  // themes = ['slate', 'zinc', 'rose', 'aura', 'brand']
+  // themes = ['slate', 'zinc', 'rose', 'structyl', 'brand']
   return themes.map(t => (
     <button key={t} onClick={() => setTheme(t)}>{t}</button>
   ));
@@ -965,7 +965,7 @@ function HeroBanner() {
             <strong>before</strong> the browser paints.
           </p>
           <CodeBlock lang="tsx" code={`// app/layout.tsx — Next.js App Router
-import { ThemeProvider, ThemeScript } from '@aura-ui/themes';
+import { ThemeProvider, ThemeScript } from '@structyl/themes';
 
 export default function RootLayout({ children }) {
   return (
@@ -991,7 +991,7 @@ export default function RootLayout({ children }) {
             The <code className="rounded bg-muted px-1 text-[12px]">storageKey</code> in{' '}
             <code className="rounded bg-muted px-1 text-[12px]">ThemeScript</code> and{' '}
             <code className="rounded bg-muted px-1 text-[12px]">ThemeProvider</code> must match. They both default
-            to <code className="rounded bg-muted px-1 text-[12px]">&apos;aura-ui-theme&apos;</code>.
+            to <code className="rounded bg-muted px-1 text-[12px]">&apos;structyl-theme&apos;</code>.
           </Callout>
         </Section>
 
@@ -1000,7 +1000,7 @@ export default function RootLayout({ children }) {
           <p className="mb-4 text-sm text-muted-foreground">
             By default, the chosen theme and mode are persisted to{' '}
             <code className="rounded bg-muted px-1 text-[12px]">localStorage</code> under the key{' '}
-            <code className="rounded bg-muted px-1 text-[12px]">aura-ui-theme</code> as
+            <code className="rounded bg-muted px-1 text-[12px]">structyl-theme</code> as
             <code className="rounded bg-muted px-1 mx-1 text-[12px]">{`{ theme, mode }`}</code>.
           </p>
           <CodeBlock lang="ts" code={`// Disable persistence (e.g. for theme preview / demo components)
@@ -1014,7 +1014,7 @@ export default function RootLayout({ children }) {
 </ThemeProvider>
 
 // What's stored in localStorage:
-// Key: "aura-ui-theme"
+// Key: "structyl-theme"
 // Value: '{"theme":"rose","mode":"dark"}'`} />
         </Section>
 
@@ -1025,7 +1025,7 @@ export default function RootLayout({ children }) {
             <PropsTable rows={[
               { prop: 'defaultTheme', type: 'string', default: "'slate'", description: "Name of the theme to use on first load. Must be a key in the themes map." },
               { prop: 'defaultMode', type: "'light' | 'dark' | 'system'", default: "'system'", description: "Color mode on first load. 'system' follows prefers-color-scheme." },
-              { prop: 'storageKey', type: 'string | false', default: "'aura-ui-theme'", description: "localStorage key for persistence. Pass false to disable saving to storage." },
+              { prop: 'storageKey', type: 'string | false', default: "'structyl-theme'", description: "localStorage key for persistence. Pass false to disable saving to storage." },
               { prop: 'enableTransitions', type: 'boolean', default: 'true', description: "When true, CSS transitions are active during theme switches. Pass false for instant switching (e.g. performance-sensitive UIs)." },
               { prop: 'themes', type: 'Record<string, ThemeConfig>', default: 'defaultThemes', description: "Custom theme map merged with built-in themes. Use to add or override themes." },
               { prop: 'attribute', type: 'string', default: "'data-theme'", description: "HTML attribute written to <html> with the active theme name. Change if you need data-color-scheme or similar." },
@@ -1066,7 +1066,7 @@ export default function RootLayout({ children }) {
 
           <SubSection id="ref-theme-script" title="ThemeScript">
             <PropsTable rows={[
-              { prop: 'storageKey', type: 'string', default: "'aura-ui-theme'", description: "Must match the storageKey passed to ThemeProvider." },
+              { prop: 'storageKey', type: 'string', default: "'structyl-theme'", description: "Must match the storageKey passed to ThemeProvider." },
               { prop: 'defaultTheme', type: 'string', default: "'slate'", description: "Fallback theme if no value exists in localStorage." },
               { prop: 'defaultMode', type: "'light' | 'dark' | 'system'", default: "'system'", description: "Fallback mode if no value exists in localStorage." },
             ]} />
@@ -1106,7 +1106,7 @@ interface ThemeTokens {
           <a href="/themes" className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Open themes playground <ArrowUpRight className="h-3 w-3" />
           </a>
-          <a href="https://github.com/your-org/aura-ui" target="_blank" rel="noreferrer"
+          <a href="https://github.com/your-org/structyl" target="_blank" rel="noreferrer"
             className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Edit on GitHub <ArrowUpRight className="h-3 w-3" />
           </a>

@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Avatar as AvatarPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Avatar as AvatarPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 // ── Size variants ─────────────────────────────────────────────────────────────

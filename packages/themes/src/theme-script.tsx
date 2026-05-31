@@ -23,7 +23,7 @@ function tokensToVars(tokens: Record<string, string>): string {
 export function ThemeScript({
   defaultTheme = 'slate',
   defaultMode = 'system',
-  storageKey = 'aura-ui-theme',
+  storageKey = 'structyl-theme',
   attribute = 'data-theme',
 }: ThemeScriptProps): React.JSX.Element {
   const cfg = defaultThemes[defaultTheme as keyof typeof defaultThemes];

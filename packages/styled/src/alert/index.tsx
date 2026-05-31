@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { tv, type VariantProps } from 'tailwind-variants';
-import { cn } from '@aura-ui/utils';
+import { cn } from '@structyl/utils';
 
 // ── Variants ─────────────────────────────────────────────────────────────────
 

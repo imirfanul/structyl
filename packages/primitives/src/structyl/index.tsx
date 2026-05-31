@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive, Portal as PortalPrimitive, Popper as PopperPrimitive } from '@aura-ui/core';
-import { useComposedRefs, useControllableState } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+import { Primitive, Portal as PortalPrimitive, Popper as PopperPrimitive } from '@structyl/core';
+import { useComposedRefs, useControllableState } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 import * as ComboboxPrimitive from '../combobox';
 
 type DivProps = React.ComponentPropsWithoutRef<'div'> & { asChild?: boolean };
@@ -11,39 +11,39 @@ type SpanProps = React.ComponentPropsWithoutRef<'span'> & { asChild?: boolean };
 type ButtonProps = React.ComponentPropsWithoutRef<'button'> & { asChild?: boolean };
 
 const Box = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-box="" {...props} ref={ref} />
+  <Primitive.div data-structyl-box="" {...props} ref={ref} />
 ));
 Box.displayName = 'Box';
 
 const Container = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-container="" {...props} ref={ref} />
+  <Primitive.div data-structyl-container="" {...props} ref={ref} />
 ));
 Container.displayName = 'Container';
 
 const Stack = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-stack="" {...props} ref={ref} />
+  <Primitive.div data-structyl-stack="" {...props} ref={ref} />
 ));
 Stack.displayName = 'Stack';
 
 const Grid = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-grid="" {...props} ref={ref} />
+  <Primitive.div data-structyl-grid="" {...props} ref={ref} />
 ));
 Grid.displayName = 'Grid';
 
 const Paper = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-paper="" {...props} ref={ref} />
+  <Primitive.div data-structyl-paper="" {...props} ref={ref} />
 ));
 Paper.displayName = 'Paper';
 
 const Typography = React.forwardRef<HTMLSpanElement, SpanProps>((props, ref) => (
-  <Primitive.span data-aura-ui-typography="" {...props} ref={ref} />
+  <Primitive.span data-structyl-typography="" {...props} ref={ref} />
 ));
 Typography.displayName = 'Typography';
 
 const Link = React.forwardRef<
   HTMLAnchorElement,
   React.ComponentPropsWithoutRef<'a'> & { asChild?: boolean }
->((props, ref) => <Primitive.a data-aura-ui-link="" {...props} ref={ref} />);
+>((props, ref) => <Primitive.a data-structyl-link="" {...props} ref={ref} />);
 Link.displayName = 'Link';
 
 const SvgIcon = React.forwardRef<
@@ -84,7 +84,7 @@ const Chart = React.forwardRef<SVGSVGElement, ChartProps>(
 
     return (
       <Primitive.svg
-        data-aura-ui-chart=""
+        data-structyl-chart=""
         aria-hidden={title ? undefined : true}
         role={title ? 'img' : undefined}
         viewBox={viewBox}
@@ -115,27 +115,27 @@ const Chart = React.forwardRef<SVGSVGElement, ChartProps>(
 Chart.displayName = 'Chart';
 
 const ChipRoot = React.forwardRef<HTMLSpanElement, SpanProps>((props, ref) => (
-  <Primitive.span data-aura-ui-chip="" {...props} ref={ref} />
+  <Primitive.span data-structyl-chip="" {...props} ref={ref} />
 ));
 ChipRoot.displayName = 'Chip.Root';
 
 const ChipLabel = React.forwardRef<HTMLSpanElement, SpanProps>((props, ref) => (
-  <Primitive.span data-aura-ui-chip-label="" {...props} ref={ref} />
+  <Primitive.span data-structyl-chip-label="" {...props} ref={ref} />
 ));
 ChipLabel.displayName = 'Chip.Label';
 
 const ChipDelete = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
-  <Primitive.button type="button" data-aura-ui-chip-delete="" {...props} ref={ref} />
+  <Primitive.button type="button" data-structyl-chip-delete="" {...props} ref={ref} />
 ));
 ChipDelete.displayName = 'Chip.Delete';
 
 const ButtonGroup = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div role="group" data-aura-ui-button-group="" {...props} ref={ref} />
+  <Primitive.div role="group" data-structyl-button-group="" {...props} ref={ref} />
 ));
 ButtonGroup.displayName = 'ButtonGroup';
 
 const FloatingActionButton = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
-  <Primitive.button type="button" data-aura-ui-floating-action-button="" {...props} ref={ref} />
+  <Primitive.button type="button" data-structyl-floating-action-button="" {...props} ref={ref} />
 ));
 FloatingActionButton.displayName = 'FloatingActionButton';
 
@@ -178,7 +178,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>((props, ref) => {
   });
 
   return (
-    <Primitive.div role="radiogroup" data-aura-ui-rating="" {...rest} ref={ref}>
+    <Primitive.div role="radiogroup" data-structyl-rating="" {...rest} ref={ref}>
       {Array.from({ length: max }, (_, index) => {
         const itemValue = index + 1;
         const checked = itemValue <= value;
@@ -296,7 +296,7 @@ const TransferList = React.forwardRef<HTMLDivElement, TransferListProps>((props,
   );
 
   return (
-    <Primitive.div data-aura-ui-transfer-list="" {...rest} ref={ref}>
+    <Primitive.div data-structyl-transfer-list="" {...rest} ref={ref}>
       {renderPanel(sourceTitle, sourceOptions)}
       <Primitive.div data-transfer-list-actions="">
         <Primitive.button type="button" onClick={moveRight}>
@@ -313,42 +313,42 @@ const TransferList = React.forwardRef<HTMLDivElement, TransferListProps>((props,
 TransferList.displayName = 'TransferList';
 
 const ListRoot = React.forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<'ul'>>(
-  (props, ref) => <Primitive.ul data-aura-ui-list="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.ul data-structyl-list="" {...props} ref={ref} />,
 );
 ListRoot.displayName = 'List.Root';
 
 const ListItem = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<'li'>>(
-  (props, ref) => <Primitive.li data-aura-ui-list-item="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.li data-structyl-list-item="" {...props} ref={ref} />,
 );
 ListItem.displayName = 'List.Item';
 
 const ListItemButton = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
-  <Primitive.button type="button" data-aura-ui-list-item-button="" {...props} ref={ref} />
+  <Primitive.button type="button" data-structyl-list-item-button="" {...props} ref={ref} />
 ));
 ListItemButton.displayName = 'List.ItemButton';
 
 const ListItemText = React.forwardRef<HTMLSpanElement, SpanProps>((props, ref) => (
-  <Primitive.span data-aura-ui-list-item-text="" {...props} ref={ref} />
+  <Primitive.span data-structyl-list-item-text="" {...props} ref={ref} />
 ));
 ListItemText.displayName = 'List.ItemText';
 
 const ListItemIcon = React.forwardRef<HTMLSpanElement, SpanProps>((props, ref) => (
-  <Primitive.span data-aura-ui-list-item-icon="" {...props} ref={ref} />
+  <Primitive.span data-structyl-list-item-icon="" {...props} ref={ref} />
 ));
 ListItemIcon.displayName = 'List.ItemIcon';
 
 const ListItemAvatar = React.forwardRef<HTMLSpanElement, SpanProps>((props, ref) => (
-  <Primitive.span data-aura-ui-list-item-avatar="" {...props} ref={ref} />
+  <Primitive.span data-structyl-list-item-avatar="" {...props} ref={ref} />
 ));
 ListItemAvatar.displayName = 'List.ItemAvatar';
 
 const ListItemSecondaryAction = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-list-item-secondary-action="" {...props} ref={ref} />
+  <Primitive.div data-structyl-list-item-secondary-action="" {...props} ref={ref} />
 ));
 ListItemSecondaryAction.displayName = 'List.ItemSecondaryAction';
 
 const ListSubheader = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<'li'>>(
-  (props, ref) => <Primitive.li data-aura-ui-list-subheader="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.li data-structyl-list-subheader="" {...props} ref={ref} />,
 );
 ListSubheader.displayName = 'List.Subheader';
 
@@ -364,22 +364,22 @@ const List = {
 };
 
 const ImageListRoot = React.forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<'ul'>>(
-  (props, ref) => <Primitive.ul data-aura-ui-image-list="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.ul data-structyl-image-list="" {...props} ref={ref} />,
 );
 ImageListRoot.displayName = 'ImageList.Root';
 
 const ImageListItem = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<'li'>>(
-  (props, ref) => <Primitive.li data-aura-ui-image-list-item="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.li data-structyl-image-list-item="" {...props} ref={ref} />,
 );
 ImageListItem.displayName = 'ImageList.Item';
 
 const ImageListImage = React.forwardRef<HTMLImageElement, React.ComponentPropsWithoutRef<'img'>>(
-  (props, ref) => <Primitive.img data-aura-ui-image-list-image="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.img data-structyl-image-list-image="" {...props} ref={ref} />,
 );
 ImageListImage.displayName = 'ImageList.Image';
 
 const ImageListCaption = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-image-list-caption="" {...props} ref={ref} />
+  <Primitive.div data-structyl-image-list-caption="" {...props} ref={ref} />
 ));
 ImageListCaption.displayName = 'ImageList.Caption';
 
@@ -391,47 +391,47 @@ const ImageList = {
 };
 
 const TableRoot = React.forwardRef<HTMLTableElement, React.ComponentPropsWithoutRef<'table'>>(
-  (props, ref) => <table data-aura-ui-table="" {...props} ref={ref} />,
+  (props, ref) => <table data-structyl-table="" {...props} ref={ref} />,
 );
 TableRoot.displayName = 'Table.Root';
 
 const TableHeader = React.forwardRef<
   React.ElementRef<'thead'>,
   React.ComponentPropsWithoutRef<'thead'>
->((props, ref) => <thead data-aura-ui-table-header="" {...props} ref={ref} />);
+>((props, ref) => <thead data-structyl-table-header="" {...props} ref={ref} />);
 TableHeader.displayName = 'Table.Header';
 
 const TableBody = React.forwardRef<
   React.ElementRef<'tbody'>,
   React.ComponentPropsWithoutRef<'tbody'>
->((props, ref) => <tbody data-aura-ui-table-body="" {...props} ref={ref} />);
+>((props, ref) => <tbody data-structyl-table-body="" {...props} ref={ref} />);
 TableBody.displayName = 'Table.Body';
 
 const TableFooter = React.forwardRef<
   React.ElementRef<'tfoot'>,
   React.ComponentPropsWithoutRef<'tfoot'>
->((props, ref) => <tfoot data-aura-ui-table-footer="" {...props} ref={ref} />);
+>((props, ref) => <tfoot data-structyl-table-footer="" {...props} ref={ref} />);
 TableFooter.displayName = 'Table.Footer';
 
 const TableRow = React.forwardRef<React.ElementRef<'tr'>, React.ComponentPropsWithoutRef<'tr'>>(
-  (props, ref) => <tr data-aura-ui-table-row="" {...props} ref={ref} />,
+  (props, ref) => <tr data-structyl-table-row="" {...props} ref={ref} />,
 );
 TableRow.displayName = 'Table.Row';
 
 const TableHead = React.forwardRef<React.ElementRef<'th'>, React.ComponentPropsWithoutRef<'th'>>(
-  (props, ref) => <th data-aura-ui-table-head="" {...props} ref={ref} />,
+  (props, ref) => <th data-structyl-table-head="" {...props} ref={ref} />,
 );
 TableHead.displayName = 'Table.Head';
 
 const TableCell = React.forwardRef<React.ElementRef<'td'>, React.ComponentPropsWithoutRef<'td'>>(
-  (props, ref) => <td data-aura-ui-table-cell="" {...props} ref={ref} />,
+  (props, ref) => <td data-structyl-table-cell="" {...props} ref={ref} />,
 );
 TableCell.displayName = 'Table.Cell';
 
 const TableCaption = React.forwardRef<
   React.ElementRef<'caption'>,
   React.ComponentPropsWithoutRef<'caption'>
->((props, ref) => <caption data-aura-ui-table-caption="" {...props} ref={ref} />);
+>((props, ref) => <caption data-structyl-table-caption="" {...props} ref={ref} />);
 TableCaption.displayName = 'Table.Caption';
 
 const Table = {
@@ -455,7 +455,7 @@ const Backdrop = React.forwardRef<HTMLDivElement, BackdropProps>(
   ({ open = false, forceMount = false, invisible = false, ...props }, ref) =>
     open || forceMount ? (
       <Primitive.div
-        data-aura-ui-backdrop=""
+        data-structyl-backdrop=""
         data-state={open ? 'open' : 'closed'}
         data-invisible={invisible ? '' : undefined}
         {...props}
@@ -537,7 +537,7 @@ const Snackbar = React.forwardRef<HTMLDivElement, SnackbarProps>((props, ref) =>
   return (
     <Primitive.div
       role="status"
-      data-aura-ui-snackbar=""
+      data-structyl-snackbar=""
       data-anchor-vertical={anchorOrigin.vertical}
       data-anchor-horizontal={anchorOrigin.horizontal}
       {...rest}
@@ -604,7 +604,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) => {
     <PortalPrimitive container={container ?? undefined}>
       <Primitive.div
         role="presentation"
-        data-aura-ui-modal=""
+        data-structyl-modal=""
         {...rest}
         ref={ref}
         onPointerDown={composeEventHandlers(rest.onPointerDown, (event) => {
@@ -620,7 +620,7 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>((props, ref) => {
 Modal.displayName = 'Modal';
 
 const AppBar = React.forwardRef<HTMLElement, React.ComponentPropsWithoutRef<'header'>>(
-  (props, ref) => <header data-aura-ui-app-bar="" {...props} ref={ref} />,
+  (props, ref) => <header data-structyl-app-bar="" {...props} ref={ref} />,
 );
 AppBar.displayName = 'AppBar';
 
@@ -654,7 +654,7 @@ const BottomNavigationRoot = React.forwardRef<HTMLElement, BottomNavigationRootP
         value={{ value, showLabels, onValueChange: (nextValue) => setValue(nextValue) }}
       >
         <nav
-          data-aura-ui-bottom-navigation=""
+          data-structyl-bottom-navigation=""
           data-show-labels={showLabels ? '' : undefined}
           role={role ?? 'tablist'}
           {...props}
@@ -750,7 +750,7 @@ const SpeedDialRoot = React.forwardRef<HTMLDivElement, SpeedDialRootProps>(
     return (
       <SpeedDialContext.Provider value={{ open, onOpenChange: (nextOpen) => setOpen(nextOpen) }}>
         <Primitive.div
-          data-aura-ui-speed-dial=""
+          data-structyl-speed-dial=""
           data-state={open ? 'open' : 'closed'}
           data-direction={direction}
           {...props}
@@ -775,7 +775,7 @@ const SpeedDialTrigger = React.forwardRef<HTMLButtonElement, SpeedDialTriggerPro
       <Primitive.button
         type="button"
         aria-expanded={ctx?.open}
-        data-aura-ui-speed-dial-trigger=""
+        data-structyl-speed-dial-trigger=""
         {...rest}
         ref={ref}
         onClick={composeEventHandlers(rest.onClick, () => ctx?.onOpenChange(!ctx.open))}
@@ -790,13 +790,13 @@ SpeedDialTrigger.displayName = 'SpeedDial.Trigger';
 const SpeedDialContent = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => {
   const ctx = React.useContext(SpeedDialContext);
   return ctx?.open ? (
-    <Primitive.div data-aura-ui-speed-dial-content="" {...props} ref={ref} />
+    <Primitive.div data-structyl-speed-dial-content="" {...props} ref={ref} />
   ) : null;
 });
 SpeedDialContent.displayName = 'SpeedDial.Content';
 
 const SpeedDialAction = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
-  <Primitive.button type="button" data-aura-ui-speed-dial-action="" {...props} ref={ref} />
+  <Primitive.button type="button" data-structyl-speed-dial-action="" {...props} ref={ref} />
 ));
 SpeedDialAction.displayName = 'SpeedDial.Action';
 
@@ -808,32 +808,32 @@ const SpeedDial = {
 };
 
 const Masonry = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-masonry="" {...props} ref={ref} />
+  <Primitive.div data-structyl-masonry="" {...props} ref={ref} />
 ));
 Masonry.displayName = 'Masonry';
 
 const TimelineRoot = React.forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<'ul'>>(
-  (props, ref) => <Primitive.ul data-aura-ui-timeline="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.ul data-structyl-timeline="" {...props} ref={ref} />,
 );
 TimelineRoot.displayName = 'Timeline.Root';
 
 const TimelineItem = React.forwardRef<HTMLLIElement, React.ComponentPropsWithoutRef<'li'>>(
-  (props, ref) => <Primitive.li data-aura-ui-timeline-item="" {...props} ref={ref} />,
+  (props, ref) => <Primitive.li data-structyl-timeline-item="" {...props} ref={ref} />,
 );
 TimelineItem.displayName = 'Timeline.Item';
 
 const TimelineSeparator = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-timeline-separator="" {...props} ref={ref} />
+  <Primitive.div data-structyl-timeline-separator="" {...props} ref={ref} />
 ));
 TimelineSeparator.displayName = 'Timeline.Separator';
 
 const TimelineDot = React.forwardRef<HTMLSpanElement, SpanProps>((props, ref) => (
-  <Primitive.span data-aura-ui-timeline-dot="" {...props} ref={ref} />
+  <Primitive.span data-structyl-timeline-dot="" {...props} ref={ref} />
 ));
 TimelineDot.displayName = 'Timeline.Dot';
 
 const TimelineContent = React.forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-  <Primitive.div data-aura-ui-timeline-content="" {...props} ref={ref} />
+  <Primitive.div data-structyl-timeline-content="" {...props} ref={ref} />
 ));
 TimelineContent.displayName = 'Timeline.Content';
 
@@ -984,7 +984,7 @@ const TextareaAutosize = React.forwardRef<HTMLTextAreaElement, TextareaAutosizeP
 
     return (
       <textarea
-        data-aura-ui-textarea-autosize=""
+        data-structyl-textarea-autosize=""
         rows={minRows}
         {...props}
         ref={composedRef}
@@ -1078,7 +1078,7 @@ const Transition = React.forwardRef<HTMLDivElement, TransitionProps>(
 
     return (
       <Primitive.div
-        data-aura-ui-transition=""
+        data-structyl-transition=""
         data-state={status}
         {...props}
         ref={ref}
@@ -1095,7 +1095,7 @@ const CssBaseline: React.FC<{ children?: React.ReactNode; enableColorScheme?: bo
   enableColorScheme = false,
 }) => (
   <>
-    <style data-aura-ui-css-baseline="">
+    <style data-structyl-css-baseline="">
       {`*,*::before,*::after{box-sizing:border-box}html{line-height:1.5;-webkit-text-size-adjust:100%${enableColorScheme ? ';color-scheme:light dark' : ''}}body{margin:0}button,input,textarea,select{font:inherit}`}
     </style>
     {children}
@@ -1110,7 +1110,7 @@ export interface InitColorSchemeScriptProps {
 }
 
 const InitColorSchemeScript: React.FC<InitColorSchemeScriptProps> = ({
-  storageKey = 'aura-ui-mode',
+  storageKey = 'structyl-mode',
   defaultMode = 'system',
   attribute = 'data-theme',
 }) => {

@@ -12,7 +12,7 @@ export async function persistCache(
   queryClient: QueryClient,
   config: PersistenceConfig,
 ): Promise<() => void> {
-  const storageKey = config.key ?? 'aura-ui-cache';
+  const storageKey = config.key ?? 'structyl-cache';
   const maxAge = config.maxAge ?? 24 * 60 * 60_000;
 
   // 1. Restore from storage on init

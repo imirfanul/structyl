@@ -1,16 +1,16 @@
 ---
-'@aura-ui/core': major
-'@aura-ui/utils': major
-'@aura-ui/hooks': major
-'@aura-ui/icons': major
-'@aura-ui/themes': major
-'@aura-ui/primitives': major
-'@aura-ui/styled': major
-'@aura-ui/data-table': major
-'@aura-ui/cli': major
-'@aura-ui/api-client': major
+'@structyl/core': major
+'@structyl/utils': major
+'@structyl/hooks': major
+'@structyl/icons': major
+'@structyl/themes': major
+'@structyl/primitives': major
+'@structyl/styled': major
+'@structyl/data-table': major
+'@structyl/cli': major
+'@structyl/api-client': major
 ---
 
-Initial public release of the aura-ui component library.
+Initial public release of the structyl component library.
 
 Includes accessible headless primitives, Tailwind-styled components, runtime theming system, and a first-class DataTable.

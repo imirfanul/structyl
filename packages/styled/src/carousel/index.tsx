@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, ChevronRight } from '@aura-ui/icons';
-import { Carousel as CarouselPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { ChevronLeft, ChevronRight } from '@structyl/icons';
+import { Carousel as CarouselPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 // ── Internal context to share index/count with Dots/Counter ──────────────────
 

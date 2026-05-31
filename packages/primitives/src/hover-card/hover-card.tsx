@@ -8,9 +8,9 @@ import {
   Presence,
   DismissableLayer,
   Popper,
-} from '@aura-ui/core';
-import { useControllableState } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+} from '@structyl/core';
+import { useControllableState } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 import type {
   HoverCardRootProps,
   HoverCardTriggerProps,

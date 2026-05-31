@@ -8,9 +8,9 @@ import {
   Info,
   Loader2,
   RotateCcw,
-} from '@aura-ui/icons';
-import { Toast as ToastPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+} from '@structyl/icons';
+import { Toast as ToastPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { Root, Action, Close, Title, Description } from './toast-root';
 import { useToast } from './use-toast';
 import type { ToastHorizontal, ToastVariant, ToastVertical } from './use-toast';
@@ -81,13 +81,13 @@ export interface ToasterProps {
  *
  * @example
  * // layout.tsx
- * import { Toaster } from '@aura-ui/styled';
+ * import { Toaster } from '@structyl/styled';
  * export default function RootLayout({ children }) {
  *   return <html><body>{children}<Toaster /></body></html>;
  * }
  *
  * // anywhere.ts
- * import { toast } from '@aura-ui/styled';
+ * import { toast } from '@structyl/styled';
  * toast.success('Saved!');
  * toast.error('Failed', { retry: () => save(), horizontal: 'right', vertical: 'top' });
  */

@@ -8,9 +8,9 @@ import React from 'react';
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { createApiClient } from '@aura-ui/api-client';
-import { prefetchApiQuery } from '@aura-ui/api-client/server';
-import { useApiQuery } from '@aura-ui/api-client';
+import { createApiClient } from '@structyl/api-client';
+import { prefetchApiQuery } from '@structyl/api-client/server';
+import { useApiQuery } from '@structyl/api-client';
 
 interface Todo {
   id: number;

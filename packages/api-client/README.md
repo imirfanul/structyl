@@ -1,4 +1,4 @@
-# @aura-ui/api-client
+# @structyl/api-client
 
 A lightweight, framework-agnostic API calling wrapper built on top of **TanStack Query v5** and **Axios**. Works identically in React (Vite/CRA), Next.js App Router, Next.js Pages Router, Remix, Astro, and React Native — under 5 kb gzipped (peers are not bundled).
 
@@ -8,13 +8,13 @@ A lightweight, framework-agnostic API calling wrapper built on top of **TanStack
 
 ```bash
 # pnpm (recommended)
-pnpm add @aura-ui/api-client @tanstack/react-query axios
+pnpm add @structyl/api-client @tanstack/react-query axios
 
 # npm
-npm install @aura-ui/api-client @tanstack/react-query axios
+npm install @structyl/api-client @tanstack/react-query axios
 
 # yarn
-yarn add @aura-ui/api-client @tanstack/react-query axios
+yarn add @structyl/api-client @tanstack/react-query axios
 ```
 
 ---
@@ -23,7 +23,7 @@ yarn add @aura-ui/api-client @tanstack/react-query axios
 
 ```tsx
 // 1. Create a client (once, at app root level)
-import { createApiClient, ApiProvider, useApiQuery, useApiMutation } from '@aura-ui/api-client';
+import { createApiClient, ApiProvider, useApiQuery, useApiMutation } from '@structyl/api-client';
 
 const api = createApiClient({
   baseURL: 'https://api.example.com',
@@ -211,10 +211,10 @@ Returns a full `UseMutationResult<TData, ApiError, TVariables>`.
 
 ### `prefetchApiQuery(queryClient, apiClient, keyOrUrl, urlOrFn?, options?)`
 
-Server-side prefetch utility. Import from `@aura-ui/api-client/server`.
+Server-side prefetch utility. Import from `@structyl/api-client/server`.
 
 ```ts
-import { prefetchApiQuery, QueryClient } from '@aura-ui/api-client/server';
+import { prefetchApiQuery, QueryClient } from '@structyl/api-client/server';
 
 const queryClient = new QueryClient();
 const api = createApiClient({ baseURL: process.env.API_URL! });
@@ -260,7 +260,7 @@ interface ApiError {
 // main.tsx
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { createApiClient, ApiProvider } from '@aura-ui/api-client';
+import { createApiClient, ApiProvider } from '@structyl/api-client';
 import App from './App';
 
 const api = createApiClient({
@@ -285,7 +285,7 @@ createRoot(document.getElementById('root')!).render(
 // app/providers.tsx
 'use client';
 
-import { createApiClient, ApiProvider } from '@aura-ui/api-client';
+import { createApiClient, ApiProvider } from '@structyl/api-client';
 
 const api = createApiClient({
   baseURL: process.env.NEXT_PUBLIC_API_URL!,
@@ -320,8 +320,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 ```tsx
 // app/todos/page.tsx  (Server Component)
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { createApiClient } from '@aura-ui/api-client';
-import { prefetchApiQuery, QueryClient } from '@aura-ui/api-client/server';
+import { createApiClient } from '@structyl/api-client';
+import { prefetchApiQuery, QueryClient } from '@structyl/api-client/server';
 import { TodoList } from './TodoList';
 
 export default async function Page() {
@@ -340,7 +340,7 @@ export default async function Page() {
 ```tsx
 // app/todos/TodoList.tsx  (Client Component)
 'use client';
-import { useApiQuery } from '@aura-ui/api-client';
+import { useApiQuery } from '@structyl/api-client';
 
 export function TodoList() {
   const { data, isLoading } = useApiQuery<Todo[]>('/todos');
@@ -356,9 +356,9 @@ export function TodoList() {
 ```tsx
 // pages/index.tsx
 import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { createApiClient } from '@aura-ui/api-client';
-import { prefetchApiQuery } from '@aura-ui/api-client/server';
-import { useApiQuery } from '@aura-ui/api-client';
+import { createApiClient } from '@structyl/api-client';
+import { prefetchApiQuery } from '@structyl/api-client/server';
+import { useApiQuery } from '@structyl/api-client';
 import type { GetServerSideProps } from 'next';
 
 function Todos() {
@@ -387,7 +387,7 @@ Wrap `_app.tsx` with `ApiProvider` (same pattern as the Pages Router `_app.tsx` 
 
 ```tsx
 // pages/_app.tsx
-import { createApiClient, ApiProvider } from '@aura-ui/api-client';
+import { createApiClient, ApiProvider } from '@structyl/api-client';
 
 const api = createApiClient({ baseURL: process.env.NEXT_PUBLIC_API_URL! });
 
@@ -406,7 +406,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
 ```tsx
 // app/root.tsx — wrap the app with ApiProvider
-import { createApiClient, ApiProvider } from '@aura-ui/api-client';
+import { createApiClient, ApiProvider } from '@structyl/api-client';
 
 const api = createApiClient({ baseURL: process.env.API_URL! });
 
@@ -424,9 +424,9 @@ export default function App() {
 import { json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { QueryClient, HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { createApiClient } from '@aura-ui/api-client';
-import { prefetchApiQuery } from '@aura-ui/api-client/server';
-import { useApiQuery } from '@aura-ui/api-client';
+import { createApiClient } from '@structyl/api-client';
+import { prefetchApiQuery } from '@structyl/api-client/server';
+import { useApiQuery } from '@structyl/api-client';
 
 export async function loader() {
   const queryClient = new QueryClient();
@@ -457,7 +457,7 @@ export default function TodosPage() {
 
 ```tsx
 // App.tsx
-import { createApiClient, ApiProvider } from '@aura-ui/api-client';
+import { createApiClient, ApiProvider } from '@structyl/api-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = createApiClient({
@@ -508,7 +508,7 @@ const create = async (name: string) => {
 };
 ```
 
-### After (@aura-ui/api-client)
+### After (@structyl/api-client)
 
 ```ts
 // client.ts — one-time setup
@@ -547,7 +547,7 @@ import type {
   OptimisticConfig,
   ApiQueryResult,
   ApiMutationResult,
-} from '@aura-ui/api-client';
+} from '@structyl/api-client';
 ```
 
 ---

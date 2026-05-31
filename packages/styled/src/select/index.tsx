@@ -1,10 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronDown, Plus } from '@aura-ui/icons';
-import { Select as SelectPrimitive } from '@aura-ui/primitives';
-import type { SelectOption } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Check, ChevronDown, Plus } from '@structyl/icons';
+import { Select as SelectPrimitive } from '@structyl/primitives';
+import type { SelectOption } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = SelectPrimitive.Root;
 const Group = SelectPrimitive.Group;
@@ -102,7 +102,7 @@ const Content = React.forwardRef<
         position={position}
         className={cn(
           'border-border bg-popover/95 backdrop-blur-glass text-popover-foreground shadow-overlay relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg border',
-          'origin-[var(--aura-ui-popper-transform-origin,center)]',
+          'origin-[var(--structyl-popper-transform-origin,center)]',
           'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
           'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
           'data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1',
@@ -117,7 +117,7 @@ const Content = React.forwardRef<
         <SelectPrimitive.Viewport
           className={cn(
             'max-h-80 p-1',
-            position === 'popper' && 'w-full min-w-[var(--aura-ui-popper-anchor-width)]',
+            position === 'popper' && 'w-full min-w-[var(--structyl-popper-anchor-width)]',
           )}
         >
           {options ? (

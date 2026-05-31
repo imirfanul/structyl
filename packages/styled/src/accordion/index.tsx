@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronDown } from '@aura-ui/icons';
-import { Accordion as AccordionPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { ChevronDown } from '@structyl/icons';
+import { Accordion as AccordionPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 export type AccordionVariant = 'default' | 'bordered' | 'separated' | 'flushed' | 'ghost';
 

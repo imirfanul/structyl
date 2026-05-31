@@ -55,7 +55,7 @@ Date: 2026-05-22
 
 ## CLI / registry
 
-- `npx aura-ui add <name>` scaffolding is placeholder; full CLI templating not implemented.
+- `npx structyl add <name>` scaffolding is placeholder; full CLI templating not implemented.
 
 ## Testing / CI / quality
 

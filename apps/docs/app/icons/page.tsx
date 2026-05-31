@@ -1,11 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import * as AuraIcons from '@aura-ui/icons';
+import * as StructylIcons from '@structyl/icons';
 import Link from 'next/link';
-import { Sparkles, Search, X, Copy, Check } from '@aura-ui/icons';
-import { useTheme } from '@aura-ui/themes';
-import { Button } from '@aura-ui/styled';
+import { Sparkles, Search, X, Copy, Check } from '@structyl/icons';
+import { useTheme } from '@structyl/themes';
+import { Button } from '@structyl/styled';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types
@@ -228,7 +228,7 @@ function isIconComponent(key: string, val: unknown): boolean {
   return false;
 }
 
-const ICON_REGISTRY: IconEntry[] = Object.entries(AuraIcons)
+const ICON_REGISTRY: IconEntry[] = Object.entries(StructylIcons)
   .filter(([key, val]) => isIconComponent(key, val))
   .map(([name, Component]) => ({
     name,
@@ -343,7 +343,7 @@ function IconModal({
     modalRef.current?.focus();
   }, []);
 
-  const importCode = `import { ${name} } from '@aura-ui/icons';`;
+  const importCode = `import { ${name} } from '@structyl/icons';`;
   const basicCode = `<${name} />`;
   const sizedCode = `<${name} size={24} className="text-primary" />`;
   const styledCode =
@@ -389,7 +389,7 @@ function IconModal({
               </span>
             </div>
             <p className="mt-0.5 text-[11px] text-muted-foreground">
-              @aura-ui/icons · lucide-react · {style}
+              @structyl/icons · lucide-react · {style}
             </p>
           </div>
           <button
@@ -523,7 +523,7 @@ export default function IconsPage() {
             <div className="from-primary to-primary/70 text-primary-foreground flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br shadow-sm">
               <Sparkles className="h-4 w-4" />
             </div>
-            <span className="text-sm font-semibold tracking-tight">aura-ui</span>
+            <span className="text-sm font-semibold tracking-tight">structyl</span>
           </Link>
           <span className="text-muted-foreground text-sm">/ Icons</span>
           <nav className="ml-4 hidden gap-5 text-sm md:flex">

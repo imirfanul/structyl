@@ -5,19 +5,19 @@ description: A fully-featured HTML5 video player with playlists, chapters, subti
 
 # Video Player
 
-A fully-featured HTML5 video player built on `@aura-ui/video-player`. Supports playlists, chapter markers, SRT/VTT subtitles, video filters, quality selection, HLS streaming, and keyboard shortcuts. Colors are driven entirely by `@aura-ui/themes` CSS tokens so the player respects your configured theme.
+A fully-featured HTML5 video player built on `@structyl/video-player`. Supports playlists, chapter markers, SRT/VTT subtitles, video filters, quality selection, HLS streaming, and keyboard shortcuts. Colors are driven entirely by `@structyl/themes` CSS tokens so the player respects your configured theme.
 
 ## Installation
 
 ```bash
-pnpm add @aura-ui/video-player
+pnpm add @structyl/video-player
 ```
 
 ## Usage
 
 ```tsx
-import { VideoPlayer } from '@aura-ui/video-player';
-import '@aura-ui/video-player/styles.css';
+import { VideoPlayer } from '@structyl/video-player';
+import '@structyl/video-player/styles.css';
 
 export function Example() {
   return (
@@ -47,4 +47,4 @@ All control buttons are keyboard-navigable. The player supports a full keyboard 
 
 ## Theming
 
-The player imports structural CSS from `@aura-ui/video-player/styles.css`. All color values reference `@aura-ui/themes` CSS tokens (`--color-primary`, `--color-fg`, `--color-border`, etc.). Wrap your application in `<ThemeProvider>` to enable runtime theme switching.
+The player imports structural CSS from `@structyl/video-player/styles.css`. All color values reference `@structyl/themes` CSS tokens (`--color-primary`, `--color-fg`, `--color-border`, etc.). Wrap your application in `<ThemeProvider>` to enable runtime theme switching.

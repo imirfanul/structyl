@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Tooltip as TooltipPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Tooltip as TooltipPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 import { tv, type VariantProps } from 'tailwind-variants';
 
 // ── Variants ─────────────────────────────────────────────────────────────────
@@ -10,7 +10,7 @@ import { tv, type VariantProps } from 'tailwind-variants';
 export const tooltipContentVariants = tv({
   base: [
     'z-50 overflow-hidden rounded-md px-2.5 py-1.5 text-xs font-medium shadow-md',
-    'origin-[var(--aura-ui-popper-transform-origin,center)]',
+    'origin-[var(--structyl-popper-transform-origin,center)]',
     'animate-in fade-in-0 zoom-in-95 duration-snappy',
     'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
     'data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1',

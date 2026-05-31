@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Primitive, Slot } from '@aura-ui/core';
+import { Primitive, Slot } from '@structyl/core';
 
 export interface ButtonProps extends React.ComponentPropsWithoutRef<'button'> {
   asChild?: boolean;

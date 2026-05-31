@@ -55,11 +55,11 @@ import {
   RefreshCw,
   Trash2,
   X,
-} from '@aura-ui/icons';
+} from '@structyl/icons';
 import * as XLSX from 'xlsx';
-import { Button, Checkbox, ColorPicker, Combobox, Drawer, DropdownMenu, Input, Popover, Select, Tooltip } from '@aura-ui/styled';
-import { type HsvaColor, hsvaToHex } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Button, Checkbox, ColorPicker, Combobox, Drawer, DropdownMenu, Input, Popover, Select, Tooltip } from '@structyl/styled';
+import { type HsvaColor, hsvaToHex } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 export type DataTableColumn<TData, TValue = unknown> = ColumnDef<TData, TValue>;
 export type DataTableFilterOperator =
@@ -338,13 +338,13 @@ export interface DataTableRowActionItem<TData = unknown> {
 }
 
 /**
- * Aura-extended column definition. All properties are optional so you can use
+ * Structyl-extended column definition. All properties are optional so you can use
  * just `field` + `headerName` without satisfying TanStack's union requirements.
  * `normalizeColumnDefs` converts this to a proper TanStack `ColumnDef` before
  * passing it to `useReactTable`.
  */
 export type DataTableColumnDef<TData, TValue = unknown> = {
-  // ── Aura extensions ─────────────────────────────────────────────────
+  // ── Structyl extensions ─────────────────────────────────────────────────
   /** Field key on the data object — maps to `accessorKey`. */
   field?: string;
   /** Stable DB identifier distinct from the display field. */
@@ -921,7 +921,7 @@ function applyPrintTheme(): () => void {
     .join(' ');
 
   const el = document.createElement('style');
-  el.setAttribute('data-aura-print-theme', '');
+  el.setAttribute('data-structyl-print-theme', '');
   el.textContent = `
 @media print {
   :root { ${vars} color-scheme: light dark; }
@@ -1359,7 +1359,7 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
   React.useEffect(() => {
     if (!stateKey) return;
     try {
-      const raw = localStorage.getItem(`aura-dt:${stateKey}`);
+      const raw = localStorage.getItem(`structyl-dt:${stateKey}`);
       if (!raw) return;
       const saved = JSON.parse(raw) as {
         sorting?: SortingState;
@@ -1434,7 +1434,7 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
     if (!stateKey) return;
     try {
       localStorage.setItem(
-        `aura-dt:${stateKey}`,
+        `structyl-dt:${stateKey}`,
         JSON.stringify({
           sorting,
           columnFilters,
@@ -1585,7 +1585,7 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
         navigator.clipboard?.readText().then((clipText) => {
           const tsvRows = clipText.split('\n').map((line) => line.split('\t'));
           const visibleCols = t.getVisibleLeafColumns().filter(
-            (c) => !c.id.startsWith('__') && (c.columnDef.meta as Record<string, unknown> | undefined)?._aura && ((c.columnDef.meta as Record<string, unknown>)._aura as Record<string, unknown>)?.valueSetter,
+            (c) => !c.id.startsWith('__') && (c.columnDef.meta as Record<string, unknown> | undefined)?._structyl && ((c.columnDef.meta as Record<string, unknown>)._structyl as Record<string, unknown>)?.valueSetter,
           );
           tsvRows.forEach((tsvCols, rowIdx) => {
             const row = selectedRows[rowIdx];
@@ -1593,8 +1593,8 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
             tsvCols.forEach((cellValue, colIdx) => {
               const col = visibleCols[colIdx];
               if (!col) return;
-              const auraMeta = (col.columnDef.meta as Record<string, unknown>)?._aura as Record<string, unknown> | undefined;
-              const vs = auraMeta?.valueSetter as ((row: unknown, value: unknown, idx: number) => void) | undefined;
+              const structylMeta = (col.columnDef.meta as Record<string, unknown>)?._structyl as Record<string, unknown> | undefined;
+              const vs = structylMeta?.valueSetter as ((row: unknown, value: unknown, idx: number) => void) | undefined;
               if (vs) vs(row.original, cellValue, row.index);
             });
           });
@@ -1616,8 +1616,8 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
             if (row) {
               const col = t.getColumn(last.field);
               if (col) {
-                const auraMeta = (col.columnDef.meta as Record<string, unknown>)?._aura as Record<string, unknown> | undefined;
-                const vs = auraMeta?.valueSetter as ((row: unknown, value: unknown, idx: number) => void) | undefined;
+                const structylMeta = (col.columnDef.meta as Record<string, unknown>)?._structyl as Record<string, unknown> | undefined;
+                const vs = structylMeta?.valueSetter as ((row: unknown, value: unknown, idx: number) => void) | undefined;
                 if (vs) vs(row.original, last.oldValue, row.index);
               }
             }
@@ -1649,8 +1649,8 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
             if (row) {
               const col = t.getColumn(last.field);
               if (col) {
-                const auraMeta = (col.columnDef.meta as Record<string, unknown>)?._aura as Record<string, unknown> | undefined;
-                const vs = auraMeta?.valueSetter as ((row: unknown, value: unknown, idx: number) => void) | undefined;
+                const structylMeta = (col.columnDef.meta as Record<string, unknown>)?._structyl as Record<string, unknown> | undefined;
+                const vs = structylMeta?.valueSetter as ((row: unknown, value: unknown, idx: number) => void) | undefined;
                 if (vs) vs(row.original, last.newValue, row.index);
               }
             }
@@ -1735,8 +1735,8 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
     const rows = table.getFilteredRowModel().rows;
     for (const row of rows) {
       for (const cell of row.getVisibleCells()) {
-        const auraMeta = getAuraMeta(cell.column);
-        const dv = (auraMeta as AuraColumnMeta & { displayValidate?: (v: unknown, r: unknown) => string | undefined }).displayValidate;
+        const structylMeta = getStructylMeta(cell.column);
+        const dv = (structylMeta as StructylColumnMeta & { displayValidate?: (v: unknown, r: unknown) => string | undefined }).displayValidate;
         if (!dv) continue;
         const cellValue = cell.getValue();
         const msg = dv(cellValue, row.original);
@@ -2348,9 +2348,9 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
                     for (let ci = normalizedCellSelection.startColIndex; ci <= normalizedCellSelection.endColIndex; ci++) {
                       const col = visibleLeafCols[ci];
                       if (!col) continue;
-                      const auraMeta = getAuraMeta(col);
-                      if (auraMeta.valueSetter) {
-                        auraMeta.valueSetter(row.original, bulkEditValue, ri);
+                      const structylMeta = getStructylMeta(col);
+                      if (structylMeta.valueSetter) {
+                        structylMeta.valueSetter(row.original, bulkEditValue, ri);
                       }
                     }
                   }
@@ -2811,10 +2811,10 @@ function DataTableLeafHeader<TData>({
   const sortDir = column.getIsSorted();
   const isPinned = column.getIsPinned();
   const selected = selectedColumnIds.includes(column.id);
-  const auraMeta = getAuraMeta(column);
-  const align = auraMeta.align ?? 'left';
-  const flex = auraMeta.flex;
-  const description = auraMeta.description;
+  const structylMeta = getStructylMeta(column);
+  const align = structylMeta.align ?? 'left';
+  const flex = structylMeta.flex;
+  const description = structylMeta.description;
 
   return (
     <th
@@ -3077,7 +3077,7 @@ function DataTableColumnMenu<TData>({
           collisionPadding={8}
           strategy="absolute"
           sticky="always"
-          className="bg-popover relative z-[1000] max-h-[min(45dvh,18rem,var(--aura-ui-popper-available-height))] min-w-44 overflow-y-auto"
+          className="bg-popover relative z-[1000] max-h-[min(45dvh,18rem,var(--structyl-popper-available-height))] min-w-44 overflow-y-auto"
         >
           <MenuButton onClick={() => column.toggleSorting(false)}>{localeText.sortAsc}</MenuButton>
           <MenuButton onClick={() => column.toggleSorting(true)}>{localeText.sortDesc}</MenuButton>
@@ -3217,9 +3217,9 @@ function renderRowCells<TData>({
     const rowSpan = Math.max(getCellRowSpan?.(cell, row) ?? 1, 1);
     skip = colSpan - 1;
     const canExpand = (enableExpanding && row.getCanExpand()) || !!renderDetailPanel;
-    const auraMeta = getAuraMeta(cell.column);
-    const align = auraMeta.align ?? 'left';
-    const flex = auraMeta.flex;
+    const structylMeta = getStructylMeta(cell.column);
+    const align = structylMeta.align ?? 'left';
+    const flex = structylMeta.flex;
     const treeIndent = treeData && index === 0 ? row.depth * 16 : 0;
     const cellIsSelected = isCellSelected ? isCellSelected(rowIndex, index) : false;
     const cellIsFlashed = flashedCells ? flashedCells.has(cell.column.id) : false;
@@ -3334,7 +3334,7 @@ function renderRowCells<TData>({
                   collisionPadding={8}
                   strategy="absolute"
                   sticky="always"
-                  className="bg-popover relative z-[1000] max-h-[min(45dvh,18rem,var(--aura-ui-popper-available-height))] min-w-28 overflow-y-auto"
+                  className="bg-popover relative z-[1000] max-h-[min(45dvh,18rem,var(--structyl-popper-available-height))] min-w-28 overflow-y-auto"
                 >
                   <MenuButton onClick={() => pinRow(row.id, 'top')}>{text.pinRowTop}</MenuButton>
                   <MenuButton onClick={() => pinRow(row.id, 'bottom')}>
@@ -3703,7 +3703,7 @@ function DataTableSelect({
         strategy="absolute"
         sticky="always"
         showCreateItem={false}
-        className="bg-popover relative z-[1100] max-h-[min(45dvh,18rem,var(--aura-ui-popper-available-height))] min-w-44"
+        className="bg-popover relative z-[1100] max-h-[min(45dvh,18rem,var(--structyl-popper-available-height))] min-w-44"
       >
         {options.map((option) => (
           <Select.Item key={option.value} value={option.value}>
@@ -3753,7 +3753,7 @@ export function DataTableAdvancedFilter<TData>({
         role="region"
         aria-label={localeText.filters}
         data-datatable-filter-panel=""
-        className="bg-popover relative z-[1000] flex max-h-[min(55dvh,24rem,var(--aura-ui-popper-available-height))] w-[min(44rem,var(--aura-ui-popper-available-width),calc(100vw-2rem))] min-w-0 flex-col gap-2 overflow-hidden rounded-md p-3"
+        className="bg-popover relative z-[1000] flex max-h-[min(55dvh,24rem,var(--structyl-popper-available-height))] w-[min(44rem,var(--structyl-popper-available-width),calc(100vw-2rem))] min-w-0 flex-col gap-2 overflow-hidden rounded-md p-3"
       >
         <div className="min-h-0 flex-1 overflow-y-auto">
           <DataTableFilterGroupEditor
@@ -3993,7 +3993,7 @@ export function DataTableColumnFilter<TData, TValue = unknown>({
         onValueChange={(value) => column.setFilterValue(value)}
       >
         <Combobox.Input aria-label={title ?? column.id} />
-        <Combobox.Content className="bg-popover relative z-[1100] max-h-[min(45dvh,18rem)] w-[var(--aura-ui-popper-anchor-width)]">
+        <Combobox.Content className="bg-popover relative z-[1100] max-h-[min(45dvh,18rem)] w-[var(--structyl-popper-anchor-width)]">
           {options.length ? (
             options.map((option) => (
               <Combobox.Item key={option} value={option}>
@@ -4056,7 +4056,7 @@ export function DataTableColumnConfiguration<TData>({
         strategy="absolute"
         sticky="always"
         data-datatable-column-panel=""
-        className="bg-popover relative z-[1000] grid max-h-[min(45dvh,18rem,var(--aura-ui-popper-available-height))] w-[min(18rem,var(--aura-ui-popper-available-width),calc(100vw-2rem))] gap-1 overflow-auto rounded-md p-1"
+        className="bg-popover relative z-[1000] grid max-h-[min(45dvh,18rem,var(--structyl-popper-available-height))] w-[min(18rem,var(--structyl-popper-available-width),calc(100vw-2rem))] gap-1 overflow-auto rounded-md p-1"
       >
         {table.getAllLeafColumns().map((column) => (
           <div key={column.id} className="hover:bg-accent grid gap-1 rounded-sm px-2 py-1 text-sm">
@@ -5272,7 +5272,7 @@ function DataTableToolPanel({
                     </Button>
                   </div>
                   {allColumns.map((col) => {
-                    const auraMeta = getAuraMeta(col);
+                    const structylMeta = getStructylMeta(col);
                     const label = typeof col.columnDef.header === 'string' ? col.columnDef.header : col.id;
                     return (
                       <label
@@ -5286,9 +5286,9 @@ function DataTableToolPanel({
                           aria-label={`Toggle ${label}`}
                         />
                         <span className="min-w-0 flex-1 truncate">{label}</span>
-                        {auraMeta.type ? (
+                        {structylMeta.type ? (
                           <span className="text-muted-foreground bg-muted rounded px-1 py-0.5 font-mono text-[9px]">
-                            {auraMeta.type}
+                            {structylMeta.type}
                           </span>
                         ) : null}
                       </label>
@@ -5425,7 +5425,7 @@ export function exportToXLSX<TData>(
 
 /* ─── Column normalization ─────────────────────────────────────────── */
 
-interface AuraColumnMeta {
+interface StructylColumnMeta {
   type?: DataTableColumnType;
   align?: 'left' | 'center' | 'right';
   flex?: number;
@@ -5456,11 +5456,11 @@ interface AuraColumnMeta {
   propLocale?: string;
 }
 
-function getAuraMeta<TData = unknown, TValue = unknown>(
+function getStructylMeta<TData = unknown, TValue = unknown>(
   column: Column<TData, TValue>,
-): AuraColumnMeta {
+): StructylColumnMeta {
   const meta = column.columnDef.meta as Record<string, unknown> | undefined;
-  return (meta?._aura as AuraColumnMeta) ?? {};
+  return (meta?._structyl as StructylColumnMeta) ?? {};
 }
 
 function getDefaultColumnAlign(type?: DataTableColumnType): 'left' | 'center' | 'right' | undefined {
@@ -5570,7 +5570,7 @@ function normalizeColumnDefs<TData, TValue>(
 
     col.meta = {
       ...(restRecord.meta as object | undefined),
-      _aura: {
+      _structyl: {
         type,
         align: align ?? getDefaultColumnAlign(type),
         flex,
@@ -5581,23 +5581,23 @@ function normalizeColumnDefs<TData, TValue>(
         badgeMap,
         currencyCode,
         currencyLocale,
-        // Cast TData-specific function types to unknown to satisfy AuraColumnMeta
-        linkHref: linkHref as AuraColumnMeta['linkHref'],
+        // Cast TData-specific function types to unknown to satisfy StructylColumnMeta
+        linkHref: linkHref as StructylColumnMeta['linkHref'],
         linkTarget,
-        avatarSrc: avatarSrc as AuraColumnMeta['avatarSrc'],
-        sparklineData: sparklineData as AuraColumnMeta['sparklineData'],
+        avatarSrc: avatarSrc as StructylColumnMeta['avatarSrc'],
+        sparklineData: sparklineData as StructylColumnMeta['sparklineData'],
         sparklineType,
         progressMax,
         ratingMax,
         editable,
-        validate: validate as AuraColumnMeta['validate'],
-        displayValidate: displayValidate as AuraColumnMeta['displayValidate'],
+        validate: validate as StructylColumnMeta['validate'],
+        displayValidate: displayValidate as StructylColumnMeta['displayValidate'],
         locale: colLocale,
         dateFormat,
         numberFormat,
         timezone,
         propLocale: tablePropLocale,
-      } satisfies AuraColumnMeta,
+      } satisfies StructylColumnMeta,
     };
 
     return col as unknown as DataTableColumn<TData, TValue>;
@@ -6690,8 +6690,8 @@ function computeHeaderStat(
 function getDefaultStatType(columnId: string, table: Table<unknown>): 'sum' | 'count' {
   const col = table.getColumn(columnId);
   if (!col) return 'count';
-  const auraMeta = getAuraMeta(col);
-  if (auraMeta.type === 'number' || auraMeta.type === 'currency') return 'sum';
+  const structylMeta = getStructylMeta(col);
+  if (structylMeta.type === 'number' || structylMeta.type === 'currency') return 'sum';
   return 'count';
 }
 
@@ -6727,8 +6727,8 @@ function DataTableHeaderStatsRow({
       {columnPaddingLeft > 0 ? <td style={{ width: columnPaddingLeft }} /> : null}
       {visibleLeafCols.map((col) => {
         const stat = statsMap.get(col.id);
-        const auraMeta = getAuraMeta(col);
-        const align = auraMeta.align ?? 'left';
+        const structylMeta = getStructylMeta(col);
+        const align = structylMeta.align ?? 'left';
         return (
           <td
             key={col.id}

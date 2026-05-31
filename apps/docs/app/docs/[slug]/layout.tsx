@@ -16,7 +16,7 @@ export async function generateMetadata(
   }
 
   const title = entry.name;
-  const description = `${entry.description} Part of the aura-ui ${entry.category.toLowerCase()} components — accessible, TypeScript-first, Tailwind-styled.`;
+  const description = `${entry.description} Part of the structyl ${entry.category.toLowerCase()} components — accessible, TypeScript-first, Tailwind-styled.`;
   const url = `${SITE_URL}/docs/${slug}`;
 
   return {
@@ -24,7 +24,7 @@ export async function generateMetadata(
     description,
     alternates: { canonical: url },
     openGraph: {
-      title: `${title} | aura-ui`,
+      title: `${title} | structyl`,
       description,
       url,
       type: 'article',
@@ -32,7 +32,7 @@ export async function generateMetadata(
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${title} | aura-ui`,
+      title: `${title} | structyl`,
       description,
     },
   };
@@ -52,7 +52,7 @@ function ComponentJsonLd({ slug }: { slug: string }) {
       {
         '@type': 'TechArticle',
         '@id': `${url}/#article`,
-        headline: `${entry.name} — aura-ui component`,
+        headline: `${entry.name} — structyl component`,
         description: entry.description,
         url,
         inLanguage: 'en',

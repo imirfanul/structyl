@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { Copy, Check, Search, X } from '@aura-ui/icons';
-import { Button } from '@aura-ui/styled';
+import { Copy, Check, Search, X } from '@structyl/icons';
+import { Button } from '@structyl/styled';
 import {
   useBoolean, useToggle, useCounter, usePrevious,
   useDebounce, useThrottle, useLocalStorage, useCopyToClipboard,
@@ -10,7 +10,7 @@ import {
   useHotkeys, useMount, useUnmount, useUpdateEffect, useId,
   useControllableState, useComposedRefs, useCallbackRef, useLatest,
   useEventListener, useKeyPress, useIsomorphicLayoutEffect,
-} from '@aura-ui/hooks';
+} from '@structyl/hooks';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types
@@ -135,12 +135,12 @@ function UseThrottleDemo() {
 }
 
 function UseLocalStorageDemo() {
-  const [name, setName, remove] = useLocalStorage('aura-hooks-demo', '');
+  const [name, setName, remove] = useLocalStorage('structyl-hooks-demo', '');
   return (
     <div className="w-full max-w-xs space-y-3">
       <DemoInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Type — it persists on refresh" />
       <div className="flex items-center gap-2">
-        <Code className="flex-1 truncate">&quot;aura-hooks-demo&quot;: {name ? `"${name}"` : 'null'}</Code>
+        <Code className="flex-1 truncate">&quot;structyl-hooks-demo&quot;: {name ? `"${name}"` : 'null'}</Code>
         <button onClick={remove} className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">clear</button>
       </div>
     </div>
@@ -149,7 +149,7 @@ function UseLocalStorageDemo() {
 
 function UseCopyToClipboardDemo() {
   const { copy, copied } = useCopyToClipboard();
-  const text = `import { useCopyToClipboard } from '@aura-ui/hooks';`;
+  const text = `import { useCopyToClipboard } from '@structyl/hooks';`;
   return (
     <div className="w-full max-w-sm space-y-3">
       <Code className="truncate text-[10px]">{text}</Code>
@@ -532,7 +532,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'initial', type: 'boolean', description: 'Starting value. Defaults to false.' }],
     returns: '{ value: boolean, on, off, toggle, set }',
     demo: UseBooleanDemo,
-    code: `import { useBoolean } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const { value, on, off, toggle } = useBoolean(false);\n  return (\n    <>\n      <p>Value: {String(value)}</p>\n      <button onClick={on}>On</button>\n      <button onClick={off}>Off</button>\n      <button onClick={toggle}>Toggle</button>\n    </>\n  );\n}`,
+    code: `import { useBoolean } from '@structyl/hooks';\n\nfunction Demo() {\n  const { value, on, off, toggle } = useBoolean(false);\n  return (\n    <>\n      <p>Value: {String(value)}</p>\n      <button onClick={on}>On</button>\n      <button onClick={off}>Off</button>\n      <button onClick={toggle}>Toggle</button>\n    </>\n  );\n}`,
   },
   {
     name: 'useToggle', category: 'State',
@@ -541,7 +541,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'initial', type: 'boolean', description: 'Starting value. Defaults to false.' }],
     returns: '[value: boolean, toggle: () => void, setValue: Dispatch<boolean>]',
     demo: UseToggleDemo,
-    code: `import { useToggle } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const [on, toggle] = useToggle(false);\n  return <button onClick={toggle}>{on ? 'On' : 'Off'}</button>;\n}`,
+    code: `import { useToggle } from '@structyl/hooks';\n\nfunction Demo() {\n  const [on, toggle] = useToggle(false);\n  return <button onClick={toggle}>{on ? 'On' : 'Off'}</button>;\n}`,
   },
   {
     name: 'useCounter', category: 'State',
@@ -550,7 +550,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'initial', type: 'number', description: 'Starting count. Defaults to 0.' }],
     returns: '{ count: number, increment(by?), decrement(by?), reset, set }',
     demo: UseCounterDemo,
-    code: `import { useCounter } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const { count, increment, decrement, reset } = useCounter(0);\n  return (\n    <>\n      <span>{count}</span>\n      <button onClick={() => increment()}>+1</button>\n      <button onClick={() => increment(10)}>+10</button>\n      <button onClick={() => decrement()}>-1</button>\n      <button onClick={reset}>reset</button>\n    </>\n  );\n}`,
+    code: `import { useCounter } from '@structyl/hooks';\n\nfunction Demo() {\n  const { count, increment, decrement, reset } = useCounter(0);\n  return (\n    <>\n      <span>{count}</span>\n      <button onClick={() => increment()}>+1</button>\n      <button onClick={() => increment(10)}>+10</button>\n      <button onClick={() => decrement()}>-1</button>\n      <button onClick={reset}>reset</button>\n    </>\n  );\n}`,
   },
   {
     name: 'usePrevious', category: 'State',
@@ -559,7 +559,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'value', type: 'T', description: 'The value to track across renders.' }],
     returns: 'T | undefined — undefined on the first render.',
     demo: UsePreviousDemo,
-    code: `import { usePrevious } from '@aura-ui/hooks';\n\nfunction Demo() {\n  const [count, setCount] = useState(0);\n  const previous = usePrevious(count);\n  return <p>Previous: {previous} → Current: {count}</p>;\n}`,
+    code: `import { usePrevious } from '@structyl/hooks';\n\nfunction Demo() {\n  const [count, setCount] = useState(0);\n  const previous = usePrevious(count);\n  return <p>Previous: {previous} → Current: {count}</p>;\n}`,
   },
   {
     name: 'useDebounce', category: 'Performance',
@@ -571,7 +571,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'T — the debounced value.',
     demo: UseDebounceDemo,
-    code: `import { useDebounce } from '@aura-ui/hooks';\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const debounced = useDebounce(query, 500);\n\n  useEffect(() => {\n    if (debounced) fetchResults(debounced);\n  }, [debounced]);\n\n  return <input value={query} onChange={e => setQuery(e.target.value)} />;\n}`,
+    code: `import { useDebounce } from '@structyl/hooks';\n\nfunction Search() {\n  const [query, setQuery] = useState('');\n  const debounced = useDebounce(query, 500);\n\n  useEffect(() => {\n    if (debounced) fetchResults(debounced);\n  }, [debounced]);\n\n  return <input value={query} onChange={e => setQuery(e.target.value)} />;\n}`,
   },
   {
     name: 'useThrottle', category: 'Performance',
@@ -583,7 +583,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'T — the throttled value.',
     demo: UseThrottleDemo,
-    code: `import { useThrottle } from '@aura-ui/hooks';\n\nfunction Scroller() {\n  const [y, setY] = useState(0);\n  const throttledY = useThrottle(y, 100);\n  // ...\n  return <p>Scroll: {throttledY}px</p>;\n}`,
+    code: `import { useThrottle } from '@structyl/hooks';\n\nfunction Scroller() {\n  const [y, setY] = useState(0);\n  const throttledY = useThrottle(y, 100);\n  // ...\n  return <p>Scroll: {throttledY}px</p>;\n}`,
   },
   {
     name: 'useLocalStorage', category: 'Browser',
@@ -595,7 +595,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: '[value: T, setValue, remove: () => void]',
     demo: UseLocalStorageDemo,
-    code: `import { useLocalStorage } from '@aura-ui/hooks';\n\nfunction Settings() {\n  const [theme, setTheme, clear] = useLocalStorage('theme', 'light');\n  return (\n    <>\n      <p>Theme: {theme}</p>\n      <button onClick={() => setTheme('dark')}>Dark</button>\n      <button onClick={clear}>Clear</button>\n    </>\n  );\n}`,
+    code: `import { useLocalStorage } from '@structyl/hooks';\n\nfunction Settings() {\n  const [theme, setTheme, clear] = useLocalStorage('theme', 'light');\n  return (\n    <>\n      <p>Theme: {theme}</p>\n      <button onClick={() => setTheme('dark')}>Dark</button>\n      <button onClick={clear}>Clear</button>\n    </>\n  );\n}`,
   },
   {
     name: 'useCopyToClipboard', category: 'Browser',
@@ -604,7 +604,7 @@ const HOOKS: HookDef[] = [
     params: [],
     returns: '{ copy: (text) => Promise<boolean>, copied: boolean, reset: () => void }',
     demo: UseCopyToClipboardDemo,
-    code: `import { useCopyToClipboard } from '@aura-ui/hooks';\n\nfunction CopyBtn({ text }) {\n  const { copy, copied } = useCopyToClipboard();\n  return (\n    <button onClick={() => copy(text)}>\n      {copied ? '✓ Copied!' : 'Copy'}\n    </button>\n  );\n}`,
+    code: `import { useCopyToClipboard } from '@structyl/hooks';\n\nfunction CopyBtn({ text }) {\n  const { copy, copied } = useCopyToClipboard();\n  return (\n    <button onClick={() => copy(text)}>\n      {copied ? '✓ Copied!' : 'Copy'}\n    </button>\n  );\n}`,
   },
   {
     name: 'useMediaQuery', category: 'Browser',
@@ -616,7 +616,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'boolean',
     demo: UseMediaQueryDemo,
-    code: `import { useMediaQuery } from '@aura-ui/hooks';\n\nfunction Layout() {\n  const isMobile = useMediaQuery('(max-width: 767px)');\n  return isMobile ? <MobileNav /> : <DesktopNav />;\n}`,
+    code: `import { useMediaQuery } from '@structyl/hooks';\n\nfunction Layout() {\n  const isMobile = useMediaQuery('(max-width: 767px)');\n  return isMobile ? <MobileNav /> : <DesktopNav />;\n}`,
   },
   {
     name: 'useDarkMode', category: 'Browser',
@@ -625,7 +625,7 @@ const HOOKS: HookDef[] = [
     params: [],
     returns: 'boolean',
     demo: UseDarkModeDemo,
-    code: `import { useDarkMode } from '@aura-ui/hooks';\n\nfunction Icon() {\n  const dark = useDarkMode();\n  return <span>{dark ? '🌙' : '☀️'}</span>;\n}`,
+    code: `import { useDarkMode } from '@structyl/hooks';\n\nfunction Icon() {\n  const dark = useDarkMode();\n  return <span>{dark ? '🌙' : '☀️'}</span>;\n}`,
   },
   {
     name: 'useWindowSize', category: 'Browser',
@@ -634,7 +634,7 @@ const HOOKS: HookDef[] = [
     params: [],
     returns: '{ width: number, height: number }',
     demo: UseWindowSizeDemo,
-    code: `import { useWindowSize } from '@aura-ui/hooks';\n\nfunction Viewport() {\n  const { width, height } = useWindowSize();\n  return <p>{width} × {height}px</p>;\n}`,
+    code: `import { useWindowSize } from '@structyl/hooks';\n\nfunction Viewport() {\n  const { width, height } = useWindowSize();\n  return <p>{width} × {height}px</p>;\n}`,
   },
   {
     name: 'useClickOutside', category: 'DOM',
@@ -647,7 +647,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'void',
     demo: UseClickOutsideDemo,
-    code: `import { useClickOutside } from '@aura-ui/hooks';\n\nfunction Dropdown() {\n  const [open, setOpen] = useState(false);\n  const ref = useRef<HTMLDivElement>(null);\n  useClickOutside(ref, () => setOpen(false));\n\n  return (\n    <div ref={ref}>\n      <button onClick={() => setOpen(true)}>Open</button>\n      {open && <Menu />}\n    </div>\n  );\n}`,
+    code: `import { useClickOutside } from '@structyl/hooks';\n\nfunction Dropdown() {\n  const [open, setOpen] = useState(false);\n  const ref = useRef<HTMLDivElement>(null);\n  useClickOutside(ref, () => setOpen(false));\n\n  return (\n    <div ref={ref}>\n      <button onClick={() => setOpen(true)}>Open</button>\n      {open && <Menu />}\n    </div>\n  );\n}`,
   },
   {
     name: 'useHotkeys', category: 'Keyboard',
@@ -661,7 +661,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'void',
     demo: UseHotkeysDemo,
-    code: `import { useHotkeys } from '@aura-ui/hooks';\n\nfunction CommandPalette() {\n  const [open, setOpen] = useState(false);\n  useHotkeys('mod+k', () => setOpen(true));\n  useHotkeys('escape', () => setOpen(false));\n  return open ? <Palette /> : null;\n}`,
+    code: `import { useHotkeys } from '@structyl/hooks';\n\nfunction CommandPalette() {\n  const [open, setOpen] = useState(false);\n  useHotkeys('mod+k', () => setOpen(true));\n  useHotkeys('escape', () => setOpen(false));\n  return open ? <Palette /> : null;\n}`,
   },
   {
     name: 'useMount', category: 'Lifecycle',
@@ -670,7 +670,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'callback', type: '() => void', description: 'Function to run on mount.' }],
     returns: 'void',
     demo: UseMountDemo,
-    code: `import { useMount } from '@aura-ui/hooks';\n\nfunction Page() {\n  useMount(() => {\n    trackPageView(window.location.pathname);\n  });\n  return <div>...</div>;\n}`,
+    code: `import { useMount } from '@structyl/hooks';\n\nfunction Page() {\n  useMount(() => {\n    trackPageView(window.location.pathname);\n  });\n  return <div>...</div>;\n}`,
   },
   {
     name: 'useUnmount', category: 'Lifecycle',
@@ -679,7 +679,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'callback', type: '() => void', description: 'Cleanup function.' }],
     returns: 'void',
     demo: UseUnmountDemo,
-    code: `import { useMount, useUnmount } from '@aura-ui/hooks';\n\nfunction Timer() {\n  const id = useRef<number>();\n  useMount(() => { id.current = setInterval(tick, 1000); });\n  useUnmount(() => { clearInterval(id.current); });\n}`,
+    code: `import { useMount, useUnmount } from '@structyl/hooks';\n\nfunction Timer() {\n  const id = useRef<number>();\n  useMount(() => { id.current = setInterval(tick, 1000); });\n  useUnmount(() => { clearInterval(id.current); });\n}`,
   },
   {
     name: 'useUpdateEffect', category: 'Lifecycle',
@@ -691,7 +691,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'void',
     demo: UseUpdateEffectDemo,
-    code: `import { useUpdateEffect } from '@aura-ui/hooks';\n\nfunction Results({ query }: { query: string }) {\n  useUpdateEffect(() => {\n    // Only runs when query changes — NOT on initial mount\n    fetchResults(query);\n  }, [query]);\n}`,
+    code: `import { useUpdateEffect } from '@structyl/hooks';\n\nfunction Results({ query }: { query: string }) {\n  useUpdateEffect(() => {\n    // Only runs when query changes — NOT on initial mount\n    fetchResults(query);\n  }, [query]);\n}`,
   },
   {
     name: 'useId', category: 'Utility',
@@ -700,7 +700,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'prefix', type: 'string', description: 'Optional string prepended to the ID.' }],
     returns: 'string — a stable unique ID.',
     demo: UseIdDemo,
-    code: `import { useId } from '@aura-ui/hooks';\n\nfunction Field({ label }: { label: string }) {\n  const id = useId('field');\n  return (\n    <>\n      <label htmlFor={id}>{label}</label>\n      <input id={id} />\n    </>\n  );\n}`,
+    code: `import { useId } from '@structyl/hooks';\n\nfunction Field({ label }: { label: string }) {\n  const id = useId('field');\n  return (\n    <>\n      <label htmlFor={id}>{label}</label>\n      <input id={id} />\n    </>\n  );\n}`,
   },
   {
     name: 'useControllableState', category: 'State',
@@ -713,7 +713,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: '[value: T | undefined, setValue]',
     demo: UseControllableStateDemo,
-    code: `import { useControllableState } from '@aura-ui/hooks';\n\nfunction Tabs({ value, defaultValue, onValueChange }) {\n  const [activeTab, setActiveTab] = useControllableState({\n    prop: value,\n    defaultProp: defaultValue,\n    onChange: onValueChange,\n  });\n  return <div>{/* renders tabs */}</div>;\n}`,
+    code: `import { useControllableState } from '@structyl/hooks';\n\nfunction Tabs({ value, defaultValue, onValueChange }) {\n  const [activeTab, setActiveTab] = useControllableState({\n    prop: value,\n    defaultProp: defaultValue,\n    onChange: onValueChange,\n  });\n  return <div>{/* renders tabs */}</div>;\n}`,
   },
   {
     name: 'useComposedRefs', category: 'Utility',
@@ -722,7 +722,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: '...refs', type: 'Ref<T>[]', description: 'Any mix of callback refs and object refs to merge.' }],
     returns: 'RefCallback<T> — assign to the ref prop of any element.',
     demo: UseComposedRefsDemo,
-    code: `import { useComposedRefs } from '@aura-ui/hooks';\n\nconst Input = React.forwardRef<HTMLInputElement>((props, forwardedRef) => {\n  const internalRef = useRef<HTMLInputElement>(null);\n  const composed = useComposedRefs(internalRef, forwardedRef);\n\n  useEffect(() => {\n    internalRef.current?.focus();\n  }, []);\n\n  return <input ref={composed} {...props} />;\n});`,
+    code: `import { useComposedRefs } from '@structyl/hooks';\n\nconst Input = React.forwardRef<HTMLInputElement>((props, forwardedRef) => {\n  const internalRef = useRef<HTMLInputElement>(null);\n  const composed = useComposedRefs(internalRef, forwardedRef);\n\n  useEffect(() => {\n    internalRef.current?.focus();\n  }, []);\n\n  return <input ref={composed} {...props} />;\n});`,
   },
   {
     name: 'useCallbackRef', category: 'Utility',
@@ -731,7 +731,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'callback', type: 'T | undefined', description: 'The fresh callback to stabilize.' }],
     returns: 'T — a stable reference that never changes identity.',
     demo: UseCallbackRefDemo,
-    code: `import { useCallbackRef } from '@aura-ui/hooks';\n\nfunction Component({ onChange }) {\n  // stableOnChange is always the same reference\n  // but always calls the latest onChange\n  const stableOnChange = useCallbackRef(onChange);\n\n  useEffect(() => {\n    document.addEventListener('click', stableOnChange);\n    return () => document.removeEventListener('click', stableOnChange);\n  }, [stableOnChange]); // deps array never causes re-runs\n}`,
+    code: `import { useCallbackRef } from '@structyl/hooks';\n\nfunction Component({ onChange }) {\n  // stableOnChange is always the same reference\n  // but always calls the latest onChange\n  const stableOnChange = useCallbackRef(onChange);\n\n  useEffect(() => {\n    document.addEventListener('click', stableOnChange);\n    return () => document.removeEventListener('click', stableOnChange);\n  }, [stableOnChange]); // deps array never causes re-runs\n}`,
   },
   {
     name: 'useLatest', category: 'Utility',
@@ -740,7 +740,7 @@ const HOOKS: HookDef[] = [
     params: [{ name: 'value', type: 'T', description: 'The value to keep perpetually current.' }],
     returns: '{ readonly current: T } — a ref that is always up to date.',
     demo: UseLatestDemo,
-    code: `import { useLatest } from '@aura-ui/hooks';\n\nfunction Timer({ onTick }) {\n  const latestOnTick = useLatest(onTick);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      latestOnTick.current(); // always the freshest\n    }, 1000);\n    return () => clearInterval(id);\n  }, []); // empty deps — no stale closure\n}`,
+    code: `import { useLatest } from '@structyl/hooks';\n\nfunction Timer({ onTick }) {\n  const latestOnTick = useLatest(onTick);\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      latestOnTick.current(); // always the freshest\n    }, 1000);\n    return () => clearInterval(id);\n  }, []); // empty deps — no stale closure\n}`,
   },
   {
     name: 'useEventListener', category: 'DOM',
@@ -753,7 +753,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'void',
     demo: UseEventListenerDemo,
-    code: `import { useEventListener } from '@aura-ui/hooks';\n\nfunction Tracker() {\n  // window-level\n  useEventListener('resize', () => measure());\n\n  // element-level\n  const ref = useRef<HTMLDivElement>(null);\n  useEventListener('scroll', onScroll, ref.current);\n}`,
+    code: `import { useEventListener } from '@structyl/hooks';\n\nfunction Tracker() {\n  // window-level\n  useEventListener('resize', () => measure());\n\n  // element-level\n  const ref = useRef<HTMLDivElement>(null);\n  useEventListener('scroll', onScroll, ref.current);\n}`,
   },
   {
     name: 'useKeyPress', category: 'Keyboard',
@@ -765,7 +765,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'void',
     demo: UseKeyPressDemo,
-    code: `import { useKeyPress } from '@aura-ui/hooks';\n\nfunction Modal({ onClose }) {\n  useKeyPress('Escape', onClose);\n  useKeyPress('Enter', handleSubmit);\n  return <dialog>...</dialog>;\n}`,
+    code: `import { useKeyPress } from '@structyl/hooks';\n\nfunction Modal({ onClose }) {\n  useKeyPress('Escape', onClose);\n  useKeyPress('Enter', handleSubmit);\n  return <dialog>...</dialog>;\n}`,
   },
   {
     name: 'useIsomorphicLayoutEffect', category: 'Lifecycle',
@@ -777,7 +777,7 @@ const HOOKS: HookDef[] = [
     ],
     returns: 'void',
     demo: UseIsomorphicLayoutEffectDemo,
-    code: `import { useIsomorphicLayoutEffect } from '@aura-ui/hooks';\n\nfunction Measured({ children }) {\n  const ref = useRef<HTMLDivElement>(null);\n  const [rect, setRect] = useState<DOMRect>();\n\n  // No SSR warning; synchronous on client\n  useIsomorphicLayoutEffect(() => {\n    setRect(ref.current?.getBoundingClientRect());\n  }, []);\n\n  return <div ref={ref}>{children}</div>;\n}`,
+    code: `import { useIsomorphicLayoutEffect } from '@structyl/hooks';\n\nfunction Measured({ children }) {\n  const ref = useRef<HTMLDivElement>(null);\n  const [rect, setRect] = useState<DOMRect>();\n\n  // No SSR warning; synchronous on client\n  useIsomorphicLayoutEffect(() => {\n    setRect(ref.current?.getBoundingClientRect());\n  }, []);\n\n  return <div ref={ref}>{children}</div>;\n}`,
   },
 ];
 
@@ -920,14 +920,14 @@ export default function HooksPage() {
 
       {/* Page header */}
       <div className="mb-8 border-b border-border/40 pb-6">
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@aura-ui/hooks</p>
+        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@structyl/hooks</p>
         <h1 className="text-[28px] font-semibold tracking-tight">Hooks</h1>
         <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
           {HOOKS.length} reusable, SSR-safe, tree-shakeable React hooks. Zero dependencies. Import only what you use.
         </p>
         <div className="mt-4 flex items-center gap-2">
           <code className="rounded-lg border border-border bg-muted/30 px-3 py-1.5 font-mono text-[12px] text-muted-foreground">
-            pnpm add @aura-ui/hooks
+            pnpm add @structyl/hooks
           </code>
         </div>
       </div>

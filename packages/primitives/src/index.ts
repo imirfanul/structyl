@@ -1,5 +1,5 @@
 /**
- * @aura-ui/primitives
+ * @structyl/primitives
  *
  * Headless, accessible React primitives. Behavior without styling.
  */
@@ -120,26 +120,26 @@ export type {
   MultiSelectOptionsProps,
 } from './multi-select/multi-select';
 
-export * as Aura from './aura';
+export * as Structyl from './structyl';
 export type {
-  RatingProps as AuraRatingProps,
-  ChartProps as AuraChartProps,
-  BackdropProps as AuraBackdropProps,
-  SnackbarProps as AuraSnackbarProps,
-  SnackbarOrigin as AuraSnackbarOrigin,
-  ModalProps as AuraModalProps,
-  BottomNavigationRootProps as AuraBottomNavigationRootProps,
-  BottomNavigationItemProps as AuraBottomNavigationItemProps,
-  SpeedDialRootProps as AuraSpeedDialRootProps,
-  SpeedDialTriggerProps as AuraSpeedDialTriggerProps,
-  ClickAwayListenerProps as AuraClickAwayListenerProps,
-  TextareaAutosizeProps as AuraTextareaAutosizeProps,
-  TransitionProps as AuraTransitionProps,
-  InitColorSchemeScriptProps as AuraInitColorSchemeScriptProps,
-  TransferListProps as AuraTransferListProps,
-  TransferListOption as AuraTransferListOption,
+  RatingProps as StructylRatingProps,
+  ChartProps as StructylChartProps,
+  BackdropProps as StructylBackdropProps,
+  SnackbarProps as StructylSnackbarProps,
+  SnackbarOrigin as StructylSnackbarOrigin,
+  ModalProps as StructylModalProps,
+  BottomNavigationRootProps as StructylBottomNavigationRootProps,
+  BottomNavigationItemProps as StructylBottomNavigationItemProps,
+  SpeedDialRootProps as StructylSpeedDialRootProps,
+  SpeedDialTriggerProps as StructylSpeedDialTriggerProps,
+  ClickAwayListenerProps as StructylClickAwayListenerProps,
+  TextareaAutosizeProps as StructylTextareaAutosizeProps,
+  TransitionProps as StructylTransitionProps,
+  InitColorSchemeScriptProps as StructylInitColorSchemeScriptProps,
+  TransferListProps as StructylTransferListProps,
+  TransferListOption as StructylTransferListOption,
   PopperProps,
-} from './aura';
+} from './structyl';
 
 export * as Combobox from './combobox';
 export type {

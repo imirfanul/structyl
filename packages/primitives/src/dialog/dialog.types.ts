@@ -2,7 +2,7 @@ import type * as React from 'react';
 import type {
   PointerDownOutsideEvent,
   FocusOutsideEvent,
-} from '@aura-ui/core';
+} from '@structyl/core';
 
 export interface DialogRootProps {
   open?: boolean;

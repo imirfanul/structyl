@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Upload } from 'lucide-react';
-import { Button } from '@aura-ui/styled';
+import { Button } from '@structyl/styled';
 
 interface SubtitleUploaderProps {
   onSubtitleUpload: (file: File) => void;

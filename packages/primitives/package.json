@@ -1,6 +1,7 @@
 {
-  "name": "@aura-ui/primitives",
+  "name": "@structyl/primitives",
   "version": "1.0.0",
+  "publishConfig": { "access": "public" },
   "description": "Headless, accessible React primitives — behavior without styling",
   "license": "MIT",
   "type": "module",
@@ -26,9 +27,9 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
-    "@aura-ui/core": "workspace:*",
-    "@aura-ui/hooks": "workspace:*",
-    "@aura-ui/utils": "workspace:*"
+    "@structyl/core": "workspace:*",
+    "@structyl/hooks": "workspace:*",
+    "@structyl/utils": "workspace:*"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",

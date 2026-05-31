@@ -1,8 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { OneTimePasswordField as OtpPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { OneTimePasswordField as OtpPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof OtpPrimitive.Root>,

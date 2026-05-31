@@ -1,5 +1,5 @@
 /**
- * Color accent presets for @aura-ui/themes.
+ * Color accent presets for @structyl/themes.
  *
  * Built-in presets cover 10 common accent colors. Users can extend the list
  * by creating additional `ColorPreset` objects and passing them to
@@ -22,11 +22,11 @@ export interface ColorPreset {
 /* ── Built-in catalogue ─────────────────────────────────────────────────────── */
 
 /**
- * The 10 built-in accent presets shipped with @aura-ui/themes.
+ * The 10 built-in accent presets shipped with @structyl/themes.
  * Typed `as const` so that `ColorPresetId` is a precise union of literal IDs.
  */
 export const COLOR_PRESETS = [
-  { id: 'aura',   name: 'Aura',   hex: '#5754a3' },
+  { id: 'structyl',   name: 'Structyl',   hex: '#5754a3' },
   { id: 'indigo', name: 'Indigo', hex: '#6366f1' },
   { id: 'ocean',  name: 'Ocean',  hex: '#0284c7' },
   { id: 'rose',   name: 'Rose',   hex: '#e11d48' },
@@ -38,7 +38,7 @@ export const COLOR_PRESETS = [
   { id: 'zinc',   name: 'Zinc',   hex: '#71717a' },
 ] as const satisfies ReadonlyArray<ColorPreset>;
 
-/** Union of all built-in preset IDs (e.g. `'aura' | 'indigo' | 'ocean' | ...`). */
+/** Union of all built-in preset IDs (e.g. `'structyl' | 'indigo' | 'ocean' | ...`). */
 export type ColorPresetId = (typeof COLOR_PRESETS)[number]['id'];
 
 /**

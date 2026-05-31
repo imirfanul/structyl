@@ -5,7 +5,7 @@
  * used automatically. AsyncStorage is used for auth token persistence.
  *
  * Dependencies:
- *   npx expo install @aura-ui/api-client @tanstack/react-query axios
+ *   npx expo install @structyl/api-client @tanstack/react-query axios
  *   npx expo install @react-native-async-storage/async-storage
  */
 import React from 'react';
@@ -15,7 +15,7 @@ import {
   ApiProvider,
   useApiQuery,
   useApiMutation,
-} from '@aura-ui/api-client';
+} from '@structyl/api-client';
 
 const api = createApiClient({
   baseURL: 'https://jsonplaceholder.typicode.com',

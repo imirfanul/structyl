@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Eye, EyeOff } from '@aura-ui/icons';
-import { PasswordToggleField as PtfPrimitive } from '@aura-ui/primitives';
-import { cn } from '@aura-ui/utils';
+import { Eye, EyeOff } from '@structyl/icons';
+import { PasswordToggleField as PtfPrimitive } from '@structyl/primitives';
+import { cn } from '@structyl/utils';
 
 const Root = React.forwardRef<
   React.ElementRef<typeof PtfPrimitive.Root>,

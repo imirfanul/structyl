@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { createContext, Primitive, useDirection } from '@aura-ui/core';
-import { useControllableState, useComposedRefs } from '@aura-ui/hooks';
-import { composeEventHandlers } from '@aura-ui/utils';
+import { createContext, Primitive, useDirection } from '@structyl/core';
+import { useControllableState, useComposedRefs } from '@structyl/hooks';
+import { composeEventHandlers } from '@structyl/utils';
 import type {
   SliderRootProps,
   SliderTrackProps,
@@ -244,7 +244,7 @@ const SliderImpl = React.forwardRef<HTMLSpanElement, SliderImplProps>(
         ref={composedRefs}
         style={{
           ...rest.style,
-          ['--aura-ui-slider-thumb-transform' as string]:
+          ['--structyl-slider-thumb-transform' as string]:
             orientation.size === 'width' ? 'translateX(-50%)' : 'translateY(50%)',
         }}
         onPointerDown={composeEventHandlers(rest.onPointerDown, (event) => {
@@ -371,7 +371,7 @@ const SliderThumbImpl = React.forwardRef<HTMLSpanElement, SliderThumbProps & { i
     return (
       <span
         style={{
-          transform: 'var(--aura-ui-slider-thumb-transform)',
+          transform: 'var(--structyl-slider-thumb-transform)',
           position: 'absolute',
           [orientation.startEdge]: `calc(${percent}% + ${0}px)`,
         }}

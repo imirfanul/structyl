@@ -6,8 +6,8 @@
  * renders without a loading flicker.
  */
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-import { createApiClient } from '@aura-ui/api-client';
-import { prefetchApiQuery, QueryClient } from '@aura-ui/api-client/server';
+import { createApiClient } from '@structyl/api-client';
+import { prefetchApiQuery, QueryClient } from '@structyl/api-client/server';
 import { TodoList } from './TodoList';
 
 export default async function Page() {

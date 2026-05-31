@@ -886,9 +886,9 @@ describe('DataTable', () => {
 
   it('reads persisted state from localStorage when stateKey is set', () => {
     // Seed localStorage with a persisted page size so we can verify it's read back
-    // DataTable prefixes the key with 'aura-dt:'
+    // DataTable prefixes the key with 'structyl-dt:'
     const stored = JSON.stringify({ pagination: { pageIndex: 0, pageSize: 5 } });
-    window.localStorage.setItem('aura-dt:dt-test-key', stored);
+    window.localStorage.setItem('structyl-dt:dt-test-key', stored);
 
     const manyRows = Array.from({ length: 8 }, (_, i) => ({
       ...rows[0],
@@ -910,7 +910,7 @@ describe('DataTable', () => {
     expect(screen.getByText('Row 1')).toBeTruthy();
     expect(screen.queryByText('Row 6')).toBeNull();
 
-    window.localStorage.removeItem('aura-dt:dt-test-key');
+    window.localStorage.removeItem('structyl-dt:dt-test-key');
   });
 
   // ── 47. Saved views toolbar button ─────────────────────────────────────────
