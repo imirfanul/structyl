@@ -452,7 +452,7 @@ export function buildBarRect(
   width: number,
   height: number,
   radius = 0,
-  orientation: 'vertical' | 'horizontal' = 'vertical',
+  _orientation: 'vertical' | 'horizontal' = 'vertical',
 ): BarRectProps {
   const r = Math.min(radius, Math.abs(height) / 2, Math.abs(width) / 2);
   return { x, y, width, height, rx: r, ry: r };

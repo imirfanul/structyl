@@ -176,7 +176,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     if (!video || isHls) return;
     setVideoError(null);
     video.load();
-  }, [currentSrc, isHls]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentSrc, isHls]);
 
   // Surface media errors to the UI
   useEffect(() => {

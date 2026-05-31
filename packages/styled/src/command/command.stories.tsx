@@ -186,7 +186,7 @@ export const WithLoading: Story = {
       }, 500);
 
       return () => clearTimeout(timeout);
-    }, [query, allResults]);
+    }, [query]);
 
     return (
       <div className="w-[400px] rounded-lg border border-border shadow-md">

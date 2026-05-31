@@ -1128,8 +1128,8 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
     // Feature 8
     enableKeyboardShortcuts = false,
     // Feature 10
-    editMode,
-    onCellEditCommit,
+    editMode: _editMode,
+    onCellEditCommit: _onCellEditCommit,
     enableUndoRedo = false,
     dirtyRows: dirtyRowsProp,
     onDirtyRowsChange,
@@ -1241,7 +1241,7 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
   const [internalFullscreen, setInternalFullscreen] = React.useState(false);
 
   // Feature 6: paste version counter to trigger re-render
-  const [pasteVersion, setPasteVersion] = React.useState(0);
+  const [_pasteVersion, setPasteVersion] = React.useState(0);
 
   // Round 3: Feature 1 — Pivot mode
   const [internalPivotConfig, setInternalPivotConfig] = React.useState<DataTablePivotConfig | undefined>();
@@ -1313,8 +1313,8 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
 
   // Feature 10: undo/redo history and dirty rows
   type EditHistoryEntry = { rowId: string; field: string; oldValue: unknown; newValue: unknown };
-  const [editHistory, setEditHistory] = React.useState<EditHistoryEntry[]>([]);
-  const [redoStack, setRedoStack] = React.useState<EditHistoryEntry[]>([]);
+  const [_editHistory, setEditHistory] = React.useState<EditHistoryEntry[]>([]);
+  const [_redoStack, setRedoStack] = React.useState<EditHistoryEntry[]>([]);
   const [internalDirtyRows, setInternalDirtyRows] = React.useState<Set<string>>(new Set());
   const dirtyRows = dirtyRowsProp ?? internalDirtyRows;
   const handleDirtyRowsChange = React.useCallback(
@@ -1380,7 +1380,6 @@ export function DataTable<TData, TValue = unknown>(props: DataTableProps<TData, 
     } catch {
       // ignore malformed stored state
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stateKey]);
 
   const globalFilter = globalFilterProp ?? internalGlobalFilter;
@@ -3166,11 +3165,11 @@ function renderRowCells<TData>({
   conditionalFormattingRules,
   enableCellSelection,
   isCellSelected,
-  isSelectingCells,
+  isSelectingCells: _isSelectingCells,
   onCellMouseDown,
   onCellMouseEnter,
   flashedCells,
-  onViewStats,
+  onViewStats: _onViewStats,
   rowValidationErrors,
 }: {
   row: Row<TData>;
@@ -4608,7 +4607,7 @@ function createRowActionButtonsColumn<TData>(
 
 /* ─── Built-in cell renderers ──────────────────────────────────────── */
 
-interface BuiltinCellRendererOptions<TData, TValue> {
+interface BuiltinCellRendererOptions<TData, _TValue> {
   type: DataTableColumnType;
   badgeMap?: Record<string, { label?: string; color?: string; textColor?: string }>;
   currencyCode?: string;

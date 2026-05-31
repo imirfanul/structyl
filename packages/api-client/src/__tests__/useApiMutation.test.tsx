@@ -155,7 +155,6 @@ describe('useApiMutation', () => {
     const { result } = renderHook(
       () =>
         useApiMutation((_inst, _vars: unknown) => {
-          // eslint-disable-next-line no-throw-literal
           throw 'raw string error';
         }),
       { wrapper: makeWrapper(queryClient, apiClient) },

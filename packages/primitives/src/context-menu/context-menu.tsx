@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { createContext, Primitive } from '@aura-ui/core';
-import { useControllableState, useComposedRefs } from '@aura-ui/hooks';
+import { useControllableState } from '@aura-ui/hooks';
 import { composeEventHandlers } from '@aura-ui/utils';
 import * as MenuPrimitive from '../menu';
 

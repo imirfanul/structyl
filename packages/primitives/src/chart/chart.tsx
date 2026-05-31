@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { createContext } from '@aura-ui/core';
 import type {
-  BoxplotEntry,
   CartesianContextValue,
   ChartAreaProps,
   ChartBarProps,
@@ -52,30 +51,22 @@ import type {
   ChartXAxisProps,
   ChartYAxisProps,
   ChartPyramidProps,
-  GanttTask,
   GaugeContextValue,
   HighlightScope,
   MarkShape,
-  OhlcEntry,
   PieContextValue,
   RadarContextValue,
-  SankeyLink,
   SankeyNode,
   ScatterMarkerShape,
   SunburstNode,
-  TooltipPayloadEntry,
   TooltipState,
-  TreemapNode,
-  WaterfallEntry,
 } from './chart.types';
 import type { TreemapLayoutNode } from './layout';
 import {
   bandScale,
   computeYDomain,
   linearScale,
-  logScale,
   niceLinearTicks,
-  ordinalScale,
 } from './scales';
 import { buildArcPath, buildAreaPathFlat, buildAreaPath, buildLinePath, buildRadarPath, fmt } from './paths';
 import {
@@ -145,33 +136,6 @@ const [SharedTooltipProvider, useSharedTooltip] =
   createContext<SharedTooltipCtxValue>('Chart');
 
 /* ─── Helper: collect legend entries from cartesian series children ───── */
-
-const CARTESIAN_SERIES_NAMES = new Set([
-  'Chart.Bar', 'Chart.Line', 'Chart.Area', 'Chart.Scatter',
-  'Chart.Bubble', 'Chart.RangeBar', 'Chart.RangeArea',
-]);
-
-function collectCartesianLegendEntries(children: React.ReactNode): LegendEntryData[] {
-  const entries: LegendEntryData[] = [];
-  let idx = 0;
-  React.Children.forEach(children, (child) => {
-    if (!React.isValidElement(child)) return;
-    const dn = (child.type as { displayName?: string })?.displayName ?? '';
-    if (CARTESIAN_SERIES_NAMES.has(dn)) {
-      const p = child.props as { name?: string; dataKey?: string; color?: string };
-      const label = p.name ?? p.dataKey ?? '';
-      if (label) {
-        entries.push({
-          name: label,
-          color: p.color ?? DEFAULT_PALETTE[idx % DEFAULT_PALETTE.length] ?? 'hsl(var(--chart-1))',
-          dataKey: p.dataKey ?? '',
-        });
-      }
-      idx++;
-    }
-  });
-  return entries;
-}
 
 function collectPieLegendEntries(
   rows: Record<string, unknown>[],
@@ -249,15 +213,10 @@ function splitChildren(children: React.ReactNode): {
   return { svgChildren, overlayChildren };
 }
 
-/* ─── Series registration ───────────────────────────────────────────── */
-
-interface SeriesRegistration {
-  dataKey: string;
-  name: string;
-  color: string;
-  stackId?: string;
-  type: 'bar' | 'line' | 'area';
-}
+const CARTESIAN_SERIES_NAMES = new Set([
+  'Chart.Bar', 'Chart.Line', 'Chart.Area', 'Chart.Scatter',
+  'Chart.Bubble', 'Chart.RangeBar', 'Chart.RangeArea',
+]);
 
 /* ─── Root ──────────────────────────────────────────────────────────── */
 
@@ -417,7 +376,7 @@ const Root = React.forwardRef<HTMLDivElement, ChartRootProps>(
           bandWidth: 0,
         };
       }
-    }, [data, isBand, xValues, innerWidth]);
+    }, [isBand, xValues, innerWidth]);
 
     const yDomain = React.useMemo((): [number, number] => {
       if (yDomainProp) {
@@ -430,7 +389,7 @@ const Root = React.forwardRef<HTMLDivElement, ChartRootProps>(
       const dataKeys = seriesInfo.map((s) => s.dataKey);
       const stackIds = seriesInfo.map((s) => s.stackId);
       return computeYDomain(rows, dataKeys, stackIds);
-    }, [data, seriesInfo, yDomainProp]);
+    }, [rows, seriesInfo, yDomainProp]);
 
     const yScale = React.useMemo(
       () => linearScale(yDomain, [innerHeight, 0]),
@@ -594,7 +553,7 @@ Grid.displayName = 'Chart.Grid';
 const XAxis = React.forwardRef<SVGGElement, ChartXAxisProps>(
   (
     {
-      dataKey,
+      dataKey: _dataKey,
       label,
       tickCount = 5,
       tickFormatter,
@@ -851,7 +810,7 @@ const Bar = React.forwardRef<SVGGElement, ChartBarProps>(
       dataKey,
       color,
       name,
-      stackId,
+      stackId: _stackId,
       orientation = 'vertical',
       radius = 4,
       showLabel = false,
@@ -1237,10 +1196,10 @@ const Area = React.forwardRef<SVGGElement, ChartAreaProps>(
       name,
       curve = 'catmullRom',
       fillOpacity = 0.3,
-      stackId,
+      stackId: _stackId,
       strokeWidth = 2,
       baseline,
-      connectNulls = false,
+      connectNulls: _connectNulls = false,
       highlightScope,
       fillByValue = false,
       className,
@@ -2127,7 +2086,7 @@ PolarGrid.displayName = 'Chart.PolarGrid';
 /* ─── PolarAngleAxis ────────────────────────────────────────────────── */
 
 const PolarAngleAxis = React.forwardRef<SVGGElement, ChartPolarAngleAxisProps>(
-  ({ dataKey, className }, ref) => {
+  ({ dataKey: _dataKey, className }, ref) => {
     const ctx = useRadarContext('Chart.PolarAngleAxis');
     const { cx, cy, radius, angleKeys } = ctx;
 
@@ -2262,7 +2221,7 @@ const Heatmap = React.forwardRef<HTMLDivElement, ChartHeatmapProps>(
 
     // Simple linear interpolation between two CSS colors
     // We use opacity as a proxy since we can't parse CSS vars at runtime
-    const cellFill = (norm: number): string => {
+    const cellFill = (_norm: number): string => {
       // Use opacity variation on the first color
       return colorRange[0];
     };
@@ -2465,7 +2424,7 @@ const Funnel = React.forwardRef<HTMLDivElement, ChartFunnelProps>(
       data,
       width = 400,
       height = 300,
-      labelPosition = 'center',
+      labelPosition: _labelPosition = 'center',
       variant = 'filled',
       curve = 'linear',
       gap = 0,
@@ -3198,7 +3157,7 @@ const RangeBar = React.forwardRef<SVGGElement, ChartRangeBarProps>(
       bandWidth,
       palette,
     } = ctx;
-    const { innerHeight } = dimensions;
+    const { innerHeight: _innerHeight } = dimensions;
 
     const seriesIndex = ctx.registerSeries(name ?? lowKey);
     const resolvedColor =
@@ -3843,7 +3802,7 @@ const Sankey = React.forwardRef<HTMLDivElement, ChartSankeyProps>(
     }
 
     const maxLayer = Math.max(...Array.from(layers.keys()));
-    const numLayers = maxLayer + 1;
+    const _numLayers = maxLayer + 1;
     const sankeyMargin = { top: 10, right: 10, bottom: 10, left: 10 };
     const innerW = width - sankeyMargin.left - sankeyMargin.right;
     const innerH = height - sankeyMargin.top - sankeyMargin.bottom;
@@ -4061,7 +4020,7 @@ const Pyramid = React.forwardRef<HTMLDivElement, ChartPyramidProps>(
       data,
       width = 400,
       height = 300,
-      labelPosition = 'center',
+      labelPosition: _labelPosition = 'center',
       className,
       accessibilityLabel = 'Pyramid chart',
       onSegmentClick,
@@ -4453,7 +4412,6 @@ const RadialLine = React.forwardRef<SVGGElement, ChartRadialLineProps>(
     // Build area path (back through center)
     let areaD = '';
     if (area && polarPoints.length > 0) {
-      const first = polarPoints[0]!;
       areaD = `M ${cx} ${cy}`;
       for (const p of polarPoints) {
         areaD += ` L ${fmt(p[0])} ${fmt(p[1])}`;

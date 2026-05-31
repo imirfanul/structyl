@@ -7,7 +7,6 @@ import {
   Presence,
   DismissableLayer,
   useDirection,
-  VisuallyHidden,
 } from '@aura-ui/core';
 import { useControllableState, useId, useComposedRefs } from '@aura-ui/hooks';
 import { composeEventHandlers } from '@aura-ui/utils';
@@ -66,7 +65,6 @@ const Root = React.forwardRef<HTMLElement, NavigationMenuRootProps>(
       prop: valueProp,
       defaultProp: defaultValue,
       onChange: (v) => {
-        const wasOpen = value !== '';
         const isClose = v === '';
         if (isClose) {
           window.clearTimeout(skipDelayTimerRef.current);
@@ -86,11 +84,11 @@ const Root = React.forwardRef<HTMLElement, NavigationMenuRootProps>(
       window.clearTimeout(closeTimerRef.current);
       closeTimerRef.current = window.setTimeout(() => setValue(''), 150);
     }, [setValue]);
-    const handleOpen = (v: string) => {
+    const handleOpen = React.useCallback((v: string) => {
       window.clearTimeout(closeTimerRef.current);
       setValue(v);
-    };
-    const handleDelayedOpen = (v: string) => {
+    }, [setValue]);
+    const handleDelayedOpen = React.useCallback((v: string) => {
       const isOpenValue = value === v;
       if (isOpenValue) {
         window.clearTimeout(closeTimerRef.current);
@@ -100,7 +98,7 @@ const Root = React.forwardRef<HTMLElement, NavigationMenuRootProps>(
           setValue(v);
         }, delayDuration);
       }
-    };
+    }, [value, setValue, delayDuration]);
     React.useEffect(() => () => {
       window.clearTimeout(openTimerRef.current);
       window.clearTimeout(closeTimerRef.current);

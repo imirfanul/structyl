@@ -7,7 +7,7 @@ import {
   RovingFocusGroup,
   RovingFocusItem,
 } from '@aura-ui/core';
-import { useControllableState, useId, useComposedRefs } from '@aura-ui/hooks';
+import { useControllableState, useId } from '@aura-ui/hooks';
 import { composeEventHandlers } from '@aura-ui/utils';
 import * as CollapsiblePrimitive from '../collapsible';
 import type {
@@ -174,7 +174,7 @@ const Item = React.forwardRef<HTMLDivElement, AccordionItemProps>(
     const { value, disabled, ...rest } = props;
     const accordionCtx = useAccordionContext('Accordion.Item');
     const valueCtx = useAccordionValueContext('Accordion.Item');
-    const collapsibleCtx = useAccordionCollapsibleContext('Accordion.Item');
+    const _collapsibleCtx = useAccordionCollapsibleContext('Accordion.Item');
     const open = (value && valueCtx.value.includes(value)) || false;
     const isDisabled = accordionCtx.disabled || disabled;
     const triggerId = useId('accordion-trigger');

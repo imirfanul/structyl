@@ -16,9 +16,6 @@ function clamp01(n: number) {
   return Math.max(0, Math.min(1, n));
 }
 
-function clamp(n: number, min: number, max: number) {
-  return Math.max(min, Math.min(max, n));
-}
 
 function hsvToRgb({ h, s, v }: HsvaColor) {
   const c = v * s;

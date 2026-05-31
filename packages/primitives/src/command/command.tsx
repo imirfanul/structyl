@@ -266,7 +266,7 @@ export interface CommandGroupProps extends React.ComponentPropsWithoutRef<'div'>
 
 const Group = React.forwardRef<HTMLDivElement, CommandGroupProps>(
   (props, forwardedRef) => {
-    const { heading, value, children, ...rest } = props;
+    const { heading, value: _value, children, ...rest } = props;
     return (
       <Primitive.div role="group" {...rest} ref={forwardedRef}>
         {heading ? <div role="presentation" cmdk-group-heading="">{heading}</div> : null}
