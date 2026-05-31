@@ -9,6 +9,7 @@
 '@structyl/data-table': major
 '@structyl/cli': major
 '@structyl/api-client': major
+'@structyl/video-player': major
 ---
 
 Initial public release of the structyl component library.
