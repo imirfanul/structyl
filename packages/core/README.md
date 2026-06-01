@@ -5,7 +5,7 @@
 ![npm](https://img.shields.io/npm/v/@structyl/core)
 ![license](https://img.shields.io/npm/l/@structyl/core)
 
-`@structyl/core` is the low-level foundation underneath every styled component in [structyl](https://structyl.dev). It provides the unstyled, accessible building blocks — polymorphic elements, the `asChild` slot pattern, scoped contexts, focus management, presence/animation handling, and Floating UI–based positioning. If you are building your own headless components (or extending structyl), this is the package you compose from; most app authors will consume `@structyl/primitives` or `@structyl/styled` instead.
+`@structyl/core` is the low-level foundation underneath every styled component in [structyl](https://www.structyl.com). It provides the unstyled, accessible building blocks — polymorphic elements, the `asChild` slot pattern, scoped contexts, focus management, presence/animation handling, and Floating UI–based positioning. If you are building your own headless components (or extending structyl), this is the package you compose from; most app authors will consume `@structyl/primitives` or `@structyl/styled` instead.
 
 ## Installation
 
@@ -110,7 +110,7 @@ Type definitions are exported alongside each component (e.g. `PrimitivePropsWith
 
 ## Part of structyl
 
-This package is part of [structyl](https://github.com/imirfanul/structyl) — the React UI library with structure. See the full documentation at [structyl.dev](https://structyl.dev).
+This package is part of [structyl](https://github.com/imirfanul/structyl) — the React UI library with structure. See the full documentation at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

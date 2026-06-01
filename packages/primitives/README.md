@@ -5,7 +5,7 @@
 ![npm](https://img.shields.io/npm/v/@structyl/primitives)
 ![license](https://img.shields.io/npm/l/@structyl/primitives)
 
-`@structyl/primitives` is the headless behavior layer of [structyl](https://structyl.dev). It provides unstyled, WAI-ARIA compliant React components — dialogs, menus, selects, date pickers, and dozens more — that ship full keyboard navigation, focus management, and accessibility while leaving styling entirely up to you. It is the foundation that `@structyl/styled` builds on, and it's also a complete toolkit on its own for teams that bring their own design system.
+`@structyl/primitives` is the headless behavior layer of [structyl](https://www.structyl.com). It provides unstyled, WAI-ARIA compliant React components — dialogs, menus, selects, date pickers, and dozens more — that ship full keyboard navigation, focus management, and accessibility while leaving styling entirely up to you. It is the foundation that `@structyl/styled` builds on, and it's also a complete toolkit on its own for teams that bring their own design system.
 
 ## Installation
 
@@ -96,11 +96,11 @@ The package exports both standalone primitives and namespaced compound component
 | `Avatar` / `Progress` / `Toast` / `Card` / `Chart` | namespace | Display & feedback |
 | `Switch` / `Toggle` / `Checkbox` / `Label` / `Separator` / `Skeleton` / `Spinner` / `Badge` / `Alert` / `Input` / `Textarea` / `AspectRatio` | component | Standalone primitives |
 
-Every component ships its corresponding prop types (for example `ButtonProps`, `DialogContentProps`, `SelectRootProps`). See the [documentation](https://structyl.dev) for the full API reference.
+Every component ships its corresponding prop types (for example `ButtonProps`, `DialogContentProps`, `SelectRootProps`). See the [documentation](https://www.structyl.com) for the full API reference.
 
 ## Part of structyl
 
-Part of the [structyl](https://github.com/imirfanul/structyl) component library — see the full docs at [structyl.dev](https://structyl.dev).
+Part of the [structyl](https://github.com/imirfanul/structyl) component library — see the full docs at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

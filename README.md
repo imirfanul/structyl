@@ -15,7 +15,7 @@ Accessible headless primitives, a Tailwind CSS v4 styled layer, runtime theming,
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./docs/CONTRIBUTING.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
-[Documentation](https://structyl.dev) · [Components](https://structyl.dev/docs) · [GitHub](https://github.com/imirfanul/structyl)
+[Documentation](https://www.structyl.com) · [Components](https://www.structyl.com/docs) · [GitHub](https://github.com/imirfanul/structyl)
 
 </div>
 <!-- markdownlint-enable MD033 MD041 -->
@@ -66,21 +66,21 @@ structyl gives you the headless control of Radix, the styled ergonomics of shadc
 
 ## Packages
 
-Everything ships under the [`@structyl`](https://www.npmjs.com/org/structyl) npm scope. Browse full docs at [structyl.dev/docs](https://structyl.dev/docs).
+Everything ships under the [`@structyl`](https://www.npmjs.com/org/structyl) npm scope. Browse full docs at [www.structyl.com/docs](https://www.structyl.com/docs).
 
 | Package | Description |
 |---|---|
-| [`@structyl/primitives`](https://structyl.dev/docs) | Headless, WAI-ARIA accessible React primitives with compound APIs, `asChild` slots, and controlled/uncontrolled state — behavior without styling. |
-| [`@structyl/styled`](https://structyl.dev/docs) | Tailwind CSS v4 styled React components built on accessible WAI-ARIA primitives, with a token-driven theme preset and type-safe variants. |
-| [`@structyl/themes`](https://structyl.dev/docs) | Runtime theming for React: a `ThemeProvider` and CSS-variable token system with light/dark modes, SSR-safe anti-flash script, and accent presets. |
-| [`@structyl/data-table`](https://structyl.dev/docs) | Headless-powered React DataTable built on TanStack Table with sorting, filtering, virtualization, grouping, inline editing, and server-side data. |
-| [`@structyl/hooks`](https://structyl.dev/docs) | SSR-safe, tree-shakeable React hooks for state, refs, DOM, browser APIs, and performance, including `useControllableState` for headless UI. |
-| [`@structyl/utils`](https://structyl.dev/docs) | Tree-shakeable TypeScript utilities for structyl: `cn` (Tailwind merge), prop/event composition, type guards, array/object/string/number/DOM helpers. |
-| [`@structyl/core`](https://structyl.dev/docs) | Headless React primitives powering structyl: Slot/`asChild`, polymorphic `Primitive`, scoped contexts, focus management, presence, Floating UI poppers. |
-| [`@structyl/icons`](https://structyl.dev/docs) | The structyl icon set: 1000+ tree-shakeable SVG icon components re-exported from lucide-react, typed for React 18 and 19. |
-| [`@structyl/api-client`](https://structyl.dev/docs) | React data-fetching for any framework: Axios client with a built-in query cache, hooks for queries, mutations, infinite & suspense, plus SSR. |
-| [`@structyl/cli`](https://structyl.dev/docs) | Command-line tool for scaffolding structyl projects and copying styled components into your codebase with automatic dependency resolution. |
-| [`@structyl/video-player`](https://structyl.dev/docs) | React video player with HLS adaptive streaming (hls.js), SRT/VTT subtitles, playlists, chapters, video filters, and full keyboard control. |
+| [`@structyl/primitives`](https://www.structyl.com/docs) | Headless, WAI-ARIA accessible React primitives with compound APIs, `asChild` slots, and controlled/uncontrolled state — behavior without styling. |
+| [`@structyl/styled`](https://www.structyl.com/docs) | Tailwind CSS v4 styled React components built on accessible WAI-ARIA primitives, with a token-driven theme preset and type-safe variants. |
+| [`@structyl/themes`](https://www.structyl.com/docs) | Runtime theming for React: a `ThemeProvider` and CSS-variable token system with light/dark modes, SSR-safe anti-flash script, and accent presets. |
+| [`@structyl/data-table`](https://www.structyl.com/docs) | Headless-powered React DataTable built on TanStack Table with sorting, filtering, virtualization, grouping, inline editing, and server-side data. |
+| [`@structyl/hooks`](https://www.structyl.com/docs) | SSR-safe, tree-shakeable React hooks for state, refs, DOM, browser APIs, and performance, including `useControllableState` for headless UI. |
+| [`@structyl/utils`](https://www.structyl.com/docs) | Tree-shakeable TypeScript utilities for structyl: `cn` (Tailwind merge), prop/event composition, type guards, array/object/string/number/DOM helpers. |
+| [`@structyl/core`](https://www.structyl.com/docs) | Headless React primitives powering structyl: Slot/`asChild`, polymorphic `Primitive`, scoped contexts, focus management, presence, Floating UI poppers. |
+| [`@structyl/icons`](https://www.structyl.com/docs) | The structyl icon set: 1000+ tree-shakeable SVG icon components re-exported from lucide-react, typed for React 18 and 19. |
+| [`@structyl/api-client`](https://www.structyl.com/docs) | React data-fetching for any framework: Axios client with a built-in query cache, hooks for queries, mutations, infinite & suspense, plus SSR. |
+| [`@structyl/cli`](https://www.structyl.com/docs) | Command-line tool for scaffolding structyl projects and copying styled components into your codebase with automatic dependency resolution. |
+| [`@structyl/video-player`](https://www.structyl.com/docs) | React video player with HLS adaptive streaming (hls.js), SRT/VTT subtitles, playlists, chapters, video filters, and full keyboard control. |
 
 ---
 
@@ -120,7 +120,7 @@ function App() {
 }
 ```
 
-Prefer to own the behavior and bring your own styling? Install [`@structyl/primitives`](https://structyl.dev/docs) instead and style the headless layer yourself. Full setup, theming, and per-component guides live at [structyl.dev/docs](https://structyl.dev/docs).
+Prefer to own the behavior and bring your own styling? Install [`@structyl/primitives`](https://www.structyl.com/docs) instead and style the headless layer yourself. Full setup, theming, and per-component guides live at [www.structyl.com/docs](https://www.structyl.com/docs).
 
 ---
 

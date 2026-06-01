@@ -1,9 +1,36 @@
 {
   "name": "@structyl/data-table",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/data-table"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Headless-powered React DataTable built on TanStack Table with sorting, filtering, virtualization, grouping, inline editing, and server-side data.",
-  "keywords": ["react", "typescript", "structyl", "data-table", "datagrid", "table", "tanstack-table", "virtualization", "sorting", "filtering", "server-side", "inline-editing", "csv-export"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "data-table",
+    "datagrid",
+    "table",
+    "tanstack-table",
+    "virtualization",
+    "sorting",
+    "filtering",
+    "server-side",
+    "inline-editing",
+    "csv-export"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

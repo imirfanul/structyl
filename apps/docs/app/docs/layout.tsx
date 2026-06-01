@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   Search,
+  Menu,
   X,
   BookOpen,
   Zap,
@@ -55,6 +56,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   const [query, setQuery] = React.useState('');
   const [paletteOpen, setPaletteOpen] = React.useState(false);
   const [recentlyViewed, setRecentlyViewed] = React.useState<RecentItem[]>([]);
+  const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
 
   const filtered = COMPONENTS.filter((c) =>
     c.name.toLowerCase().includes(query.toLowerCase()),
@@ -97,12 +99,27 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
     return () => document.removeEventListener('keydown', onKey);
   }, []);
 
+  // Close the mobile nav drawer whenever the route changes (e.g. a nav item is clicked).
+  React.useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
+
   return (
     <div className="min-h-screen bg-bg text-fg">
 
       {/* ── Top nav ───────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-bg/80 backdrop-blur-md">
-        <div className="mx-auto flex h-[52px] max-w-[1440px] items-center gap-6 px-5">
+        <div className="mx-auto flex h-[52px] max-w-[1440px] items-center gap-3 px-5 md:gap-6">
+
+          {/* Mobile nav toggle */}
+          <button
+            onClick={() => setMobileNavOpen((v) => !v)}
+            aria-label="Toggle navigation"
+            aria-expanded={mobileNavOpen}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg md:hidden"
+          >
+            {mobileNavOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
 
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center">
@@ -177,7 +194,18 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 md:grid-cols-[240px_1fr]">
 
         {/* ── Sidebar ───────────────────────────────────────────── */}
-        <aside className="sticky top-[52px] hidden h-[calc(100vh-52px)] overflow-y-auto border-r border-border/50 md:flex md:flex-col">
+        {/* Mobile drawer backdrop */}
+        {mobileNavOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm md:hidden"
+            onClick={() => setMobileNavOpen(false)}
+            aria-hidden
+          />
+        )}
+
+        <aside
+          className={`fixed bottom-0 left-0 top-[52px] z-40 flex w-[280px] max-w-[85vw] flex-col overflow-y-auto border-r border-border/50 bg-bg transition-transform duration-200 md:sticky md:bottom-auto md:z-auto md:h-[calc(100vh-52px)] md:w-auto md:max-w-none md:translate-x-0 md:transition-none ${mobileNavOpen ? 'translate-x-0' : '-translate-x-full'}`}
+        >
 
           {/* Search */}
           <div className="px-3 pb-3 pt-5">

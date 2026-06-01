@@ -256,8 +256,15 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   const youtubeId = extractYouTubeId(currentSrc);
   if (youtubeId) {
+    // aspect-ratio + bg set inline so the embed always has dimensions even if
+    // the consuming app's Tailwind hasn't generated `aspect-video`/`bg-black`
+    // (the iframe is absolutely positioned, so without a sized box it collapses
+    // to 0 height and the video would be invisible).
     return (
-      <div className={`relative w-full aspect-video bg-black overflow-hidden rounded-lg shadow-lg ${className}`}>
+      <div
+        className={`relative w-full overflow-hidden rounded-lg shadow-lg ${className}`}
+        style={{ aspectRatio: '16 / 9', backgroundColor: '#000' }}
+      >
         <iframe
           src={`https://www.youtube.com/embed/${youtubeId}?autoplay=${autoPlay ? 1 : 0}&mute=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&rel=0`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -273,6 +280,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     <div
       ref={containerRef}
       className={`relative w-full aspect-video bg-bg overflow-hidden rounded-lg shadow-lg font-sans text-sm text-fg select-none ${className}`}
+      style={{ aspectRatio: '16 / 9' }}
     >
       <video
         ref={videoRef}

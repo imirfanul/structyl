@@ -22,7 +22,7 @@ import {
   Mail,
   ChevronDown,
 } from '@structyl/icons';
-import { COMPONENTS, HOOKS, PACKAGES, type ComponentEntry } from '../../../lib/registry';
+import { COMPONENTS, CATEGORIES, HOOKS, PACKAGES, type ComponentEntry } from '../../../lib/registry';
 import { API } from '../../../lib/api-data';
 
 /* ── Status styles ───────────────────────────────────────────────────── */
@@ -69,9 +69,16 @@ type TocItem = { id: string; title: string };
 
 function ComponentDoc({ entry }: { entry: ComponentEntry }) {
   const api = entry.api ?? API[entry.slug];
-  const idx = COMPONENTS.findIndex((c) => c.slug === entry.slug);
-  const prev = idx > 0 ? (COMPONENTS[idx - 1] ?? null) : null;
-  const next = idx < COMPONENTS.length - 1 ? (COMPONENTS[idx + 1] ?? null) : null;
+  // Order components exactly like the sidebar (grouped by CATEGORIES) so Prev/Next
+  // follow the visible order. Any uncategorised component is appended at the end.
+  const catSet = new Set<string>(CATEGORIES);
+  const orderedComponents = [
+    ...CATEGORIES.flatMap((cat) => COMPONENTS.filter((c) => c.category === cat)),
+    ...COMPONENTS.filter((c) => !catSet.has(c.category)),
+  ];
+  const idx = orderedComponents.findIndex((c) => c.slug === entry.slug);
+  const prev = idx > 0 ? (orderedComponents[idx - 1] ?? null) : null;
+  const next = idx >= 0 && idx < orderedComponents.length - 1 ? (orderedComponents[idx + 1] ?? null) : null;
   const [activeId, setActiveId] = React.useState('overview');
 
   const toc: TocItem[] = [
@@ -130,7 +137,11 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
         {/* Examples */}
         {entry.examples && entry.examples.length > 0 && (
           <Section id="examples" title="Examples">
-            <div className="grid gap-8">
+            {/* grid-cols-1 → minmax(0,1fr): lets the track shrink below content
+                min-content so wide examples (e.g. DataTable) can't blow the
+                column out past the article into the TOC. Bare `grid` uses an
+                auto (min-content) track, which overflowed. */}
+            <div className="grid grid-cols-1 gap-8">
               {entry.examples.map((example) => (
                 <PreviewBlock
                   key={example.title}

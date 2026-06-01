@@ -1,15 +1,42 @@
 {
   "name": "@structyl/cli",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Command-line tool for scaffolding structyl projects and copying styled components into your codebase with automatic dependency resolution.",
-  "keywords": ["react", "typescript", "structyl", "cli", "shadcn", "scaffold", "components", "registry", "tailwind", "commander", "code-generation"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "cli",
+    "shadcn",
+    "scaffold",
+    "components",
+    "registry",
+    "tailwind",
+    "commander",
+    "code-generation"
+  ],
   "license": "MIT",
   "type": "module",
   "bin": {
     "structyl": "./dist/index.js"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

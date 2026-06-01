@@ -28,7 +28,7 @@ export interface ThemeProviderProps {
 export function ThemeProvider(props: ThemeProviderProps): React.JSX.Element {
   const {
     children,
-    defaultTheme = 'slate',
+    defaultTheme = 'structyl',
     defaultMode = 'system',
     storageKey = 'structyl-theme',
     enableTransitions = true,

@@ -1,0 +1,35 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'apps/docs/**'
+      - 'docs/**'
+      - '**.md'
+
+concurrency:
+  group: deploy-docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Force-deploy docs to Vercel
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Vercel builds remotely using the structyl project's settings
+      # (Root Directory = apps/docs). --force skips the build cache so we
+      # never serve a stale build. Project/org resolved from env secrets,
+      # so no committed .vercel link is needed.
+      - name: Deploy to Vercel (production, no cache)
+        run: npx --yes vercel@latest --prod --force --yes --token="$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

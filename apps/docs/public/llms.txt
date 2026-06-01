@@ -8,7 +8,7 @@ structyl is an open-source TypeScript-first React component library. It is struc
 
 Current version: 1.0.0
 License: MIT
-Documentation: https://structyl.vercel.app
+Documentation: https://www.structyl.com
 Source: https://github.com/imirfanul/structyl
 npm: https://www.npmjs.com/org/structyl
 
@@ -113,7 +113,7 @@ A: Yes. All components with React hooks are marked with 'use client'. The librar
 A: Yes. The theming system supports system, light, and dark modes out of the box. Theme switches happen without a page reload using CSS custom properties.
 
 **Q: How do I customize the theme?**
-A: Use the Theme Builder at https://structyl.vercel.app/themes to generate custom CSS variables, or configure via ThemeProvider props.
+A: Use the Theme Builder at https://www.structyl.com/themes to generate custom CSS variables, or configure via ThemeProvider props.
 
 **Q: Is structyl free?**
 A: Yes. MIT license, free forever.

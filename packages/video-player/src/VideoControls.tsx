@@ -90,10 +90,12 @@ export const VideoControls: React.FC<VideoControlsProps> = ({
         </div>
       </div>
 
-      {/* Controls row */}
-      <div className="flex items-center gap-1">
+      {/* Controls row — wraps instead of clipping on narrow players. flex-wrap
+          + space-between set inline so they work even where the consumer's
+          Tailwind hasn't generated those utilities. */}
+      <div className="flex items-center gap-1" style={{ flexWrap: 'wrap', justifyContent: 'space-between' }}>
         {/* Left */}
-        <div className="flex items-center gap-0.5 flex-1">
+        <div className="flex items-center gap-0.5" style={{ minWidth: 0, flexWrap: 'wrap' }}>
           {hasPlaylist && (
             <Button variant="ghost" size="icon" onClick={onPrevious} title="Previous" className="text-white/80 hover:text-white hover:bg-white/10">
               <ChevronLeft />
@@ -170,7 +172,7 @@ export const VideoControls: React.FC<VideoControlsProps> = ({
               side="top"
               align="end"
               sideOffset={8}
-              className="p-0 w-[280px] max-h-[420px] overflow-y-auto bg-popover"
+              className="p-0 w-[min(320px,calc(100vw-1rem))] max-h-[min(70dvh,420px)] overflow-y-auto bg-popover"
             >
               {settingsPanel}
             </DropdownMenu.Content>

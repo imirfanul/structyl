@@ -196,6 +196,7 @@ Releases are automated via Changesets.
 
 - 💬 Discord: [link]
 - 🐦 Twitter: [@structyl]
-- 📧 Email: maintainers@structyl.dev
+- 🐙 GitHub: [Issues](https://github.com/imirfanul/structyl/issues) for bugs & questions, [Discussions](https://github.com/imirfanul/structyl/discussions) for ideas
+- 🔒 Conduct/security: [open a private advisory](https://github.com/imirfanul/structyl/security/advisories/new)
 
 We're a friendly community. Don't be shy.

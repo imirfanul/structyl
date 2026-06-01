@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTheme } from './use-theme';
 import {
   COLOR_PRESETS,
@@ -29,6 +29,15 @@ export interface UseColorPresetOptions {
    * @default 'structyl-color-preset'
    */
   storageKey?: string;
+
+  /**
+   * Preset id to activate on first load when nothing is stored yet. Pass e.g.
+   * `'structyl'` to make the brand accent the default-selected preset. Once the
+   * user picks (or clears) a preset, that stored choice takes over.
+   *
+   * @default undefined (no preset active — uses the ThemeProvider base theme)
+   */
+  defaultPresetId?: string;
 }
 
 export interface UseColorPresetReturn {
@@ -80,12 +89,25 @@ export interface UseColorPresetReturn {
  * const { presets } = useColorPreset({ extraPresets: [brandPreset] });
  */
 export function useColorPreset(options: UseColorPresetOptions = {}): UseColorPresetReturn {
-  const { extraPresets = [], storageKey = DEFAULT_STORAGE_KEY } = options;
+  const { extraPresets = [], storageKey = DEFAULT_STORAGE_KEY, defaultPresetId } = options;
 
-  const { theme, resolvedMode } = useTheme();
-  const [activeId, setActiveId] = useState<string | null>(null);
+  // Subscribe to the theme context — also enforces that this hook is used
+  // inside a <ThemeProvider> (useTheme throws otherwise).
+  useTheme();
 
   const allPresets: ColorPreset[] = [...(COLOR_PRESETS as unknown as ColorPreset[]), ...extraPresets];
+
+  // Default to `defaultPresetId` (when it's a real preset) on first load, until
+  // a stored selection is hydrated from localStorage below.
+  const [activeId, setActiveId] = useState<string | null>(
+    defaultPresetId && allPresets.some((p) => p.id === defaultPresetId) ? defaultPresetId : null,
+  );
+
+  // Hex of the active preset, mirrored into a ref so the mount-only
+  // MutationObserver below always sees the current selection.
+  const activeHex = allPresets.find(p => p.id === activeId)?.hex ?? null;
+  const activeHexRef = useRef<string | null>(activeHex);
+  activeHexRef.current = activeHex;
 
   // Hydrate from localStorage on mount
   useEffect(() => {
@@ -100,13 +122,30 @@ export function useColorPreset(options: UseColorPresetOptions = {}): UseColorPre
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storageKey]);
 
-  // Re-apply CSS vars whenever base theme or color-mode changes (ThemeProvider resets them)
+  // Apply when the selection changes (covers localStorage hydration; setPreset
+  // also applies directly for instant feedback).
   useEffect(() => {
-    if (!activeId) return;
-    const preset = allPresets.find(p => p.id === activeId);
-    if (preset) applyColorPreset(preset.hex);
+    if (activeHex) applyColorPreset(activeHex);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeId, theme, resolvedMode]);
+  }, [activeId]);
+
+  // ThemeProvider rewrites the base --color-* vars in its OWN effect which,
+  // being the parent, runs AFTER this child hook's effects on every theme/mode
+  // switch — clobbering the accent override (this is why the preset was "lost"
+  // after toggling light/dark). Rather than depend on effect ordering, watch the
+  // data-theme / data-mode attributes ThemeProvider sets on <html> and re-apply
+  // the accent when they change: the MutationObserver callback runs as a
+  // microtask after ThemeProvider's synchronous token write, so the accent wins
+  // with no flash before paint.
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const root = document.documentElement;
+    const observer = new MutationObserver(() => {
+      if (activeHexRef.current) applyColorPreset(activeHexRef.current);
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme', 'data-mode'] });
+    return () => observer.disconnect();
+  }, []);
 
   const setPreset = useCallback((id: string, hex: string) => {
     setActiveId(id);

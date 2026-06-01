@@ -3,11 +3,11 @@
 /**
  * Canonical base URL — drives metadataBase, OG/Twitter images, canonical
  * links, sitemap, robots, and JSON-LD, so it MUST be the live production
- * origin. Hardcoded to the deployed domain so no missing or stale env var
- * can ever re-point the site at an unregistered domain (e.g. structyl.dev).
- * When a real custom domain goes live, set NEXT_PUBLIC_SITE_URL to it.
+ * origin. Hardcoded to the custom domain so no missing or stale env var
+ * can ever re-point the site at the wrong origin. Override with
+ * NEXT_PUBLIC_SITE_URL only for preview/staging environments.
  */
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://structyl.vercel.app';
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.structyl.com';
 
 export const SITE_NAME = 'structyl';
 export const SITE_DESCRIPTION =
@@ -15,6 +15,12 @@ export const SITE_DESCRIPTION =
 
 export const GITHUB_URL = 'https://github.com/imirfanul/structyl';
 export const NPM_URL    = 'https://www.npmjs.com/org/structyl';
+
+/** Library author — used for metadata authors/creator and JSON-LD. */
+export const SITE_AUTHOR = {
+  name: 'Mohammed Irfanul Alam Tanveer',
+  url: 'https://www.imirfanul.com',
+} as const;
 
 /** All /docs/[slug] component pages */
 export const COMPONENT_SLUGS: { slug: string; name: string; description: string; category: string }[] = [

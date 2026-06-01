@@ -5,7 +5,7 @@
 ![npm](https://img.shields.io/npm/v/@structyl/icons)
 ![license](https://img.shields.io/npm/l/@structyl/icons)
 
-The icon layer for [structyl](https://structyl.dev). It re-exports the full [lucide-react](https://lucide.dev) icon set as individual React components, fully typed for React 18 and 19. Using it through `@structyl/icons` keeps your imports on the structyl scope, so the underlying icon source can evolve without changing your application code.
+The icon layer for [structyl](https://www.structyl.com). It re-exports the full [lucide-react](https://lucide.dev) icon set as individual React components, fully typed for React 18 and 19. Using it through `@structyl/icons` keeps your imports on the structyl scope, so the underlying icon source can evolve without changing your application code.
 
 ## Installation
 
@@ -78,7 +78,7 @@ For the full searchable icon catalog, see [lucide.dev/icons](https://lucide.dev/
 
 ## Part of structyl
 
-This package is part of [structyl](https://github.com/imirfanul/structyl) — see the [documentation](https://structyl.dev) for the full component library.
+This package is part of [structyl](https://github.com/imirfanul/structyl) — see the [documentation](https://www.structyl.com) for the full component library.
 
 ## License
 

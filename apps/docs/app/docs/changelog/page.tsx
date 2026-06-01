@@ -14,6 +14,21 @@ type ChangeEntry = {
 
 const RELEASES: ChangeEntry[] = [
   {
+    version: '1.1.0',
+    date: 'June 2026',
+    changes: [
+      { type: 'feat',  package: '@structyl/themes',       description: 'Default theme is now "structyl" — ThemeProvider and ThemeScript default from "slate" to "structyl" (pass defaultTheme="slate" to keep the previous default)' },
+      { type: 'feat',  package: '@structyl/themes',       description: 'Add useColorPreset({ defaultPresetId }) to pre-select an accent preset on first load' },
+      { type: 'fix',   package: '@structyl/themes',       description: 'Accent presets no longer reset when toggling light/dark mode — re-applied after ThemeProvider via a MutationObserver instead of relying on effect order' },
+      { type: 'fix',   package: '@structyl/video-player', description: 'Fix YouTube embeds collapsing to zero height in apps whose Tailwind lacks the aspect-video utility' },
+      { type: 'fix',   package: '@structyl/video-player', description: 'Settings menu is now responsive and the control bar wraps instead of clipping on narrow players' },
+      { type: 'fix',   package: 'docs',                   description: 'Fix DataTable example overflowing into the "On this page" panel' },
+      { type: 'fix',   package: 'docs',                   description: 'Component Prev/Next navigation now follows the sidebar order' },
+      { type: 'feat',  package: 'docs',                   description: 'Sidebar is now a collapsible drawer on small screens (hamburger toggle)' },
+      { type: 'docs',  package: 'all packages',           description: 'Add author, repository, and homepage (www.structyl.com) metadata; releases now publish with npm provenance' },
+    ],
+  },
+  {
     version: '0.5.0',
     date: 'May 2026',
     changes: [

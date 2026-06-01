@@ -1,9 +1,35 @@
 {
   "name": "@structyl/primitives",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/primitives"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Headless, WAI-ARIA accessible React primitives with compound APIs, asChild slots, and controlled/uncontrolled state — behavior without styling.",
-  "keywords": ["react", "typescript", "structyl", "primitives", "headless", "accessibility", "wai-aria", "a11y", "compound-components", "ui-components", "unstyled", "aschild"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "primitives",
+    "headless",
+    "accessibility",
+    "wai-aria",
+    "a11y",
+    "compound-components",
+    "ui-components",
+    "unstyled",
+    "aschild"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -17,7 +43,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

@@ -1,9 +1,35 @@
 {
   "name": "@structyl/utils",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/utils"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Tree-shakeable TypeScript utilities for structyl: cn (Tailwind merge), prop/event composition, type guards, array/object/string/number/DOM helpers.",
-  "keywords": ["react", "typescript", "structyl", "utils", "cn", "tailwind-merge", "clsx", "type-guards", "tree-shakeable", "merge-props", "dom", "helpers"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "utils",
+    "cn",
+    "tailwind-merge",
+    "clsx",
+    "type-guards",
+    "tree-shakeable",
+    "merge-props",
+    "dom",
+    "helpers"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -17,7 +43,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

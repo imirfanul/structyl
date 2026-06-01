@@ -1023,7 +1023,7 @@ export default function RootLayout({ children }) {
 
           <SubSection id="ref-provider" title="ThemeProvider">
             <PropsTable rows={[
-              { prop: 'defaultTheme', type: 'string', default: "'slate'", description: "Name of the theme to use on first load. Must be a key in the themes map." },
+              { prop: 'defaultTheme', type: 'string', default: "'structyl'", description: "Name of the theme to use on first load. Must be a key in the themes map." },
               { prop: 'defaultMode', type: "'light' | 'dark' | 'system'", default: "'system'", description: "Color mode on first load. 'system' follows prefers-color-scheme." },
               { prop: 'storageKey', type: 'string | false', default: "'structyl-theme'", description: "localStorage key for persistence. Pass false to disable saving to storage." },
               { prop: 'enableTransitions', type: 'boolean', default: 'true', description: "When true, CSS transitions are active during theme switches. Pass false for instant switching (e.g. performance-sensitive UIs)." },
@@ -1067,7 +1067,7 @@ export default function RootLayout({ children }) {
           <SubSection id="ref-theme-script" title="ThemeScript">
             <PropsTable rows={[
               { prop: 'storageKey', type: 'string', default: "'structyl-theme'", description: "Must match the storageKey passed to ThemeProvider." },
-              { prop: 'defaultTheme', type: 'string', default: "'slate'", description: "Fallback theme if no value exists in localStorage." },
+              { prop: 'defaultTheme', type: 'string', default: "'structyl'", description: "Fallback theme if no value exists in localStorage." },
               { prop: 'defaultMode', type: "'light' | 'dark' | 'system'", default: "'system'", description: "Fallback mode if no value exists in localStorage." },
             ]} />
           </SubSection>

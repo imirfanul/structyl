@@ -113,24 +113,24 @@ type ProjectRow = {
 };
 
 const people = [
-  { id: 'ada', name: 'Ada Lovelace', role: 'Admin', email: 'ada@structyl.dev', initials: 'AL' },
-  { id: 'grace', name: 'Grace Hopper', role: 'Engineer', email: 'grace@structyl.dev', initials: 'GH' },
+  { id: 'ada', name: 'Ada Lovelace', role: 'Admin', email: 'ada@example.com', initials: 'AL' },
+  { id: 'grace', name: 'Grace Hopper', role: 'Engineer', email: 'grace@example.com', initials: 'GH' },
   {
     id: 'margaret',
     name: 'Margaret Hamilton',
     role: 'Reviewer',
-    email: 'margaret@structyl.dev',
+    email: 'margaret@example.com',
     initials: 'MH',
   },
-  { id: 'alan', name: 'Alan Turing', role: 'Research', email: 'alan@structyl.dev', initials: 'AT' },
+  { id: 'alan', name: 'Alan Turing', role: 'Research', email: 'alan@example.com', initials: 'AT' },
   {
     id: 'katherine',
     name: 'Katherine Johnson',
     role: 'Analyst',
-    email: 'katherine@structyl.dev',
+    email: 'katherine@example.com',
     initials: 'KJ',
   },
-  { id: 'radia', name: 'Radia Perlman', role: 'Network', email: 'radia@structyl.dev', initials: 'RP' },
+  { id: 'radia', name: 'Radia Perlman', role: 'Network', email: 'radia@example.com', initials: 'RP' },
 ];
 
 const projectRows: ProjectRow[] = Array.from({ length: 24 }, (_, index) => {
@@ -1950,7 +1950,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
                 <Label htmlFor="dialog-name">Name</Label>
                 <Input id="dialog-name" defaultValue="Ada Lovelace" />
                 <Label htmlFor="dialog-email">Email</Label>
-                <Input id="dialog-email" defaultValue="ada@structyl.dev" />
+                <Input id="dialog-email" defaultValue="ada@example.com" />
               </div>
               <Dialog.Footer>
                 <Dialog.Close asChild>
@@ -2333,7 +2333,7 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
           </Tabs.List>
           <Tabs.Content value="profile" className="grid gap-3 text-sm">
             <Input aria-label="Profile name" defaultValue="Ada Lovelace" />
-            <Input aria-label="Profile email" defaultValue="ada@structyl.dev" />
+            <Input aria-label="Profile email" defaultValue="ada@example.com" />
           </Tabs.Content>
           <Tabs.Content value="security" className="text-muted-foreground text-sm">
             Two-factor authentication is enabled.
@@ -2562,13 +2562,13 @@ export const componentUsageExamples: Record<string, UsageExample[]> = {
       preview: () => (
         <div className="grid w-full max-w-sm gap-3">
           <Input aria-label="Search customers" placeholder="Search customers" />
-          <Input aria-label="Contact email" type="email" defaultValue="ada@structyl.dev" />
+          <Input aria-label="Contact email" type="email" defaultValue="ada@example.com" />
           <Input aria-label="Invalid email" aria-invalid defaultValue="invalid-email" />
           <Input aria-label="Disabled sample" disabled placeholder="Disabled input" />
         </div>
       ),
       code: `<Input placeholder="Search customers" />
-<Input type="email" defaultValue="ada@structyl.dev" />
+<Input type="email" defaultValue="ada@example.com" />
 <Input aria-invalid defaultValue="invalid-email" />
 <Input disabled placeholder="Disabled input" />`,
     },

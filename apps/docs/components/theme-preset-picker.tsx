@@ -17,7 +17,7 @@ export type PresetId = ColorPresetId;
 
 /* ── ThemePresetPicker ─────────────────────────────────────────────────────── */
 export function ThemePresetPicker() {
-  const { presets, activeId, activePreset, setPreset, clearPreset } = useColorPreset();
+  const { presets, activeId, activePreset, setPreset, clearPreset } = useColorPreset({ defaultPresetId: 'structyl' });
   const [open, setOpen] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 

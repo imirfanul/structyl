@@ -125,11 +125,11 @@ The package re-exports a large catalog of components. Highlights:
 | `Table`, `Chart`, `Timeline`, `Stat`, `Rating`, `Typography` | Mixed | Data display and content. |
 | `buttonVariants`, `alertVariants` | Function | `tailwind-variants` helpers for composing class names. |
 
-Component prop types are re-exported alongside each component (for example `ButtonProps`, `DialogContentProps`, `SelectRootProps`). See the [full reference](https://structyl.dev) for every export and prop.
+Component prop types are re-exported alongside each component (for example `ButtonProps`, `DialogContentProps`, `SelectRootProps`). See the [full reference](https://www.structyl.com) for every export and prop.
 
 ## Part of structyl
 
-This package is part of [structyl](https://github.com/imirfanul/structyl) — the React UI library with structure. Full documentation lives at [structyl.dev](https://structyl.dev).
+This package is part of [structyl](https://github.com/imirfanul/structyl) — the React UI library with structure. Full documentation lives at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

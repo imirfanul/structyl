@@ -3,8 +3,18 @@ name: CI
 on:
   push:
     branches: [master]
+    paths-ignore:
+      - 'apps/docs/**'
+      - 'docs/**'
+      - '**.md'
+      - '.github/workflows/deploy-docs.yml'
   pull_request:
     branches: [master]
+    paths-ignore:
+      - 'apps/docs/**'
+      - 'docs/**'
+      - '**.md'
+      - '.github/workflows/deploy-docs.yml'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -41,14 +51,8 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Install Playwright browsers
-        run: pnpm --filter playground exec playwright install --with-deps chromium
-
-      - name: Storybook accessibility audit
-        run: pnpm test:a11y
-
-      - name: Storybook visual smoke
-        run: pnpm test:e2e
+      # Storybook story + accessibility tests run in storybook.yml
+      # (vitest --project storybook, browser mode). Not duplicated here.
 
       - name: Bundle size check
         run: pnpm size
@@ -87,8 +91,11 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: pnpm release
-          version: pnpm version
+          version: pnpm run version
           commit: 'chore: version packages'
           title: 'chore: version packages'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Publish with npm provenance (uses the job's id-token: write +
+          # the repository field now present in every package.json).
+          NPM_CONFIG_PROVENANCE: 'true'

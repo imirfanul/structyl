@@ -22,7 +22,7 @@ Examples of unacceptable behavior:
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the maintainers at conduct@structyl.dev. All complaints will be reviewed promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported privately to the maintainers by opening a [private security advisory](https://github.com/imirfanul/structyl/security/advisories/new). All complaints will be reviewed promptly and fairly.
 
 ## Attribution
 

@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { ThemeProvider, ThemeScript } from '@structyl/themes';
 import { Toaster } from '@structyl/styled';
 import { Analytics } from '@vercel/analytics/next';
-import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, GITHUB_URL, NPM_URL, COMPONENT_SLUGS } from '../lib/site-config';
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, GITHUB_URL, NPM_URL, SITE_AUTHOR, COMPONENT_SLUGS } from '../lib/site-config';
 import './globals.css';
 
 /* ── Metadata ──────────────────────────────────────────────────────────── */
@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     'theming react',
     'open source ui',
   ],
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
-  creator: SITE_NAME,
+  authors: [{ name: SITE_AUTHOR.name, url: SITE_AUTHOR.url }],
+  creator: SITE_AUTHOR.name,
   publisher: SITE_NAME,
   category: 'technology',
   openGraph: {
@@ -108,7 +108,7 @@ const jsonLd = {
       description: SITE_DESCRIPTION,
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Any',
-      softwareVersion: '1.0.0',
+      softwareVersion: '1.1.0',
       programmingLanguage: ['TypeScript', 'JavaScript'],
       runtimePlatform: 'React',
       offers: {
@@ -305,14 +305,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ThemeScript defaultTheme="slate" defaultMode="system" />
+        <ThemeScript defaultTheme="structyl" defaultMode="system" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
       </head>
       <body className="min-h-screen font-sans antialiased" suppressHydrationWarning>
-        <ThemeProvider defaultTheme="slate" defaultMode="system">
+        <ThemeProvider defaultTheme="structyl" defaultMode="system">
           {children}
           <Toaster />
         </ThemeProvider>

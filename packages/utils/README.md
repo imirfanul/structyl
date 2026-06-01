@@ -148,7 +148,7 @@ getFocusableElements(containerEl); // → HTMLElement[]
 ## Part of structyl
 
 This package is part of [structyl](https://github.com/imirfanul/structyl) — see the full
-documentation at [structyl.dev](https://structyl.dev).
+documentation at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

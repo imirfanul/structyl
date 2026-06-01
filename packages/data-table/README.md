@@ -135,7 +135,7 @@ Key exported types include `DataTableProps`, `DataTableColumnDef`, `DataTableCol
 
 ## Part of structyl
 
-This package is part of [structyl](https://github.com/imirfanul/structyl) — see the full documentation at [structyl.dev](https://structyl.dev).
+This package is part of [structyl](https://github.com/imirfanul/structyl) — see the full documentation at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

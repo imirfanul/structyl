@@ -143,7 +143,7 @@ Exported types include `ApiError`, `ApiClientConfig`, `UseApiQueryOptions`, `Use
 
 ## Part of structyl
 
-Part of the [structyl](https://github.com/imirfanul/structyl) component library. Read the full docs at [structyl.dev](https://structyl.dev).
+Part of the [structyl](https://github.com/imirfanul/structyl) component library. Read the full docs at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

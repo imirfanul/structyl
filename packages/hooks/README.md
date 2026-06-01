@@ -5,7 +5,7 @@
 ![npm](https://img.shields.io/npm/v/@structyl/hooks)
 ![license](https://img.shields.io/npm/l/@structyl/hooks)
 
-`@structyl/hooks` is the shared hook layer of [structyl](https://structyl.dev), the React UI library with structure. It packages the small, single-responsibility hooks that the primitives and styled components rely on, such as `useControllableState` for controlled/uncontrolled state and `useComposedRefs` for merging refs. Every hook is SSR-safe (no unguarded `window`/`document` access) and tree-shakeable, so it is equally useful on its own in any React 18 or 19 application.
+`@structyl/hooks` is the shared hook layer of [structyl](https://www.structyl.com), the React UI library with structure. It packages the small, single-responsibility hooks that the primitives and styled components rely on, such as `useControllableState` for controlled/uncontrolled state and `useComposedRefs` for merging refs. Every hook is SSR-safe (no unguarded `window`/`document` access) and tree-shakeable, so it is equally useful on its own in any React 18 or 19 application.
 
 ## Installation
 
@@ -128,7 +128,7 @@ function SearchField({ value, defaultValue = '', onChange }: {
 
 ## Part of structyl
 
-Part of [structyl](https://github.com/imirfanul/structyl) — see the full documentation at [structyl.dev](https://structyl.dev).
+Part of [structyl](https://github.com/imirfanul/structyl) — see the full documentation at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

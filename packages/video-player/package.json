@@ -1,9 +1,36 @@
 {
   "name": "@structyl/video-player",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/video-player"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "React video player with HLS adaptive streaming (hls.js), SRT/VTT subtitles, playlists, chapters, video filters, and full keyboard control.",
-  "keywords": ["react", "typescript", "structyl", "video-player", "hls", "hls.js", "streaming", "subtitles", "vtt", "srt", "playlist", "chapters", "tailwindcss"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "video-player",
+    "hls",
+    "hls.js",
+    "streaming",
+    "subtitles",
+    "vtt",
+    "srt",
+    "playlist",
+    "chapters",
+    "tailwindcss"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -17,7 +44,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

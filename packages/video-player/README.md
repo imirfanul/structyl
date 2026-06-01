@@ -119,7 +119,7 @@ The single exported component. Props:
 
 ## Part of structyl
 
-This package is part of [structyl](https://github.com/imirfanul/structyl) — the React UI library with structure. Full documentation lives at [structyl.dev](https://structyl.dev).
+This package is part of [structyl](https://github.com/imirfanul/structyl) — the React UI library with structure. Full documentation lives at [www.structyl.com](https://www.structyl.com).
 
 ## License
 

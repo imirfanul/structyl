@@ -1,9 +1,34 @@
 {
   "name": "@structyl/hooks",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/hooks"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "SSR-safe, tree-shakeable React hooks for state, refs, DOM, browser APIs, and performance, including useControllableState for headless UI",
-  "keywords": ["react", "typescript", "structyl", "hooks", "react-hooks", "ssr", "use-controllable-state", "use-debounce", "use-media-query", "use-local-storage", "tree-shakeable"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "hooks",
+    "react-hooks",
+    "ssr",
+    "use-controllable-state",
+    "use-debounce",
+    "use-media-query",
+    "use-local-storage",
+    "tree-shakeable"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -17,7 +42,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

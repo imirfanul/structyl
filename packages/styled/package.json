@@ -1,9 +1,36 @@
 {
   "name": "@structyl/styled",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/styled"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Tailwind CSS v4 styled React components built on accessible WAI-ARIA primitives, with a token-driven theme preset and type-safe variants.",
-  "keywords": ["react", "typescript", "structyl", "ui-components", "tailwindcss", "tailwind-variants", "design-system", "accessible", "wai-aria", "headless", "compound-components", "theming", "rsc"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "ui-components",
+    "tailwindcss",
+    "tailwind-variants",
+    "design-system",
+    "accessible",
+    "wai-aria",
+    "headless",
+    "compound-components",
+    "theming",
+    "rsc"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

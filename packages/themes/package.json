@@ -1,12 +1,40 @@
 {
   "name": "@structyl/themes",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/themes"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Runtime theming for React: a ThemeProvider and CSS-variable token system with light/dark modes, SSR-safe anti-flash script, and accent presets.",
-  "keywords": ["react", "typescript", "structyl", "theme", "theming", "dark-mode", "css-variables", "design-tokens", "themeprovider", "ssr", "tailwind", "color-scheme"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "theme",
+    "theming",
+    "dark-mode",
+    "css-variables",
+    "design-tokens",
+    "themeprovider",
+    "ssr",
+    "tailwind",
+    "color-scheme"
+  ],
   "license": "MIT",
   "type": "module",
-  "sideEffects": ["**/*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -19,7 +47,9 @@
     "./styles.css": "./dist/styles.css",
     "./themes/*.css": "./dist/themes/*.css"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

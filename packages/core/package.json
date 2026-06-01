@@ -1,9 +1,36 @@
 {
   "name": "@structyl/core",
-  "version": "1.0.0",
-  "publishConfig": { "access": "public" },
+  "version": "1.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/imirfanul/structyl.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://www.structyl.com",
+  "bugs": "https://github.com/imirfanul/structyl/issues",
+  "author": {
+    "name": "Mohammed Irfanul Alam Tanveer",
+    "url": "https://www.imirfanul.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Headless React primitives powering structyl: Slot/asChild, polymorphic Primitive, scoped contexts, focus management, presence, Floating UI poppers.",
-  "keywords": ["react", "typescript", "structyl", "headless", "primitives", "slot", "aschild", "focus-trap", "presence", "popper", "floating-ui", "accessibility", "wai-aria"],
+  "keywords": [
+    "react",
+    "typescript",
+    "structyl",
+    "headless",
+    "primitives",
+    "slot",
+    "aschild",
+    "focus-trap",
+    "presence",
+    "popper",
+    "floating-ui",
+    "accessibility",
+    "wai-aria"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
@@ -17,7 +44,9 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

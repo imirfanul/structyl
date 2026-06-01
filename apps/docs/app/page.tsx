@@ -474,7 +474,7 @@ export default function Page() {
           {/* badge */}
           <div className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/30 px-4 py-1.5 text-xs font-medium text-muted-foreground">
             <span className="size-1.5 rounded-full bg-emerald-500" />
-            v1.0.0 — Stable release
+            v1.1.0 — Stable release
           </div>
 
           {/* headline */}

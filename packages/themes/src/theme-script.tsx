@@ -21,7 +21,7 @@ function tokensToVars(tokens: Record<string, string>): string {
  * <head> of your root layout to prevent flash of unstyled content.
  */
 export function ThemeScript({
-  defaultTheme = 'slate',
+  defaultTheme = 'structyl',
   defaultMode = 'system',
   storageKey = 'structyl-theme',
   attribute = 'data-theme',
