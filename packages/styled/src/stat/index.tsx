@@ -19,14 +19,13 @@ const trendVariants = tv({
   },
 });
 
-interface TrendBadgeProps {
+interface TrendBadgeProps extends React.ComponentPropsWithoutRef<'span'> {
   value: string | number;
   direction?: TrendDirection;
-  className?: string;
 }
 
-const TrendBadge: React.FC<TrendBadgeProps> = ({ value, direction = 'neutral', className }) => (
-  <span className={cn(trendVariants({ direction }), className)}>
+const TrendBadge: React.FC<TrendBadgeProps> = ({ value, direction = 'neutral', className, ...props }) => (
+  <span className={cn(trendVariants({ direction }), className)} {...props}>
     {direction === 'up' && <span aria-hidden>↑</span>}
     {direction === 'down' && <span aria-hidden>↓</span>}
     {direction === 'neutral' && <span aria-hidden>→</span>}

@@ -46,8 +46,12 @@ Segment.displayName = 'TimePicker.Segment';
 
 const Value = TimePickerPrimitive.Value;
 
-const Separator: React.FC<{ children?: React.ReactNode }> = ({ children = ':' }) => (
-  <span className="text-muted-foreground">{children}</span>
+const Separator = React.forwardRef<HTMLSpanElement, React.ComponentPropsWithoutRef<'span'>>(
+  ({ className, children = ':', ...props }, ref) => (
+    <span ref={ref} className={cn('text-muted-foreground', className)} {...props}>
+      {children}
+    </span>
+  ),
 );
 Separator.displayName = 'TimePicker.Separator';
 
@@ -64,6 +68,12 @@ interface TimePickerProps extends Omit<PrimitiveRootProps, 'children'> {
   name?: string;
   required?: boolean;
   error?: boolean;
+  /**
+   * Native HTML attributes forwarded to the root wrapper `<div>`
+   * (e.g. `onClick`, `style`, `role`, `tabIndex`, `data-*`, `aria-*`).
+   * The forwarded `ref` already points at this element.
+   */
+  rootProps?: React.ComponentPropsWithoutRef<'div'>;
 }
 
 interface TimePickerPanelProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'onChange' | 'title'> {
@@ -429,10 +439,12 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
       locale,
       referenceDate,
       views,
+      rootProps,
       ...props
     },
     ref,
   ) => {
+    const { className: rootClassName, ...restRootProps } = rootProps ?? {};
     const generatedId = React.useId();
     const triggerId = id ?? generatedId;
     const helperId = helperText ? `${triggerId}-helper` : undefined;
@@ -486,7 +498,7 @@ const TimePickerRoot = React.forwardRef<HTMLDivElement, TimePickerProps>(
 
     return (
       <Popover.Root open={open} onOpenChange={setOpen}>
-        <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
+        <div {...restRootProps} ref={ref} className={cn('grid w-fit gap-1.5', className, rootClassName)}>
           {label ? (
             <label className="text-sm font-medium text-foreground" htmlFor={triggerId} suppressHydrationWarning>
               {label}

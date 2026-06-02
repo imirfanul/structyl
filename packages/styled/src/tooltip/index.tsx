@@ -86,9 +86,8 @@ Content.displayName = 'Tooltip.Content';
 
 // ── Shorthand compound ────────────────────────────────────────────────────────
 
-export interface TooltipProps {
+export interface TooltipProps extends React.ComponentPropsWithoutRef<typeof Trigger> {
   label: React.ReactNode;
-  children: React.ReactNode;
   side?: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>['side'];
   align?: React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>['align'];
   delayDuration?: number;
@@ -110,12 +109,15 @@ const Tooltip = ({
   maxWidth,
   arrow,
   disabled,
+  ...triggerProps
 }: TooltipProps) => {
   if (disabled) return <>{children}</>;
   return (
     <TooltipPrimitive.Provider delayDuration={delayDuration} skipDelayDuration={skipDelayDuration}>
       <Root>
-        <Trigger asChild>{children}</Trigger>
+        <Trigger asChild {...triggerProps}>
+          {children}
+        </Trigger>
         <Content side={side} align={align} variant={variant} maxWidth={maxWidth} arrow={arrow}>
           {label}
         </Content>

@@ -8,7 +8,11 @@ import { Typography } from '../typography';
 
 // ── Popconfirm ────────────────────────────────────────────────────────────────
 
-export interface PopconfirmProps {
+export interface PopconfirmProps
+  extends Omit<
+    React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
+    'title' | 'children' | 'side' | 'align'
+  > {
   children: React.ReactNode;
   title: React.ReactNode;
   description?: React.ReactNode;
@@ -49,6 +53,8 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
   side = 'top',
   align = 'center',
   loading = false,
+  className,
+  ...rest
 }) => {
   const titleId = React.useId();
   const [internalOpen, setInternalOpen] = React.useState(false);
@@ -79,6 +85,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
       </PopoverPrimitive.Trigger>
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
+          {...rest}
           side={side}
           align={align}
           sideOffset={8}
@@ -88,6 +95,7 @@ const Popconfirm: React.FC<PopconfirmProps> = ({
             'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95',
             'data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1',
             'data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1',
+            className,
           )}
           aria-labelledby={titleId}
           onOpenAutoFocus={(e) => e.preventDefault()}

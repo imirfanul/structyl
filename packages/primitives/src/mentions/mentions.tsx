@@ -168,18 +168,20 @@ const Items: React.FC<{
 };
 Items.displayName = 'Mentions.Items';
 
-const Item: React.FC<{
+export interface MentionsItemProps extends React.ComponentPropsWithoutRef<'div'> {
   suggestion: MentionSuggestion;
   index: number;
-  children?: React.ReactNode;
-}> = ({ suggestion, index, children }) => {
+}
+
+const Item: React.FC<MentionsItemProps> = ({ suggestion, index, children, ...rest }) => {
   const ctx = useMentionsContext('Mentions.Item');
   return (
     <Primitive.div
       role="option"
       data-highlighted={ctx.highlighted === index ? '' : undefined}
-      onPointerMove={() => ctx.setHighlighted(index)}
-      onClick={() => ctx.selectSuggestion(suggestion)}
+      {...rest}
+      onPointerMove={composeEventHandlers(rest.onPointerMove, () => ctx.setHighlighted(index))}
+      onClick={composeEventHandlers(rest.onClick, () => ctx.selectSuggestion(suggestion))}
     >
       {children ?? suggestion.label}
     </Primitive.div>

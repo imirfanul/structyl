@@ -45,7 +45,12 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   ({ className, variant, shape, width, height, lines, style, ...props }, ref) => {
     if (lines && lines > 1) {
       return (
-        <div className="flex flex-col gap-2">
+        <div
+          ref={ref}
+          className={cn('flex flex-col gap-2', className)}
+          style={style}
+          {...props}
+        >
           {Array.from({ length: lines }).map((_, i) => (
             <div
               key={i}
@@ -53,9 +58,8 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
               className={cn(
                 skeletonVariants({ variant, shape: 'text' }),
                 i === lines - 1 && 'w-4/5',
-                className,
               )}
-              style={{ width: i === lines - 1 ? undefined : width, height, ...style }}
+              style={{ width: i === lines - 1 ? undefined : width, height }}
             />
           ))}
         </div>

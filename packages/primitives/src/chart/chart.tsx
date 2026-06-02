@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { createContext } from '@structyl/core';
+import { composeEventHandlers } from '@structyl/utils';
 import type {
   CartesianContextValue,
   ChartAreaProps,
@@ -232,9 +233,11 @@ const Root = React.forwardRef<HTMLDivElement, ChartRootProps>(
       height: heightProp = 300,
       margin: marginProp,
       className,
+      style,
       accessibilityLabel = 'Chart',
       accessibilityMode = false,
       children,
+      ...rest
     },
     ref,
   ) => {
@@ -441,7 +444,9 @@ const Root = React.forwardRef<HTMLDivElement, ChartRootProps>(
               display: 'flex',
               flexDirection: isRow ? 'row' : 'column',
               alignItems: isRow ? 'center' : 'stretch',
+              ...style,
             }}
+            {...rest}
           >
             {accessibilityMode && <A11yPatternDefs />}
             <svg
@@ -499,6 +504,7 @@ const Grid = React.forwardRef<SVGGElement, ChartGridProps>(
       vertical = false,
       strokeDasharray = '3 3',
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -509,7 +515,7 @@ const Grid = React.forwardRef<SVGGElement, ChartGridProps>(
     const yTicks = niceLinearTicks(yDomain[0], yDomain[1], 5);
 
     return (
-      <g ref={ref} aria-hidden="true" className={className}>
+      <g aria-hidden="true" {...rest} ref={ref} className={className}>
         {horizontal &&
           yTicks.map((tick) => {
             const y = linearScale(yDomain, [innerHeight, 0])(tick);
@@ -560,6 +566,7 @@ const XAxis = React.forwardRef<SVGGElement, ChartXAxisProps>(
       hideLine = false,
       hideTicks = false,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -583,7 +590,7 @@ const XAxis = React.forwardRef<SVGGElement, ChartXAxisProps>(
     };
 
     return (
-      <g ref={ref} transform={`translate(0, ${innerHeight})`} className={className}>
+      <g {...rest} ref={ref} transform={`translate(0, ${innerHeight})`} className={className}>
         {!hideLine && (
           <line x1={0} y1={0} x2={innerWidth} y2={0} stroke="currentColor" strokeOpacity={0.3} />
         )}
@@ -634,6 +641,7 @@ const YAxis = React.forwardRef<SVGGElement, ChartYAxisProps>(
       hideLine = false,
       hideTicks = false,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -654,7 +662,7 @@ const YAxis = React.forwardRef<SVGGElement, ChartYAxisProps>(
     const yScale = linearScale(yDomain, [innerHeight, 0]);
 
     return (
-      <g ref={ref} className={className}>
+      <g {...rest} ref={ref} className={className}>
         {!hideLine && (
           <line x1={0} y1={0} x2={0} y2={innerHeight} stroke="currentColor" strokeOpacity={0.3} />
         )}
@@ -819,6 +827,7 @@ const Bar = React.forwardRef<SVGGElement, ChartBarProps>(
       highlightScope,
       onClick,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -852,7 +861,7 @@ const Bar = React.forwardRef<SVGGElement, ChartBarProps>(
       const x0 = xValueScale(0);
 
       return (
-        <g ref={ref} className={className} aria-label={name ?? dataKey}>
+        <g {...rest} ref={ref} className={className} aria-label={name ?? dataKey}>
           {data.map((row, i) => {
             const value = row[dataKey];
             if (typeof value !== 'number') return null;
@@ -941,7 +950,7 @@ const Bar = React.forwardRef<SVGGElement, ChartBarProps>(
     const y0 = yScale(0);
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? dataKey}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? dataKey}>
         {data.map((row, i) => {
           const value = row[dataKey];
           if (typeof value !== 'number') return null;
@@ -1058,6 +1067,7 @@ const Line = React.forwardRef<SVGGElement, ChartLineProps>(
       highlightScope,
       onClick,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -1115,7 +1125,7 @@ const Line = React.forwardRef<SVGGElement, ChartLineProps>(
       : 1;
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? dataKey}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? dataKey}>
         <path
           d={pathD}
           fill="none"
@@ -1203,6 +1213,8 @@ const Area = React.forwardRef<SVGGElement, ChartAreaProps>(
       highlightScope,
       fillByValue = false,
       className,
+      style,
+      ...rest
     },
     ref,
   ) => {
@@ -1255,7 +1267,7 @@ const Area = React.forwardRef<SVGGElement, ChartAreaProps>(
       : 1;
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? dataKey} style={{ opacity: areaOpacity, transition: 'opacity 150ms ease' }}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? dataKey} style={{ opacity: areaOpacity, transition: 'opacity 150ms ease', ...style }}>
         {fillByValue && (
           <defs>
             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
@@ -1297,6 +1309,7 @@ const Scatter = React.forwardRef<SVGGElement, ChartScatterProps>(
       highlightScope,
       onClick,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -1315,7 +1328,7 @@ const Scatter = React.forwardRef<SVGGElement, ChartScatterProps>(
     const resolvedColor = color ?? palette[seriesIndex % palette.length] ?? palette[0] ?? 'hsl(var(--chart-1))';
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? `${xKey} vs ${yKey}`}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? `${xKey} vs ${yKey}`}>
         {data.map((row, i) => {
           const xVal = row[xKey];
           const yVal = row[yKey];
@@ -1391,6 +1404,7 @@ const Bubble = React.forwardRef<SVGGElement, ChartBubbleProps>(
       maxRadius = 40,
       onClick,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -1420,7 +1434,7 @@ const Bubble = React.forwardRef<SVGGElement, ChartBubbleProps>(
       minRadius + ((value - minSize) / sizeRange) * (maxRadius - minRadius);
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? `${xKey} vs ${yKey}`}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? `${xKey} vs ${yKey}`}>
         {data.map((row, i) => {
           const xVal = row[xKey];
           const yVal = row[yKey];
@@ -1497,6 +1511,8 @@ const Tooltip = React.forwardRef<HTMLDivElement, ChartTooltipProps>(
       borderRadius = 8,
       boxShadow = '0 4px 12px rgba(0,0,0,0.15)',
       fontSize = 12,
+      style: styleProp,
+      ...rest
     },
     ref,
   ) => {
@@ -1511,6 +1527,7 @@ const Tooltip = React.forwardRef<HTMLDivElement, ChartTooltipProps>(
     if (!mounted || !tooltip.visible) {
       return (
         <div
+          {...rest}
           ref={ref}
           role="status"
           aria-live="polite"
@@ -1529,11 +1546,12 @@ const Tooltip = React.forwardRef<HTMLDivElement, ChartTooltipProps>(
       transform: 'translate(-50%, calc(-100% - 8px))',
       pointerEvents: 'none',
       zIndex: 50,
+      ...styleProp,
     };
 
     if (content) {
       return (
-        <div ref={ref} style={style} className={className}>
+        <div {...rest} ref={ref} style={style} className={className}>
           {content(tooltip)}
         </div>
       );
@@ -1541,6 +1559,7 @@ const Tooltip = React.forwardRef<HTMLDivElement, ChartTooltipProps>(
 
     return (
       <div
+        {...rest}
         ref={ref}
         style={style}
         className={className}
@@ -1599,6 +1618,8 @@ const Legend = React.forwardRef<HTMLDivElement, ChartLegendProps>(
       iconType = 'square',
       iconSize = 12,
       className,
+      style,
+      ...rest
     },
     ref,
   ) => {
@@ -1654,7 +1675,7 @@ const Legend = React.forwardRef<HTMLDivElement, ChartLegendProps>(
 
     if (content) {
       return (
-        <div ref={ref} className={className} style={{ order }} aria-label="Chart legend">
+        <div {...rest} ref={ref} className={className} style={{ order, ...style }} aria-label="Chart legend">
           {content(entries)}
         </div>
       );
@@ -1662,6 +1683,7 @@ const Legend = React.forwardRef<HTMLDivElement, ChartLegendProps>(
 
     return (
       <div
+        {...rest}
         ref={ref}
         className={className}
         style={{
@@ -1672,6 +1694,7 @@ const Legend = React.forwardRef<HTMLDivElement, ChartLegendProps>(
           justifyContent: 'center',
           padding: isVertical ? '0 8px' : '8px 0',
           order,
+          ...style,
         }}
         aria-label="Chart legend"
       >
@@ -1700,8 +1723,10 @@ const PieRoot = React.forwardRef<HTMLDivElement, ChartPieRootProps>(
       width = 400,
       height = 400,
       className,
+      style,
       accessibilityLabel = 'Pie chart',
       children,
+      ...rest
     },
     ref,
   ) => {
@@ -1738,6 +1763,7 @@ const PieRoot = React.forwardRef<HTMLDivElement, ChartPieRootProps>(
       <SharedTooltipProvider tooltip={tooltip} setTooltip={setTooltip} legendEntries={legendEntries}>
         <PieProvider {...contextValue}>
           <div
+            {...rest}
             ref={ref}
             className={className}
             style={{
@@ -1745,6 +1771,7 @@ const PieRoot = React.forwardRef<HTMLDivElement, ChartPieRootProps>(
               display: 'inline-flex',
               flexDirection: isRow ? 'row' : 'column',
               alignItems: isRow ? 'center' : 'center',
+              ...style,
             }}
           >
             <svg
@@ -1784,6 +1811,7 @@ const Pie = React.forwardRef<SVGGElement, ChartPieProps>(
       arcLabelMinAngle = 5,
       onClick,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -1824,7 +1852,7 @@ const Pie = React.forwardRef<SVGGElement, ChartPieProps>(
     });
 
     return (
-      <g ref={ref} className={className}>
+      <g {...rest} ref={ref} className={className}>
         {slices.map((slice) => {
           const isHovered = hovered === slice.index;
           const expandedRadius = isHovered ? radius + 6 : radius;
@@ -1925,8 +1953,10 @@ const RadarRoot = React.forwardRef<HTMLDivElement, ChartRadarRootProps>(
       width = 400,
       height = 400,
       className,
+      style,
       accessibilityLabel = 'Radar chart',
       children,
+      ...rest
     },
     ref,
   ) => {
@@ -1985,6 +2015,7 @@ const RadarRoot = React.forwardRef<HTMLDivElement, ChartRadarRootProps>(
       <SharedTooltipProvider tooltip={tooltip} setTooltip={setTooltip} legendEntries={legendEntries}>
         <RadarProvider {...contextValue}>
           <div
+            {...rest}
             ref={ref}
             className={className}
             style={{
@@ -1992,6 +2023,7 @@ const RadarRoot = React.forwardRef<HTMLDivElement, ChartRadarRootProps>(
               display: 'inline-flex',
               flexDirection: isRow ? 'row' : 'column',
               alignItems: 'center',
+              ...style,
             }}
           >
             <svg
@@ -2016,7 +2048,7 @@ RadarRoot.displayName = 'Chart.RadarRoot';
 /* ─── PolarGrid ─────────────────────────────────────────────────────── */
 
 const PolarGrid = React.forwardRef<SVGGElement, ChartPolarGridProps>(
-  ({ rings = 5, shape = 'sharp', className }, ref) => {
+  ({ rings = 5, shape = 'sharp', className, ...rest }, ref) => {
     const ctx = useRadarContext('Chart.PolarGrid');
     const { cx, cy, radius, angleKeys } = ctx;
 
@@ -2024,7 +2056,7 @@ const PolarGrid = React.forwardRef<SVGGElement, ChartPolarGridProps>(
     const spokeCount = Math.max(angleKeys.length, 3);
 
     return (
-      <g ref={ref} className={className} aria-hidden="true">
+      <g {...rest} ref={ref} className={className} aria-hidden="true">
         {/* Rings */}
         {Array.from({ length: rings }, (_, i) => {
           const r = (radius / rings) * (i + 1);
@@ -2086,14 +2118,14 @@ PolarGrid.displayName = 'Chart.PolarGrid';
 /* ─── PolarAngleAxis ────────────────────────────────────────────────── */
 
 const PolarAngleAxis = React.forwardRef<SVGGElement, ChartPolarAngleAxisProps>(
-  ({ dataKey: _dataKey, className }, ref) => {
+  ({ dataKey: _dataKey, className, ...rest }, ref) => {
     const ctx = useRadarContext('Chart.PolarAngleAxis');
     const { cx, cy, radius, angleKeys } = ctx;
 
     const angleStep = (2 * Math.PI) / Math.max(angleKeys.length, 1);
 
     return (
-      <g ref={ref} className={className}>
+      <g {...rest} ref={ref} className={className}>
         {angleKeys.map((key, i) => {
           const angle = i * angleStep - Math.PI / 2;
           const labelRadius = radius + 18;
@@ -2124,7 +2156,7 @@ PolarAngleAxis.displayName = 'Chart.PolarAngleAxis';
 /* ─── Radar series ──────────────────────────────────────────────────── */
 
 const Radar = React.forwardRef<SVGGElement, ChartRadarProps>(
-  ({ dataKey, color, name, fillOpacity = 0.25, fillArea = true, showMark: showMarkProp = true, dot: dotAlias, className }, ref) => {
+  ({ dataKey, color, name, fillOpacity = 0.25, fillArea = true, showMark: showMarkProp = true, dot: dotAlias, className, ...rest }, ref) => {
     const showMark = dotAlias !== undefined ? dotAlias : showMarkProp;
     const ctx = useRadarContext('Chart.Radar');
     const { data, cx, cy, radius, angleKeys, palette } = ctx;
@@ -2150,7 +2182,7 @@ const Radar = React.forwardRef<SVGGElement, ChartRadarProps>(
     const pathD = buildRadarPath(normalised, cx, cy, radius);
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? dataKey}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? dataKey}>
         <path
           d={pathD}
           fill={seriesColor}
@@ -2193,7 +2225,9 @@ const Heatmap = React.forwardRef<HTMLDivElement, ChartHeatmapProps>(
       height = 300,
       margin: marginProp,
       className,
+      style,
       accessibilityLabel = 'Heatmap',
+      ...rest
     },
     ref,
   ) => {
@@ -2229,7 +2263,7 @@ const Heatmap = React.forwardRef<HTMLDivElement, ChartHeatmapProps>(
     const cellOpacity = (norm: number): number => 0.1 + norm * 0.9;
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -2301,8 +2335,10 @@ const Treemap = React.forwardRef<HTMLDivElement, ChartTreemapProps>(
       padding = 4,
       colors,
       className,
+      style,
       accessibilityLabel = 'Treemap',
       onNodeClick,
+      ...rest
     },
     ref,
   ) => {
@@ -2351,7 +2387,7 @@ const Treemap = React.forwardRef<HTMLDivElement, ChartTreemapProps>(
     };
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -2429,8 +2465,10 @@ const Funnel = React.forwardRef<HTMLDivElement, ChartFunnelProps>(
       curve = 'linear',
       gap = 0,
       className,
+      style,
       accessibilityLabel = 'Funnel chart',
       onSegmentClick,
+      ...rest
     },
     ref,
   ) => {
@@ -2442,7 +2480,7 @@ const Funnel = React.forwardRef<HTMLDivElement, ChartFunnelProps>(
     const segments = computeFunnelLayout(data, margin.left, margin.top, innerWidth, innerHeight, Math.max(gap, 0));
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -2529,7 +2567,9 @@ const Gauge = React.forwardRef<HTMLDivElement, ChartGaugeProps>(
       width = 200,
       height = 150,
       className,
+      style,
       accessibilityLabel,
+      ...rest
     },
     ref,
   ) => {
@@ -2574,7 +2614,7 @@ const Gauge = React.forwardRef<HTMLDivElement, ChartGaugeProps>(
     const a11yLabel = accessibilityLabel ?? `Gauge: ${value} out of ${max}`;
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={a11yLabel}
@@ -2659,8 +2699,10 @@ const GaugeContainer = React.forwardRef<HTMLDivElement, ChartGaugeContainerProps
       height = 200,
       thickness = 20,
       className,
+      style,
       accessibilityLabel,
       children,
+      ...rest
     },
     ref,
   ) => {
@@ -2687,7 +2729,7 @@ const GaugeContainer = React.forwardRef<HTMLDivElement, ChartGaugeContainerProps
 
     return (
       <GaugeProvider {...contextValue}>
-        <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+        <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
           <svg
             role="img"
             aria-label={a11yLabel}
@@ -2710,7 +2752,7 @@ GaugeContainer.displayName = 'Chart.GaugeContainer';
  * Reads value/angle context from GaugeContainer.
  */
 const GaugeValueArc = React.forwardRef<SVGPathElement, ChartGaugeValueArcProps>(
-  ({ color, colorStops, className }, ref) => {
+  ({ color, colorStops, className, style, ...rest }, ref) => {
     const ctx = useGaugeContext('Chart.GaugeValueArc');
     const { cx, cy, outerRadius, innerRadius, fraction, startAngle, endAngle } = ctx;
 
@@ -2735,11 +2777,12 @@ const GaugeValueArc = React.forwardRef<SVGPathElement, ChartGaugeValueArcProps>(
 
     return (
       <path
+        {...rest}
         ref={ref}
         d={fillPath}
         fill={fillColor}
         className={className}
-        style={{ transition: 'd 400ms ease' }}
+        style={{ transition: 'd 400ms ease', ...style }}
       />
     );
   },
@@ -2750,7 +2793,7 @@ GaugeValueArc.displayName = 'Chart.GaugeValueArc';
  * The gray background track arc inside a GaugeContainer.
  */
 const GaugeReferenceArc = React.forwardRef<SVGPathElement, ChartGaugeReferenceArcProps>(
-  ({ color, className }, ref) => {
+  ({ color, className, ...rest }, ref) => {
     const ctx = useGaugeContext('Chart.GaugeReferenceArc');
     const { cx, cy, outerRadius, innerRadius, startAngle, endAngle } = ctx;
 
@@ -2762,6 +2805,7 @@ const GaugeReferenceArc = React.forwardRef<SVGPathElement, ChartGaugeReferenceAr
 
     return (
       <path
+        {...rest}
         ref={ref}
         d={trackPath}
         fill={color ?? 'currentColor'}
@@ -2822,7 +2866,9 @@ const CandlestickChart = React.forwardRef<HTMLDivElement, ChartCandlestickProps>
       bullColor = 'hsl(var(--chart-2, 160 60% 45%))',
       bearColor = 'hsl(var(--chart-5, 340 75% 55%))',
       className,
+      style,
       accessibilityLabel = 'Candlestick chart',
+      ...rest
     },
     ref,
   ) => {
@@ -2855,7 +2901,7 @@ const CandlestickChart = React.forwardRef<HTMLDivElement, ChartCandlestickProps>
     const yTicks = niceLinearTicks(minPrice, maxPrice, 5);
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -2972,6 +3018,10 @@ const SparkLine = React.forwardRef<SVGSVGElement, ChartSparkLineProps>(
       yMin,
       yMax,
       className,
+      style,
+      onMouseMove,
+      onMouseLeave,
+      ...rest
     },
     ref,
   ) => {
@@ -2983,7 +3033,7 @@ const SparkLine = React.forwardRef<SVGSVGElement, ChartSparkLineProps>(
     } | null>(null);
 
     if (data.length === 0) {
-      return <svg ref={ref} width={width} height={height} className={className} />;
+      return <svg {...rest} ref={ref} width={width} height={height} className={className} style={style} onMouseMove={onMouseMove} onMouseLeave={onMouseLeave} />;
     }
 
     const minVal = yMin !== undefined ? yMin : Math.min(...data);
@@ -3001,12 +3051,15 @@ const SparkLine = React.forwardRef<SVGSVGElement, ChartSparkLineProps>(
       const barWidth = Math.max(1, innerW / data.length - 1);
       return (
         <svg
+          {...rest}
           ref={ref}
           width={width}
           height={height}
           className={className}
           aria-hidden="true"
-          style={{ display: 'block' }}
+          style={{ display: 'block', ...style }}
+          onMouseMove={onMouseMove}
+          onMouseLeave={onMouseLeave}
         >
           {data.map((v, i) => {
             const barH = Math.max(1, ((v - minVal) / range) * innerH);
@@ -3067,14 +3120,15 @@ const SparkLine = React.forwardRef<SVGSVGElement, ChartSparkLineProps>(
 
     return (
       <svg
+        {...rest}
         ref={ref}
         width={width}
         height={height}
         className={className}
         aria-hidden="true"
-        style={{ display: 'block', position: 'relative' }}
-        onMouseMove={(showTooltip || showHighlight) ? handleMouseMove : undefined}
-        onMouseLeave={(showTooltip || showHighlight) ? handleMouseLeave : undefined}
+        style={{ display: 'block', position: 'relative', ...style }}
+        onMouseMove={composeEventHandlers(onMouseMove, (showTooltip || showHighlight) ? handleMouseMove : undefined)}
+        onMouseLeave={composeEventHandlers(onMouseLeave, (showTooltip || showHighlight) ? handleMouseLeave : undefined)}
       >
         {area && (
           <polygon points={areaPoints} fill={color} fillOpacity={0.15} />
@@ -3143,6 +3197,7 @@ const RangeBar = React.forwardRef<SVGGElement, ChartRangeBarProps>(
       name,
       radius = 3,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -3164,7 +3219,7 @@ const RangeBar = React.forwardRef<SVGGElement, ChartRangeBarProps>(
       color ?? palette[seriesIndex % palette.length] ?? palette[0] ?? 'hsl(var(--chart-1))';
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? `${lowKey}–${highKey}`}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? `${lowKey}–${highKey}`}>
         {data.map((row, i) => {
           const low = row[lowKey];
           const high = row[highKey];
@@ -3214,6 +3269,7 @@ const ReferenceLine = React.forwardRef<SVGGElement, ChartReferenceLineProps>(
       stroke = 'hsl(var(--chart-5, 340 75% 55%))',
       strokeDasharray = '4 4',
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -3224,7 +3280,7 @@ const ReferenceLine = React.forwardRef<SVGGElement, ChartReferenceLineProps>(
     if (yValue !== undefined) {
       const y = yScale(yValue);
       return (
-        <g ref={ref} className={className} aria-label={label ? `Reference: ${label}` : 'Reference line'}>
+        <g {...rest} ref={ref} className={className} aria-label={label ? `Reference: ${label}` : 'Reference line'}>
           <line
             x1={0}
             y1={y}
@@ -3253,7 +3309,7 @@ const ReferenceLine = React.forwardRef<SVGGElement, ChartReferenceLineProps>(
     if (xValue !== undefined) {
       const x = xScale(xValue);
       return (
-        <g ref={ref} className={className} aria-label={label ? `Reference: ${label}` : 'Reference line'}>
+        <g {...rest} ref={ref} className={className} aria-label={label ? `Reference: ${label}` : 'Reference line'}>
           <line
             x1={x}
             y1={0}
@@ -3300,6 +3356,7 @@ const ReferenceArea = React.forwardRef<SVGGElement, ChartReferenceAreaProps>(
       fill = 'hsl(var(--chart-1))',
       fillOpacity = 0.15,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -3318,7 +3375,7 @@ const ReferenceArea = React.forwardRef<SVGGElement, ChartReferenceAreaProps>(
     const rectH = Math.abs(y2 - y1);
 
     return (
-      <g ref={ref} className={className} aria-hidden="true">
+      <g {...rest} ref={ref} className={className} aria-hidden="true">
         <rect
           x={rectX}
           y={rectY}
@@ -3360,8 +3417,10 @@ const RadialBarRoot = React.forwardRef<HTMLDivElement, ChartRadialBarRootProps>(
       height = 400,
       gap = 4,
       className,
+      style,
       accessibilityLabel = 'Radial bar chart',
       children,
+      ...rest
     },
     ref,
   ) => {
@@ -3378,7 +3437,7 @@ const RadialBarRoot = React.forwardRef<HTMLDivElement, ChartRadialBarRootProps>(
         palette={DEFAULT_PALETTE}
         gap={gap}
       >
-        <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+        <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
           <svg
             role="img"
             aria-label={accessibilityLabel}
@@ -3412,6 +3471,7 @@ const RadialBar = React.forwardRef<SVGGElement, ChartRadialBarProps>(
       outerRadius: outerRadiusFraction = 0.9,
       layout = 'vertical',
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -3439,7 +3499,7 @@ const RadialBar = React.forwardRef<SVGGElement, ChartRadialBarProps>(
     const fullAngle = 2 * Math.PI;
 
     return (
-      <g ref={ref} className={className}>
+      <g {...rest} ref={ref} className={className}>
         {data.map((row, i) => {
           const value = values[i] ?? 0;
           const fraction = value / maxValue;
@@ -3558,7 +3618,9 @@ const Waterfall = React.forwardRef<HTMLDivElement, ChartWaterfallProps>(
       height = 300,
       margin: marginProp,
       className,
+      style,
       accessibilityLabel = 'Waterfall chart',
+      ...rest
     },
     ref,
   ) => {
@@ -3567,7 +3629,7 @@ const Waterfall = React.forwardRef<HTMLDivElement, ChartWaterfallProps>(
     const innerHeight = Math.max(0, height - margin.top - margin.bottom);
 
     if (data.length === 0) {
-      return <div ref={ref} className={className} />;
+      return <div {...rest} ref={ref} className={className} style={style} />;
     }
 
     // Compute running totals
@@ -3604,7 +3666,7 @@ const Waterfall = React.forwardRef<HTMLDivElement, ChartWaterfallProps>(
     const barW = xScale.bandwidth * 0.7;
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -3744,7 +3806,9 @@ const Sankey = React.forwardRef<HTMLDivElement, ChartSankeyProps>(
       nodeAlignment = 'justify',
       showLinkValues = false,
       className,
+      style,
       accessibilityLabel = 'Sankey diagram',
+      ...rest
     },
     ref,
   ) => {
@@ -3937,7 +4001,7 @@ const Sankey = React.forwardRef<HTMLDivElement, ChartSankeyProps>(
     }
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -4022,8 +4086,10 @@ const Pyramid = React.forwardRef<HTMLDivElement, ChartPyramidProps>(
       height = 300,
       labelPosition: _labelPosition = 'center',
       className,
+      style,
       accessibilityLabel = 'Pyramid chart',
       onSegmentClick,
+      ...rest
     },
     ref,
   ) => {
@@ -4036,7 +4102,7 @@ const Pyramid = React.forwardRef<HTMLDivElement, ChartPyramidProps>(
     const segments = computeFunnelLayout(reversed, margin.left, margin.top, innerWidth, innerHeight, 4);
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -4116,7 +4182,9 @@ const Gantt = React.forwardRef<HTMLDivElement, ChartGanttProps>(
       height = 300,
       margin: marginProp,
       className,
+      style,
       accessibilityLabel = 'Gantt chart',
+      ...rest
     },
     ref,
   ) => {
@@ -4125,7 +4193,7 @@ const Gantt = React.forwardRef<HTMLDivElement, ChartGanttProps>(
     const innerHeight = Math.max(0, height - margin.top - margin.bottom);
 
     if (tasks.length === 0) {
-      return <div ref={ref} className={className} />;
+      return <div {...rest} ref={ref} className={className} style={style} />;
     }
 
     const timeMin = Math.min(...tasks.map((t) => t.start));
@@ -4140,7 +4208,7 @@ const Gantt = React.forwardRef<HTMLDivElement, ChartGanttProps>(
     const timeTicks = niceLinearTicks(timeDomain[0], timeDomain[1], 6);
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -4265,8 +4333,10 @@ const RadialLineRoot = React.forwardRef<HTMLDivElement, ChartRadialLineRootProps
       width = 400,
       height = 400,
       className,
+      style,
       accessibilityLabel = 'Radial line chart',
       children,
+      ...rest
     },
     ref,
   ) => {
@@ -4321,6 +4391,7 @@ const RadialLineRoot = React.forwardRef<HTMLDivElement, ChartRadialLineRootProps
           palette={DEFAULT_PALETTE}
         >
           <div
+            {...rest}
             ref={ref}
             className={className}
             style={{
@@ -4328,6 +4399,7 @@ const RadialLineRoot = React.forwardRef<HTMLDivElement, ChartRadialLineRootProps
               display: 'inline-flex',
               flexDirection: isRow ? 'row' : 'column',
               alignItems: 'center',
+              ...style,
             }}
           >
             <svg
@@ -4365,6 +4437,7 @@ const RadialLine = React.forwardRef<SVGGElement, ChartRadialLineProps>(
       dotRadius = 3,
       strokeWidth = 2,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -4420,7 +4493,7 @@ const RadialLine = React.forwardRef<SVGGElement, ChartRadialLineProps>(
     }
 
     return (
-      <g ref={ref} className={className} aria-label={dataKey}>
+      <g {...rest} ref={ref} className={className} aria-label={dataKey}>
         {area && areaD && (
           <path
             d={areaD}
@@ -4466,7 +4539,9 @@ const Histogram = React.forwardRef<HTMLDivElement, ChartHistogramProps>(
       margin: marginProp,
       showGrid = true,
       className,
+      style,
       accessibilityLabel = 'Histogram',
+      ...rest
     },
     ref,
   ) => {
@@ -4475,7 +4550,7 @@ const Histogram = React.forwardRef<HTMLDivElement, ChartHistogramProps>(
     const innerHeight = Math.max(0, height - margin.top - margin.bottom);
 
     if (data.length === 0) {
-      return <div ref={ref} className={className} />;
+      return <div {...rest} ref={ref} className={className} style={style} />;
     }
 
     const minVal = Math.min(...data);
@@ -4496,7 +4571,7 @@ const Histogram = React.forwardRef<HTMLDivElement, ChartHistogramProps>(
     const yTicks = niceLinearTicks(0, maxCount, 5);
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -4604,7 +4679,9 @@ const Boxplot = React.forwardRef<HTMLDivElement, ChartBoxplotProps>(
       margin: marginProp,
       orientation = 'vertical',
       className,
+      style,
       accessibilityLabel = 'Box plot',
+      ...rest
     },
     ref,
   ) => {
@@ -4613,7 +4690,7 @@ const Boxplot = React.forwardRef<HTMLDivElement, ChartBoxplotProps>(
     const innerHeight = Math.max(0, height - margin.top - margin.bottom);
 
     if (data.length === 0) {
-      return <div ref={ref} className={className} />;
+      return <div {...rest} ref={ref} className={className} style={style} />;
     }
 
     const allVals = data.flatMap((d) => [d.min, d.q1, d.median, d.q3, d.max, ...(d.outliers ?? [])]);
@@ -4635,7 +4712,7 @@ const Boxplot = React.forwardRef<HTMLDivElement, ChartBoxplotProps>(
       const xValueScale = linearScale(yDomain, [0, innerWidth]);
 
       return (
-        <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+        <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
           <svg role="img" aria-label={accessibilityLabel} width={width} height={height} style={{ display: 'block' }}>
             <title>{accessibilityLabel}</title>
             <g transform={`translate(${margin.left},${margin.top})`}>
@@ -4691,7 +4768,7 @@ const Boxplot = React.forwardRef<HTMLDivElement, ChartBoxplotProps>(
     const yScale = linearScale(yDomain, [innerHeight, 0]);
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -4886,8 +4963,10 @@ const Sunburst = React.forwardRef<HTMLDivElement, ChartSunburstProps>(
       height = 400,
       innerRadius = 0,
       className,
+      style,
       accessibilityLabel = 'Sunburst chart',
       onNodeClick,
+      ...rest
     },
     ref,
   ) => {
@@ -4901,7 +4980,7 @@ const Sunburst = React.forwardRef<HTMLDivElement, ChartSunburstProps>(
     const ringThickness = maxD > 0 ? (outerRadius - innerRadius) / (maxD + 1) : outerRadius - innerRadius;
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -4989,7 +5068,9 @@ const Chord = React.forwardRef<HTMLDivElement, ChartChordProps>(
       height = 500,
       padAngle = 0.05,
       className,
+      style,
       accessibilityLabel = 'Chord diagram',
+      ...rest
     },
     ref,
   ) => {
@@ -5000,7 +5081,7 @@ const Chord = React.forwardRef<HTMLDivElement, ChartChordProps>(
 
     const n = Math.min(data.length, labels.length);
     if (n === 0) {
-      return <div ref={ref} className={className} />;
+      return <div {...rest} ref={ref} className={className} style={style} />;
     }
 
     const palette = colors ?? DEFAULT_PALETTE;
@@ -5097,7 +5178,7 @@ const Chord = React.forwardRef<HTMLDivElement, ChartChordProps>(
     }
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="img"
           aria-label={accessibilityLabel}
@@ -5163,6 +5244,7 @@ const RangeArea = React.forwardRef<SVGGElement, ChartRangeAreaProps>(
       fillOpacity = 0.3,
       curve = 'catmullRom',
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -5196,7 +5278,7 @@ const RangeArea = React.forwardRef<SVGGElement, ChartRangeAreaProps>(
     const areaD = buildAreaPath(highPoints, lowPoints, curve);
 
     return (
-      <g ref={ref} className={className} aria-label={name ?? `${highKey}–${lowKey}`}>
+      <g {...rest} ref={ref} className={className} aria-label={name ?? `${highKey}–${lowKey}`}>
         <path
           d={areaD}
           fill={resolvedColor}
@@ -5225,7 +5307,9 @@ const LinearGauge = React.forwardRef<HTMLDivElement, ChartLinearGaugeProps>(
       label,
       cornerRadius = 8,
       className,
+      style,
       accessibilityLabel,
+      ...rest
     },
     ref,
   ) => {
@@ -5256,7 +5340,7 @@ const LinearGauge = React.forwardRef<HTMLDivElement, ChartLinearGaugeProps>(
     const a11yLabel = accessibilityLabel ?? `Gauge: ${value} of ${max}`;
 
     return (
-      <div ref={ref} className={className} style={{ display: 'inline-block' }}>
+      <div {...rest} ref={ref} className={className} style={{ display: 'inline-block', ...style }}>
         <svg
           role="progressbar"
           aria-label={a11yLabel}
@@ -5314,13 +5398,13 @@ LinearGauge.displayName = 'Chart.LinearGauge';
 /* ─── PieCenterLabel ────────────────────────────────────────────────── */
 
 const PieCenterLabel = React.forwardRef<SVGGElement, ChartPieCenterLabelProps>(
-  ({ children, className }, ref) => {
+  ({ children, className, ...rest }, ref) => {
     const ctx = usePieContext('Chart.PieCenterLabel');
     const { cx, cy } = ctx;
 
     if (typeof children === 'string' || typeof children === 'number') {
       return (
-        <g ref={ref} className={className}>
+        <g {...rest} ref={ref} className={className}>
           <text
             x={cx}
             y={cy}
@@ -5337,7 +5421,7 @@ const PieCenterLabel = React.forwardRef<SVGGElement, ChartPieCenterLabelProps>(
     }
 
     return (
-      <g ref={ref} className={className}>
+      <g {...rest} ref={ref} className={className}>
         <foreignObject
           x={cx - 50}
           y={cy - 25}
@@ -5373,6 +5457,7 @@ const GaugePointer = React.forwardRef<SVGGElement, ChartGaugePointerProps>(
       length: lengthFraction = 0.7,
       width: baseWidth = 6,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -5403,7 +5488,7 @@ const GaugePointer = React.forwardRef<SVGGElement, ChartGaugePointerProps>(
     const by2 = cy - halfBase * Math.sin(perpAngle);
 
     return (
-      <g ref={ref} className={className}>
+      <g {...rest} ref={ref} className={className}>
         {/* Needle triangle */}
         <polygon
           points={`${fmt(bx1)},${fmt(by1)} ${fmt(bx2)},${fmt(by2)} ${fmt(tipX)},${fmt(tipY)}`}

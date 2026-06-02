@@ -36,8 +36,10 @@ const Input = React.forwardRef<
 ));
 Input.displayName = 'TagsInput.Input';
 
-const Tag: React.FC<{ index: number; tag: string }> = ({ index, tag }) => (
-  <TagsInputPrimitive.Tag index={index}>
+const Tag: React.FC<
+  { index: number; tag: string } & React.ComponentPropsWithoutRef<typeof TagsInputPrimitive.Tag>
+> = ({ index, tag, ...rest }) => (
+  <TagsInputPrimitive.Tag index={index} {...rest}>
     <span className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs">
       {tag}
       <button

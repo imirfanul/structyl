@@ -56,7 +56,8 @@ export interface HighlightScope {
 
 /* ─── Root props ────────────────────────────────────────────────────── */
 
-export interface ChartRootProps {
+export interface ChartRootProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   /** Data array for the chart */
   data: object[];
   /** Total width of the SVG (omit for responsive) */
@@ -65,8 +66,6 @@ export interface ChartRootProps {
   height?: number;
   /** Outer margins around the plot area */
   margin?: Partial<ChartMargin>;
-  /** CSS class on the wrapper div */
-  className?: string;
   /** Accessible label for screen readers */
   accessibilityLabel?: string;
   /** Enable colorblind-accessible pattern fills */
@@ -78,27 +77,27 @@ export interface ChartRootProps {
   children?: React.ReactNode;
 }
 
-export interface ChartPieRootProps {
+export interface ChartPieRootProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: object[];
   width?: number;
   height?: number;
-  className?: string;
   accessibilityLabel?: string;
   children?: React.ReactNode;
 }
 
-export interface ChartRadarRootProps {
+export interface ChartRadarRootProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: object[];
   width?: number;
   height?: number;
-  className?: string;
   accessibilityLabel?: string;
   children?: React.ReactNode;
 }
 
 /* ─── Axis props ────────────────────────────────────────────────────── */
 
-export interface ChartXAxisProps {
+export interface ChartXAxisProps extends React.ComponentPropsWithoutRef<'g'> {
   /** Key in data objects for x values */
   dataKey?: string;
   /** Axis label */
@@ -113,11 +112,9 @@ export interface ChartXAxisProps {
   hideTicks?: boolean;
   /** Scale type */
   scale?: AxisScale;
-  /** CSS class */
-  className?: string;
 }
 
-export interface ChartYAxisProps {
+export interface ChartYAxisProps extends React.ComponentPropsWithoutRef<'g'> {
   /** Axis label */
   label?: string;
   /** Tick count hint */
@@ -130,25 +127,22 @@ export interface ChartYAxisProps {
   hideLine?: boolean;
   /** Hide ticks */
   hideTicks?: boolean;
-  /** CSS class */
-  className?: string;
 }
 
 /* ─── Grid props ────────────────────────────────────────────────────── */
 
-export interface ChartGridProps {
+export interface ChartGridProps extends React.ComponentPropsWithoutRef<'g'> {
   /** Show horizontal lines */
   horizontal?: boolean;
   /** Show vertical lines */
   vertical?: boolean;
   /** Stroke color/class override */
   strokeDasharray?: string;
-  className?: string;
 }
 
 /* ─── Bar props ─────────────────────────────────────────────────────── */
 
-export interface ChartBarProps {
+export interface ChartBarProps extends Omit<React.ComponentPropsWithoutRef<'g'>, 'onClick'> {
   /** Key in data for bar values */
   dataKey: string;
   /** Bar fill color (falls back to palette) */
@@ -171,14 +165,13 @@ export interface ChartBarProps {
   highlightScope?: HighlightScope;
   /** Click handler per bar rect */
   onClick?: (entry: Record<string, unknown>, index: number) => void;
-  className?: string;
 }
 
 /* ─── Line props ────────────────────────────────────────────────────── */
 
 export type MarkShape = 'circle' | 'square' | 'diamond' | 'cross' | 'star' | 'triangle';
 
-export interface ChartLineProps {
+export interface ChartLineProps extends Omit<React.ComponentPropsWithoutRef<'g'>, 'onClick'> {
   dataKey: string;
   color?: string;
   name?: string;
@@ -203,7 +196,7 @@ export interface ChartLineProps {
 
 /* ─── Area props ────────────────────────────────────────────────────── */
 
-export interface ChartAreaProps {
+export interface ChartAreaProps extends React.ComponentPropsWithoutRef<'g'> {
   dataKey: string;
   color?: string;
   name?: string;
@@ -235,7 +228,7 @@ export interface ChartAreaProps {
 
 export type ScatterMarkerShape = 'circle' | 'square' | 'diamond' | 'cross' | 'triangle';
 
-export interface ChartScatterProps {
+export interface ChartScatterProps extends Omit<React.ComponentPropsWithoutRef<'g'>, 'onClick'> {
   xKey: string;
   yKey: string;
   name?: string;
@@ -261,7 +254,7 @@ export interface ChartBubbleProps extends ChartScatterProps {
 
 /* ─── Pie props ─────────────────────────────────────────────────────── */
 
-export interface ChartPieProps {
+export interface ChartPieProps extends Omit<React.ComponentPropsWithoutRef<'g'>, 'onClick'> {
   dataKey: string;
   nameKey?: string;
   /** Inner radius for donut (0 = pie) */
@@ -302,7 +295,7 @@ export interface ChartPieProps {
 
 /* ─── Radar props ───────────────────────────────────────────────────── */
 
-export interface ChartPolarGridProps {
+export interface ChartPolarGridProps extends React.ComponentPropsWithoutRef<'g'> {
   /** Number of rings */
   rings?: number;
   /**
@@ -314,12 +307,11 @@ export interface ChartPolarGridProps {
   className?: string;
 }
 
-export interface ChartPolarAngleAxisProps {
+export interface ChartPolarAngleAxisProps extends React.ComponentPropsWithoutRef<'g'> {
   dataKey: string;
-  className?: string;
 }
 
-export interface ChartRadarProps {
+export interface ChartRadarProps extends React.ComponentPropsWithoutRef<'g'> {
   dataKey: string;
   color?: string;
   name?: string;
@@ -335,7 +327,8 @@ export interface ChartRadarProps {
 
 /* ─── Heatmap props ─────────────────────────────────────────────────── */
 
-export interface ChartHeatmapProps {
+export interface ChartHeatmapProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: object[];
   xKey: string;
   yKey: string;
@@ -360,7 +353,8 @@ export interface TreemapNode {
   color?: string;
 }
 
-export interface ChartTreemapProps {
+export interface ChartTreemapProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: TreemapNode[];
   width?: number;
   height?: number;
@@ -380,7 +374,8 @@ export interface FunnelEntry {
   color?: string;
 }
 
-export interface ChartFunnelProps {
+export interface ChartFunnelProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: FunnelEntry[];
   width?: number;
   height?: number;
@@ -409,7 +404,8 @@ export interface ChartFunnelProps {
 
 /* ─── Gauge props ───────────────────────────────────────────────────── */
 
-export interface ChartGaugeProps {
+export interface ChartGaugeProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   value: number;
   min?: number;
   max?: number;
@@ -453,7 +449,8 @@ export interface GaugeContextValue {
  * Root wrapper for gauge composition.
  * Provides a shared GaugeContext consumed by GaugeValueArc and GaugeReferenceArc.
  */
-export interface ChartGaugeContainerProps {
+export interface ChartGaugeContainerProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   value: number;
   min?: number;
   max?: number;
@@ -473,19 +470,17 @@ export interface ChartGaugeContainerProps {
 }
 
 /** The colored value arc inside a GaugeContainer */
-export interface ChartGaugeValueArcProps {
+export interface ChartGaugeValueArcProps extends React.ComponentPropsWithoutRef<'path'> {
   /** Fill color — defaults to chart-1 CSS variable */
   color?: string;
   /** Color stops: [[percentage, color], ...] */
   colorStops?: [number, string][];
-  className?: string;
 }
 
 /** The gray background track arc inside a GaugeContainer */
-export interface ChartGaugeReferenceArcProps {
+export interface ChartGaugeReferenceArcProps extends React.ComponentPropsWithoutRef<'path'> {
   /** Fill color for the background track */
   color?: string;
-  className?: string;
 }
 
 /* ─── Candlestick / OHLC props ──────────────────────────────────────── */
@@ -499,7 +494,8 @@ export interface OhlcEntry {
   volume?: number;
 }
 
-export interface ChartCandlestickProps {
+export interface ChartCandlestickProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: OhlcEntry[];
   width?: number;
   height?: number;
@@ -514,11 +510,9 @@ export interface ChartCandlestickProps {
 
 /* ─── Tooltip props ─────────────────────────────────────────────────── */
 
-export interface ChartTooltipProps {
+export interface ChartTooltipProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
   /** Fully replace the tooltip — receives the current tooltip state */
   content?: (state: TooltipState) => React.ReactNode;
-  /** Extra class on the tooltip wrapper */
-  className?: string;
   /** Override background color */
   background?: string;
   /** Override border color */
@@ -541,7 +535,7 @@ export interface ChartLegendEntry {
 
 /* ─── Legend props ──────────────────────────────────────────────────── */
 
-export interface ChartLegendProps {
+export interface ChartLegendProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'content'> {
   /** Where to position the legend relative to the chart */
   position?: LegendPosition;
   /** Fully replace legend rendering */
@@ -552,8 +546,6 @@ export interface ChartLegendProps {
   iconType?: 'square' | 'circle' | 'line';
   /** Icon size in px, default 12 */
   iconSize?: number;
-  /** Extra class on the legend wrapper */
-  className?: string;
 }
 
 /* ─── Internal context shapes ───────────────────────────────────────── */
@@ -598,7 +590,8 @@ export interface RadarContextValue {
 
 /* ─── SparkLine props ───────────────────────────────────────────────── */
 
-export interface ChartSparkLineProps {
+export interface ChartSparkLineProps
+  extends Omit<React.ComponentPropsWithoutRef<'svg'>, 'width' | 'height'> {
   /** Array of numeric values */
   data: number[];
   /** 'line' or 'bar' sparkline */
@@ -627,7 +620,7 @@ export interface ChartSparkLineProps {
 
 /* ─── RangeBar props ────────────────────────────────────────────────── */
 
-export interface ChartRangeBarProps {
+export interface ChartRangeBarProps extends React.ComponentPropsWithoutRef<'g'> {
   /** Data key for the low value */
   lowKey: string;
   /** Data key for the high value */
@@ -638,12 +631,12 @@ export interface ChartRangeBarProps {
   name?: string;
   /** Corner radius */
   radius?: number;
-  className?: string;
 }
 
 /* ─── ReferenceLine props ───────────────────────────────────────────── */
 
-export interface ChartReferenceLineProps {
+export interface ChartReferenceLineProps
+  extends Omit<React.ComponentPropsWithoutRef<'g'>, 'x' | 'y'> {
   /** Horizontal reference value (y) */
   y?: number;
   /** Vertical reference value (x) */
@@ -654,12 +647,12 @@ export interface ChartReferenceLineProps {
   stroke?: string;
   /** Dash pattern */
   strokeDasharray?: string;
-  className?: string;
 }
 
 /* ─── ReferenceArea props ───────────────────────────────────────────── */
 
-export interface ChartReferenceAreaProps {
+export interface ChartReferenceAreaProps
+  extends Omit<React.ComponentPropsWithoutRef<'g'>, 'x1' | 'x2' | 'y1' | 'y2'> {
   /** Low y bound */
   y1?: number;
   /** High y bound */
@@ -672,23 +665,22 @@ export interface ChartReferenceAreaProps {
   fill?: string;
   /** Fill opacity */
   fillOpacity?: number;
-  className?: string;
 }
 
 /* ─── RadialBarRoot + RadialBar props ───────────────────────────────── */
 
-export interface ChartRadialBarRootProps {
+export interface ChartRadialBarRootProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: object[];
   width?: number;
   height?: number;
   /** Gap between bars in px */
   gap?: number;
-  className?: string;
   accessibilityLabel?: string;
   children?: React.ReactNode;
 }
 
-export interface ChartRadialBarProps {
+export interface ChartRadialBarProps extends React.ComponentPropsWithoutRef<'g'> {
   /** Data key for arc length values */
   dataKey: string;
   /** Key for slice labels */
@@ -715,12 +707,12 @@ export interface WaterfallEntry {
   color?: string;
 }
 
-export interface ChartWaterfallProps {
+export interface ChartWaterfallProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: WaterfallEntry[];
   width?: number;
   height?: number;
   margin?: Partial<ChartMargin>;
-  className?: string;
   accessibilityLabel?: string;
 }
 
@@ -737,7 +729,8 @@ export interface SankeyLink {
   value: number;
 }
 
-export interface ChartSankeyProps {
+export interface ChartSankeyProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   nodes: SankeyNode[];
   links: SankeyLink[];
   width?: number;
@@ -754,12 +747,12 @@ export interface ChartSankeyProps {
 
 /* ─── Pyramid props ─────────────────────────────────────────────────── */
 
-export interface ChartPyramidProps {
+export interface ChartPyramidProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: Array<{ name: string; value: number; color?: string }>;
   width?: number;
   height?: number;
   labelPosition?: LabelPosition;
-  className?: string;
   accessibilityLabel?: string;
   onSegmentClick?: (entry: { name: string; value: number; color?: string }, index: number) => void;
 }
@@ -775,27 +768,27 @@ export interface GanttTask {
   group?: string;
 }
 
-export interface ChartGanttProps {
+export interface ChartGanttProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   tasks: GanttTask[];
   width?: number;
   height?: number;
   margin?: Partial<ChartMargin>;
-  className?: string;
   accessibilityLabel?: string;
 }
 
 /* ─── RadialLine props ──────────────────────────────────────────────── */
 
-export interface ChartRadialLineRootProps {
+export interface ChartRadialLineRootProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: object[];
   width?: number;
   height?: number;
-  className?: string;
   accessibilityLabel?: string;
   children?: React.ReactNode;
 }
 
-export interface ChartRadialLineProps {
+export interface ChartRadialLineProps extends React.ComponentPropsWithoutRef<'g'> {
   dataKey: string;
   nameKey?: string;
   color?: string;
@@ -811,7 +804,8 @@ export interface ChartRadialLineProps {
 
 /* ─── Histogram props ───────────────────────────────────────────────── */
 
-export interface ChartHistogramProps {
+export interface ChartHistogramProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: number[];
   bins?: number;
   color?: string;
@@ -819,7 +813,6 @@ export interface ChartHistogramProps {
   height?: number;
   margin?: Partial<ChartMargin>;
   showGrid?: boolean;
-  className?: string;
   accessibilityLabel?: string;
 }
 
@@ -836,13 +829,13 @@ export interface BoxplotEntry {
   outliers?: number[];
 }
 
-export interface ChartBoxplotProps {
+export interface ChartBoxplotProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: BoxplotEntry[];
   width?: number;
   height?: number;
   margin?: Partial<ChartMargin>;
   orientation?: 'vertical' | 'horizontal';
-  className?: string;
   accessibilityLabel?: string;
 }
 
@@ -855,44 +848,44 @@ export interface SunburstNode {
   color?: string;
 }
 
-export interface ChartSunburstProps {
+export interface ChartSunburstProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: SunburstNode;
   width?: number;
   height?: number;
   innerRadius?: number;
-  className?: string;
   accessibilityLabel?: string;
   onNodeClick?: (node: SunburstNode) => void;
 }
 
 /* ─── Chord props ───────────────────────────────────────────────────── */
 
-export interface ChartChordProps {
+export interface ChartChordProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   data: number[][];
   labels: string[];
   colors?: string[];
   width?: number;
   height?: number;
   padAngle?: number;
-  className?: string;
   accessibilityLabel?: string;
 }
 
 /* ─── RangeArea props ───────────────────────────────────────────────── */
 
-export interface ChartRangeAreaProps {
+export interface ChartRangeAreaProps extends React.ComponentPropsWithoutRef<'g'> {
   lowKey: string;
   highKey: string;
   color?: string;
   name?: string;
   fillOpacity?: number;
   curve?: CurveType;
-  className?: string;
 }
 
 /* ─── LinearGauge props ─────────────────────────────────────────────── */
 
-export interface ChartLinearGaugeProps {
+export interface ChartLinearGaugeProps
+  extends Omit<React.ComponentPropsWithoutRef<'div'>, 'width' | 'height'> {
   value: number;
   min?: number;
   max?: number;
@@ -903,24 +896,22 @@ export interface ChartLinearGaugeProps {
   showLabel?: boolean;
   label?: string | ((v: number, min: number, max: number) => string);
   cornerRadius?: number;
-  className?: string;
   accessibilityLabel?: string;
 }
 
 /* ─── PieCenterLabel props ──────────────────────────────────────────── */
 
-export interface ChartPieCenterLabelProps {
+export interface ChartPieCenterLabelProps extends React.ComponentPropsWithoutRef<'g'> {
   children: React.ReactNode;
-  className?: string;
 }
 
 /* ─── GaugePointer props ────────────────────────────────────────────── */
 
-export interface ChartGaugePointerProps {
+export interface ChartGaugePointerProps
+  extends Omit<React.ComponentPropsWithoutRef<'g'>, 'width'> {
   color?: string;
   length?: number;
   width?: number;
-  className?: string;
 }
 
 /* ─── Enhanced RadialBar props (additions) ──────────────────────────── */

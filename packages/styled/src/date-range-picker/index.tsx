@@ -285,6 +285,8 @@ interface DateRangePickerProps
   shortcuts?: DateRangePickerPrimitive.DateRangePickerShortcut[] | false;
   shortcutsClassName?: string;
   showOutsideDays?: boolean;
+  /** Native HTML attributes (onClick, onMouseEnter, style, id, data-*, aria-*, …) forwarded to the root wrapper element. */
+  rootProps?: React.ComponentPropsWithoutRef<'div'>;
 }
 
 const DateRangePickerRoot = React.forwardRef<HTMLDivElement, DateRangePickerProps>(
@@ -313,6 +315,7 @@ const DateRangePickerRoot = React.forwardRef<HTMLDivElement, DateRangePickerProp
       shortcutsClassName,
       showOutsideDays,
       showDaysOutsideCurrentMonth,
+      rootProps,
       ...props
     },
     ref,
@@ -324,7 +327,11 @@ const DateRangePickerRoot = React.forwardRef<HTMLDivElement, DateRangePickerProp
 
     return (
       <Root {...props} disabled={disabled} readOnly={readOnly} locale={locale} loading={loading}>
-        <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
+        <div
+          ref={ref}
+          {...rootProps}
+          className={cn('grid w-fit gap-1.5', className, rootProps?.className)}
+        >
           {label ? (
             <label className="text-sm font-medium text-foreground" htmlFor={triggerId}>
               {label}

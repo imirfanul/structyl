@@ -92,8 +92,12 @@ const Segment = React.forwardRef<
 ));
 Segment.displayName = 'DateTimePicker.Segment';
 
-const Separator: React.FC<{ children?: React.ReactNode }> = ({ children = ':' }) => (
-  <span className="text-muted-foreground">{children}</span>
+const Separator = React.forwardRef<HTMLSpanElement, React.ComponentPropsWithoutRef<'span'>>(
+  ({ className, children = ':', ...props }, ref) => (
+    <span ref={ref} className={cn('text-muted-foreground', className)} {...props}>
+      {children}
+    </span>
+  ),
 );
 Separator.displayName = 'DateTimePicker.Separator';
 
@@ -228,8 +232,22 @@ const Content = React.forwardRef<
 );
 Content.displayName = 'DateTimePicker.Content';
 
-interface DateTimePickerProps
-  extends Omit<React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Root>, 'children'> {
+type DateTimePickerRootConfig = Omit<
+  React.ComponentPropsWithoutRef<typeof DateTimePickerPrimitive.Root>,
+  'children'
+>;
+
+/**
+ * Native HTML attributes for the root wrapper `<div>`, excluding any keys that
+ * collide with the picker's configuration props (picker semantics win for
+ * shared names). These reach the DOM element the forwarded `ref` points at.
+ */
+type DateTimePickerNativeProps = Omit<
+  React.ComponentPropsWithoutRef<'div'>,
+  keyof DateTimePickerRootConfig | 'className'
+>;
+
+interface DateTimePickerOwnProps {
   className?: string;
   triggerClassName?: string;
   contentClassName?: string;
@@ -243,6 +261,70 @@ interface DateTimePickerProps
   error?: boolean;
   showOutsideDays?: boolean;
 }
+
+interface DateTimePickerProps
+  extends DateTimePickerRootConfig,
+    DateTimePickerNativeProps,
+    DateTimePickerOwnProps {}
+
+const DATE_TIME_PICKER_ROOT_CONFIG_KEYS: ReadonlyArray<keyof DateTimePickerRootConfig> = [
+  'value',
+  'defaultValue',
+  'onChange',
+  'onValueChange',
+  'onAccept',
+  'onError',
+  'open',
+  'defaultOpen',
+  'onOpenChange',
+  'onOpen',
+  'onClose',
+  'closeOnSelect',
+  'minDate',
+  'maxDate',
+  'minDateTime',
+  'maxDateTime',
+  'disablePast',
+  'disableFuture',
+  'disabledDays',
+  'shouldDisableDate',
+  'shouldDisableMonth',
+  'shouldDisableYear',
+  'weekStartsOn',
+  'ampmInClock',
+  'dayOfWeekFormatter',
+  'desktopModeMediaQuery',
+  'disableHighlightToday',
+  'disableIgnoringDatePartForTimeValidation',
+  'displayWeekNumber',
+  'fixedWeekNumber',
+  'formatDensity',
+  'inputRef',
+  'keepOpenDuringFieldFocus',
+  'localeText',
+  'monthsPerRow',
+  'onMonthChange',
+  'onSelectedSectionsChange',
+  'onViewChange',
+  'onYearChange',
+  'openTo',
+  'orientation',
+  'reduceAnimations',
+  'referenceDate',
+  'renderLoading',
+  'selectedSections',
+  'defaultSelectedSections',
+  'slotProps',
+  'slots',
+  'sx',
+  'thresholdToRenderTimeInASingleColumn',
+  'timezone',
+  'view',
+  'defaultView',
+  'viewRenderers',
+  'yearsOrder',
+  'yearsPerRow',
+];
 
 const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>(
   (
@@ -285,9 +367,20 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
     const labelText = typeof label === 'string' ? label : undefined;
     const withSeconds = (timeSteps?.seconds ?? 0) > 0;
 
+    const rootConfigKeys = new Set<string>(DATE_TIME_PICKER_ROOT_CONFIG_KEYS as readonly string[]);
+    const rootConfigProps: Partial<DateTimePickerRootConfig> = {};
+    const nativeDivProps: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(props)) {
+      if (rootConfigKeys.has(key)) {
+        (rootConfigProps as Record<string, unknown>)[key] = value;
+      } else {
+        nativeDivProps[key] = value;
+      }
+    }
+
     return (
       <Root
-        {...props}
+        {...rootConfigProps}
         disabled={disabled}
         readOnly={readOnly}
         locale={locale}
@@ -301,7 +394,7 @@ const DateTimePickerRoot = React.forwardRef<HTMLDivElement, DateTimePickerProps>
         timeSteps={timeSteps}
         views={views}
       >
-        <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
+        <div {...nativeDivProps} ref={ref} className={cn('grid w-fit gap-1.5', className)}>
           {label ? (
             <label className="text-sm font-medium text-foreground" htmlFor={triggerId} suppressHydrationWarning>
               {label}

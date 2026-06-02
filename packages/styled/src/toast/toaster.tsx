@@ -51,7 +51,8 @@ function toStyleVariant(v: ToastVariant): StyledVariant {
 
 // ── ToasterProps ──────────────────────────────────────────────────────────────
 
-export interface ToasterProps {
+export interface ToasterProps
+  extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport>, 'children'> {
   /**
    * Horizontal alignment of toasts.
    * @default 'right'
@@ -96,6 +97,7 @@ export function Toaster({
   vertical: defaultV   = 'bottom',
   maxToasts = 5,
   className,
+  ...props
 }: ToasterProps) {
   const { toasts, remove } = useToast();
 
@@ -158,6 +160,7 @@ export function Toaster({
 
           {/* Each position group gets its own Viewport */}
           <ToastPrimitive.Viewport
+            {...props}
             className={cn(
               'fixed z-[100] flex max-h-screen w-full p-4 md:max-w-[420px] gap-2',
               getViewportClasses(h, v),

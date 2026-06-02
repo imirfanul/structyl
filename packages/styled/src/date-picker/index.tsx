@@ -156,6 +156,12 @@ interface DatePickerProps
   required?: boolean;
   error?: boolean;
   showOutsideDays?: boolean;
+  /**
+   * Native HTML attributes forwarded to the root wrapper `<div>`
+   * (e.g. `onClick`, `style`, `role`, `tabIndex`, `data-*`, `aria-*`).
+   * The forwarded `ref` already points at this element.
+   */
+  rootProps?: React.ComponentPropsWithoutRef<'div'>;
 }
 
 const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerProps>(
@@ -182,10 +188,12 @@ const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerProps>(
       loading,
       showOutsideDays,
       showDaysOutsideCurrentMonth,
+      rootProps,
       ...props
     },
     ref,
   ) => {
+    const { className: rootClassName, ...restRootProps } = rootProps ?? {};
     const generatedId = React.useId();
     const triggerId = id ?? generatedId;
     const helperId = helperText ? `${triggerId}-helper` : undefined;
@@ -199,7 +207,11 @@ const DatePickerRoot = React.forwardRef<HTMLDivElement, DatePickerProps>(
         locale={locale}
         loading={loading}
       >
-        <div ref={ref} className={cn('grid w-fit gap-1.5', className)}>
+        <div
+          {...restRootProps}
+          ref={ref}
+          className={cn('grid w-fit gap-1.5', className, rootClassName)}
+        >
           {label ? (
             <label className="text-sm font-medium text-foreground" htmlFor={triggerId}>
               {label}

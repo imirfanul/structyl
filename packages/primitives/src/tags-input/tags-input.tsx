@@ -114,12 +114,14 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentPropsWithoutRef<
 );
 Input.displayName = 'TagsInput.Input';
 
-const Tag: React.FC<{ index: number; children?: React.ReactNode }> = ({ index, children }) => {
+const Tag: React.FC<
+  { index: number } & React.ComponentPropsWithoutRef<typeof Primitive.span>
+> = ({ index, children, ...rest }) => {
   const ctx = useTagsInputContext('TagsInput.Tag');
   const tag = ctx.tags[index];
   if (tag === undefined) return null;
   return (
-    <Primitive.span data-tag-index={index}>
+    <Primitive.span data-tag-index={index} {...rest}>
       {children ?? (
         <>
           {tag}{' '}

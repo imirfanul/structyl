@@ -176,21 +176,27 @@ const List = React.forwardRef<HTMLUListElement, React.ComponentPropsWithoutRef<'
 );
 List.displayName = 'FileUpload.List';
 
-const Item: React.FC<{ file: File; children?: React.ReactNode }> = ({ file, children }) => {
-  const ctx = useFileUploadContext('FileUpload.Item');
-  return (
-    <Primitive.li data-file-name={file.name}>
-      {children ?? (
-        <>
-          <span>{file.name}</span>{' '}
-          <button type="button" onClick={() => ctx.removeFile(file)} aria-label={`Remove ${file.name}`}>
-            ×
-          </button>
-        </>
-      )}
-    </Primitive.li>
-  );
-};
+export interface FileUploadItemProps extends React.ComponentPropsWithoutRef<'li'> {
+  file: File;
+}
+
+const Item = React.forwardRef<HTMLLIElement, FileUploadItemProps>(
+  ({ file, children, ...rest }, forwardedRef) => {
+    const ctx = useFileUploadContext('FileUpload.Item');
+    return (
+      <Primitive.li {...rest} data-file-name={file.name} ref={forwardedRef}>
+        {children ?? (
+          <>
+            <span>{file.name}</span>{' '}
+            <button type="button" onClick={() => ctx.removeFile(file)} aria-label={`Remove ${file.name}`}>
+              ×
+            </button>
+          </>
+        )}
+      </Primitive.li>
+    );
+  },
+);
 Item.displayName = 'FileUpload.Item';
 
 const Trigger = React.forwardRef<HTMLButtonElement, React.ComponentPropsWithoutRef<'button'>>(

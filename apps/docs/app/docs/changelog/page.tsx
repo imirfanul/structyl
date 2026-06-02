@@ -17,6 +17,7 @@ const RELEASES: ChangeEntry[] = [
     version: '1.1.0',
     date: 'June 2026',
     changes: [
+      { type: 'feat',  package: '@structyl/styled',       description: 'All components now accept and forward native HTML attributes (onClick, onMouseEnter, onFocus, className, style, id, tabIndex, aria-*, data-*, …) to their root element; internal handlers compose and className merges' },
       { type: 'feat',  package: '@structyl/themes',       description: 'Default theme is now "structyl" — ThemeProvider and ThemeScript default from "slate" to "structyl" (pass defaultTheme="slate" to keep the previous default)' },
       { type: 'feat',  package: '@structyl/themes',       description: 'Add useColorPreset({ defaultPresetId }) to pre-select an accent preset on first load' },
       { type: 'fix',   package: '@structyl/themes',       description: 'Accent presets no longer reset when toggling light/dark mode — re-applied after ThemeProvider via a MutationObserver instead of relying on effect order' },

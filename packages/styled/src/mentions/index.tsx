@@ -31,12 +31,17 @@ Textarea.displayName = 'Mentions.Textarea';
 
 const Suggestions = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof MentionsPrimitive.Suggestions> & { className?: string }
->(({ className, children, ...props }, ref) => (
-  <MentionsPrimitive.Suggestions disablePortal {...props}>
+  Pick<
+    React.ComponentPropsWithoutRef<typeof MentionsPrimitive.Suggestions>,
+    'items' | 'container'
+  > &
+    React.ComponentPropsWithoutRef<'div'>
+>(({ items, container, className, children, ...rest }, ref) => (
+  <MentionsPrimitive.Suggestions items={items} container={container} disablePortal>
     <div
       ref={ref}
       className={cn('absolute left-0 top-full z-50 mt-1 min-w-[8rem]', className)}
+      {...rest}
     >
       {children}
     </div>
@@ -44,7 +49,9 @@ const Suggestions = React.forwardRef<
 ));
 Suggestions.displayName = 'Mentions.Suggestions';
 
+export type MentionsItemProps = React.ComponentPropsWithoutRef<typeof MentionsPrimitive.Item>;
+
 const Items = MentionsPrimitive.Items;
-const Item = MentionsPrimitive.Item;
+const Item: React.FC<MentionsItemProps> = MentionsPrimitive.Item;
 
 export { Root, Textarea, Suggestions, Items, Item };

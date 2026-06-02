@@ -314,17 +314,20 @@ const NextButton = React.forwardRef<
 });
 NextButton.displayName = 'Calendar.NextButton';
 
-const Heading: React.FC<{ format?: Intl.DateTimeFormatOptions; locale?: string }> = ({
-  format = { month: 'long', year: 'numeric' },
-  locale,
-}) => {
+interface CalendarHeadingProps extends React.ComponentPropsWithoutRef<typeof Primitive.span> {
+  format?: Intl.DateTimeFormatOptions;
+  locale?: string;
+}
+
+const Heading = React.forwardRef<HTMLSpanElement, CalendarHeadingProps>((props, forwardedRef) => {
+  const { format = { month: 'long', year: 'numeric' }, locale, ...rest } = props;
   const ctx = useCalendarContext('Calendar.Heading');
   return (
-    <span aria-live="polite">
+    <Primitive.span {...rest} ref={forwardedRef} aria-live="polite">
       {new Intl.DateTimeFormat(locale ?? ctx.locale, format).format(ctx.displayMonth)}
-    </span>
+    </Primitive.span>
   );
-};
+});
 Heading.displayName = 'Calendar.Heading';
 
 const Grid = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
@@ -334,22 +337,26 @@ const Grid = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableEl
 );
 Grid.displayName = 'Calendar.Grid';
 
-const GridHead: React.FC<{ locale?: string; format?: 'narrow' | 'short' | 'long' }> = ({
-  locale,
-  format = 'narrow',
-}) => {
-  const ctx = useCalendarContext('Calendar.GridHead');
-  const fmt = new Intl.DateTimeFormat(locale ?? ctx.locale, { weekday: format });
-  const days = Array.from({ length: 7 }, (_, i) => {
-    const d = addDays(new Date(2024, 0, 7), i + ctx.weekStartsOn);
-    return {
-      label: ctx.dayOfWeekFormatter?.(d) ?? fmt.format(d),
-      date: d,
-    };
-  });
-  return (
-    <thead>
-      <tr>
+interface CalendarGridHeadProps extends React.ComponentPropsWithoutRef<'thead'> {
+  locale?: string;
+  format?: 'narrow' | 'short' | 'long';
+}
+
+const GridHead = React.forwardRef<HTMLTableSectionElement, CalendarGridHeadProps>(
+  (props, forwardedRef) => {
+    const { locale, format = 'narrow', ...rest } = props;
+    const ctx = useCalendarContext('Calendar.GridHead');
+    const fmt = new Intl.DateTimeFormat(locale ?? ctx.locale, { weekday: format });
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const d = addDays(new Date(2024, 0, 7), i + ctx.weekStartsOn);
+      return {
+        label: ctx.dayOfWeekFormatter?.(d) ?? fmt.format(d),
+        date: d,
+      };
+    });
+    return (
+      <thead {...rest} ref={forwardedRef}>
+        <tr>
         {ctx.displayWeekNumber ? (
           <th scope="col" aria-label="Week number">
             #
@@ -360,22 +367,25 @@ const GridHead: React.FC<{ locale?: string; format?: 'narrow' | 'short' | 'long'
             {day.label}
           </th>
         ))}
-      </tr>
-    </thead>
-  );
-};
+        </tr>
+      </thead>
+    );
+  },
+);
 GridHead.displayName = 'Calendar.GridHead';
 
-interface GridBodyProps {
+interface GridBodyProps extends Omit<React.ComponentPropsWithoutRef<'tbody'>, 'children'> {
   children: (date: Date, props: { isOutsideMonth: boolean }) => React.ReactNode;
 }
 
-const GridBody: React.FC<GridBodyProps> = ({ children }) => {
-  const ctx = useCalendarContext('Calendar.GridBody');
-  const weeks = getDaysGrid(ctx.displayMonth, ctx.weekStartsOn, ctx.fixedWeekNumber);
-  return (
-    <tbody>
-      {weeks.map((week, wi) => (
+const GridBody = React.forwardRef<HTMLTableSectionElement, GridBodyProps>(
+  (props, forwardedRef) => {
+    const { children, ...rest } = props;
+    const ctx = useCalendarContext('Calendar.GridBody');
+    const weeks = getDaysGrid(ctx.displayMonth, ctx.weekStartsOn, ctx.fixedWeekNumber);
+    return (
+      <tbody {...rest} ref={forwardedRef}>
+        {weeks.map((week, wi) => (
         <tr key={wi}>
           {ctx.displayWeekNumber ? (
             <td role="gridcell" aria-label={`Week ${getWeekNumber(week[0] ?? ctx.displayMonth)}`}>
@@ -388,10 +398,11 @@ const GridBody: React.FC<GridBodyProps> = ({ children }) => {
             </td>
           ))}
         </tr>
-      ))}
-    </tbody>
-  );
-};
+        ))}
+      </tbody>
+    );
+  },
+);
 GridBody.displayName = 'Calendar.GridBody';
 
 function getWeekNumber(date: Date) {

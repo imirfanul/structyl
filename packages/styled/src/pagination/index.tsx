@@ -8,7 +8,7 @@ import * as Select from '../select';
 
 // ── Pagination ─────────────────────────────────────────────────────────────────
 
-export interface PaginationProps {
+export interface PaginationProps extends React.ComponentPropsWithoutRef<'div'> {
   /** Current page number (1-based) */
   page: number;
   /** Total number of pages */
@@ -25,7 +25,6 @@ export interface PaginationProps {
   pageSizeOptions?: number[];
   /** Show the "X total rows" label (only visible when totalRows is provided) */
   showTotalRows?: boolean;
-  className?: string;
 }
 
 const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
@@ -40,6 +39,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
       pageSizeOptions = [10, 25, 50, 100],
       showTotalRows = true,
       className,
+      ...rest
     },
     ref,
   ) => {
@@ -64,6 +64,7 @@ const Pagination = React.forwardRef<HTMLDivElement, PaginationProps>(
           'flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between',
           className,
         )}
+        {...rest}
       >
         {/* Left: total rows + rows per page */}
         <div className="text-muted-foreground flex flex-wrap items-center gap-4 text-sm">

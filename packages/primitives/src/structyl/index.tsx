@@ -845,13 +845,12 @@ const Timeline = {
   Content: TimelineContent,
 };
 
-export interface ClickAwayListenerProps {
-  children?: React.ReactNode;
+export interface ClickAwayListenerProps extends React.ComponentPropsWithoutRef<'span'> {
   onClickAway?: (event: MouseEvent | TouchEvent) => void;
 }
 
 const ClickAwayListener = React.forwardRef<HTMLSpanElement, ClickAwayListenerProps>(
-  ({ children, onClickAway }, ref) => {
+  ({ children, onClickAway, style, ...rest }, ref) => {
     const localRef = React.useRef<HTMLSpanElement>(null);
     const composedRef = useComposedRefs(ref, localRef);
 
@@ -872,7 +871,7 @@ const ClickAwayListener = React.forwardRef<HTMLSpanElement, ClickAwayListenerPro
     }, [onClickAway]);
 
     return (
-      <span ref={composedRef} style={{ display: 'contents' }}>
+      <span ref={composedRef} {...rest} style={{ display: 'contents', ...style }}>
         {children}
       </span>
     );
@@ -903,13 +902,10 @@ const Portal = PortalPrimitive;
 
 // ── MUI-style Popper ──────────────────────────────────────────────────────────
 
-export interface PopperProps {
+export interface PopperProps extends React.ComponentPropsWithoutRef<'div'> {
   open: boolean;
   anchorEl?: Element | null | (() => Element | null);
   placement?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'left-start' | 'left-end' | 'right' | 'right-start' | 'right-end';
-  children?: React.ReactNode;
-  className?: string;
-  style?: React.CSSProperties;
   keepMounted?: boolean;
   disablePortal?: boolean;
   container?: Element | DocumentFragment | null;
@@ -925,7 +921,7 @@ function parsePlacement(placement: string): { side: 'top' | 'right' | 'bottom' |
 }
 
 const Popper = React.forwardRef<HTMLDivElement, PopperProps>(
-  ({ open, anchorEl: anchorElProp, placement = 'bottom', children, className, style, keepMounted = false, disablePortal = false, container }, ref) => {
+  ({ open, anchorEl: anchorElProp, placement = 'bottom', children, className, style, keepMounted = false, disablePortal = false, container, ...rest }, ref) => {
     const virtualRef = React.useRef({ getBoundingClientRect: (): DOMRect => getAnchorEl(anchorElProp)?.getBoundingClientRect() ?? new DOMRect() });
 
     React.useEffect(() => {
@@ -944,6 +940,7 @@ const Popper = React.forwardRef<HTMLDivElement, PopperProps>(
           side={side}
           align={align}
           sideOffset={4}
+          {...rest}
           style={{ display: !open ? 'none' : undefined, ...style }}
           className={className}
         >

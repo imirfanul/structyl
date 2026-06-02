@@ -46,14 +46,22 @@ const List = React.forwardRef<
 ));
 List.displayName = 'FileUpload.List';
 
-const Item: React.FC<{ file: File }> = ({ file }) => (
-  <FileUploadPrimitive.Item file={file}>
-    <div className="flex items-center justify-between gap-2 rounded-md border border-border bg-bg px-3 py-2 text-sm">
-      <span className="truncate">{file.name}</span>
-      <span className="text-muted-foreground">{Math.round(file.size / 1024)} KB</span>
-    </div>
+// Props typed locally (structurally identical to the primitive's FileUploadItemProps:
+// native <li> attributes + the required `file`) so the styled package's .d.ts emit
+// can name the type — referencing the primitive's interface directly triggers TS4023.
+const Item = React.forwardRef<
+  HTMLLIElement,
+  React.ComponentPropsWithoutRef<'li'> & { file: File }
+>(({ file, children, ...props }, ref) => (
+  <FileUploadPrimitive.Item file={file} ref={ref} {...props}>
+    {children ?? (
+      <div className="flex items-center justify-between gap-2 rounded-md border border-border bg-bg px-3 py-2 text-sm">
+        <span className="truncate">{file.name}</span>
+        <span className="text-muted-foreground">{Math.round(file.size / 1024)} KB</span>
+      </div>
+    )}
   </FileUploadPrimitive.Item>
-);
+));
 Item.displayName = 'FileUpload.Item';
 
 export { Root, Dropzone, Input, Trigger, Clear, List, Item };
