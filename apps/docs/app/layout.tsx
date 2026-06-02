@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { ThemeProvider, ThemeScript } from '@structyl/themes';
 import { Toaster } from '@structyl/styled';
 import { Analytics } from '@vercel/analytics/next';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, GITHUB_URL, NPM_URL, SITE_AUTHOR, COMPONENT_SLUGS } from '../lib/site-config';
 import './globals.css';
 
@@ -317,6 +318,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Toaster />
         </ThemeProvider>
         <Analytics />
+        <GoogleAnalytics gaId="G-FG6WY43529" />
       </body>
     </html>
   );

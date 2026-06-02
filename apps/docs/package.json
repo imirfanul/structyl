@@ -12,6 +12,7 @@
     "clean": "rm -rf .next .turbo"
   },
   "dependencies": {
+    "@next/third-parties": "^15.0.3",
     "@structyl/data-table": "workspace:*",
     "@structyl/hooks": "workspace:*",
     "@structyl/icons": "workspace:*",
