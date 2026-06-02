@@ -1,11 +1,21 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DateRangePicker } from './index';
 
 const May1 = new Date(2026, 4, 1);
 const May10 = new Date(2026, 4, 10);
 
 describe('DateRangePicker (styled)', () => {
+  // The calendar opens on the current month, so pin "today" to mid-May 2026 to
+  // keep these May-based assertions deterministic regardless of the real date.
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date(2026, 4, 15));
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it('renders a usable range calendar in compound content', () => {
     render(
       <DateRangePicker.Root
