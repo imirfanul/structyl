@@ -4074,38 +4074,7 @@ export default function Demo() {
 }`,
       },
     ],
-    api: [
-      {
-        name: 'Button',
-        description: 'The button element.',
-        props: [
-          {
-            name: 'variant',
-            type: "'default' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive'",
-            default: "'default'",
-            description: 'Visual style.',
-          },
-          {
-            name: 'size',
-            type: "'default' | 'sm' | 'lg' | 'icon'",
-            default: "'default'",
-            description: 'Control size.',
-          },
-          {
-            name: 'asChild',
-            type: 'boolean',
-            default: 'false',
-            description: 'Merge props onto the child element instead of rendering a button.',
-          },
-          {
-            name: 'disabled',
-            type: 'boolean',
-            default: 'false',
-            description: 'Disable the button.',
-          },
-        ],
-      },
-    ],
+    // api: removed — full prop reference now lives in lib/api-data.ts
     keyboard: [
       { key: 'Space', description: 'Activates the button.' },
       { key: 'Enter', description: 'Activates the button.' },
@@ -4188,52 +4157,7 @@ export default function Demo() {
     </Dialog.Content>
   </Dialog.Portal>
 </Dialog.Root>`,
-    api: [
-      {
-        name: 'Dialog.Root',
-        description: 'Contains all the parts of a dialog.',
-        props: [
-          { name: 'open', type: 'boolean', description: 'Controlled open state.' },
-          {
-            name: 'defaultOpen',
-            type: 'boolean',
-            description: 'Initial open state when uncontrolled.',
-          },
-          {
-            name: 'onOpenChange',
-            type: '(open: boolean) => void',
-            description: 'Called when open state changes.',
-          },
-          {
-            name: 'modal',
-            type: 'boolean',
-            default: 'true',
-            description: 'Whether interaction outside is disabled.',
-          },
-        ],
-      },
-      {
-        name: 'Dialog.Content',
-        description: 'Contains content to be rendered in the open dialog.',
-        props: [
-          {
-            name: 'onEscapeKeyDown',
-            type: '(event: KeyboardEvent) => void',
-            description: 'Called when Escape is pressed.',
-          },
-          {
-            name: 'onPointerDownOutside',
-            type: '(event) => void',
-            description: 'Called on outside pointer-down.',
-          },
-          {
-            name: 'forceMount',
-            type: 'boolean',
-            description: 'Force mounting for animation control.',
-          },
-        ],
-      },
-    ],
+    // api: removed — full prop reference now lives in lib/api-data.ts
     examples: [
       {
         title: 'Controlled',
@@ -8341,28 +8265,7 @@ export default function Demo() {
 }`,
       },
     ],
-    api: [
-      {
-        name: 'VideoPlayer',
-        description: 'The root video player component.',
-        props: [
-          { name: 'src',            type: 'string',              description: 'URL of the video to play. Supports .mp4, .webm, and .m3u8 (HLS).' },
-          { name: 'poster',         type: 'string',              description: 'Poster image URL shown before playback starts.' },
-          { name: 'autoPlay',       type: 'boolean',  default: 'false', description: 'Start playback automatically on mount.' },
-          { name: 'loop',           type: 'boolean',  default: 'false', description: 'Loop the video after it ends.' },
-          { name: 'muted',          type: 'boolean',  default: 'false', description: 'Start with audio muted.' },
-          { name: 'className',      type: 'string',              description: 'Additional class names for the root container.' },
-          { name: 'subtitles',      type: 'SubtitleTrack[]',     description: 'Array of subtitle tracks to load. Each track has src, label, and language.' },
-          { name: 'playlist',       type: 'PlaylistItem[]',      description: 'Array of videos for the playlist panel.' },
-          { name: 'chapters',       type: 'Chapter[]',           description: 'Array of chapter markers shown on the progress bar.' },
-          { name: 'onPlay',         type: '() => void',          description: 'Callback fired when playback starts.' },
-          { name: 'onPause',        type: '() => void',          description: 'Callback fired when playback pauses.' },
-          { name: 'onEnded',        type: '() => void',          description: 'Callback fired when the video ends.' },
-          { name: 'onTimeUpdate',   type: '(currentTime: number) => void', description: 'Fires continuously with the current playback time.' },
-          { name: 'onVolumeChange', type: '(volume: number) => void',      description: 'Fires when volume or mute state changes.' },
-        ],
-      },
-    ],
+    // api: removed — full prop reference now lives in lib/api-data.ts
     keyboard: [
       { key: 'Space / K',  description: 'Toggle play/pause.' },
       { key: '→',          description: 'Skip forward 10 seconds.' },
