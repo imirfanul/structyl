@@ -1,42 +1,23 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy } from '@structyl/icons';
+import { Check } from '@structyl/icons';
 import {
   COLOR_PRESETS,
   useColorPreset,
   createColorPreset,
 } from '@structyl/themes';
+import { Box, Button, Typography } from '@structyl/styled';
+import { CodeBlock } from '../../../components/code-block';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
 
-function CodeBlock({ code, lang = 'tsx' }: { code: string; lang?: string }) {
-  const [copied, setCopied] = React.useState(false);
-  const copy = async () => {
-    try { await navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
-  };
-  return (
-    <div className="relative overflow-hidden rounded-xl border border-border bg-[#0d1117]">
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-1.5">
-        <span className="font-mono text-[11px] text-white/40">{lang}</span>
-        <button onClick={copy} className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-white/50 transition-colors hover:bg-white/10 hover:text-white/90">
-          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
-      <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed">
-        <code className="font-mono text-[#c9d1d9]">{code}</code>
-      </pre>
-    </div>
-  );
-}
-
 function SectionHeading({ id, children }: { id: string; children: React.ReactNode }) {
-  return <h2 id={id} className="mb-3 mt-12 scroll-mt-20 text-xl font-semibold tracking-tight">{children}</h2>;
+  return <Typography as="h2" variant="h2" id={id} className="mb-3 mt-12 scroll-mt-20 text-xl font-semibold tracking-tight">{children}</Typography>;
 }
 
 function SubHeading({ id, children }: { id: string; children: React.ReactNode }) {
-  return <h3 id={id} className="mb-2 mt-8 scroll-mt-20 text-base font-semibold">{children}</h3>;
+  return <Typography as="h3" variant="h3" id={id} className="mb-2 mt-8 scroll-mt-20 text-base font-semibold">{children}</Typography>;
 }
 
 function PropRow({ name, type, def, desc }: { name: string; type: string; def?: string; desc: string }) {
@@ -55,13 +36,14 @@ function PropRow({ name, type, def, desc }: { name: string; type: string; def?: 
 function BuiltInPresetsDemo() {
   const { activeId, setPreset, clearPreset } = useColorPreset();
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="mb-4 text-sm text-muted-foreground">Click a preset — every primary-color token on this page updates live.</p>
-      <div className="flex flex-wrap gap-3">
+    <Box className="rounded-xl border border-border bg-card p-6">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">Click a preset — every primary-color token on this page updates live.</Typography>
+      <Box className="flex flex-wrap gap-3">
         {COLOR_PRESETS.map(({ id, name, hex }) => {
           const isActive = activeId === id;
           return (
-            <button
+            <Button
+              variant="ghost"
               key={id}
               onClick={() => setPreset(id, hex)}
               className="flex flex-col items-center gap-1.5 rounded-xl p-2 transition-colors hover:bg-muted/50"
@@ -77,24 +59,25 @@ function BuiltInPresetsDemo() {
                 {isActive && <Check className="h-4 w-4" />}
               </span>
               <span className="text-[11px] font-medium text-muted-foreground">{name}</span>
-            </button>
+            </Button>
           );
         })}
-      </div>
+      </Box>
       {activeId && (
-        <button
+        <Button
+          variant="ghost"
           onClick={clearPreset}
           className="mt-4 rounded-lg border border-border/60 px-3 py-1.5 text-[12px] text-muted-foreground transition-colors hover:border-border hover:text-fg"
         >
           Reset to default
-        </button>
+        </Button>
       )}
-      <div className="mt-5 flex gap-2">
-        <div className="rounded-lg bg-primary px-4 py-1.5 text-[12px] font-medium text-primary-foreground">Primary button</div>
-        <div className="rounded-lg border border-primary px-4 py-1.5 text-[12px] font-medium text-primary">Outline button</div>
-        <div className="rounded-lg bg-muted px-4 py-1.5 text-[12px] font-medium text-muted-foreground">Muted button</div>
-      </div>
-    </div>
+      <Box className="mt-5 flex gap-2">
+        <Box className="rounded-lg bg-primary px-4 py-1.5 text-[12px] font-medium text-primary-foreground">Primary button</Box>
+        <Box className="rounded-lg border border-primary px-4 py-1.5 text-[12px] font-medium text-primary">Outline button</Box>
+        <Box className="rounded-lg bg-muted px-4 py-1.5 text-[12px] font-medium text-muted-foreground">Muted button</Box>
+      </Box>
+    </Box>
   );
 }
 
@@ -103,12 +86,13 @@ function CustomPresetDemo() {
   const { activeId, setPreset, clearPreset } = useColorPreset({ extraPresets: [brandPreset] });
   const isActive = activeId === 'brand';
   return (
-    <div className="rounded-xl border border-border bg-card p-6">
-      <p className="mb-4 text-sm text-muted-foreground">
+    <Box className="rounded-xl border border-border bg-card p-6">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         A custom <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">#ff5500</code> preset created with <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">createColorPreset</code>.
-      </p>
-      <div className="flex items-center gap-3">
-        <button
+      </Typography>
+      <Box className="flex items-center gap-3">
+        <Button
+          variant="ghost"
           onClick={() => isActive ? clearPreset() : setPreset(brandPreset.id, brandPreset.hex)}
           className="flex items-center gap-2.5 rounded-xl border border-border px-4 py-2 transition-colors hover:bg-muted/50"
         >
@@ -119,15 +103,15 @@ function CustomPresetDemo() {
             {isActive && <Check className="h-3.5 w-3.5" />}
           </span>
           <span className="text-[13px] font-medium">{isActive ? 'Active — click to reset' : 'Apply Brand Orange'}</span>
-        </button>
-      </div>
+        </Button>
+      </Box>
       {isActive && (
-        <div className="mt-4 flex gap-2">
-          <div className="rounded-lg bg-primary px-4 py-1.5 text-[12px] font-medium text-primary-foreground">Primary</div>
-          <div className="rounded-lg border border-primary px-4 py-1.5 text-[12px] font-medium text-primary">Outline</div>
-        </div>
+        <Box className="mt-4 flex gap-2">
+          <Box className="rounded-lg bg-primary px-4 py-1.5 text-[12px] font-medium text-primary-foreground">Primary</Box>
+          <Box className="rounded-lg border border-primary px-4 py-1.5 text-[12px] font-medium text-primary">Outline</Box>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -135,26 +119,26 @@ function CustomPresetDemo() {
 
 export default function ColorPresetsPage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
+    <Box className="mx-auto max-w-3xl px-6 py-12">
       {/* Header */}
-      <div className="mb-10">
-        <div className="mb-3 flex items-center gap-2">
+      <Box className="mb-10">
+        <Box className="mb-3 flex items-center gap-2">
           <span className="rounded-full border border-border bg-muted/40 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">@structyl/themes</span>
-        </div>
-        <h1 className="mb-3 text-3xl font-bold tracking-tight">Color Presets</h1>
-        <p className="text-lg text-muted-foreground">
+        </Box>
+        <Typography as="h1" variant="h1" className="mb-3 text-3xl font-bold tracking-tight">Color Presets</Typography>
+        <Typography as="p" variant="body2" className="text-lg text-muted-foreground">
           10 built-in accent presets that override the primary color tokens at runtime — no theme rebuild needed. Extend with your own brand colors.
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
       {/* Install */}
       <CodeBlock lang="bash" code="pnpm add @structyl/themes" />
 
       {/* ── Built-in presets ── */}
       <SectionHeading id="built-in-presets">Built-in presets</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">COLOR_PRESETS</code> is a typed <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">as const</code> array of all 10 built-in accent colors. Import it for rendering your own picker UI.
-      </p>
+      </Typography>
       <CodeBlock code={`import { COLOR_PRESETS } from '@structyl/themes';
 
 // [
@@ -172,13 +156,13 @@ export default function ColorPresetsPage() {
 
       {/* ── useColorPreset ── */}
       <SectionHeading id="use-color-preset">useColorPreset</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         The primary way to work with presets in React. Must be used inside a <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">ThemeProvider</code>. Persists the selection to <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">localStorage</code> and automatically re-applies the preset after every theme or color-mode change.
-      </p>
+      </Typography>
 
-      <div className="mb-4">
+      <Box className="mb-4">
         <BuiltInPresetsDemo />
-      </div>
+      </Box>
 
       <CodeBlock code={`'use client';
 import { useColorPreset, COLOR_PRESETS } from '@structyl/themes';
@@ -206,7 +190,7 @@ function AccentPicker() {
 }`} />
 
       <SubHeading id="options">Options</SubHeading>
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <Box className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-border bg-muted/30">
@@ -221,10 +205,10 @@ function AccentPicker() {
             <PropRow name="storageKey" type="string" def="'structyl-color-preset'" desc="localStorage key used to persist the active preset. Override when you need multiple independent pickers on the same origin." />
           </tbody>
         </table>
-      </div>
+      </Box>
 
       <SubHeading id="return-value">Return value</SubHeading>
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <Box className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-border bg-muted/30">
@@ -261,17 +245,17 @@ function AccentPicker() {
             </tr>
           </tbody>
         </table>
-      </div>
+      </Box>
 
       {/* ── createColorPreset ── */}
       <SectionHeading id="create-color-preset">createColorPreset</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         Factory for creating typed preset objects. Pass the result to <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">extraPresets</code> in <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">useColorPreset</code>.
-      </p>
+      </Typography>
 
-      <div className="mb-4">
+      <Box className="mb-4">
         <CustomPresetDemo />
-      </div>
+      </Box>
 
       <CodeBlock code={`import { createColorPreset, useColorPreset } from '@structyl/themes';
 
@@ -287,9 +271,9 @@ function MyPicker() {
 
       {/* ── Imperative API ── */}
       <SectionHeading id="imperative-api">Imperative API</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         Use these utilities outside of React (e.g. in event handlers, server actions, or non-React contexts). Both are no-ops in SSR environments.
-      </p>
+      </Typography>
       <CodeBlock code={`import { applyColorPreset, clearColorPreset } from '@structyl/themes';
 
 // Apply any hex color as the primary accent
@@ -318,12 +302,12 @@ type ColorPresetId =
 
       {/* ── Next.js note ── */}
       <SectionHeading id="nextjs">Next.js App Router</SectionHeading>
-      <div className="rounded-xl border border-warning/30 bg-warning/5 p-4">
-        <p className="text-sm font-medium text-warning">Client Component required</p>
-        <p className="mt-1 text-sm text-muted-foreground">
+      <Box className="rounded-xl border border-warning/30 bg-warning/5 p-4">
+        <Typography as="p" variant="body2" className="text-sm font-medium text-warning">Client Component required</Typography>
+        <Typography as="p" variant="body2" className="mt-1 text-sm text-muted-foreground">
           <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">useColorPreset</code> uses React state and effects, so any component that calls it must be marked <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">&apos;use client&apos;</code>. The imperative <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">applyColorPreset</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">clearColorPreset</code> functions are safe to import from any module — they guard against SSR automatically.
-        </p>
-      </div>
+        </Typography>
+      </Box>
       <CodeBlock code={`'use client'; // required
 
 import { useColorPreset } from '@structyl/themes';
@@ -335,9 +319,9 @@ export function AccentPicker() {
 
       {/* ── How it works ── */}
       <SectionHeading id="how-it-works">How it works</SectionHeading>
-      <p className="mb-3 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
         Presets work by overriding five CSS custom properties on <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">document.documentElement</code> after the <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">ThemeProvider</code> applies its base tokens:
-      </p>
+      </Typography>
       <CodeBlock lang="css" code={`/* Applied by applyColorPreset('#6366f1') */
 :root {
   --color-primary:        239 84% 67%;
@@ -346,9 +330,9 @@ export function AccentPicker() {
   --color-primary-active: 239 84% 59%;
   --color-primary-fg:     0 0% 100%;   /* white or dark, auto-calculated via WCAG */
 }`} />
-      <p className="mt-3 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mt-3 text-sm text-muted-foreground">
         Because <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">useColorPreset</code> watches <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">theme</code> and <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">resolvedMode</code> from <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">useTheme</code>, it automatically re-applies the override whenever the user switches themes or color modes — the base theme resets first, then the preset overwrites the five primary vars.
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 }

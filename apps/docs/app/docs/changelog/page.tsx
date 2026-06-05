@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Box, Typography } from '@structyl/styled';
 
 /* ── Changelog data ──────────────────────────────────────────────────── */
 
@@ -117,9 +118,9 @@ const TYPE_LABELS: Record<ChangeType, string> = {
 export default function ChangelogPage() {
   return (
     <article className="mx-auto max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">Changelog</h1>
-      <p className="mt-3 text-base text-muted-foreground">
+      <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</Typography>
+      <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Changelog</Typography>
+      <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
         All notable changes to structyl packages. We follow{' '}
         <a
           href="https://semver.org"
@@ -130,10 +131,10 @@ export default function ChangelogPage() {
           semantic versioning
         </a>
         .
-      </p>
+      </Typography>
 
       {/* Legend */}
-      <div className="mt-6 flex flex-wrap gap-2">
+      <Box className="mt-6 flex flex-wrap gap-2">
         {(Object.keys(TYPE_STYLES) as ChangeType[]).map((t) => (
           <span
             key={t}
@@ -142,52 +143,52 @@ export default function ChangelogPage() {
             {TYPE_LABELS[t]}
           </span>
         ))}
-      </div>
+      </Box>
 
       {/* Releases */}
-      <div className="relative mt-10">
+      <Box className="relative mt-10">
         {/* Timeline line */}
-        <div className="absolute left-[9px] top-2 bottom-0 w-px bg-border/60" />
+        <Box className="absolute left-[9px] top-2 bottom-0 w-px bg-border/60" />
 
-        <div className="space-y-12">
+        <Box className="space-y-12">
           {RELEASES.map((release) => (
-            <div key={release.version} className="relative pl-8">
+            <Box key={release.version} className="relative pl-8">
               {/* Timeline dot */}
-              <div className="absolute left-0 top-1.5 flex h-[18px] w-[18px] items-center justify-center">
-                <div className="h-2.5 w-2.5 rounded-full border-2 border-primary bg-bg" />
-              </div>
+              <Box className="absolute left-0 top-1.5 flex h-[18px] w-[18px] items-center justify-center">
+                <Box className="h-2.5 w-2.5 rounded-full border-2 border-primary bg-bg" />
+              </Box>
 
               {/* Version header */}
-              <div className="mb-4 flex flex-wrap items-baseline gap-3">
-                <h2 className="text-xl font-semibold tracking-tight">v{release.version}</h2>
+              <Box className="mb-4 flex flex-wrap items-baseline gap-3">
+                <Typography as="h2" variant="h2" className="text-xl font-semibold tracking-tight">v{release.version}</Typography>
                 <span className="text-[12px] text-muted-foreground">{release.date}</span>
-              </div>
+              </Box>
 
               {/* Changes */}
-              <div className="space-y-2.5">
+              <Box className="space-y-2.5">
                 {release.changes.map((change, i) => (
-                  <div key={i} className="flex items-start gap-3">
+                  <Box key={i} className="flex items-start gap-3">
                     <span
                       className={`mt-0.5 shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${TYPE_STYLES[change.type]}`}
                     >
                       {TYPE_LABELS[change.type]}
                     </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="text-sm text-fg">{change.description}</p>
-                      <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">
+                    <Box className="min-w-0 flex-1">
+                      <Typography as="p" variant="body2" className="text-sm text-fg">{change.description}</Typography>
+                      <Typography as="p" variant="body2" className="mt-0.5 font-mono text-[11px] text-muted-foreground">
                         {change.package}
-                      </p>
-                    </div>
-                  </div>
+                      </Typography>
+                    </Box>
+                  </Box>
                 ))}
-              </div>
-            </div>
+              </Box>
+            </Box>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Footer note */}
-      <div className="mt-14 rounded-xl border border-border bg-muted/20 p-5 text-sm text-muted-foreground">
+      <Box className="mt-14 rounded-xl border border-border bg-muted/20 p-5 text-sm text-muted-foreground">
         For the full git history, see the{' '}
         <a
           href="https://github.com/imirfanul/structyl/commits/main"
@@ -198,7 +199,7 @@ export default function ChangelogPage() {
           commit log on GitHub
         </a>
         .
-      </div>
+      </Box>
     </article>
   );
 }

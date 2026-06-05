@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { notFound, useParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import {
   Check,
   Copy,
@@ -22,8 +22,11 @@ import {
   Mail,
   ChevronDown,
 } from '@structyl/icons';
+import { Box, Button, Typography } from '@structyl/styled';
 import { COMPONENTS, CATEGORIES, HOOKS, PACKAGES, type ComponentEntry } from '../../../lib/registry';
 import { API } from '../../../lib/api-data';
+import { CodeBlock } from '../../../components/code-block';
+import { DocsNotFound } from '../../../components/docs-not-found';
 
 /* ── Status styles ───────────────────────────────────────────────────── */
 
@@ -59,7 +62,7 @@ export default function DocPage() {
   if (Static) return <Static />;
 
   const entry = COMPONENTS.find((c) => c.slug === slug);
-  if (!entry) return notFound();
+  if (!entry) return <DocsNotFound />;
   return <ComponentDoc entry={entry} />;
 }
 
@@ -110,7 +113,7 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
   }, [entry.slug]);
 
   return (
-    <div className="flex gap-12">
+    <Box className="flex gap-12">
       {/* ── Main content ──────────────────────────────────────────── */}
       <article className="min-w-0 flex-1">
         {/* Breadcrumbs */}
@@ -125,14 +128,14 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
         </nav>
 
         {/* Title + status badge */}
-        <div id="overview" className="scroll-mt-20">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-4xl font-semibold tracking-tight">{entry.name}</h1>
+        <Box id="overview" className="scroll-mt-20">
+          <Box className="flex flex-wrap items-center gap-3">
+            <Typography as="h1" variant="h1" className="text-4xl font-semibold tracking-tight">{entry.name}</Typography>
             <StatusBadge status={((entry as unknown) as Record<string, unknown>).status as string ?? 'stable'} />
-          </div>
-          <p className="mt-3 text-base text-muted-foreground">{entry.description}</p>
+          </Box>
+          <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">{entry.description}</Typography>
           <PreviewBlock title="Basic usage" preview={entry.preview} code={entry.code} />
-        </div>
+        </Box>
 
         {/* Examples */}
         {entry.examples && entry.examples.length > 0 && (
@@ -141,7 +144,7 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
                 min-content so wide examples (e.g. DataTable) can't blow the
                 column out past the article into the TOC. Bare `grid` uses an
                 auto (min-content) track, which overflowed. */}
-            <div className="grid grid-cols-1 gap-8">
+            <Box className="grid grid-cols-1 gap-8">
               {entry.examples.map((example) => (
                 <PreviewBlock
                   key={example.title}
@@ -152,7 +155,7 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
                   compact
                 />
               ))}
-            </div>
+            </Box>
           </Section>
         )}
 
@@ -180,49 +183,33 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
         {/* Anatomy */}
         {entry.anatomy && (
           <Section id="anatomy" title="Anatomy">
-            <p className="mb-2 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-2 text-sm text-muted-foreground">
               Import the parts and compose them together.
-            </p>
+            </Typography>
             <CodeBlock code={entry.anatomy} lang="tsx" />
           </Section>
         )}
 
-        {/* API Reference */}
+        {/* API Reference — lives on its own dedicated route; link to it
+            here rather than duplicating the full props tables. */}
         {api && api.length > 0 && (
           <Section id="api-reference" title="API Reference">
-            {api.map((part) => (
-              <div key={part.name} className="mb-6">
-                <h3 className="text-sm font-semibold">{part.name}</h3>
-                <p className="mb-2 text-sm text-muted-foreground">{part.description}</p>
-                <div className="overflow-hidden rounded-lg border border-border">
-                  <table className="w-full text-left text-xs">
-                    <thead className="bg-muted/50 text-muted-foreground">
-                      <tr>
-                        <th className="px-3 py-2 font-medium">Prop</th>
-                        <th className="px-3 py-2 font-medium">Type</th>
-                        <th className="px-3 py-2 font-medium">Default</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {part.props.map((p) => (
-                        <tr key={p.name} className="border-t border-border/60 align-top">
-                          <td className="px-3 py-2 font-mono font-medium">{p.name}</td>
-                          <td className="px-3 py-2">
-                            <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">
-                              {p.type}
-                            </code>
-                            <p className="mt-1 text-muted-foreground">{p.description}</p>
-                          </td>
-                          <td className="px-3 py-2 font-mono text-muted-foreground">
-                            {p.default ?? '—'}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            ))}
+            <Link
+              href={`/docs/api/${entry.slug}`}
+              className="group flex items-center justify-between gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:border-border-strong hover:shadow-sm"
+            >
+              <Box className="min-w-0">
+                <Typography as="p" variant="body2" className="text-sm font-medium">{entry.name} API reference</Typography>
+                <Typography as="p" variant="body2" className="mt-0.5 text-[13px] text-muted-foreground">
+                  Full props, types, defaults
+                  {api.length > 1 ? `, and all ${api.length} parts` : ''}.
+                </Typography>
+              </Box>
+              <span className="inline-flex shrink-0 items-center gap-1 text-[13px] font-medium text-primary">
+                View API
+                <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </span>
+            </Link>
           </Section>
         )}
 
@@ -230,7 +217,7 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
         {entry.keyboard && entry.keyboard.length > 0 && (
           <Section id="keyboard-interactions" title="Keyboard interactions">
             {entry.ariaPattern && (
-              <p className="mb-2 text-sm text-muted-foreground">
+              <Typography as="p" variant="body2" className="mb-2 text-sm text-muted-foreground">
                 Adheres to the{' '}
                 <a
                   href={entry.ariaPattern}
@@ -241,9 +228,9 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
                   WAI-ARIA design pattern <ArrowUpRight className="inline h-3 w-3" />
                 </a>
                 .
-              </p>
+              </Typography>
             )}
-            <div className="overflow-hidden rounded-lg border border-border">
+            <Box className="overflow-hidden rounded-lg border border-border">
               <table className="w-full text-left text-xs">
                 <thead className="bg-muted/50 text-muted-foreground">
                   <tr>
@@ -264,7 +251,7 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </Box>
           </Section>
         )}
 
@@ -274,10 +261,10 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
       {/* ── Table of contents ─────────────────────────────────────── */}
       {toc.length > 2 && (
         <aside className="hidden w-[180px] shrink-0 xl:block">
-          <div className="sticky top-[76px]">
-            <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">
+          <Box className="sticky top-[76px]">
+            <Typography as="p" variant="body2" className="mb-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">
               On this page
-            </p>
+            </Typography>
             <nav className="space-y-0.5">
               {toc.map(({ id, title }) => (
                 <a
@@ -293,10 +280,10 @@ function ComponentDoc({ entry }: { entry: ComponentEntry }) {
                 </a>
               ))}
             </nav>
-          </div>
+          </Box>
         </aside>
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -327,11 +314,12 @@ function InstallBlock({ slug }: { slug: string }) {
     bun: `bunx structyl add ${slug}`,
   };
   return (
-    <div>
-      <div className="mb-2 flex items-center gap-0.5">
+    <Box>
+      <Box className="mb-2 flex items-center gap-0.5">
         {PMS.map((p) => (
-          <button
+          <Button
             key={p}
+            variant="ghost"
             onClick={() => setPm(p)}
             className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors ${
               pm === p
@@ -340,11 +328,11 @@ function InstallBlock({ slug }: { slug: string }) {
             }`}
           >
             {p}
-          </button>
+          </Button>
         ))}
-      </div>
+      </Box>
       <CodeBlock code={cmds[pm]} lang="bash" />
-    </div>
+    </Box>
   );
 }
 
@@ -371,22 +359,23 @@ function PreviewBlock({
   const [viewport, setViewport] = React.useState<Viewport>('full');
 
   return (
-    <div className={compact ? '' : 'mt-8'}>
+    <Box className={compact ? '' : 'mt-8'}>
       {title && (
-        <div className="mb-3">
-          <h3 className="text-sm font-semibold">{title}</h3>
+        <Box className="mb-3">
+          <Typography as="h3" variant="h3" className="text-sm font-semibold">{title}</Typography>
           {description ? (
-            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+            <Typography as="p" variant="body2" className="mt-1 text-sm text-muted-foreground">{description}</Typography>
           ) : null}
-        </div>
+        </Box>
       )}
 
       {/* Tab bar */}
-      <div className="flex items-center border-b border-border">
-        <div className="flex items-center gap-1">
+      <Box className="flex items-center border-b border-border">
+        <Box className="flex items-center gap-1">
           {(['preview', 'code'] as const).map((t) => (
-            <button
+            <Button
               key={t}
+              variant="ghost"
               onClick={() => setTab(t)}
               className={`relative px-3 py-2 text-sm font-medium capitalize transition-colors ${
                 tab === t ? 'text-fg' : 'text-muted-foreground hover:text-fg'
@@ -396,18 +385,19 @@ function PreviewBlock({
               {tab === t && (
                 <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />
               )}
-            </button>
+            </Button>
           ))}
-        </div>
+        </Box>
 
         {/* Viewport toggles */}
         {tab === 'preview' && (
-          <div className="ml-auto flex items-center gap-0.5 pr-1">
+          <Box className="ml-auto flex items-center gap-0.5 pr-1">
             {(['full', 'tablet', 'mobile'] as Viewport[]).map((v) => {
               const Icon = VP_ICONS[v];
               return (
-                <button
+                <Button
                   key={v}
+                  variant="ghost"
                   onClick={() => setViewport(v)}
                   title={v}
                   className={`rounded p-1.5 transition-colors ${
@@ -417,74 +407,30 @@ function PreviewBlock({
                   }`}
                 >
                   <Icon className="h-3.5 w-3.5" />
-                </button>
+                </Button>
               );
             })}
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
 
       {tab === 'preview' ? (
-        <div
+        <Box
           className={`overflow-hidden rounded-b-xl border border-t-0 border-border bg-gradient-to-br from-accent/20 to-transparent ${
             compact ? 'min-h-[180px] p-6' : 'min-h-[240px] p-10'
           }`}
         >
-          <div
+          <Box
             className="mx-auto transition-all duration-300"
             style={{ maxWidth: VP_MAX[viewport] }}
           >
-            <div className="flex w-full items-center justify-center"><Preview /></div>
-          </div>
-        </div>
+            <Box className="flex w-full items-center justify-center"><Preview /></Box>
+          </Box>
+        </Box>
       ) : (
         <CodeBlock code={code} lang="tsx" rounded="bottom" />
       )}
-    </div>
-  );
-}
-
-/* ── Code block ──────────────────────────────────────────────────────── */
-
-function CodeBlock({
-  code,
-  lang,
-  rounded = 'all',
-}: {
-  code: string;
-  lang: string;
-  rounded?: 'all' | 'bottom';
-}) {
-  const [copied, setCopied] = React.useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch (e) {
-      void e;
-    }
-  };
-  return (
-    <div
-      className={`relative border border-border bg-[#0d1117] ${
-        rounded === 'bottom' ? 'rounded-b-xl border-t-0' : 'rounded-lg'
-      }`}
-    >
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-1.5">
-        <span className="font-mono text-[11px] text-white/40">{lang}</span>
-        <button
-          onClick={copy}
-          className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-white/50 transition-colors hover:bg-white/10 hover:text-white/90"
-        >
-          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
-      <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed">
-        <code className="font-mono text-[#c9d1d9]">{code}</code>
-      </pre>
-    </div>
+    </Box>
   );
 }
 
@@ -501,7 +447,7 @@ function Section({
 }) {
   return (
     <section id={id} className={`mt-10 ${id ? 'scroll-mt-20' : ''}`}>
-      <h2 className="mb-3 text-xl font-semibold tracking-tight">{title}</h2>
+      <Typography as="h2" variant="h2" className="mb-3 text-xl font-semibold tracking-tight">{title}</Typography>
       {children}
     </section>
   );
@@ -511,8 +457,8 @@ function Section({
 
 function NavFooter({ prev, next }: { prev: ComponentEntry | null; next: ComponentEntry | null }) {
   return (
-    <div className="mt-14 space-y-6">
-      <div className="flex justify-end">
+    <Box className="mt-14 space-y-6">
+      <Box className="flex justify-end">
         <a
           href="https://github.com/imirfanul/structyl"
           target="_blank"
@@ -521,10 +467,10 @@ function NavFooter({ prev, next }: { prev: ComponentEntry | null; next: Componen
         >
           Edit on GitHub <ArrowUpRight className="h-3 w-3" />
         </a>
-      </div>
+      </Box>
 
       {(prev || next) && (
-        <div className="grid grid-cols-2 gap-4 border-t border-border pt-6">
+        <Box className="grid grid-cols-2 gap-4 border-t border-border pt-6">
           {prev ? (
             <Link
               href={`/docs/${prev.slug}`}
@@ -538,7 +484,7 @@ function NavFooter({ prev, next }: { prev: ComponentEntry | null; next: Componen
               </span>
             </Link>
           ) : (
-            <div />
+            <Box />
           )}
 
           {next ? (
@@ -554,11 +500,11 @@ function NavFooter({ prev, next }: { prev: ComponentEntry | null; next: Componen
               </span>
             </Link>
           ) : (
-            <div />
+            <Box />
           )}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -567,11 +513,11 @@ function NavFooter({ prev, next }: { prev: ComponentEntry | null; next: Componen
 function GettingStarted() {
   return (
     <article className="mx-auto max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">Overview</p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">Getting started</h1>
-      <p className="mt-3 text-base text-muted-foreground">
+      <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">Overview</Typography>
+      <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Getting started</Typography>
+      <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
         Install structyl and render your first component.
-      </p>
+      </Typography>
 
       <Section title="1. Install">
         <CodeBlock code={`pnpm add @structyl/styled @structyl/themes`} lang="bash" />
@@ -613,13 +559,13 @@ export default function Page() {
       </Section>
 
       <Section title="Or use the CLI">
-        <p className="mb-2 text-sm text-muted-foreground">
+        <Typography as="p" variant="body2" className="mb-2 text-sm text-muted-foreground">
           Scaffold a project and copy component source directly into your codebase.
-        </p>
+        </Typography>
         <CodeBlock code={`npx structyl init\nnpx structyl add button dialog select`} lang="bash" />
       </Section>
 
-      <div className="mt-14 flex justify-end">
+      <Box className="mt-14 flex justify-end">
         <a
           href="https://github.com/imirfanul/structyl"
           target="_blank"
@@ -628,7 +574,7 @@ export default function Page() {
         >
           Edit on GitHub <ArrowUpRight className="h-3 w-3" />
         </a>
-      </div>
+      </Box>
     </article>
   );
 }
@@ -636,11 +582,11 @@ export default function Page() {
 function AccessibilityPage() {
   return (
     <article className="mx-auto max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">Overview</p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">Accessibility</h1>
-      <p className="mt-3 text-base text-muted-foreground">
+      <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">Overview</Typography>
+      <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Accessibility</Typography>
+      <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
         Every component follows the WAI-ARIA Authoring Practices Guide.
-      </p>
+      </Typography>
       <Section title="What you get for free">
         <ul className="space-y-2 text-sm text-muted-foreground">
           <li>• Correct roles, states and properties on every element.</li>
@@ -656,7 +602,7 @@ function AccessibilityPage() {
           </li>
         </ul>
       </Section>
-      <div className="mt-14 flex justify-end">
+      <Box className="mt-14 flex justify-end">
         <a
           href="https://github.com/imirfanul/structyl"
           target="_blank"
@@ -665,7 +611,7 @@ function AccessibilityPage() {
         >
           Edit on GitHub <ArrowUpRight className="h-3 w-3" />
         </a>
-      </div>
+      </Box>
     </article>
   );
 }
@@ -673,14 +619,14 @@ function AccessibilityPage() {
 function HooksPage() {
   return (
     <article className="mx-auto max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+      <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">
         @structyl/hooks
-      </p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">Hooks</h1>
-      <p className="mt-3 text-base text-muted-foreground">
+      </Typography>
+      <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Hooks</Typography>
+      <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
         24 reusable, SSR-safe, tree-shakeable React hooks. Import only what you use.
-      </p>
-      <div className="mt-8 overflow-hidden rounded-lg border border-border">
+      </Typography>
+      <Box className="mt-8 overflow-hidden rounded-lg border border-border">
         <table className="w-full text-left text-xs">
           <thead className="bg-muted/50 text-muted-foreground">
             <tr>
@@ -701,8 +647,8 @@ function HooksPage() {
             ))}
           </tbody>
         </table>
-      </div>
-      <div className="mt-14 flex justify-end">
+      </Box>
+      <Box className="mt-14 flex justify-end">
         <a
           href="https://github.com/imirfanul/structyl"
           target="_blank"
@@ -711,7 +657,7 @@ function HooksPage() {
         >
           Edit on GitHub <ArrowUpRight className="h-3 w-3" />
         </a>
-      </div>
+      </Box>
     </article>
   );
 }
@@ -744,14 +690,14 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
       function CounterDemo() {
         const [n, setN] = React.useState(0);
         return (
-          <div className="flex flex-col items-center gap-3">
-            <div className="flex items-center gap-3">
-              <button onClick={() => setN(c => c - 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">−</button>
+          <Box className="flex flex-col items-center gap-3">
+            <Box className="flex items-center gap-3">
+              <Button variant="ghost" onClick={() => setN(c => c - 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">−</Button>
               <span className="w-12 text-center font-mono text-2xl font-bold">{n}</span>
-              <button onClick={() => setN(c => c + 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">+</button>
-            </div>
-            <p className="text-[11px] text-muted-foreground">Live — useCounter hook</p>
-          </div>
+              <Button variant="ghost" onClick={() => setN(c => c + 1)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-border text-lg font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-fg">+</Button>
+            </Box>
+            <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">Live — useCounter hook</Typography>
+          </Box>
         );
       }
       return <CounterDemo />;
@@ -769,16 +715,16 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     lang: 'tsx',
     exports: ['ThemeProvider', 'useTheme', 'ThemeScript', 'defaultThemes', 'type Theme', 'type ThemeMode'],
     preview: () => (
-      <div className="flex items-center gap-5">
+      <Box className="flex items-center gap-5">
         {[{ name: 'slate', bg: '#1e40af', fg: '#0f172a' }, { name: 'zinc', bg: '#71717a', fg: '#18181b' }, { name: 'rose', bg: '#be123c', fg: '#fff1f2' }].map(t => (
-          <div key={t.name} className="flex flex-col items-center gap-2">
-            <div className="flex h-12 w-12 items-center justify-center rounded-full shadow-md" style={{ background: t.fg }}>
-              <div className="h-5 w-5 rounded-full" style={{ background: t.bg }} />
-            </div>
+          <Box key={t.name} className="flex flex-col items-center gap-2">
+            <Box className="flex h-12 w-12 items-center justify-center rounded-full shadow-md" style={{ background: t.fg }}>
+              <Box className="h-5 w-5 rounded-full" style={{ background: t.bg }} />
+            </Box>
             <span className="text-[11px] text-muted-foreground">{t.name}</span>
-          </div>
+          </Box>
         ))}
-      </div>
+      </Box>
     ),
   },
   '@structyl/primitives': {
@@ -793,18 +739,18 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     lang: 'tsx',
     exports: ['Button', 'Dialog', 'Drawer', 'Sheet', 'Tooltip', 'Popover', 'Select', 'Combobox', 'Tabs', 'Accordion', 'Input', 'Textarea', 'Checkbox', 'RadioGroup', 'Switch', 'Slider', 'Badge', 'Avatar', 'Card', 'Skeleton', 'DatePicker', '+ 24 more'],
     preview: () => (
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap gap-2">
-          <button className="rounded-lg bg-primary px-4 py-1.5 text-[13px] font-medium text-primary-foreground transition-colors hover:bg-primary/90">Default</button>
-          <button className="rounded-lg border border-border px-4 py-1.5 text-[13px] font-medium text-fg transition-colors hover:bg-accent">Outline</button>
-          <button className="rounded-lg px-4 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-fg">Ghost</button>
-        </div>
-        <div className="flex flex-wrap gap-1.5">
+      <Box className="flex flex-col gap-3">
+        <Box className="flex flex-wrap gap-2">
+          <Button variant="ghost" className="rounded-lg bg-primary px-4 py-1.5 text-[13px] font-medium text-primary-foreground transition-colors hover:bg-primary/90">Default</Button>
+          <Button variant="ghost" className="rounded-lg border border-border px-4 py-1.5 text-[13px] font-medium text-fg transition-colors hover:bg-accent">Outline</Button>
+          <Button variant="ghost" className="rounded-lg px-4 py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-fg">Ghost</Button>
+        </Box>
+        <Box className="flex flex-wrap gap-1.5">
           {[['default','bg-primary/10 text-primary'], ['success','bg-emerald-500/10 text-emerald-600'], ['warning','bg-amber-500/10 text-amber-600'], ['destructive','bg-red-500/10 text-red-500']].map(([v, cls]) => (
             <span key={v} className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold capitalize ${cls}`}>{v}</span>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
     ),
   },
   '@structyl/data-table': {
@@ -813,20 +759,20 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     lang: 'tsx',
     exports: ['DataTable', 'useDataTable', 'createColumnHelper', 'type DataTableColumn', 'type DataTableFilterGroup', 'type DataTableBulkAction', 'type DataTableView', 'DataTablePagination'],
     preview: () => (
-      <div className="w-full overflow-hidden rounded-lg border border-border text-xs">
-        <div className="flex border-b border-border bg-muted/50">
-          {['Name', 'Role', 'Status'].map(h => <div key={h} className="flex-1 px-3 py-2 font-medium text-muted-foreground">{h}</div>)}
-        </div>
+      <Box className="w-full overflow-hidden rounded-lg border border-border text-xs">
+        <Box className="flex border-b border-border bg-muted/50">
+          {['Name', 'Role', 'Status'].map(h => <Box key={h} className="flex-1 px-3 py-2 font-medium text-muted-foreground">{h}</Box>)}
+        </Box>
         {[['Alice Chen', 'Engineer', 'Active'], ['Bob Smith', 'Designer', 'Active'], ['Carol Wu', 'PM', 'Away']].map(([n, r, s]) => (
-          <div key={n} className="flex border-t border-border/60">
-            <div className="flex-1 px-3 py-2 font-medium">{n}</div>
-            <div className="flex-1 px-3 py-2 text-muted-foreground">{r}</div>
-            <div className="flex-1 px-3 py-2">
+          <Box key={n} className="flex border-t border-border/60">
+            <Box className="flex-1 px-3 py-2 font-medium">{n}</Box>
+            <Box className="flex-1 px-3 py-2 text-muted-foreground">{r}</Box>
+            <Box className="flex-1 px-3 py-2">
               <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${s === 'Active' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'}`}>{s}</span>
-            </div>
-          </div>
+            </Box>
+          </Box>
         ))}
-      </div>
+      </Box>
     ),
   },
   '@structyl/icons': {
@@ -835,14 +781,14 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     lang: 'tsx',
     exports: SAMPLE_ICONS.map(I => I.displayName ?? 'Icon').concat(['…1000+ more']),
     preview: () => (
-      <div className="grid grid-cols-4 gap-2">
+      <Box className="grid grid-cols-4 gap-2">
         {SAMPLE_ICONS.map((Icon, i) => (
-          <div key={i} className="flex flex-col items-center gap-1.5 rounded-lg border border-border/50 p-2.5 transition-colors hover:bg-accent/40">
+          <Box key={i} className="flex flex-col items-center gap-1.5 rounded-lg border border-border/50 p-2.5 transition-colors hover:bg-accent/40">
             <Icon className="h-5 w-5 text-muted-foreground" />
             <span className="text-[9px] text-muted-foreground">{Icon.displayName}</span>
-          </div>
+          </Box>
         ))}
-      </div>
+      </Box>
     ),
   },
   '@structyl/cli': {
@@ -940,10 +886,10 @@ const { mutate } = useApiMutation('/users', {
         };
 
         return (
-          <div className="w-full max-w-sm space-y-3 font-sans">
+          <Box className="w-full max-w-sm space-y-3 font-sans">
             {/* Hook status bar */}
-            <div className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-2">
-              <div className="flex items-center gap-2">
+            <Box className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-2">
+              <Box className="flex items-center gap-2">
                 <span className={`h-2 w-2 rounded-full transition-colors ${
                   status === 'loading' ? 'animate-pulse bg-amber-400' :
                   status === 'success' ? 'bg-emerald-400' : 'bg-border'
@@ -952,64 +898,66 @@ const { mutate } = useApiMutation('/users', {
                   {status === 'loading' ? 'useApiQuery › fetching…' :
                    status === 'success' ? `useApiQuery › ${users.length} users` : 'idle'}
                 </span>
-              </div>
-              <button
+              </Box>
+              <Button
+                variant="ghost"
                 onClick={fetchUsers}
                 disabled={status === 'loading'}
                 className="rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-fg disabled:opacity-40"
               >
                 refetch()
-              </button>
-            </div>
+              </Button>
+            </Box>
 
             {/* User list */}
-            <div className="overflow-hidden rounded-lg border border-border">
+            <Box className="overflow-hidden rounded-lg border border-border">
               {status === 'loading' ? (
-                <div className="space-y-px">
+                <Box className="space-y-px">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center gap-3 border-b border-border/60 p-3 last:border-0">
-                      <div className="h-7 w-7 animate-pulse rounded-full bg-muted" />
-                      <div className="flex-1 space-y-1.5">
-                        <div className="h-2.5 w-24 animate-pulse rounded bg-muted" />
-                        <div className="h-2 w-16 animate-pulse rounded bg-muted" />
-                      </div>
-                    </div>
+                    <Box key={i} className="flex items-center gap-3 border-b border-border/60 p-3 last:border-0">
+                      <Box className="h-7 w-7 animate-pulse rounded-full bg-muted" />
+                      <Box className="flex-1 space-y-1.5">
+                        <Box className="h-2.5 w-24 animate-pulse rounded bg-muted" />
+                        <Box className="h-2 w-16 animate-pulse rounded bg-muted" />
+                      </Box>
+                    </Box>
                   ))}
-                </div>
+                </Box>
               ) : users.length === 0 ? (
-                <p className="py-6 text-center text-[12px] text-muted-foreground">No users</p>
+                <Typography as="p" variant="body2" className="py-6 text-center text-[12px] text-muted-foreground">No users</Typography>
               ) : (
-                <div className="divide-y divide-border/60">
+                <Box className="divide-y divide-border/60">
                   {users.map((u) => (
-                    <div key={u.id} className="flex items-center gap-3 p-3">
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
+                    <Box key={u.id} className="flex items-center gap-3 p-3">
+                      <Box className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
                         {u.name[0]}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-medium leading-none">{u.name}</p>
-                        <p className="mt-0.5 text-[11px] text-muted-foreground">{u.role}</p>
-                      </div>
-                      <button
+                      </Box>
+                      <Box className="flex-1 min-w-0">
+                        <Typography as="p" variant="body2" className="text-[13px] font-medium leading-none">{u.name}</Typography>
+                        <Typography as="p" variant="body2" className="mt-0.5 text-[11px] text-muted-foreground">{u.role}</Typography>
+                      </Box>
+                      <Button
+                        variant="ghost"
                         onClick={() => deleteUser(u.id)}
                         disabled={mutating}
                         className="rounded-md px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:bg-red-500/10 hover:text-red-500 disabled:opacity-40"
                       >
                         {selected === u.id && mutating ? '…' : 'delete'}
-                      </button>
-                    </div>
+                      </Button>
+                    </Box>
                   ))}
-                </div>
+                </Box>
               )}
-            </div>
+            </Box>
 
             {/* Mutation status */}
             {mutating && (
-              <div className="flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2">
+              <Box className="flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2">
                 <span className="h-2 w-2 animate-pulse rounded-full bg-amber-400" />
                 <span className="font-mono text-[11px] text-amber-600">useApiMutation › DELETE /users/{selected}</span>
-              </div>
+              </Box>
             )}
-          </div>
+          </Box>
         );
       }
       return <ApiClientDemo />;
@@ -1040,139 +988,138 @@ function PackageCard({ pkg }: { pkg: typeof PACKAGES[number] }) {
   };
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-sm">
+    <Box className="overflow-hidden rounded-xl border border-border bg-card transition-shadow hover:shadow-sm">
       {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-3 p-5">
-        <div>
-          <h3 className="font-mono text-sm font-semibold text-primary">{pkg.name}</h3>
-          <p className="mt-1 text-sm text-muted-foreground">{pkg.description}</p>
-        </div>
-        <button
+      <Box className="flex flex-wrap items-start justify-between gap-3 p-5">
+        <Box>
+          <Typography as="h3" variant="h3" className="font-mono text-sm font-semibold text-primary">{pkg.name}</Typography>
+          <Typography as="p" variant="body2" className="mt-1 text-sm text-muted-foreground">{pkg.description}</Typography>
+        </Box>
+        <Button
+          variant="ghost"
           onClick={copyInstall}
           className="group flex items-center gap-1.5 rounded-lg border border-border/60 bg-muted/30 px-2.5 py-1.5 font-mono text-[11px] text-muted-foreground transition-colors hover:border-border hover:bg-muted hover:text-fg"
         >
           {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
           {pkg.install}
-        </button>
-      </div>
+        </Button>
+      </Box>
 
       {/* Stats row */}
       {extra && (
-        <div className="flex flex-wrap gap-4 border-t border-border/50 bg-muted/20 px-5 py-3">
+        <Box className="flex flex-wrap gap-4 border-t border-border/50 bg-muted/20 px-5 py-3">
           {extra.stats.map(s => (
-            <div key={s.label} className="flex flex-col">
+            <Box key={s.label} className="flex flex-col">
               <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">{s.label}</span>
               <span className="mt-0.5 font-mono text-[13px] font-semibold text-fg">{s.value}</span>
-            </div>
+            </Box>
           ))}
-        </div>
+        </Box>
       )}
 
       {/* Tags */}
-      <div className="flex flex-wrap gap-1.5 px-5 py-3">
+      <Box className="flex flex-wrap gap-1.5 px-5 py-3">
         {pkg.highlights.map(h => (
           <span key={h} className="rounded-full bg-accent px-2.5 py-0.5 text-[11px] text-accent-foreground">{h}</span>
         ))}
-      </div>
+      </Box>
 
       {/* Live preview */}
       {extra?.preview && (() => {
         const PkgPreview = extra.preview!;
         return (
-          <div className="mx-5 mb-4 flex min-h-[100px] items-center justify-center rounded-xl border border-border/60 bg-gradient-to-br from-accent/20 to-transparent p-5">
+          <Box className="mx-5 mb-4 flex min-h-[100px] items-center justify-center rounded-xl border border-border/60 bg-gradient-to-br from-accent/20 to-transparent p-5">
             <PkgPreview />
-          </div>
+          </Box>
         );
       })()}
 
       {/* Expandable code snippet */}
       {extra?.code && (
-        <div className="border-t border-border/50">
-          <button
+        <Box className="border-t border-border/50">
+          <Button
+            variant="ghost"
             onClick={() => setCodeOpen(o => !o)}
             className="flex w-full items-center gap-2 px-5 py-2.5 text-left text-[12px] text-muted-foreground transition-colors hover:bg-muted/30 hover:text-fg"
           >
             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${codeOpen ? 'rotate-180' : ''}`} />
             Usage example
-          </button>
+          </Button>
           {codeOpen && (
-            <div className="border-t border-border/50 bg-[#0d1117]">
-              <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed">
-                <code className="font-mono text-[#c9d1d9]">{extra.code}</code>
-              </pre>
-            </div>
+            <CodeBlock code={extra.code} lang={extra.lang} rounded="none" className="border-0 border-t border-border/50" />
           )}
-        </div>
+        </Box>
       )}
 
       {/* Expandable exports */}
       {extra?.exports && (
-        <div className="border-t border-border/50">
-          <button
+        <Box className="border-t border-border/50">
+          <Button
+            variant="ghost"
             onClick={() => setExportsOpen(o => !o)}
             className="flex w-full items-center gap-2 px-5 py-2.5 text-left text-[12px] text-muted-foreground transition-colors hover:bg-muted/30 hover:text-fg"
           >
             <ChevronDown className={`h-3.5 w-3.5 transition-transform ${exportsOpen ? 'rotate-180' : ''}`} />
             What&apos;s inside ({extra.exports.length})
-          </button>
+          </Button>
           {exportsOpen && (
-            <div className="border-t border-border/50 px-5 py-4">
-              <div className="flex flex-wrap gap-1.5">
+            <Box className="border-t border-border/50 px-5 py-4">
+              <Box className="flex flex-wrap gap-1.5">
                 {extra.exports.map(e => (
                   <code key={e} className="rounded-md border border-border/50 bg-muted/30 px-2 py-0.5 font-mono text-[11px] text-muted-foreground">
                     {e}
                   </code>
                 ))}
-              </div>
-            </div>
+              </Box>
+            </Box>
           )}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 
 function PackagesPage() {
   return (
     <article className="mx-auto max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">Monorepo</p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">Packages</h1>
-      <p className="mt-3 text-base text-muted-foreground">
+      <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">Monorepo</Typography>
+      <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Packages</Typography>
+      <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
         Nine focused, independently-versioned packages. Use one, or all of them.
-      </p>
+      </Typography>
 
       {/* Architecture layers */}
-      <div className="mt-8 overflow-hidden rounded-xl border border-border">
-        <div className="border-b border-border bg-muted/30 px-4 py-2.5">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">Architecture</p>
-        </div>
-        <div className="p-4 space-y-2">
+      <Box className="mt-8 overflow-hidden rounded-xl border border-border">
+        <Box className="border-b border-border bg-muted/30 px-4 py-2.5">
+          <Typography as="p" variant="body2" className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">Architecture</Typography>
+        </Box>
+        <Box className="p-4 space-y-2">
           {ARCH_LAYERS.map(layer => (
-            <div key={layer.label} className="flex items-center gap-3">
+            <Box key={layer.label} className="flex items-center gap-3">
               <span className="w-20 shrink-0 text-right text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">{layer.label}</span>
-              <div className="flex flex-1 flex-wrap gap-1.5">
+              <Box className="flex flex-1 flex-wrap gap-1.5">
                 {layer.pkgs.map(p => (
                   <span key={p} className={`rounded-md border px-2.5 py-1 font-mono text-[11px] font-medium ${layer.color}`}>
                     {p}
                   </span>
                 ))}
-              </div>
-            </div>
+              </Box>
+            </Box>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Package cards */}
-      <div className="mt-8 grid gap-4">
+      <Box className="mt-8 grid gap-4">
         {PACKAGES.map(p => <PackageCard key={p.name} pkg={p} />)}
-      </div>
+      </Box>
 
-      <div className="mt-14 flex justify-end">
+      <Box className="mt-14 flex justify-end">
         <a href="https://github.com/imirfanul/structyl" target="_blank" rel="noreferrer"
           className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
           Edit on GitHub <ArrowUpRight className="h-3 w-3" />
         </a>
-      </div>
+      </Box>
     </article>
   );
 }

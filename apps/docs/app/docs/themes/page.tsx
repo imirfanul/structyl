@@ -1,43 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy, ChevronRight, ArrowUpRight, Sun, Moon, Monitor } from '@structyl/icons';
+import { ChevronRight, ArrowUpRight, Sun, Moon, Monitor } from '@structyl/icons';
 import { useTheme } from '@structyl/themes';
+import { Box, Button, Input, Typography } from '@structyl/styled';
+import { CodeBlock } from '../../../components/code-block';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
-
-function CodeBlock({
-  code,
-  lang,
-  rounded = 'all',
-}: {
-  code: string;
-  lang: string;
-  rounded?: 'all' | 'bottom';
-}) {
-  const [copied, setCopied] = React.useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch { /* ignore */ }
-  };
-  return (
-    <div className={`relative border border-border bg-[#0d1117] ${rounded === 'bottom' ? 'rounded-b-xl border-t-0' : 'rounded-lg'}`}>
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-1.5">
-        <span className="font-mono text-[11px] text-white/40">{lang}</span>
-        <button onClick={copy} className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-white/50 hover:bg-white/10 hover:text-white/90 transition-colors">
-          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
-      <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed">
-        <code className="font-mono text-[#c9d1d9]">{code}</code>
-      </pre>
-    </div>
-  );
-}
 
 function PreviewBlock({
   title,
@@ -54,33 +23,33 @@ function PreviewBlock({
 }) {
   const [tab, setTab] = React.useState<'preview' | 'code'>('preview');
   return (
-    <div className="mt-4">
-      {title && <h4 className="mb-1 text-sm font-semibold">{title}</h4>}
-      {description && <p className="mb-3 text-sm text-muted-foreground">{description}</p>}
-      <div className="flex items-center border-b border-border">
+    <Box className="mt-4">
+      {title && <Typography as="h4" variant="h4" className="mb-1 text-sm font-semibold">{title}</Typography>}
+      {description && <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">{description}</Typography>}
+      <Box className="flex items-center border-b border-border">
         {(['preview', 'code'] as const).map(t => (
-          <button key={t} onClick={() => setTab(t)}
+          <Button key={t} variant="ghost" onClick={() => setTab(t)}
             className={`relative px-3 py-2 text-sm font-medium capitalize transition-colors ${tab === t ? 'text-fg' : 'text-muted-foreground hover:text-fg'}`}>
             {t}
             {tab === t && <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />}
-          </button>
+          </Button>
         ))}
-      </div>
+      </Box>
       {tab === 'preview' ? (
-        <div className="min-h-[160px] overflow-hidden rounded-b-xl border border-t-0 border-border bg-gradient-to-br from-accent/20 to-transparent p-8 flex items-center justify-center">
+        <Box className="min-h-[160px] overflow-hidden rounded-b-xl border border-t-0 border-border bg-gradient-to-br from-accent/20 to-transparent p-8 flex items-center justify-center">
           {children}
-        </div>
+        </Box>
       ) : (
         <CodeBlock code={code} lang={lang} rounded="bottom" />
       )}
-    </div>
+    </Box>
   );
 }
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="mt-12 scroll-mt-24">
-      <h2 className="mb-4 text-2xl font-semibold tracking-tight">{title}</h2>
+      <Typography as="h2" variant="h2" className="mb-4 text-2xl font-semibold tracking-tight">{title}</Typography>
       {children}
     </section>
   );
@@ -88,10 +57,10 @@ function Section({ id, title, children }: { id: string; title: string; children:
 
 function SubSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <div id={id} className="mt-8 scroll-mt-24">
-      <h3 className="mb-3 text-lg font-semibold">{title}</h3>
+    <Box id={id} className="mt-8 scroll-mt-24">
+      <Typography as="h3" variant="h3" className="mb-3 text-lg font-semibold">{title}</Typography>
       {children}
-    </div>
+    </Box>
   );
 }
 
@@ -103,16 +72,16 @@ function Callout({ variant = 'info', children }: { variant?: 'info' | 'warning' 
   };
   const labels = { info: 'NOTE', warning: 'WARNING', tip: 'TIP' };
   return (
-    <div className={`my-4 rounded-lg border px-4 py-3 text-sm ${styles[variant]}`}>
+    <Box className={`my-4 rounded-lg border px-4 py-3 text-sm ${styles[variant]}`}>
       <span className="font-bold mr-2">{labels[variant]}:</span>
       {children}
-    </div>
+    </Box>
   );
 }
 
 function PropsTable({ rows }: { rows: { prop: string; type: string; default?: string; description: string }[] }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-border">
+    <Box className="overflow-hidden rounded-lg border border-border">
       <table className="w-full text-left text-xs">
         <thead className="bg-muted/50 text-muted-foreground">
           <tr>
@@ -133,7 +102,7 @@ function PropsTable({ rows }: { rows: { prop: string; type: string; default?: st
           ))}
         </tbody>
       </table>
-    </div>
+    </Box>
   );
 }
 
@@ -180,76 +149,76 @@ function ThemeSwitcherDemo() {
   const pal = THEME_PALETTES[theme as ThemeName]?.[resolvedMode] ?? THEME_PALETTES.slate.light;
 
   return (
-    <div className="w-full max-w-lg space-y-4 font-sans text-sm">
+    <Box className="w-full max-w-lg space-y-4 font-sans text-sm">
       {/* Controls */}
-      <div className="flex flex-wrap gap-3">
-        <div className="space-y-1">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Theme</p>
-          <div className="flex gap-1">
+      <Box className="flex flex-wrap gap-3">
+        <Box className="space-y-1">
+          <Typography as="p" variant="body2" className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Theme</Typography>
+          <Box className="flex gap-1">
             {themes.map(t => (
-              <button key={t} onClick={() => setTheme(t)}
+              <Button key={t} variant="ghost" onClick={() => setTheme(t)}
                 className={`rounded-lg px-3 py-1.5 text-[12px] font-medium capitalize transition-colors ${theme === t ? 'bg-primary text-primary-foreground' : 'border border-border hover:bg-muted/60'}`}>
                 {t}
-              </button>
+              </Button>
             ))}
-          </div>
-        </div>
-        <div className="space-y-1">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Mode</p>
-          <div className="flex gap-1">
+          </Box>
+        </Box>
+        <Box className="space-y-1">
+          <Typography as="p" variant="body2" className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Mode</Typography>
+          <Box className="flex gap-1">
             {([['light', Sun], ['dark', Moon], ['system', Monitor]] as const).map(([m, Icon]) => (
-              <button key={m} onClick={() => setMode(m as 'light' | 'dark' | 'system')}
+              <Button key={m} variant="ghost" onClick={() => setMode(m as 'light' | 'dark' | 'system')}
                 className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors ${resolvedMode === m || m === 'system' ? 'border border-border hover:bg-muted/60' : 'border border-border hover:bg-muted/60'}`}>
                 <Icon className="h-3.5 w-3.5" /> {m}
-              </button>
+              </Button>
             ))}
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
 
       {/* Mini component preview */}
-      <div className="overflow-hidden rounded-xl border" style={{ borderColor: pal.border, background: pal.bg }}>
+      <Box className="overflow-hidden rounded-xl border" style={{ borderColor: pal.border, background: pal.bg }}>
         {/* Card */}
-        <div className="p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <p className="font-semibold" style={{ color: pal.fg }}>Team members</p>
-            <button className="rounded-lg px-3 py-1 text-[12px] font-medium" style={{ background: pal.primary, color: pal.primaryFg }}>
+        <Box className="p-4 space-y-3">
+          <Box className="flex items-center justify-between">
+            <Typography as="p" variant="body2" className="font-semibold" style={{ color: pal.fg }}>Team members</Typography>
+            <Button variant="ghost" className="rounded-lg px-3 py-1 text-[12px] font-medium" style={{ background: pal.primary, color: pal.primaryFg }}>
               Invite
-            </button>
-          </div>
+            </Button>
+          </Box>
 
           {/* Table rows */}
           {([['Alice Chen', 'Engineer', 'active'], ['Bob Smith', 'Designer', 'away'], ['Carol Wu', 'Product', 'active']] as [string, string, string][]).map(([name, role, status]) => (
-            <div key={name} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: pal.muted }}>
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold" style={{ background: pal.primary, color: pal.primaryFg }}>
+            <Box key={name} className="flex items-center gap-3 rounded-lg px-3 py-2" style={{ background: pal.muted }}>
+              <Box className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold" style={{ background: pal.primary, color: pal.primaryFg }}>
                 {name[0]}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-medium" style={{ color: pal.fg }}>{name}</p>
-                <p className="text-[11px]" style={{ color: pal.mutedFg }}>{role}</p>
-              </div>
+              </Box>
+              <Box className="flex-1 min-w-0">
+                <Typography as="p" variant="body2" className="text-[13px] font-medium" style={{ color: pal.fg }}>{name}</Typography>
+                <Typography as="p" variant="body2" className="text-[11px]" style={{ color: pal.mutedFg }}>{role}</Typography>
+              </Box>
               <span className="rounded-full px-2 py-0.5 text-[10px] font-semibold" style={{
                 background: status === 'active' ? `${pal.success}22` : `${pal.warning}22`,
                 color: status === 'active' ? pal.success : pal.warning,
               }}>
                 {status}
               </span>
-            </div>
+            </Box>
           ))}
 
           {/* Button row */}
-          <div className="flex gap-2 pt-1">
-            <button className="rounded-lg px-3 py-1.5 text-[12px] font-medium" style={{ background: pal.primary, color: pal.primaryFg }}>Save</button>
-            <button className="rounded-lg border px-3 py-1.5 text-[12px] font-medium" style={{ borderColor: pal.border, color: pal.fg }}>Cancel</button>
-            <button className="rounded-lg px-3 py-1.5 text-[12px] font-medium ml-auto" style={{ background: `${pal.destructive}15`, color: pal.destructive }}>Delete</button>
-          </div>
-        </div>
-      </div>
+          <Box className="flex gap-2 pt-1">
+            <Button variant="ghost" className="rounded-lg px-3 py-1.5 text-[12px] font-medium" style={{ background: pal.primary, color: pal.primaryFg }}>Save</Button>
+            <Button variant="ghost" className="rounded-lg border px-3 py-1.5 text-[12px] font-medium" style={{ borderColor: pal.border, color: pal.fg }}>Cancel</Button>
+            <Button variant="ghost" className="rounded-lg px-3 py-1.5 text-[12px] font-medium ml-auto" style={{ background: `${pal.destructive}15`, color: pal.destructive }}>Delete</Button>
+          </Box>
+        </Box>
+      </Box>
 
-      <p className="text-center font-mono text-[10px] text-muted-foreground">
+      <Typography as="p" variant="body2" className="text-center font-mono text-[10px] text-muted-foreground">
         Current: theme=&quot;{theme}&quot; resolvedMode=&quot;{resolvedMode}&quot;
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 }
 
@@ -288,25 +257,25 @@ function TokenPaletteDemo() {
   ];
 
   return (
-    <div className="w-full space-y-4 font-sans text-sm">
+    <Box className="w-full space-y-4 font-sans text-sm">
       {groups.map(g => (
-        <div key={g.label}>
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{g.label}</p>
-          <div className="grid gap-2 sm:grid-cols-2">
+        <Box key={g.label}>
+          <Typography as="p" variant="body2" className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{g.label}</Typography>
+          <Box className="grid gap-2 sm:grid-cols-2">
             {g.tokens.map(t => (
-              <div key={t.name} className="flex items-center gap-3 rounded-lg border border-border/60 bg-muted/20 px-3 py-2">
-                <div className="h-8 w-8 shrink-0 rounded-md border border-border/60 shadow-sm" style={{ background: t.value }} />
-                <div className="min-w-0 flex-1">
-                  <p className="font-mono text-[11px] font-medium">{t.name}</p>
-                  <p className="font-mono text-[10px] text-muted-foreground">{t.cssVar}</p>
-                </div>
+              <Box key={t.name} className="flex items-center gap-3 rounded-lg border border-border/60 bg-muted/20 px-3 py-2">
+                <Box className="h-8 w-8 shrink-0 rounded-md border border-border/60 shadow-sm" style={{ background: t.value }} />
+                <Box className="min-w-0 flex-1">
+                  <Typography as="p" variant="body2" className="font-mono text-[11px] font-medium">{t.name}</Typography>
+                  <Typography as="p" variant="body2" className="font-mono text-[10px] text-muted-foreground">{t.cssVar}</Typography>
+                </Box>
                 <code className="shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">{t.tailwind}</code>
-              </div>
+              </Box>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 }
 
@@ -367,20 +336,20 @@ const myTheme: ThemeConfig = {
 };`;
 
   return (
-    <div className="w-full space-y-4 font-sans text-sm">
+    <Box className="w-full space-y-4 font-sans text-sm">
       {/* Controls */}
-      <div className="flex flex-wrap gap-4">
+      <Box className="flex flex-wrap gap-4">
         <label className="flex flex-col gap-1">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Primary color</span>
-          <div className="flex items-center gap-2">
+          <Box className="flex items-center gap-2">
             <input type="color" value={primaryHex} onChange={e => setPrimaryHex(e.target.value)}
               className="h-8 w-8 cursor-pointer rounded border border-border bg-transparent p-0.5" />
             <code className="font-mono text-[12px]">{primaryHex}</code>
-          </div>
+          </Box>
         </label>
         <label className="flex flex-col gap-1">
           <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Brand name</span>
-          <input value={name} onChange={e => setName(e.target.value)}
+          <Input size="sm" value={name} onChange={e => setName(e.target.value)}
             className="h-8 rounded-md border border-border bg-muted/30 px-2 text-[12px] outline-none focus:border-ring/40 focus:ring-2 focus:ring-ring/20" />
         </label>
         <label className="flex flex-col gap-1">
@@ -390,29 +359,29 @@ const myTheme: ThemeConfig = {
             {['0rem', '0.25rem', '0.5rem', '0.75rem', '1rem', '1.5rem'].map(r => <option key={r}>{r}</option>)}
           </select>
         </label>
-      </div>
+      </Box>
 
       {/* Mini preview */}
-      <div className="overflow-hidden rounded-xl border border-border bg-white">
-        <div className="border-b border-gray-100 px-4 py-2.5 flex items-center gap-2" style={{ background: primaryHex }}>
-          <div className="h-5 w-5 rounded font-bold text-[10px] flex items-center justify-center" style={{ background: fgHex+'22', color: fgHex }}>
+      <Box className="overflow-hidden rounded-xl border border-border bg-white">
+        <Box className="border-b border-gray-100 px-4 py-2.5 flex items-center gap-2" style={{ background: primaryHex }}>
+          <Box className="h-5 w-5 rounded font-bold text-[10px] flex items-center justify-center" style={{ background: fgHex+'22', color: fgHex }}>
             {name[0]?.toUpperCase()}
-          </div>
+          </Box>
           <span className="text-[12px] font-semibold" style={{ color: fgHex }}>{name}</span>
-        </div>
-        <div className="p-4 space-y-3">
-          <div className="flex gap-2">
-            <button className="px-3 py-1.5 text-[12px] font-medium" style={{ background: primaryHex, color: fgHex, borderRadius: radius }}>
+        </Box>
+        <Box className="p-4 space-y-3">
+          <Box className="flex gap-2">
+            <Button variant="ghost" className="px-3 py-1.5 text-[12px] font-medium" style={{ background: primaryHex, color: fgHex, borderRadius: radius }}>
               Primary
-            </button>
-            <button className="px-3 py-1.5 text-[12px] font-medium border text-gray-700" style={{ borderColor: primaryHex, color: primaryHex, borderRadius: radius }}>
+            </Button>
+            <Button variant="ghost" className="px-3 py-1.5 text-[12px] font-medium border text-gray-700" style={{ borderColor: primaryHex, color: primaryHex, borderRadius: radius }}>
               Outlined
-            </button>
-            <button className="px-3 py-1.5 text-[12px] font-medium text-gray-500 hover:bg-gray-50" style={{ borderRadius: radius }}>
+            </Button>
+            <Button variant="ghost" className="px-3 py-1.5 text-[12px] font-medium text-gray-500 hover:bg-gray-50" style={{ borderRadius: radius }}>
               Ghost
-            </button>
-          </div>
-          <div className="flex gap-1.5">
+            </Button>
+          </Box>
+          <Box className="flex gap-1.5">
             {['Active', 'Pending', 'Error'].map((label, i) => (
               <span key={label} className="px-2 py-0.5 text-[10px] font-semibold rounded-full" style={{
                 background: [primaryHex+'22', '#f59e0b22', '#ef444422'][i],
@@ -421,37 +390,37 @@ const myTheme: ThemeConfig = {
                 {label}
               </span>
             ))}
-          </div>
-          <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2">
-            <div className="h-2 w-2 rounded-full" style={{ background: primaryHex }} />
+          </Box>
+          <Box className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2">
+            <Box className="h-2 w-2 rounded-full" style={{ background: primaryHex }} />
             <span className="text-[11px] text-gray-600">Token: <code className="font-mono" style={{ color: primaryHex }}>--color-primary: {hsl}</code></span>
-          </div>
-        </div>
-      </div>
+          </Box>
+        </Box>
+      </Box>
 
       {/* Generated code */}
       <CodeBlock lang="ts" code={themeCode} />
-    </div>
+    </Box>
   );
 }
 
 function ModeToggleDemo() {
   const { resolvedMode, setMode } = useTheme();
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex overflow-hidden rounded-xl border border-border">
+    <Box className="flex flex-col items-center gap-4">
+      <Box className="flex overflow-hidden rounded-xl border border-border">
         {([['light', Sun, 'Light'], ['dark', Moon, 'Dark'], ['system', Monitor, 'System']] as const).map(([m, Icon, label]) => (
-          <button key={m} onClick={() => setMode(m)}
+          <Button key={m} variant="ghost" onClick={() => setMode(m)}
             className={`flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium transition-colors ${resolvedMode === m ? 'bg-primary text-primary-foreground' : 'hover:bg-muted/60 text-muted-foreground'}`}>
             <Icon className="h-4 w-4" />
             {label}
-          </button>
+          </Button>
         ))}
-      </div>
-      <p className="font-mono text-[11px] text-muted-foreground">
+      </Box>
+      <Typography as="p" variant="body2" className="font-mono text-[11px] text-muted-foreground">
         resolvedMode = &quot;{resolvedMode}&quot;
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 }
 
@@ -489,7 +458,7 @@ export default function ThemesDocsPage() {
   }, []);
 
   return (
-    <div className="flex gap-12">
+    <Box className="flex gap-12">
       <article className="min-w-0 flex-1">
 
         {/* Header */}
@@ -501,55 +470,55 @@ export default function ThemesDocsPage() {
           <span className="font-medium text-fg">@structyl/themes</span>
         </nav>
 
-        <div id="overview" className="scroll-mt-20">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-4xl font-semibold tracking-tight">Themes</h1>
+        <Box id="overview" className="scroll-mt-20">
+          <Box className="flex flex-wrap items-center gap-3">
+            <Typography as="h1" variant="h1" className="text-4xl font-semibold tracking-tight">Themes</Typography>
             <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-600">stable</span>
-          </div>
-          <p className="mt-3 text-base text-muted-foreground">
+          </Box>
+          <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
             Runtime theming via CSS custom properties. Switch themes and color modes with zero flash,
             full TypeScript support, SSR compatibility, and automatic localStorage persistence.
-          </p>
+          </Typography>
 
           {/* How it works */}
-          <div className="mt-6 overflow-hidden rounded-xl border border-border">
-            <div className="border-b border-border bg-muted/30 px-4 py-2.5">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">How it works</p>
-            </div>
-            <div className="grid gap-px bg-border sm:grid-cols-3">
+          <Box className="mt-6 overflow-hidden rounded-xl border border-border">
+            <Box className="border-b border-border bg-muted/30 px-4 py-2.5">
+              <Typography as="p" variant="body2" className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">How it works</Typography>
+            </Box>
+            <Box className="grid gap-px bg-border sm:grid-cols-3">
               {[
                 ['1. Tokens as CSS vars', 'ThemeProvider writes --color-* variables on <html> whenever theme or mode changes.'],
                 ['2. Tailwind reads vars', 'The Tailwind preset maps every utility class (bg-primary, text-muted-foreground, etc.) to the corresponding CSS variable.'],
                 ['3. Components stay static', 'Components use only Tailwind classes — they never need to know which theme is active.'],
               ].map(([title, desc]) => (
-                <div key={title} className="bg-card p-4">
-                  <p className="text-[13px] font-semibold">{title}</p>
-                  <p className="mt-1 text-[12px] text-muted-foreground">{desc}</p>
-                </div>
+                <Box key={title} className="bg-card p-4">
+                  <Typography as="p" variant="body2" className="text-[13px] font-semibold">{title}</Typography>
+                  <Typography as="p" variant="body2" className="mt-1 text-[12px] text-muted-foreground">{desc}</Typography>
+                </Box>
               ))}
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           {/* Built-in themes */}
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <Box className="mt-6 grid gap-3 sm:grid-cols-2">
             {(Object.entries(THEME_DESCRIPTIONS) as [ThemeName, string][]).map(([t, desc]) => {
               const pal = THEME_PALETTES[t].light;
               return (
-                <div key={t} className="flex gap-3 rounded-xl border border-border p-4">
-                  <div className="flex shrink-0 gap-1.5">
+                <Box key={t} className="flex gap-3 rounded-xl border border-border p-4">
+                  <Box className="flex shrink-0 gap-1.5">
                     {[pal.primary, pal.success, pal.destructive, pal.warning].map((c, i) => (
-                      <div key={i} className="h-8 w-8 rounded-lg" style={{ background: c }} />
+                      <Box key={i} className="h-8 w-8 rounded-lg" style={{ background: c }} />
                     ))}
-                  </div>
-                  <div>
-                    <p className="font-mono text-[13px] font-semibold capitalize">{t}</p>
-                    <p className="mt-0.5 text-[12px] text-muted-foreground">{desc}</p>
-                  </div>
-                </div>
+                  </Box>
+                  <Box>
+                    <Typography as="p" variant="body2" className="font-mono text-[13px] font-semibold capitalize">{t}</Typography>
+                    <Typography as="p" variant="body2" className="mt-0.5 text-[12px] text-muted-foreground">{desc}</Typography>
+                  </Box>
+                </Box>
               );
             })}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* ── Setup ──────────────────────────────────────────────────── */}
         <Section id="setup" title="Setup">
@@ -558,10 +527,10 @@ export default function ThemesDocsPage() {
           </SubSection>
 
           <SubSection id="provider" title="2. Wrap your app">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
               Place <code className="rounded bg-muted px-1 text-[12px]">ThemeProvider</code> at the root of your app —
               above any component that reads theme tokens or calls <code className="rounded bg-muted px-1 text-[12px]">useTheme</code>.
-            </p>
+            </Typography>
             <CodeBlock lang="tsx" code={`// app/layout.tsx  (Next.js App Router)
 import { ThemeProvider } from '@structyl/themes';
 
@@ -591,11 +560,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </SubSection>
 
           <SubSection id="tailwind" title="3. Add the Tailwind preset">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
               The preset maps every theme token to a Tailwind utility class so you can write
               <code className="rounded bg-muted px-1 mx-1 text-[12px]">bg-primary</code> instead of
               <code className="rounded bg-muted px-1 mx-1 text-[12px]">bg-[hsl(var(--color-primary))]</code>.
-            </p>
+            </Typography>
             <CodeBlock lang="ts" code={`// tailwind.config.ts
 import type { Config } from 'tailwindcss';
 import structylPreset from '@structyl/styled/tailwind-preset'; // or your own
@@ -609,11 +578,11 @@ export default {
 
         {/* ── Theme switching ─────────────────────────────────────────── */}
         <Section id="theme-switching" title="Theme switching">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             Call <code className="rounded bg-muted px-1 text-[12px]">setTheme(name)</code> from{' '}
             <code className="rounded bg-muted px-1 text-[12px]">useTheme()</code> to switch the active palette at runtime.
             All CSS variables update instantly — no page reload needed.
-          </p>
+          </Typography>
           <CodeBlock lang="tsx" code={`import { useTheme } from '@structyl/themes';
 
 function ThemePicker() {
@@ -648,7 +617,7 @@ function ThemePicker() {
 
         {/* ── Dark / light mode ──────────────────────────────────────── */}
         <Section id="mode-switching" title="Dark / light mode">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             Each theme ships a complete light and dark token set.{' '}
             <code className="rounded bg-muted px-1 text-[12px]">mode</code> can be{' '}
             <code className="rounded bg-muted px-1 text-[12px]">&apos;light&apos;</code>,{' '}
@@ -657,7 +626,7 @@ function ThemePicker() {
             <code className="rounded bg-muted px-1 text-[12px]">prefers-color-scheme</code>).
             The resolved mode is always either <code className="rounded bg-muted px-1 text-[12px]">&apos;light&apos;</code> or{' '}
             <code className="rounded bg-muted px-1 text-[12px]">&apos;dark&apos;</code>.
-          </p>
+          </Typography>
           <CodeBlock lang="tsx" code={`import { useTheme } from '@structyl/themes';
 import { Sun, Moon, Monitor } from '@structyl/icons';
 
@@ -692,21 +661,21 @@ function ModePicker() {
 
         {/* ── Token palette ───────────────────────────────────────────── */}
         <Section id="token-palette" title="Token palette">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             Every token is a CSS custom property on <code className="rounded bg-muted px-1 text-[12px]">:root</code>.
             The values below update live as you switch themes above.
-          </p>
+          </Typography>
           <TokenPaletteDemo />
         </Section>
 
         {/* ── Token reference ─────────────────────────────────────────── */}
         <Section id="token-reference" title="Token reference">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             All tokens follow the naming convention{' '}
             <code className="rounded bg-muted px-1 text-[12px]">--color-{'{name}'}</code> and accept HSL channel values
             (<code className="rounded bg-muted px-1 text-[12px]">H S% L%</code>) so Tailwind can apply opacity modifiers
             like <code className="rounded bg-muted px-1 text-[12px]">bg-primary/50</code>.
-          </p>
+          </Typography>
 
           {[
             {
@@ -763,10 +732,10 @@ function ModePicker() {
               ],
             },
           ].map(({ group, desc, rows }) => (
-            <div key={group} className="mt-6">
-              <h3 className="text-base font-semibold">{group}</h3>
-              <p className="mb-3 mt-1 text-sm text-muted-foreground">{desc}</p>
-              <div className="overflow-hidden rounded-lg border border-border">
+            <Box key={group} className="mt-6">
+              <Typography as="h3" variant="h3" className="text-base font-semibold">{group}</Typography>
+              <Typography as="p" variant="body2" className="mb-3 mt-1 text-sm text-muted-foreground">{desc}</Typography>
+              <Box className="overflow-hidden rounded-lg border border-border">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-muted/50 text-muted-foreground">
                     <tr>
@@ -785,15 +754,15 @@ function ModePicker() {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
+              </Box>
+            </Box>
           ))}
 
           <SubSection id="using-tailwind" title="Using tokens in Tailwind">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
               All theme tokens map directly to Tailwind utility classes. Use opacity modifiers freely
               — they work because the tokens are HSL channel values (no <code className="rounded bg-muted px-1 text-[12px]">hsl()</code> wrapper).
-            </p>
+            </Typography>
             <CodeBlock lang="tsx" code={`// Surfaces
 <div className="bg-bg text-fg" />
 <div className="bg-card text-card-foreground rounded-xl border border-border" />
@@ -851,14 +820,14 @@ document.documentElement.style.setProperty('--color-primary', '270 60% 50%');`} 
 
         {/* ── Custom themes ────────────────────────────────────────────── */}
         <Section id="custom-themes" title="Custom themes">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             Create a <code className="rounded bg-muted px-1 text-[12px]">ThemeConfig</code> object with{' '}
             <code className="rounded bg-muted px-1 text-[12px]">light</code> and{' '}
             <code className="rounded bg-muted px-1 text-[12px]">dark</code> token maps, then pass it to{' '}
             <code className="rounded bg-muted px-1 text-[12px]">ThemeProvider</code> via the{' '}
             <code className="rounded bg-muted px-1 text-[12px]">themes</code> prop. All values are HSL channel
             strings: <code className="rounded bg-muted px-1 text-[12px]">&quot;H S% L%&quot;</code>.
-          </p>
+          </Typography>
 
           <PreviewBlock
             title="Interactive theme builder"
@@ -874,10 +843,10 @@ const myTheme: ThemeConfig = {
           </PreviewBlock>
 
           <SubSection id="extend-theme" title="Extending a built-in theme">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
               Only override the tokens you need — spread from a built-in theme to inherit everything else.
               This is the easiest way to create a branded variant.
-            </p>
+            </Typography>
             <CodeBlock lang="ts" code={`import { defaultThemes } from '@structyl/themes';
 import type { ThemeConfig } from '@structyl/themes';
 
@@ -930,10 +899,10 @@ function ThemePicker() {
           </SubSection>
 
           <SubSection id="component-theme" title="Per-component overrides">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
               You can scope a theme to a subtree by writing the CSS variables directly on a wrapper element.
               This is useful for marketing sections with a different brand color from the rest of the app.
-            </p>
+            </Typography>
             <CodeBlock lang="tsx" code={`// Scoped inline override — no ThemeProvider needed
 function HeroBanner() {
   return (
@@ -956,14 +925,14 @@ function HeroBanner() {
 
         {/* ── SSR ──────────────────────────────────────────────────────── */}
         <Section id="ssr" title="SSR & flash prevention">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             Without special handling, server-rendered HTML always uses the default theme.
             When the client hydrates and reads localStorage, it switches — causing a visible flash.
             <code className="rounded bg-muted px-1 mx-1 text-[12px]">ThemeScript</code> prevents this by
             injecting an inline script that reads localStorage and sets the correct{' '}
             <code className="rounded bg-muted px-1 text-[12px]">data-theme</code> attribute{' '}
             <strong>before</strong> the browser paints.
-          </p>
+          </Typography>
           <CodeBlock lang="tsx" code={`// app/layout.tsx — Next.js App Router
 import { ThemeProvider, ThemeScript } from '@structyl/themes';
 
@@ -997,12 +966,12 @@ export default function RootLayout({ children }) {
 
         {/* ── Storage ──────────────────────────────────────────────────── */}
         <Section id="storage" title="Persistence & storage">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             By default, the chosen theme and mode are persisted to{' '}
             <code className="rounded bg-muted px-1 text-[12px]">localStorage</code> under the key{' '}
             <code className="rounded bg-muted px-1 text-[12px]">structyl-theme</code> as
             <code className="rounded bg-muted px-1 mx-1 text-[12px]">{`{ theme, mode }`}</code>.
-          </p>
+          </Typography>
           <CodeBlock lang="ts" code={`// Disable persistence (e.g. for theme preview / demo components)
 <ThemeProvider storageKey={false}>
   {children}
@@ -1034,8 +1003,8 @@ export default function RootLayout({ children }) {
           </SubSection>
 
           <SubSection id="ref-use-theme" title="useTheme()">
-            <p className="mb-3 text-sm text-muted-foreground">Must be called inside a <code className="rounded bg-muted px-1 text-[12px]">ThemeProvider</code>.</p>
-            <div className="overflow-hidden rounded-lg border border-border">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">Must be called inside a <code className="rounded bg-muted px-1 text-[12px]">ThemeProvider</code>.</Typography>
+            <Box className="overflow-hidden rounded-lg border border-border">
               <table className="w-full text-left text-xs">
                 <thead className="bg-muted/50 text-muted-foreground">
                   <tr>
@@ -1061,7 +1030,7 @@ export default function RootLayout({ children }) {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </Box>
           </SubSection>
 
           <SubSection id="ref-theme-script" title="ThemeScript">
@@ -1102,7 +1071,7 @@ interface ThemeTokens {
         </Section>
 
         {/* Footer */}
-        <div className="mt-14 flex items-center justify-between">
+        <Box className="mt-14 flex items-center justify-between">
           <a href="/themes" className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Open themes playground <ArrowUpRight className="h-3 w-3" />
           </a>
@@ -1110,13 +1079,13 @@ interface ThemeTokens {
             className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Edit on GitHub <ArrowUpRight className="h-3 w-3" />
           </a>
-        </div>
+        </Box>
       </article>
 
       {/* ── TOC ───────────────────────────────────────────────────────── */}
       <aside className="hidden w-[180px] shrink-0 xl:block">
-        <div className="sticky top-[76px]">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">On this page</p>
+        <Box className="sticky top-[76px]">
+          <Typography as="p" variant="body2" className="mb-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">On this page</Typography>
           <nav className="space-y-0.5">
             {TOC.map(({ id, title }) => (
               <a key={id} href={`#${id}`}
@@ -1127,8 +1096,8 @@ interface ThemeTokens {
               </a>
             ))}
           </nav>
-        </div>
+        </Box>
       </aside>
-    </div>
+    </Box>
   );
 }

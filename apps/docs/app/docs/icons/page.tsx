@@ -3,7 +3,7 @@
 import * as React from 'react';
 import * as StructylIcons from '@structyl/icons';
 import { Search, X, Copy, Check } from '@structyl/icons';
-import { Button } from '@structyl/styled';
+import { Box, Button, Input, Typography } from '@structyl/styled';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types & constants
@@ -116,18 +116,18 @@ function CodeSnippet({ title, code }: { title: string; code: string }) {
     try { await navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* */ }
   };
   return (
-    <div className="overflow-hidden rounded-xl border border-border">
-      <div className="flex items-center justify-between border-b border-border/50 bg-muted/30 px-3.5 py-2">
+    <Box className="overflow-hidden rounded-xl border border-border">
+      <Box className="flex items-center justify-between border-b border-border/50 bg-muted/30 px-3.5 py-2">
         <span className="font-mono text-[11px] font-medium text-muted-foreground">{title}</span>
-        <button onClick={copy} className="flex items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">
+        <Button variant="ghost" onClick={copy} className="flex items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">
           {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
           {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
+        </Button>
+      </Box>
       <pre className="overflow-x-auto bg-muted/10 px-4 py-3 font-mono text-[12px] leading-relaxed text-fg">
         <code>{code}</code>
       </pre>
-    </div>
+    </Box>
   );
 }
 
@@ -156,8 +156,8 @@ function IconModal({
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm" aria-hidden onClick={onClose} />
-      <div
+      <Box className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm" aria-hidden onClick={onClose} />
+      <Box
         ref={ref}
         role="dialog"
         aria-modal="true"
@@ -166,35 +166,36 @@ function IconModal({
         className="fixed left-1/2 top-1/2 z-50 w-full max-w-md -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-border bg-bg shadow-2xl outline-none"
       >
         {/* Header */}
-        <div className="flex items-start justify-between px-5 py-4">
-          <div>
-            <div className="flex items-center gap-2">
+        <Box className="flex items-start justify-between px-5 py-4">
+          <Box>
+            <Box className="flex items-center gap-2">
               <span className="font-mono text-[15px] font-semibold">{name}</span>
               <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">{category}</span>
-            </div>
-            <p className="mt-0.5 text-[11px] text-muted-foreground">@structyl/icons · lucide-react</p>
-          </div>
-          <button onClick={onClose} aria-label="Close" className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-fg">
+            </Box>
+            <Typography as="p" variant="body2" className="mt-0.5 text-[11px] text-muted-foreground">@structyl/icons · lucide-react</Typography>
+          </Box>
+          <Button variant="ghost" onClick={onClose} aria-label="Close" className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-fg">
             <X className="h-4 w-4" />
-          </button>
-        </div>
+          </Button>
+        </Box>
 
         {/* Preview */}
-        <div className="border-y border-border/50 bg-muted/10 px-5 py-6">
-          <div className="mb-5 flex items-end justify-center gap-5">
+        <Box className="border-y border-border/50 bg-muted/10 px-5 py-6">
+          <Box className="mb-5 flex items-end justify-center gap-5">
             {([16, 24, 32, 48] as const).map((sz) => (
-              <div key={sz} className="flex flex-col items-center gap-2">
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-border/60 bg-bg">
+              <Box key={sz} className="flex flex-col items-center gap-2">
+                <Box className="flex h-14 w-14 items-center justify-center rounded-xl border border-border/60 bg-bg">
                   <StyledIcon Component={Component} style={style} size={sz} />
-                </div>
+                </Box>
                 <span className="font-mono text-[10px] tabular-nums text-muted-foreground">{sz}px</span>
-              </div>
+              </Box>
             ))}
-          </div>
+          </Box>
           {/* Style picker */}
-          <div className="flex flex-wrap justify-center gap-1.5">
+          <Box className="flex flex-wrap justify-center gap-1.5">
             {STYLES.map((s) => (
-              <button
+              <Button
+                variant="ghost"
                 key={s}
                 onClick={() => onStyleChange(s)}
                 className={`rounded-lg border px-3 py-1 text-[11px] font-medium transition-colors ${
@@ -204,30 +205,31 @@ function IconModal({
                 }`}
               >
                 {s}
-              </button>
+              </Button>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* Code */}
-        <div className="space-y-2.5 px-5 py-4">
+        <Box className="space-y-2.5 px-5 py-4">
           <CodeSnippet title="Import" code={importCode} />
           <CodeSnippet title="Usage" code={usageCode} />
           {styledCode && <CodeSnippet title={`${style} variant`} code={styledCode} />}
-        </div>
+        </Box>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t border-border/50 bg-muted/10 px-5 py-3">
+        <Box className="flex items-center justify-between border-t border-border/50 bg-muted/10 px-5 py-3">
           <span className="font-mono text-[11px] text-muted-foreground">{name}</span>
-          <button
+          <Button
+            variant="ghost"
             onClick={copyImport}
             className="flex items-center gap-1.5 rounded-lg border border-border bg-bg px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:text-fg"
           >
             {copiedImport ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
             {copiedImport ? 'Copied!' : 'Copy import'}
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Box>
+      </Box>
     </>
   );
 }
@@ -283,28 +285,28 @@ export default function IconsPage() {
   }, [selected]);
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <Box className="mx-auto max-w-5xl">
 
       {/* Page header */}
-      <div className="mb-8 border-b border-border/40 pb-6">
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@structyl/icons</p>
-        <h1 className="text-[28px] font-semibold tracking-tight">Icons</h1>
-        <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+      <Box className="mb-8 border-b border-border/40 pb-6">
+        <Typography as="p" variant="body2" className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@structyl/icons</Typography>
+        <Typography as="h1" variant="h1" className="text-[28px] font-semibold tracking-tight">Icons</Typography>
+        <Typography as="p" variant="body2" className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
           {REGISTRY.length.toLocaleString()} icons from{' '}
           <a href="https://lucide.dev" target="_blank" rel="noopener noreferrer" className="text-fg underline underline-offset-2 decoration-border hover:decoration-fg transition-colors">
             lucide-react
           </a>
           . Five visual styles. Click any icon to copy usage code.
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
       {/* ── Sticky controls ─────────────────────────────────────────────── */}
-      <div className="sticky top-[52px] z-20 -mx-6 mb-4 border-b border-border/50 bg-bg/95 px-6 pb-3 pt-3 backdrop-blur-md md:-mx-10 md:px-10 lg:-mx-14 lg:px-14">
+      <Box className="sticky top-[52px] z-20 -mx-6 mb-4 border-b border-border/50 bg-bg/95 px-6 pb-3 pt-3 backdrop-blur-md md:-mx-10 md:px-10 lg:-mx-14 lg:px-14">
         {/* Search + style switcher row */}
-        <div className="mb-2.5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
-          <div className="relative flex-1">
+        <Box className="mb-2.5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
+          <Box className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
-            <input
+            <Input
               ref={searchRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -312,15 +314,16 @@ export default function IconsPage() {
               className="h-9 w-full rounded-xl border border-border/70 bg-muted/20 pl-9 pr-8 text-sm outline-none placeholder:text-muted-foreground/50 focus-visible:border-ring/50 focus-visible:ring-2 focus-visible:ring-ring/20 transition-shadow"
             />
             {query && (
-              <button onClick={() => setQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-fg">
+              <Button variant="ghost" onClick={() => setQuery('')} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-fg">
                 <X className="h-3.5 w-3.5" />
-              </button>
+              </Button>
             )}
-          </div>
+          </Box>
           {/* Style switcher */}
-          <div className="flex shrink-0 items-center rounded-xl border border-border/70 bg-muted/20 p-0.5">
+          <Box className="flex shrink-0 items-center rounded-xl border border-border/70 bg-muted/20 p-0.5">
             {STYLES.map((s) => (
-              <button
+              <Button
+                variant="ghost"
                 key={s}
                 onClick={() => setActiveStyle(s)}
                 className={`rounded-[9px] px-3 py-1.5 text-[12px] font-medium transition-all ${
@@ -328,18 +331,19 @@ export default function IconsPage() {
                 }`}
               >
                 {s}
-              </button>
+              </Button>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* Category chips */}
-        <div className="flex gap-1.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none]">
+        <Box className="flex gap-1.5 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none]">
           {CAT_NAMES.map((cat) => {
             const count = catCounts[cat] ?? 0;
             const active = activeCategory === cat;
             return (
-              <button
+              <Button
+                variant="ghost"
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
                 className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-medium transition-colors ${
@@ -354,35 +358,36 @@ export default function IconsPage() {
                     {count}
                   </span>
                 )}
-              </button>
+              </Button>
             );
           })}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Count line */}
-      <p className="mb-3 text-[12px] text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-3 text-[12px] text-muted-foreground">
         {filtered.length === REGISTRY.length
           ? `${REGISTRY.length.toLocaleString()} icons`
           : `${filtered.length.toLocaleString()} of ${REGISTRY.length.toLocaleString()}`}
         {activeCategory !== 'All' && ` in ${activeCategory}`}
         {query && ` matching "${query}"`}
-      </p>
+      </Typography>
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center">
+        <Box className="flex flex-col items-center justify-center py-20 text-center">
           <Search className="mb-3 h-8 w-8 text-muted-foreground/30" />
-          <p className="text-sm font-medium">No icons found</p>
-          <p className="mt-1 text-xs text-muted-foreground">Try a different term or category</p>
+          <Typography as="p" variant="body2" className="text-sm font-medium">No icons found</Typography>
+          <Typography as="p" variant="body2" className="mt-1 text-xs text-muted-foreground">Try a different term or category</Typography>
           <Button variant="ghost" size="sm" className="mt-4" onClick={() => { setQuery(''); setActiveCategory('All'); }}>
             Clear filters
           </Button>
-        </div>
+        </Box>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(84px,1fr))] overflow-hidden rounded-xl border border-border/50">
+        <Box className="grid grid-cols-[repeat(auto-fill,minmax(84px,1fr))] overflow-hidden rounded-xl border border-border/50">
           {filtered.map(({ name, Component, category }) => (
-            <button
+            <Button
+              variant="ghost"
               key={name}
               onClick={() => setSelected({ name, Component, category })}
               title={name}
@@ -392,9 +397,9 @@ export default function IconsPage() {
               <span className="w-full truncate text-[9.5px] leading-snug text-muted-foreground transition-colors group-hover:text-fg">
                 {name}
               </span>
-            </button>
+            </Button>
           ))}
-        </div>
+        </Box>
       )}
 
       {/* Modal */}
@@ -406,6 +411,6 @@ export default function IconsPage() {
           onClose={() => setSelected(null)}
         />
       )}
-    </div>
+    </Box>
   );
 }

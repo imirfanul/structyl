@@ -1,7 +1,9 @@
 'use client';
 
 import * as React from 'react';
+import { Box, Button, Typography } from '@structyl/styled';
 import { Copy, Check } from '@structyl/icons';
+import { CodeBlock } from '../../../components/code-block';
 
 /* ── Token definitions ───────────────────────────────────────────────── */
 
@@ -100,9 +102,9 @@ const TOKEN_GROUPS: TokenGroup[] = [
 
 function Swatch({ cssVar }: { cssVar: string }) {
   return (
-    <div className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-border/60 shadow-sm">
+    <Box className="relative flex h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-border/60 shadow-sm">
       {/* Checkerboard for transparent colors */}
-      <div
+      <Box
         className="absolute inset-0"
         style={{
           backgroundImage:
@@ -110,11 +112,11 @@ function Swatch({ cssVar }: { cssVar: string }) {
           backgroundSize: '8px 8px',
         }}
       />
-      <div
+      <Box
         className="absolute inset-0 rounded-lg"
         style={{ background: `hsl(var(${cssVar}))` }}
       />
-    </div>
+    </Box>
   );
 }
 
@@ -130,13 +132,14 @@ function CopyButton({ text }: { text: string }) {
     } catch { /* ignore */ }
   };
   return (
-    <button
+    <Button
+      variant="ghost"
       onClick={copy}
       className="ml-auto flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-muted-foreground opacity-0 transition-all group-hover:opacity-100 hover:bg-muted hover:text-fg"
     >
       {copied ? <Check className="h-3 w-3 text-success" /> : <Copy className="h-3 w-3" />}
       {copied ? 'Copied' : 'Copy'}
-    </button>
+    </Button>
   );
 }
 
@@ -145,42 +148,38 @@ function CopyButton({ text }: { text: string }) {
 export default function DesignTokensPage() {
   return (
     <article className="mx-auto max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">Design tokens</h1>
-      <p className="mt-3 text-base text-muted-foreground">
+      <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</Typography>
+      <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Design tokens</Typography>
+      <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
         All design tokens are CSS custom properties injected by{' '}
         <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-[13px]">ThemeProvider</code>
         . They automatically update when the theme or color mode changes.
-      </p>
+      </Typography>
 
       {/* Usage */}
       <section className="mt-10">
-        <h2 className="mb-3 text-xl font-semibold tracking-tight">Usage</h2>
-        <p className="mb-4 text-sm text-muted-foreground">
+        <Typography as="h2" variant="h2" className="mb-3 text-xl font-semibold tracking-tight">Usage</Typography>
+        <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
           Tokens are available as CSS custom properties and as Tailwind utility classes through the
           preset.
-        </p>
-        <div className="overflow-hidden rounded-lg border border-border bg-[#0d1117]">
-          <div className="border-b border-white/10 px-3 py-1.5">
-            <span className="font-mono text-[11px] text-white/40">css / tailwind</span>
-          </div>
-          <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed">
-            <code className="font-mono text-[#c9d1d9]">{`/* CSS custom property */
+        </Typography>
+        <CodeBlock
+          lang="css / tailwind"
+          code={`/* CSS custom property */
 background: hsl(var(--color-primary));
 
 /* Tailwind class */
-<div className="bg-primary text-primary-fg" />`}</code>
-          </pre>
-        </div>
+<div className="bg-primary text-primary-fg" />`}
+        />
       </section>
 
       {/* Token groups */}
       {TOKEN_GROUPS.map((group) => (
         <section key={group.label} className="mt-10">
-          <h2 className="mb-1 text-xl font-semibold tracking-tight">{group.label}</h2>
-          <p className="mb-4 text-sm text-muted-foreground">{group.description}</p>
+          <Typography as="h2" variant="h2" className="mb-1 text-xl font-semibold tracking-tight">{group.label}</Typography>
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">{group.description}</Typography>
 
-          <div className="overflow-hidden rounded-xl border border-border">
+          <Box className="overflow-hidden rounded-xl border border-border">
             <table className="w-full text-left text-xs">
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
@@ -197,10 +196,10 @@ background: hsl(var(--color-primary));
                       <Swatch cssVar={token.var} />
                     </td>
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
+                      <Box className="flex items-center gap-2">
                         <code className="font-mono font-medium">{token.var}</code>
                         <CopyButton text={token.var} />
-                      </div>
+                      </Box>
                     </td>
                     <td className="px-4 py-3 font-mono text-muted-foreground">
                       {token.tailwind}
@@ -210,19 +209,19 @@ background: hsl(var(--color-primary));
                 ))}
               </tbody>
             </table>
-          </div>
+          </Box>
         </section>
       ))}
 
       {/* Theme note */}
       <section className="mt-10">
-        <div className="rounded-xl border border-border bg-muted/20 p-5">
-          <h3 className="text-sm font-semibold">Themes change token values</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+        <Box className="rounded-xl border border-border bg-muted/20 p-5">
+          <Typography as="h3" variant="h3" className="text-sm font-semibold">Themes change token values</Typography>
+          <Typography as="p" variant="body2" className="mt-1 text-sm text-muted-foreground">
             Switching between themes (slate, zinc, rose) or modes (light, dark) replaces all token
             values simultaneously. Your components automatically adapt — no class swapping needed.
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
+          </Typography>
+          <Box className="mt-3 flex flex-wrap gap-2">
             {['slate', 'zinc', 'rose'].map((t) => (
               <span
                 key={t}
@@ -231,8 +230,8 @@ background: hsl(var(--color-primary));
                 {t}
               </span>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </section>
     </article>
   );

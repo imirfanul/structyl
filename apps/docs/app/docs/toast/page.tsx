@@ -1,39 +1,18 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy } from '@structyl/icons';
-import { Button } from '@structyl/styled';
+import { Button, Box, Typography } from '@structyl/styled';
 import { toast, Toaster } from '@structyl/styled';
+import { CodeBlock } from '../../../components/code-block';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
 
-function CodeBlock({ code, lang = 'tsx' }: { code: string; lang?: string }) {
-  const [copied, setCopied] = React.useState(false);
-  const copy = async () => {
-    try { await navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* ignore */ }
-  };
-  return (
-    <div className="relative overflow-hidden rounded-xl border border-border bg-[#0d1117]">
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-1.5">
-        <span className="font-mono text-[11px] text-white/40">{lang}</span>
-        <button onClick={copy} className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-white/50 transition-colors hover:bg-white/10 hover:text-white/90">
-          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
-      <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed">
-        <code className="font-mono text-[#c9d1d9]">{code}</code>
-      </pre>
-    </div>
-  );
-}
-
 function SectionHeading({ id, children }: { id: string; children: React.ReactNode }) {
-  return <h2 id={id} className="mb-3 mt-12 scroll-mt-20 text-xl font-semibold tracking-tight">{children}</h2>;
+  return <Typography as="h2" variant="h2" id={id} className="mb-3 mt-12 scroll-mt-20 text-xl font-semibold tracking-tight">{children}</Typography>;
 }
 
 function SubHeading({ id, children }: { id: string; children: React.ReactNode }) {
-  return <h3 id={id} className="mb-2 mt-8 scroll-mt-20 text-base font-semibold">{children}</h3>;
+  return <Typography as="h3" variant="h3" id={id} className="mb-2 mt-8 scroll-mt-20 text-base font-semibold">{children}</Typography>;
 }
 
 function PropRow({ name, type, def, desc }: { name: string; type: string; def?: string; desc: string }) {
@@ -51,7 +30,7 @@ function PropRow({ name, type, def, desc }: { name: string; type: string; def?: 
 
 function VariantsDemo() {
   return (
-    <div className="flex flex-wrap gap-2 rounded-xl border border-border bg-card p-5">
+    <Box className="flex flex-wrap gap-2 rounded-xl border border-border bg-card p-5">
       <Button variant="outline" size="sm" onClick={() => toast.success('Changes saved', { description: 'Your profile has been updated.' })}>
         Success
       </Button>
@@ -84,7 +63,7 @@ function VariantsDemo() {
       <Button variant="outline" size="sm" onClick={() => toast.dismiss()}>
         Dismiss all
       </Button>
-    </div>
+    </Box>
   );
 }
 
@@ -98,7 +77,7 @@ function PlacementDemo() {
     { h: 'right',  v: 'bottom', label: 'Bottom right' },
   ];
   return (
-    <div className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-card p-5">
+    <Box className="grid grid-cols-3 gap-2 rounded-xl border border-border bg-card p-5">
       {positions.map(({ h, v, label }) => (
         <Button
           key={`${h}-${v}`}
@@ -109,7 +88,7 @@ function PlacementDemo() {
           {label}
         </Button>
       ))}
-    </div>
+    </Box>
   );
 }
 
@@ -117,29 +96,29 @@ function PlacementDemo() {
 
 export default function ToastPage() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
+    <Box className="mx-auto max-w-3xl px-6 py-12">
       {/* Toaster is needed for demos — one instance is enough */}
       <Toaster />
 
       {/* Header */}
-      <div className="mb-10">
-        <div className="mb-3 flex items-center gap-2">
+      <Box className="mb-10">
+        <Box className="mb-3 flex items-center gap-2">
           <span className="rounded-full border border-border bg-muted/40 px-2.5 py-0.5 font-mono text-[11px] text-muted-foreground">@structyl/styled</span>
-        </div>
-        <h1 className="mb-3 text-3xl font-bold tracking-tight">Toast</h1>
-        <p className="text-lg text-muted-foreground">
+        </Box>
+        <Typography as="h1" variant="h1" className="mb-3 text-3xl font-bold tracking-tight">Toast</Typography>
+        <Typography as="p" variant="body2" className="text-lg text-muted-foreground">
           Imperative, globally-scoped toast notifications. Drop <code className="rounded bg-muted px-1 py-0.5 font-mono text-[12px]">&lt;Toaster /&gt;</code> once in your root layout and call <code className="rounded bg-muted px-1 py-0.5 font-mono text-[12px]">toast.*</code> from anywhere — event handlers, async functions, or outside React.
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
       {/* Install */}
       <CodeBlock lang="bash" code="pnpm add @structyl/styled" />
 
       {/* ── Setup ── */}
       <SectionHeading id="setup">Setup</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         Add <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">&lt;Toaster /&gt;</code> once anywhere in your component tree — typically the root layout. Toasts fired anywhere in your app will render there.
-      </p>
+      </Typography>
       <CodeBlock code={`// app/layout.tsx
 import { Toaster } from '@structyl/styled';
 
@@ -156,10 +135,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       {/* ── Variants ── */}
       <SectionHeading id="variants">Variants</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">Six built-in variants — try them all live below.</p>
-      <div className="mb-4">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">Six built-in variants — try them all live below.</Typography>
+      <Box className="mb-4">
         <VariantsDemo />
-      </div>
+      </Box>
       <CodeBlock code={`import { toast } from '@structyl/styled';
 
 toast.success('Changes saved', { description: 'Your profile has been updated.' });
@@ -171,9 +150,9 @@ toast.show({ title: 'Custom', variant: 'default' }); // full control`} />
 
       {/* ── Promise ── */}
       <SubHeading id="promise">Promise toast</SubHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">toast.promise</code> shows a loading state while the promise is pending, then automatically transitions to success or error.
-      </p>
+      </Typography>
       <CodeBlock code={`toast.promise(
   fetch('/api/save').then(r => r.json()),
   {
@@ -185,12 +164,12 @@ toast.show({ title: 'Custom', variant: 'default' }); // full control`} />
 
       {/* ── Placement ── */}
       <SectionHeading id="placement">Placement</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         Set the default position on <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">&lt;Toaster /&gt;</code>, or override per-toast via <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">horizontal</code> / <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">vertical</code> options.
-      </p>
-      <div className="mb-4">
+      </Typography>
+      <Box className="mb-4">
         <PlacementDemo />
-      </div>
+      </Box>
       <CodeBlock code={`// Default for all toasts — bottom right
 <Toaster horizontal="right" vertical="bottom" />
 
@@ -199,9 +178,9 @@ toast.error('Auth expired', { horizontal: 'center', vertical: 'top' });`} />
 
       {/* ── Update / dedup ── */}
       <SectionHeading id="update">Update & dedup</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         Passing the same <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">id</code> to any <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">toast.*</code> call replaces the existing toast rather than stacking a new one.
-      </p>
+      </Typography>
       <CodeBlock code={`const id = toast.loading('Uploading file…');
 
 // Later — replaces the loading toast in-place
@@ -218,7 +197,7 @@ toast.dismiss();     // dismiss ALL toasts`} />
 
       {/* ── Toaster props ── */}
       <SectionHeading id="toaster-props">Toaster props</SectionHeading>
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <Box className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-border bg-muted/30">
@@ -235,12 +214,12 @@ toast.dismiss();     // dismiss ALL toasts`} />
             <PropRow name="className" type="string" def="—" desc="Extra classes forwarded to the viewport wrapper." />
           </tbody>
         </table>
-      </div>
+      </Box>
 
       {/* ── toast options ── */}
       <SectionHeading id="toast-options">Toast options</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">Passed as the second argument to any <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">toast.*</code> method.</p>
-      <div className="overflow-x-auto rounded-xl border border-border">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">Passed as the second argument to any <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">toast.*</code> method.</Typography>
+      <Box className="overflow-x-auto rounded-xl border border-border">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-border bg-muted/30">
@@ -262,13 +241,13 @@ toast.dismiss();     // dismiss ALL toasts`} />
             <PropRow name="onDismiss" type="(id: string) => void" def="—" desc="Called right before the toast is dismissed." />
           </tbody>
         </table>
-      </div>
+      </Box>
 
       {/* ── useToast ── */}
       <SectionHeading id="use-toast">useToast</SectionHeading>
-      <p className="mb-4 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
         Subscribe to the toast store from inside a React component. Useful for building a custom <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">Toaster</code> or reading the current toast list.
-      </p>
+      </Typography>
       <CodeBlock code={`import { useToast } from '@structyl/styled';
 
 function CustomToaster() {
@@ -292,9 +271,9 @@ function CustomToaster() {
 
       {/* ── Accessibility ── */}
       <SectionHeading id="accessibility">Accessibility</SectionHeading>
-      <p className="mb-3 text-sm text-muted-foreground">
+      <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
         Toast is built on the Radix Toast primitive which handles ARIA live regions automatically:
-      </p>
+      </Typography>
       <ul className="space-y-1.5 text-sm text-muted-foreground">
         <li>• The viewport has <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">role=&quot;region&quot;</code> and <code className="rounded bg-muted px-1 py-0.5 font-mono text-[11px]">aria-label=&quot;Notifications&quot;</code></li>
         <li>• Each toast is announced to screen readers as a live region update</li>
@@ -302,6 +281,6 @@ function CustomToaster() {
         <li>• The hotkey <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">F8</kbd> moves focus to the toast viewport for keyboard users</li>
         <li>• Toasts can be closed with <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px]">Escape</kbd> or swiped on touch devices</li>
       </ul>
-    </div>
+    </Box>
   );
 }
