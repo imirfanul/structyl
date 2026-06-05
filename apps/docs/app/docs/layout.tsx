@@ -24,13 +24,15 @@ import {
   Paintbrush,
 } from '@structyl/icons';
 import { useTheme } from '@structyl/themes';
-import { COMPONENTS, CATEGORIES, HOOKS } from '../../lib/registry';
+import { Box, Button, Input, InputGroup, Typography } from '@structyl/styled';
+import { COMPONENTS, HOOKS } from '../../lib/registry';
+import { useNoAutofill } from '../../lib/use-no-autofill';
 import { ThemePresetPicker } from '../../components/theme-preset-picker';
 
 /* ── Navigation structure ────────────────────────────────────────────── */
 
 const OVERVIEW = [
-  { slug: 'introduction',    title: 'Introduction',    href: '/docs/introduction',    icon: BookOpen },
+  { slug: 'overview',        title: 'Overview',        href: '/docs',                 icon: BookOpen },
   { slug: 'getting-started', title: 'Getting started', href: '/docs/getting-started', icon: Zap },
   { slug: 'accessibility',   title: 'Accessibility',   href: '/docs/accessibility',   icon: Accessibility },
   { slug: 'icons',           title: 'Icons',           href: '/docs/icons',           icon: LayoutGrid },
@@ -57,10 +59,17 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   const [paletteOpen, setPaletteOpen] = React.useState(false);
   const [recentlyViewed, setRecentlyViewed] = React.useState<RecentItem[]>([]);
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
+  const noAutofill = useNoAutofill();
 
   const filtered = COMPONENTS.filter((c) =>
     c.name.toLowerCase().includes(query.toLowerCase()),
   );
+
+  // Which component tree owns the current route (drives default-open state).
+  // Check the API prefix first — `/docs/api/<slug>` also starts with `/docs/`.
+  const isApiRoute = pathname.startsWith('/docs/api/');
+  const isComponentRoute =
+    !isApiRoute && COMPONENTS.some((c) => pathname === `/docs/${c.slug}`);
 
   // Load recently viewed from localStorage on mount
   React.useEffect(() => {
@@ -105,21 +114,22 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
   }, [pathname]);
 
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <Box className="min-h-screen bg-bg text-fg">
 
       {/* ── Top nav ───────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-bg/80 backdrop-blur-md">
-        <div className="mx-auto flex h-[52px] max-w-[1440px] items-center gap-3 px-5 md:gap-6">
+        <Box className="mx-auto flex h-[52px] max-w-[1440px] items-center gap-3 px-5 md:gap-6">
 
           {/* Mobile nav toggle */}
-          <button
+          <Button
+            variant="ghost"
             onClick={() => setMobileNavOpen((v) => !v)}
             aria-label="Toggle navigation"
             aria-expanded={mobileNavOpen}
             className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg md:hidden"
           >
             {mobileNavOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </button>
+          </Button>
 
           {/* Logo */}
           <Link href="/" className="flex shrink-0 items-center">
@@ -157,10 +167,11 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </nav>
 
           {/* Right actions */}
-          <div className="ml-auto flex items-center gap-2">
+          <Box className="ml-auto flex items-center gap-2">
             <ThemePresetPicker />
             {/* Global search trigger */}
-            <button
+            <Button
+              variant="ghost"
               onClick={() => setPaletteOpen(true)}
               className="hidden items-center gap-2 rounded-lg border border-border/60 bg-muted/30 px-3 py-1.5 text-[12px] text-muted-foreground transition-colors hover:border-border hover:bg-muted/60 hover:text-fg md:flex"
               aria-label="Open search"
@@ -170,33 +181,35 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               <kbd className="ml-2 rounded border border-border/60 bg-bg px-1 py-0.5 font-mono text-[9px] tracking-wide">
                 ⌘K
               </kbd>
-            </button>
+            </Button>
             {/* Mobile search icon */}
-            <button
+            <Button
+              variant="ghost"
               onClick={() => setPaletteOpen(true)}
               className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg md:hidden"
               aria-label="Open search"
             >
               <Search className="h-4 w-4" />
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="ghost"
               onClick={() => setMode(resolvedMode === 'dark' ? 'light' : 'dark')}
               aria-label="Toggle theme"
               className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg"
             >
               {resolvedMode === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-          </div>
-        </div>
+            </Button>
+          </Box>
+        </Box>
       </header>
 
       {/* ── Body grid ─────────────────────────────────────────────── */}
-      <div className="mx-auto grid max-w-[1440px] grid-cols-1 md:grid-cols-[240px_1fr]">
+      <Box className="mx-auto grid max-w-[1440px] grid-cols-1 md:grid-cols-[240px_1fr]">
 
         {/* ── Sidebar ───────────────────────────────────────────── */}
         {/* Mobile drawer backdrop */}
         {mobileNavOpen && (
-          <div
+          <Box
             className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm md:hidden"
             onClick={() => setMobileNavOpen(false)}
             aria-hidden
@@ -208,25 +221,36 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
         >
 
           {/* Search */}
-          <div className="px-3 pb-3 pt-5">
-            <div className="relative">
-              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-              <input
+          <Box className="px-3 pb-3 pt-5">
+            <InputGroup
+              startElement={<Search />}
+              endElement={
+                query ? (
+                  <Button
+                    variant="ghost"
+                    type="button"
+                    onClick={() => setQuery('')}
+                    aria-label="Clear search"
+                    className="pointer-events-auto text-muted-foreground transition-colors hover:text-fg"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                ) : undefined
+              }
+            >
+              <Input
+                {...noAutofill}
+                size="sm"
+                type="text"
+                role="searchbox"
+                name="structyl-sidebar-search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search…"
-                className="h-8 w-full rounded-lg border border-border/70 bg-muted/30 pl-8 pr-7 text-[12.5px] outline-none placeholder:text-muted-foreground/60 transition-shadow focus-visible:border-ring/40 focus-visible:ring-2 focus-visible:ring-ring/20"
+                className="[&::-webkit-search-cancel-button]:appearance-none"
               />
-              {query && (
-                <button
-                  onClick={() => setQuery('')}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-fg"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              )}
-            </div>
-          </div>
+            </InputGroup>
+          </Box>
 
           {/* Nav items */}
           <nav className="flex-1 overflow-y-auto px-3 pb-6">
@@ -241,7 +265,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               ))}
             </SidebarSection>
 
-            <div className="my-2 border-t border-border/40" />
+            <Box className="my-2 border-t border-border/40" />
 
             {/* Resources */}
             <SidebarSection label="Resources">
@@ -253,30 +277,51 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
               ))}
             </SidebarSection>
 
-            <div className="my-2 border-t border-border/40" />
+            <Box className="my-2 border-t border-border/40" />
 
-            {/* Component categories */}
-            {CATEGORIES.map((cat) => {
-              const items = filtered.filter((c) => c.category === cat);
-              if (!items.length) return null;
-              return (
-                <SidebarSection key={cat} label={cat}>
-                  {items.map((c) => {
-                    const href = `/docs/${c.slug}`;
-                    return (
-                      <SidebarItem key={c.slug} href={href} active={pathname === href}>
-                        {c.name}
-                      </SidebarItem>
-                    );
-                  })}
-                </SidebarSection>
-              );
-            })}
+            {/* Components — collapsible tree of every component (flat list).
+                Collapsed by default; opens automatically when the current page
+                is a component page (so the active item is visible on load). */}
+            <SidebarSection
+              label="Components"
+              collapsible
+              defaultOpen={isComponentRoute}
+              forceOpen={!!query}
+              count={filtered.length}
+            >
+              {filtered.map((c) => {
+                const href = `/docs/${c.slug}`;
+                return (
+                  <SidebarItem key={c.slug} href={href} active={pathname === href}>
+                    {c.name}
+                  </SidebarItem>
+                );
+              })}
+            </SidebarSection>
+
+            {/* Component API — collapsible tree of the full API reference per
+                component. Opens automatically on an API route. */}
+            <SidebarSection
+              label="Component API"
+              collapsible
+              defaultOpen={isApiRoute}
+              forceOpen={!!query}
+              count={filtered.length}
+            >
+              {filtered.map((c) => {
+                const href = `/docs/api/${c.slug}`;
+                return (
+                  <SidebarItem key={c.slug} href={href} active={pathname === href}>
+                    {c.name}
+                  </SidebarItem>
+                );
+              })}
+            </SidebarSection>
 
             {/* Recently viewed */}
             {recentlyViewed.length > 0 && !query && (
               <>
-                <div className="my-2 border-t border-border/40" />
+                <Box className="my-2 border-t border-border/40" />
                 <SidebarSection label="Recently viewed">
                   {recentlyViewed.map(({ slug, name }) => {
                     const href = `/docs/${slug}`;
@@ -293,20 +338,20 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
           </nav>
 
           {/* Install badge */}
-          <div className="border-t border-border/40 px-3 py-3">
-            <div className="rounded-lg border border-border/60 bg-muted/20 px-3 py-2.5 text-[11px]">
-              <p className="font-mono font-medium text-muted-foreground">pnpm add @structyl/styled</p>
-            </div>
-          </div>
+          <Box className="border-t border-border/40 px-3 py-3">
+            <Box className="rounded-lg border border-border/60 bg-muted/20 px-3 py-2.5 text-[11px]">
+              <Typography as="p" variant="body2" className="font-mono font-medium text-muted-foreground">pnpm add @structyl/styled</Typography>
+            </Box>
+          </Box>
         </aside>
 
         {/* ── Page content ─────────────────────────────────────── */}
         <main className="min-w-0 px-6 py-10 md:px-10 lg:px-14">{children}</main>
-      </div>
+      </Box>
 
       {/* ── Command palette ──────────────────────────────────────── */}
       {paletteOpen && <CommandPalette onClose={() => setPaletteOpen(false)} />}
-    </div>
+    </Box>
   );
 }
 
@@ -399,10 +444,10 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
 
   return (
     <>
-      <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="fixed left-1/2 top-[12%] z-50 w-full max-w-xl -translate-x-1/2 overflow-hidden rounded-2xl border border-border bg-bg shadow-2xl">
+      <Box className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={onClose} />
+      <Box className="fixed left-1/2 top-[12%] z-50 w-full max-w-xl -translate-x-1/2 overflow-hidden rounded-2xl border border-border bg-bg shadow-2xl">
 
-        <div className="flex items-center gap-3 border-b border-border px-4 py-3.5">
+        <Box className="flex items-center gap-3 border-b border-border px-4 py-3.5">
           <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
           <input
             ref={inputRef}
@@ -412,21 +457,22 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
             className="flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground/60"
           />
           {query && (
-            <button onClick={() => setQuery('')} className="text-muted-foreground hover:text-fg">
+            <Button variant="ghost" onClick={() => setQuery('')} className="text-muted-foreground hover:text-fg">
               <X className="h-3.5 w-3.5" />
-            </button>
+            </Button>
           )}
           <kbd className="rounded-md border border-border bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
             esc
           </kbd>
-        </div>
+        </Box>
 
         {query.trim() ? (
           results.length > 0 ? (
             <ul className="max-h-[380px] overflow-y-auto py-1.5">
               {results.map((r, i) => (
                 <li key={r.href}>
-                  <button
+                  <Button
+                    variant="ghost"
                     onClick={() => navigate(r.href)}
                     onMouseEnter={() => setCursor(i)}
                     className={`flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors ${cursor === i ? 'bg-accent' : 'hover:bg-accent/40'}`}
@@ -434,30 +480,31 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
                     <span className={`shrink-0 rounded-md px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wider ${TAG_STYLES[r.type]}`}>
                       {r.type}
                     </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13px] font-medium">{r.name}</p>
-                      {r.sub && <p className="truncate text-[11px] text-muted-foreground">{r.sub}</p>}
-                    </div>
+                    <Box className="min-w-0 flex-1">
+                      <Typography as="p" variant="body2" className="truncate text-[13px] font-medium">{r.name}</Typography>
+                      {r.sub && <Typography as="p" variant="body2" className="truncate text-[11px] text-muted-foreground">{r.sub}</Typography>}
+                    </Box>
                     <ChevronRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground/50" />
-                  </button>
+                  </Button>
                 </li>
               ))}
             </ul>
           ) : (
-            <p className="py-12 text-center text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="py-12 text-center text-sm text-muted-foreground">
               No results for{' '}
               <span className="font-medium text-fg">&ldquo;{query}&rdquo;</span>
-            </p>
+            </Typography>
           )
         ) : (
-          <div className="py-2">
-            <p className="px-4 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">
+          <Box className="py-2">
+            <Typography as="p" variant="body2" className="px-4 pb-2 pt-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">
               Quick links
-            </p>
+            </Typography>
             <ul>
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
-                  <button
+                  <Button
+                    variant="ghost"
                     onClick={() => navigate(link.href)}
                     className="flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors hover:bg-accent/40"
                   >
@@ -474,36 +521,78 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
                     }`}>
                       {link.tag}
                     </span>
-                  </button>
+                  </Button>
                 </li>
               ))}
             </ul>
-          </div>
+          </Box>
         )}
 
-        <div className="flex items-center gap-5 border-t border-border bg-muted/20 px-4 py-2">
+        <Box className="flex items-center gap-5 border-t border-border bg-muted/20 px-4 py-2">
           {[['↑↓', 'navigate'], ['↵', 'open'], ['esc', 'close']].map(([key, label]) => (
             <span key={label} className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
               <kbd className="rounded border border-border bg-bg px-1 py-0.5 font-mono text-[9px]">{key}</kbd>
               {label}
             </span>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
     </>
   );
 }
 
 /* ── Sidebar primitives ──────────────────────────────────────────────── */
 
-function SidebarSection({ label, children }: { label: string; children: React.ReactNode }) {
+function SidebarSection({
+  label,
+  children,
+  collapsible = false,
+  defaultOpen = true,
+  forceOpen = false,
+  count,
+}: {
+  label: string;
+  children: React.ReactNode;
+  collapsible?: boolean;
+  defaultOpen?: boolean;
+  /** Override the open state (e.g. while a search query is active). */
+  forceOpen?: boolean;
+  /** Optional item count shown next to the label. */
+  count?: number;
+}) {
+  const [open, setOpen] = React.useState(defaultOpen);
+  const isOpen = forceOpen || open;
+
+  if (!collapsible) {
+    return (
+      <Box className="mb-4">
+        <Typography as="p" variant="body2" className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
+          {label}
+        </Typography>
+        <Box className="space-y-px">{children}</Box>
+      </Box>
+    );
+  }
+
   return (
-    <div className="mb-4">
-      <p className="mb-1 px-2 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
-        {label}
-      </p>
-      <div className="space-y-px">{children}</div>
-    </div>
+    <Box className="mb-2">
+      <Button
+        variant="ghost"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={isOpen}
+        disabled={forceOpen}
+        className="flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70 transition-colors hover:bg-muted/50 hover:text-fg disabled:opacity-100"
+      >
+        <ChevronRight className={`h-3 w-3 shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`} />
+        <span className="flex-1 text-left">{label}</span>
+        {count != null && (
+          <span className="rounded-full bg-muted px-1.5 py-px text-[9px] font-medium tabular-nums text-muted-foreground/80">
+            {count}
+          </span>
+        )}
+      </Button>
+      {isOpen && <Box className="mt-0.5 space-y-px border-l border-border/40 pl-2">{children}</Box>}
+    </Box>
   );
 }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { Box, Button, Typography } from '@structyl/styled';
 import {
   COLOR_PRESETS,
   applyColorPreset,
@@ -37,9 +38,10 @@ export function ThemePresetPicker() {
   };
 
   return (
-    <div ref={wrapRef} className="relative">
+    <Box ref={wrapRef} className="relative">
       {/* Trigger */}
-      <button
+      <Button
+        variant="ghost"
         onClick={() => setOpen(v => !v)}
         title="Color preset"
         aria-label="Choose color preset"
@@ -55,19 +57,20 @@ export function ThemePresetPicker() {
         <svg className="h-3 w-3 opacity-50" viewBox="0 0 12 12" fill="none">
           <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
-      </button>
+      </Button>
 
       {/* Popover */}
       {open && (
-        <div className="absolute right-0 top-full z-50 mt-2 w-52 overflow-hidden rounded-xl border border-border/60 bg-bg p-3 shadow-xl shadow-black/20">
-          <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+        <Box className="absolute right-0 top-full z-50 mt-2 w-52 overflow-hidden rounded-xl border border-border/60 bg-bg p-3 shadow-xl shadow-black/20">
+          <Typography as="p" variant="body2" className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             Accent preset
-          </p>
-          <div className="grid grid-cols-5 gap-2">
+          </Typography>
+          <Box className="grid grid-cols-5 gap-2">
             {presets.map(({ id, name, hex }) => {
               const isActive = activeId === id;
               return (
-                <button
+                <Button
+                  variant="ghost"
                   key={id}
                   onClick={() => select(id, hex)}
                   title={name}
@@ -85,20 +88,21 @@ export function ThemePresetPicker() {
                   <span className="text-[9px] font-medium leading-none text-muted-foreground group-hover:text-fg">
                     {name}
                   </span>
-                </button>
+                </Button>
               );
             })}
-          </div>
+          </Box>
           {activeId && (
-            <button
+            <Button
+              variant="ghost"
               onClick={() => { clearPreset(); setOpen(false); }}
               className="mt-2.5 w-full rounded-lg border border-border/50 py-1.5 text-[11px] text-muted-foreground transition-colors hover:border-border hover:text-fg"
             >
               Reset to default
-            </button>
+            </Button>
           )}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

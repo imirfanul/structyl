@@ -5,7 +5,8 @@ import * as StructylIcons from '@structyl/icons';
 import Link from 'next/link';
 import { Sparkles, Search, X, Copy, Check } from '@structyl/icons';
 import { useTheme } from '@structyl/themes';
-import { Button } from '@structyl/styled';
+import { Box, Button, Input, Typography } from '@structyl/styled';
+import { CodeBlock } from '../../components/code-block';
 
 /* ─────────────────────────────────────────────────────────────────────────────
    Types
@@ -284,42 +285,6 @@ function StyledIcon({
    CodeBlock — syntax-highlighted code with copy button
 ───────────────────────────────────────────────────────────────────────────── */
 
-function CodeBlock({ title, code }: { title: string; code: string }) {
-  const [copied, setCopied] = React.useState(false);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard unavailable */
-    }
-  };
-
-  return (
-    <div className="overflow-hidden rounded-lg border border-border">
-      <div className="flex items-center justify-between border-b border-border/50 bg-muted/20 px-3 py-1.5">
-        <span className="text-[11px] font-medium text-muted-foreground">{title}</span>
-        <button
-          onClick={handleCopy}
-          className="flex items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-fg"
-        >
-          {copied ? (
-            <Check className="h-3 w-3 text-emerald-500" />
-          ) : (
-            <Copy className="h-3 w-3" />
-          )}
-          {copied ? 'Copied!' : 'Copy'}
-        </button>
-      </div>
-      <pre className="overflow-x-auto bg-muted/10 p-3 font-mono text-[12px] leading-relaxed text-fg">
-        <code>{code}</code>
-      </pre>
-    </div>
-  );
-}
-
 /* ─────────────────────────────────────────────────────────────────────────────
    IconModal — detail panel shown when an icon is clicked
 ───────────────────────────────────────────────────────────────────────────── */
@@ -364,14 +329,14 @@ function IconModal({
   return (
     <>
       {/* Backdrop */}
-      <div
+      <Box
         className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
         aria-hidden
         onClick={onClose}
       />
 
       {/* Panel */}
-      <div
+      <Box
         ref={modalRef}
         role="dialog"
         aria-modal="true"
@@ -380,46 +345,48 @@ function IconModal({
         className="fixed left-1/2 top-1/2 z-50 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-border bg-bg shadow-2xl outline-none"
       >
         {/* Header */}
-        <div className="flex items-start justify-between border-b border-border/60 px-5 py-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-semibold tracking-tight">{name}</h2>
+        <Box className="flex items-start justify-between border-b border-border/60 px-5 py-4">
+          <Box>
+            <Box className="flex items-center gap-2">
+              <Typography as="h2" variant="h2" className="text-base font-semibold tracking-tight">{name}</Typography>
               <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-medium text-accent-foreground">
                 {category}
               </span>
-            </div>
-            <p className="mt-0.5 text-[11px] text-muted-foreground">
+            </Box>
+            <Typography as="p" variant="body2" className="mt-0.5 text-[11px] text-muted-foreground">
               @structyl/icons · lucide-react · {style}
-            </p>
-          </div>
-          <button
+            </Typography>
+          </Box>
+          <Button
+            variant="ghost"
             onClick={onClose}
             aria-label="Close"
             className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-fg"
           >
             <X className="h-4 w-4" />
-          </button>
-        </div>
+          </Button>
+        </Box>
 
         {/* Preview section */}
-        <div className="border-b border-border/60 bg-muted/10 px-5 py-6">
+        <Box className="border-b border-border/60 bg-muted/10 px-5 py-6">
           {/* Size previews */}
-          <div className="mb-5 flex items-end justify-center gap-6">
+          <Box className="mb-5 flex items-end justify-center gap-6">
             {([16, 24, 32, 48] as const).map((sz) => (
-              <div key={sz} className="flex flex-col items-center gap-2">
-                <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-border/60 bg-bg">
+              <Box key={sz} className="flex flex-col items-center gap-2">
+                <Box className="flex h-16 w-16 items-center justify-center rounded-xl border border-border/60 bg-bg">
                   <StyledIcon Component={Component} style={style} size={sz} />
-                </div>
+                </Box>
                 <span className="text-[10px] tabular-nums text-muted-foreground">{sz}px</span>
-              </div>
+              </Box>
             ))}
-          </div>
+          </Box>
 
           {/* Style variant selector */}
-          <div className="flex flex-wrap justify-center gap-1.5">
+          <Box className="flex flex-wrap justify-center gap-1.5">
             {STYLES.map((s) => (
-              <button
+              <Button
                 key={s}
+                variant="ghost"
                 onClick={() => onStyleChange(s)}
                 className={`rounded-lg border px-3 py-1 text-[11px] font-medium transition-colors ${
                   style === s
@@ -428,27 +395,28 @@ function IconModal({
                 }`}
               >
                 {s}
-              </button>
+              </Button>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* Code snippets */}
-        <div className="space-y-2.5 px-5 py-5">
-          <CodeBlock title="Import" code={importCode} />
+        <Box className="space-y-2.5 px-5 py-5">
+          <CodeBlock filename="Import" code={importCode} />
           <CodeBlock
-            title="Usage"
+            filename="Usage"
             code={`${basicCode}\n${sizedCode}`}
           />
           {styledCode && (
-            <CodeBlock title={`${style} variant`} code={styledCode} />
+            <CodeBlock filename={`${style} variant`} code={styledCode} />
           )}
-        </div>
+        </Box>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t border-border/60 bg-muted/10 px-5 py-3">
+        <Box className="flex items-center justify-between border-t border-border/60 bg-muted/10 px-5 py-3">
           <span className="font-mono text-[11px] text-muted-foreground">{name}</span>
-          <button
+          <Button
+            variant="ghost"
             onClick={copyImport}
             className="flex items-center gap-1.5 rounded-md border border-border bg-bg px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-border-strong hover:text-fg"
           >
@@ -458,9 +426,9 @@ function IconModal({
               <Copy className="h-3 w-3" />
             )}
             {copiedImport ? 'Copied!' : 'Copy import'}
-          </button>
-        </div>
-      </div>
+          </Button>
+        </Box>
+      </Box>
     </>
   );
 }
@@ -515,14 +483,14 @@ export default function IconsPage() {
   }, [selectedIcon]);
 
   return (
-    <div className="bg-bg text-fg min-h-screen">
+    <Box className="bg-bg text-fg min-h-screen">
       {/* ── Header ─────────────────────────────────────────────────────── */}
       <header className="border-border/60 bg-bg/70 backdrop-blur-glass sticky top-0 z-40 border-b">
-        <div className="mx-auto flex h-14 max-w-[1400px] items-center gap-4 px-6">
+        <Box className="mx-auto flex h-14 max-w-[1400px] items-center gap-4 px-6">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="from-primary to-primary/70 text-primary-foreground flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br shadow-sm">
+            <Box className="from-primary to-primary/70 text-primary-foreground flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br shadow-sm">
               <Sparkles className="h-4 w-4" />
-            </div>
+            </Box>
             <span className="text-sm font-semibold tracking-tight">structyl</span>
           </Link>
           <span className="text-muted-foreground text-sm">/ Icons</span>
@@ -534,7 +502,7 @@ export default function IconsPage() {
               Themes
             </Link>
           </nav>
-          <div className="ml-auto flex items-center gap-2">
+          <Box className="ml-auto flex items-center gap-2">
             <Button
               variant="ghost"
               size="icon-sm"
@@ -543,15 +511,15 @@ export default function IconsPage() {
             >
               {resolvedMode === 'dark' ? '☀' : '☾'}
             </Button>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </header>
 
       <main className="mx-auto max-w-[1400px] px-6 py-10">
         {/* ── Page title ─────────────────────────────────────────────── */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-semibold tracking-tight">Icons</h1>
-          <p className="text-muted-foreground mt-2 max-w-xl text-sm">
+        <Box className="mb-8">
+          <Typography as="h1" variant="h1" className="text-3xl font-semibold tracking-tight">Icons</Typography>
+          <Typography as="p" variant="body2" className="text-muted-foreground mt-2 max-w-xl text-sm">
             {ICON_REGISTRY.length.toLocaleString()} icons from{' '}
             <a
               href="https://lucide.dev"
@@ -564,15 +532,15 @@ export default function IconsPage() {
             . Click any icon to copy usage code. Press{' '}
             <kbd className="rounded border border-border bg-muted px-1 font-mono text-[11px]">/</kbd>{' '}
             to search.
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
         {/* ── Controls row ───────────────────────────────────────────── */}
-        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <Box className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
           {/* Search bar */}
-          <div className="relative flex-1">
+          <Box className="relative flex-1">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input
+            <Input
               ref={searchRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -580,21 +548,23 @@ export default function IconsPage() {
               className="h-10 w-full rounded-lg border border-border bg-bg pl-9 pr-9 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30"
             />
             {query && (
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setQuery('')}
                 aria-label="Clear search"
                 className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-0.5 text-muted-foreground hover:text-fg"
               >
                 <X className="h-3.5 w-3.5" />
-              </button>
+              </Button>
             )}
-          </div>
+          </Box>
 
           {/* Style variant tabs */}
-          <div className="flex shrink-0 rounded-lg border border-border bg-muted/30 p-0.5">
+          <Box className="flex shrink-0 rounded-lg border border-border bg-muted/30 p-0.5">
             {STYLES.map((s) => (
-              <button
+              <Button
                 key={s}
+                variant="ghost"
                 onClick={() => setActiveStyle(s)}
                 className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
                   activeStyle === s
@@ -603,19 +573,20 @@ export default function IconsPage() {
                 }`}
               >
                 {s}
-              </button>
+              </Button>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* ── Category chips ─────────────────────────────────────────── */}
-        <div className="mb-5 flex gap-1.5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none]">
+        <Box className="mb-5 flex gap-1.5 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none]">
           {CATEGORY_NAMES.map((cat) => {
             const count = categoryCount[cat] ?? 0;
             const isActive = activeCategory === cat;
             return (
-              <button
+              <Button
                 key={cat}
+                variant="ghost"
                 onClick={() => setActiveCategory(cat)}
                 className={`flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                   isActive
@@ -635,28 +606,28 @@ export default function IconsPage() {
                     {count}
                   </span>
                 )}
-              </button>
+              </Button>
             );
           })}
-        </div>
+        </Box>
 
         {/* ── Results summary ────────────────────────────────────────── */}
-        <p className="mb-4 text-[12px] text-muted-foreground">
+        <Typography as="p" variant="body2" className="mb-4 text-[12px] text-muted-foreground">
           {filtered.length === ICON_REGISTRY.length
             ? `Showing all ${ICON_REGISTRY.length.toLocaleString()} icons`
             : `${filtered.length.toLocaleString()} of ${ICON_REGISTRY.length.toLocaleString()} icons`}
           {activeCategory !== 'All' && ` in ${activeCategory}`}
           {query && ` matching "${query}"`}
-        </p>
+        </Typography>
 
         {/* ── Icon grid ──────────────────────────────────────────────── */}
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
+          <Box className="flex flex-col items-center justify-center py-24 text-center">
             <Search className="mb-3 h-10 w-10 text-muted-foreground/30" />
-            <p className="text-sm font-medium">No icons found</p>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <Typography as="p" variant="body2" className="text-sm font-medium">No icons found</Typography>
+            <Typography as="p" variant="body2" className="mt-1 text-xs text-muted-foreground">
               Try a different search term or select another category
-            </p>
+            </Typography>
             <Button
               variant="outline"
               size="sm"
@@ -668,12 +639,13 @@ export default function IconsPage() {
             >
               Clear filters
             </Button>
-          </div>
+          </Box>
         ) : (
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(88px,1fr))] gap-px rounded-xl border border-border/60 bg-border/20 overflow-hidden">
+          <Box className="grid grid-cols-[repeat(auto-fill,minmax(88px,1fr))] gap-px rounded-xl border border-border/60 bg-border/20 overflow-hidden">
             {filtered.map(({ name, Component, category }) => (
-              <button
+              <Button
                 key={name}
+                variant="ghost"
                 onClick={() => setSelectedIcon({ name, Component, category })}
                 title={name}
                 className="group flex flex-col items-center gap-2 bg-bg px-2 py-4 text-center transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/30"
@@ -682,9 +654,9 @@ export default function IconsPage() {
                 <span className="w-full truncate text-[9.5px] leading-tight text-muted-foreground transition-colors group-hover:text-fg">
                   {name}
                 </span>
-              </button>
+              </Button>
             ))}
-          </div>
+          </Box>
         )}
       </main>
 
@@ -697,6 +669,6 @@ export default function IconsPage() {
           onClose={() => setSelectedIcon(null)}
         />
       )}
-    </div>
+    </Box>
   );
 }

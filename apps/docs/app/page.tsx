@@ -9,9 +9,10 @@ import {
   ChevronRight, ChevronDown, ChevronUp,
   Accessibility, Package, Database,
 } from '@structyl/icons';
-import { Button } from '@structyl/styled';
+import { Box, Button, Switch, Input, Select, Typography } from '@structyl/styled';
 import { GITHUB_URL } from '../lib/site-config';
 import { ThemePresetPicker, COLOR_PRESETS, applyColorPreset, clearColorPreset, type PresetId } from '../components/theme-preset-picker';
+import { CodeBlock } from '../components/code-block';
 
 /* ── useInView ─────────────────────────────────────────────────────────────── */
 function useInView() {
@@ -33,13 +34,13 @@ function useInView() {
 function FadeIn({ children, delay = 0, className = '' }: { children: ReactNode; delay?: number; className?: string }) {
   const { ref, inView } = useInView();
   return (
-    <div
+    <Box
       ref={ref}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
       className={`transition-all duration-700 ${inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'} ${className}`}
     >
       {children}
-    </div>
+    </Box>
   );
 }
 
@@ -47,7 +48,8 @@ function FadeIn({ children, delay = 0, className = '' }: { children: ReactNode; 
 function CopyButton({ text, className = '' }: { text: string; className?: string }) {
   const [copied, setCopied] = useState(false);
   return (
-    <button
+    <Button
+      variant="ghost"
       onClick={async () => {
         await navigator.clipboard.writeText(text);
         setCopied(true);
@@ -59,24 +61,10 @@ function CopyButton({ text, className = '' }: { text: string; className?: string
       {copied
         ? <><Check className="h-3.5 w-3.5 text-emerald-400" /><span className="text-emerald-400">Copied</span></>
         : <><Copy className="h-3.5 w-3.5" /><span>Copy</span></>}
-    </button>
+    </Button>
   );
 }
 
-/* ── MockSwitch ────────────────────────────────────────────────────────────── */
-function MockSwitch({ defaultOn = true }: { defaultOn?: boolean }) {
-  const [on, setOn] = useState(defaultOn);
-  return (
-    <button
-      role="switch"
-      aria-checked={on}
-      onClick={() => setOn(v => !v)}
-      className={`relative h-5 w-9 shrink-0 rounded-full transition-colors duration-200 ${on ? 'bg-primary' : 'bg-muted-foreground/30'}`}
-    >
-      <span className={`absolute top-0.5 size-4 rounded-full bg-white shadow transition-transform duration-200 ${on ? 'translate-x-4' : 'translate-x-0.5'}`} />
-    </button>
-  );
-}
 
 /* ── ComponentPreview ──────────────────────────────────────────────────────── */
 type Tab = 'components' | 'datatable' | 'theming';
@@ -100,6 +88,8 @@ function ComponentPreview() {
   const [tab, setTab]       = useState<Tab>('components');
   const [themeIdx, setThemeIdx] = useState(0);
   const [sortDir, setSortDir]   = useState<'desc' | 'asc'>('desc');
+  const [switchOn, setSwitchOn] = useState(true);
+  const [framework, setFramework] = useState('');
   const accent  = ACCENT_THEMES[themeIdx] ?? ACCENT_THEMES[0]!;
   const sorted  = [...TABLE_ROWS].sort((a, b) => sortDir === 'desc' ? b.score - a.score : a.score - b.score);
   const tabs: { id: Tab; label: string }[] = [
@@ -109,17 +99,18 @@ function ComponentPreview() {
   ];
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/60 bg-bg shadow-2xl shadow-black/20 ring-1 ring-white/5">
+    <Box className="overflow-hidden rounded-2xl border border-border/60 bg-bg shadow-2xl shadow-black/20 ring-1 ring-white/5">
       {/* window chrome */}
-      <div className="flex items-center gap-3 border-b border-border/50 bg-muted/40 px-4 py-3">
-        <div className="flex gap-1.5">
-          <div className="size-[11px] rounded-full bg-red-500/70" />
-          <div className="size-[11px] rounded-full bg-yellow-500/70" />
-          <div className="size-[11px] rounded-full bg-emerald-500/70" />
-        </div>
-        <div className="flex flex-1 items-center justify-center gap-0.5">
+      <Box className="flex items-center gap-3 border-b border-border/50 bg-muted/40 px-4 py-3">
+        <Box className="flex gap-1.5">
+          <Box className="size-[11px] rounded-full bg-red-500/70" />
+          <Box className="size-[11px] rounded-full bg-yellow-500/70" />
+          <Box className="size-[11px] rounded-full bg-emerald-500/70" />
+        </Box>
+        <Box className="flex flex-1 items-center justify-center gap-0.5">
           {tabs.map(t => (
-            <button
+            <Button
+              variant="ghost"
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`rounded-md px-3 py-1 text-[12px] font-medium transition-all ${
@@ -129,31 +120,31 @@ function ComponentPreview() {
               }`}
             >
               {t.label}
-            </button>
+            </Button>
           ))}
-        </div>
-        <div className="w-20" />
-      </div>
+        </Box>
+        <Box className="w-20" />
+      </Box>
 
       {/* body */}
-      <div className="min-h-[320px] p-5">
+      <Box className="min-h-[320px] p-5">
 
         {/* ── Components tab ─────────────────────────────────── */}
         {tab === 'components' && (
-          <div className="flex flex-col gap-5">
-            <div>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Buttons</p>
-              <div className="flex flex-wrap gap-2">
+          <Box className="flex flex-col gap-5">
+            <Box>
+              <Typography as="p" variant="body2" className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Buttons</Typography>
+              <Box className="flex flex-wrap gap-2">
                 <Button size="sm">Default</Button>
                 <Button size="sm" variant="secondary">Secondary</Button>
                 <Button size="sm" variant="outline">Outline</Button>
                 <Button size="sm" variant="ghost">Ghost</Button>
                 <Button size="sm" variant="destructive">Destructive</Button>
-              </div>
-            </div>
-            <div>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Badges</p>
-              <div className="flex flex-wrap gap-2">
+              </Box>
+            </Box>
+            <Box>
+              <Typography as="p" variant="body2" className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Badges</Typography>
+              <Box className="flex flex-wrap gap-2">
                 {[
                   ['Default',     'bg-primary/10 text-primary border-primary/20'],
                   ['Success',     'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'],
@@ -165,30 +156,42 @@ function ComponentPreview() {
                     {label}
                   </span>
                 ))}
-              </div>
-            </div>
-            <div>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Inputs & controls</p>
-              <div className="flex items-center gap-3">
-                <input
+              </Box>
+            </Box>
+            <Box>
+              <Typography as="p" variant="body2" className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Inputs & controls</Typography>
+              <Box className="flex items-center gap-3">
+                <Input
+                  size="sm"
                   placeholder="Search components…"
-                  readOnly
-                  className="h-8 flex-1 rounded-lg border border-border/70 bg-muted/30 px-3 text-sm outline-none placeholder:text-muted-foreground/60"
+                  className="flex-1"
                 />
-                <MockSwitch />
-                <div className="flex h-8 items-center gap-1 rounded-lg border border-border/70 bg-muted/30 px-3 text-sm text-muted-foreground">
-                  Select… <ChevronDown className="h-3.5 w-3.5 opacity-60" />
-                </div>
-              </div>
-            </div>
-          </div>
+                <Switch
+                  checked={switchOn}
+                  onCheckedChange={setSwitchOn}
+                  aria-label="Toggle setting"
+                />
+                <Select.Root value={framework} onValueChange={setFramework}>
+                  <Select.Trigger className="h-8 w-[130px] text-sm">
+                    <Select.Value placeholder="Select…" />
+                  </Select.Trigger>
+                  <Select.Content>
+                    <Select.Item value="react">React</Select.Item>
+                    <Select.Item value="vue">Vue</Select.Item>
+                    <Select.Item value="svelte">Svelte</Select.Item>
+                  </Select.Content>
+                </Select.Root>
+              </Box>
+            </Box>
+          </Box>
         )}
 
         {/* ── DataTable tab ──────────────────────────────────── */}
         {tab === 'datatable' && (
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2">
-              <input
+          <Box className="flex flex-col gap-3">
+            <Box className="flex items-center gap-2">
+              <Input
+                size="sm"
                 placeholder="Filter…"
                 readOnly
                 className="h-7 w-36 rounded-lg border border-border/70 bg-muted/30 px-2.5 text-xs outline-none placeholder:text-muted-foreground/60"
@@ -199,9 +202,9 @@ function ComponentPreview() {
                 </span>
               ))}
               <span className="ml-auto text-[11px] text-muted-foreground">5 rows</span>
-            </div>
+            </Box>
 
-            <div className="overflow-hidden rounded-lg border border-border/60">
+            <Box className="overflow-hidden rounded-lg border border-border/60">
               <table className="w-full text-xs">
                 <thead>
                   <tr className="border-b border-border/60 bg-muted/30">
@@ -242,29 +245,30 @@ function ComponentPreview() {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </Box>
 
-            <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+            <Box className="flex items-center justify-between text-[11px] text-muted-foreground">
               <span>Showing 1–5 of 5 results</span>
-              <div className="flex gap-1">
+              <Box className="flex gap-1">
                 {[1, 2, 3].map(p => (
-                  <button key={p} className={`flex h-6 min-w-6 items-center justify-center rounded px-1.5 text-[11px] ${p === 1 ? 'bg-primary text-primary-foreground' : 'hover:bg-muted/60'}`}>
+                  <Button variant="ghost" key={p} className={`flex h-6 min-w-6 items-center justify-center rounded px-1.5 text-[11px] ${p === 1 ? 'bg-primary text-primary-foreground' : 'hover:bg-muted/60'}`}>
                     {p}
-                  </button>
+                  </Button>
                 ))}
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
         )}
 
         {/* ── Theming tab ────────────────────────────────────── */}
         {tab === 'theming' && (
-          <div className="flex flex-col gap-5">
-            <div>
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Runtime accent — click to switch</p>
-              <div className="flex flex-wrap gap-2">
+          <Box className="flex flex-col gap-5">
+            <Box>
+              <Typography as="p" variant="body2" className="mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Runtime accent — click to switch</Typography>
+              <Box className="flex flex-wrap gap-2">
                 {ACCENT_THEMES.map((c, i) => (
-                  <button
+                  <Button
+                    variant="ghost"
                     key={c.name}
                     onClick={() => setThemeIdx(i)}
                     className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-200"
@@ -278,40 +282,41 @@ function ComponentPreview() {
                   >
                     <span className="size-2.5 rounded-full" style={{ background: `linear-gradient(135deg,${c.from},${c.to})` }} />
                     {c.name}
-                  </button>
+                  </Button>
                 ))}
-              </div>
-            </div>
-            <div
+              </Box>
+            </Box>
+            <Box
               className="overflow-hidden rounded-xl border p-5 transition-all duration-500"
               style={{ borderColor: accent.border, background: accent.alpha }}
             >
-              <div className="mb-4 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold" style={{ color: accent.from }}>Analytics overview</p>
-                  <p className="text-[11px] text-muted-foreground">Updated 2 min ago</p>
-                </div>
-                <button
+              <Box className="mb-4 flex items-center justify-between">
+                <Box>
+                  <Typography as="p" variant="body2" className="text-sm font-semibold" style={{ color: accent.from }}>Analytics overview</Typography>
+                  <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">Updated 2 min ago</Typography>
+                </Box>
+                <Button
+                  variant="ghost"
                   className="rounded-lg px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition-opacity hover:opacity-90"
                   style={{ background: `linear-gradient(135deg,${accent.from},${accent.to})` }}
                 >
                   Export CSV
-                </button>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
+                </Button>
+              </Box>
+              <Box className="grid grid-cols-3 gap-3">
                 {[['Revenue', '$48.2k', '+12%'], ['Users', '9,834', '+8%'], ['Sessions', '24.1k', '+23%']].map(([label, val, ch]) => (
-                  <div key={label} className="rounded-lg bg-bg/60 p-3">
-                    <p className="text-[10px] text-muted-foreground">{label}</p>
-                    <p className="mt-0.5 text-base font-bold">{val}</p>
-                    <p className="text-[10px] font-medium" style={{ color: accent.from }}>{ch}</p>
-                  </div>
+                  <Box key={label} className="rounded-lg bg-bg/60 p-3">
+                    <Typography as="p" variant="body2" className="text-[10px] text-muted-foreground">{label}</Typography>
+                    <Typography as="p" variant="body2" className="mt-0.5 text-base font-bold">{val}</Typography>
+                    <Typography as="p" variant="body2" className="text-[10px] font-medium" style={{ color: accent.from }}>{ch}</Typography>
+                  </Box>
                 ))}
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -341,27 +346,28 @@ function ThemePresetsSection() {
 
   return (
     <section className="py-28">
-      <div className="mx-auto max-w-6xl px-6">
+      <Box className="mx-auto max-w-6xl px-6">
         <FadeIn className="mb-14 text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Runtime theming</p>
-          <h2 className="text-4xl font-bold tracking-tight">10 accent presets. Instant switching.</h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Runtime theming</Typography>
+          <Typography as="h2" variant="h2" className="text-4xl font-bold tracking-tight">10 accent presets. Instant switching.</Typography>
+          <Typography as="p" variant="body2" className="mx-auto mt-4 max-w-xl text-muted-foreground">
             Click any preset — the entire page updates live with no reload and no flash of unstyled content.
             Your choice is remembered across pages.
-          </p>
+          </Typography>
         </FadeIn>
 
         <FadeIn>
-          <div className="overflow-hidden rounded-2xl border border-border/60 bg-muted/20 p-8">
-            <div className="grid grid-cols-5 gap-4 sm:grid-cols-10">
+          <Box className="overflow-hidden rounded-2xl border border-border/60 bg-muted/20 p-8">
+            <Box className="grid grid-cols-5 gap-4 sm:grid-cols-10">
               {COLOR_PRESETS.map(({ id, name, hex }) => {
                 const isActive = activeId === id;
                 return (
-                  <button
+                  <Button
+                    variant="ghost"
                     key={id}
                     onClick={() => select(id, hex)}
                     title={name}
-                    className="group flex flex-col items-center gap-2 rounded-xl p-2 transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="group flex h-auto flex-col items-center gap-2 rounded-xl p-2 transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   >
                     <span
                       className="flex size-10 items-center justify-center rounded-full transition-all duration-200"
@@ -376,31 +382,32 @@ function ThemePresetsSection() {
                     <span className={`text-[11px] font-medium transition-colors ${isActive ? 'text-fg' : 'text-muted-foreground group-hover:text-fg'}`}>
                       {name}
                     </span>
-                  </button>
+                  </Button>
                 );
               })}
-            </div>
+            </Box>
 
             {activeId && (
-              <div className="mt-6 flex items-center justify-center gap-3 border-t border-border/40 pt-6">
+              <Box className="mt-6 flex items-center justify-center gap-3 border-t border-border/40 pt-6">
                 <span className="text-sm text-muted-foreground">
                   Accent: <span className="font-semibold text-fg">{COLOR_PRESETS.find(p => p.id === activeId)?.name}</span>
                 </span>
-                <button
+                <Button
+                  variant="ghost"
                   onClick={reset}
                   className="rounded-lg border border-border/60 px-3 py-1 text-xs text-muted-foreground transition-colors hover:border-border hover:text-fg"
                 >
                   Reset to default
-                </button>
-              </div>
+                </Button>
+              </Box>
             )}
-          </div>
+          </Box>
         </FadeIn>
 
         <FadeIn className="mt-10 flex flex-col items-center gap-4 text-center">
-          <p className="text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="text-sm text-muted-foreground">
             Build a fully custom theme — colors, radius, shadows, fonts — in the playground.
-          </p>
+          </Typography>
           <Button variant="outline" size="lg" asChild>
             <Link href="/themes" className="inline-flex items-center gap-2">
               <Palette className="h-4 w-4" />
@@ -409,7 +416,7 @@ function ThemePresetsSection() {
             </Link>
           </Button>
         </FadeIn>
-      </div>
+      </Box>
     </section>
   );
 }
@@ -420,11 +427,11 @@ export default function Page() {
   const isDark = resolvedMode === 'dark';
 
   return (
-    <div className="min-h-screen bg-bg text-fg">
+    <Box className="min-h-screen bg-bg text-fg">
 
       {/* ── Nav ──────────────────────────────────────────────────────────── */}
       <header className="sticky top-0 z-50 border-b border-border/50 bg-bg/80 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
+        <Box className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
           <Link href="/" className="flex items-center">
             <img src="/logo.svg"       alt="structyl" className="hidden h-7 w-auto dark:block" />
             <img src="/logo-light.svg" alt="structyl" className="block  h-7 w-auto dark:hidden" />
@@ -445,56 +452,57 @@ export default function Page() {
               GitHub <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
             <ThemePresetPicker />
-            <button
+            <Button
+              variant="ghost"
               onClick={() => setMode(isDark ? 'light' : 'dark')}
               aria-label="Toggle theme"
               className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg"
             >
               {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
+            </Button>
           </nav>
-        </div>
+        </Box>
       </header>
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden pb-20 pt-24">
         {/* ambient glows */}
-        <div
+        <Box
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-[560px]"
           style={{ background: 'radial-gradient(ellipse 80% 60% at 50% -5%, rgba(77,246,201,0.10) 0%, transparent 75%)' }}
         />
-        <div
+        <Box
           aria-hidden
           className="pointer-events-none absolute left-1/4 top-32 h-64 w-64 rounded-full blur-3xl"
           style={{ background: 'rgba(110,139,255,0.07)' }}
         />
 
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
+        <Box className="relative mx-auto max-w-4xl px-6 text-center">
           {/* badge */}
-          <div className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/30 px-4 py-1.5 text-xs font-medium text-muted-foreground">
+          <Box className="animate-fade-up mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-muted/30 px-4 py-1.5 text-xs font-medium text-muted-foreground">
             <span className="size-1.5 rounded-full bg-emerald-500" />
             v1.1.0 — Stable release
-          </div>
+          </Box>
 
           {/* headline */}
-          <h1 className="animate-fade-up delay-100 text-balance text-5xl font-bold tracking-tight md:text-7xl">
+          <Typography as="h1" variant="h1" className="animate-fade-up delay-100 text-balance text-5xl font-bold tracking-tight md:text-7xl">
             The React UI library
             <br />
             with{' '}
             <span className="animate-shimmer bg-gradient-to-r from-[#4DF6C9] via-[#6E8BFF] to-[#A973FF] bg-clip-text text-transparent">
               structure.
             </span>
-          </h1>
+          </Typography>
 
           {/* subtext */}
-          <p className="animate-fade-up delay-200 mx-auto mt-6 max-w-2xl text-balance text-lg text-muted-foreground">
+          <Typography as="p" variant="body2" className="animate-fade-up delay-200 mx-auto mt-6 max-w-2xl text-balance text-lg text-muted-foreground">
             90+ accessible components. Tailwind-styled. Runtime theming with no FOUC.
             A first-class DataTable that Radix deliberately omits.
-          </p>
+          </Typography>
 
           {/* CTAs */}
-          <div className="animate-fade-up delay-300 mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Box className="animate-fade-up delay-300 mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button size="lg" asChild>
               <Link href="/docs/getting-started">
                 Get started <ChevronRight className="h-4 w-4" />
@@ -505,27 +513,27 @@ export default function Page() {
                 GitHub <ArrowUpRight className="h-4 w-4" />
               </Link>
             </Button>
-          </div>
+          </Box>
 
           {/* install */}
-          <div className="animate-fade-up delay-400 mx-auto mt-6 flex w-fit items-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-4 py-2.5 font-mono text-sm text-muted-foreground">
+          <Box className="animate-fade-up delay-400 mx-auto mt-6 flex w-fit items-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-4 py-2.5 font-mono text-sm text-muted-foreground">
             <span className="text-muted-foreground/50">$</span>
             <span className="text-fg">pnpm add</span>
             <span>@structyl/styled @structyl/themes</span>
             <CopyButton text="pnpm add @structyl/styled @structyl/themes" />
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* interactive preview */}
-        <div className="animate-fade-up delay-500 mx-auto mt-16 max-w-4xl px-6">
+        <Box className="animate-fade-up delay-500 mx-auto mt-16 max-w-4xl px-6">
           <ComponentPreview />
-        </div>
+        </Box>
       </section>
 
       {/* ── Stats strip ──────────────────────────────────────────────────── */}
       <section className="border-y border-border/50 bg-muted/20">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-2 divide-x divide-y divide-border/50 md:grid-cols-5 md:divide-y-0">
+        <Box className="mx-auto max-w-6xl">
+          <Box className="grid grid-cols-2 divide-x divide-y divide-border/50 md:grid-cols-5 md:divide-y-0">
             {[
               { value: '90+',   label: 'Components'   },
               { value: '9',     label: 'Packages'     },
@@ -533,27 +541,27 @@ export default function Page() {
               { value: 'WAI-ARIA', label: 'Accessible' },
               { value: 'MIT',   label: 'License'      },
             ].map(({ value, label }) => (
-              <div key={label} className="flex flex-col items-center justify-center py-6 text-center">
+              <Box key={label} className="flex flex-col items-center justify-center py-6 text-center">
                 <span className="text-2xl font-bold tracking-tight">{value}</span>
                 <span className="mt-0.5 text-xs text-muted-foreground">{label}</span>
-              </div>
+              </Box>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </section>
 
       {/* ── Feature pillars ──────────────────────────────────────────────── */}
       <section className="py-28">
-        <div className="mx-auto max-w-6xl px-6">
+        <Box className="mx-auto max-w-6xl px-6">
           <FadeIn className="mb-14 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Why structyl</p>
-            <h2 className="text-4xl font-bold tracking-tight">Everything you need. Nothing you don&apos;t.</h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Why structyl</Typography>
+            <Typography as="h2" variant="h2" className="text-4xl font-bold tracking-tight">Everything you need. Nothing you don&apos;t.</Typography>
+            <Typography as="p" variant="body2" className="mx-auto mt-4 max-w-xl text-muted-foreground">
               Four layers working together so you spend time building products, not configuring UI infrastructure.
-            </p>
+            </Typography>
           </FadeIn>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <Box className="grid gap-4 md:grid-cols-2">
             {[
               {
                 icon: Layers,
@@ -589,43 +597,43 @@ export default function Page() {
               },
             ].map((f, i) => (
               <FadeIn key={f.title} delay={i * 80}>
-                <div
+                <Box
                   className="group relative h-full rounded-2xl border border-border/60 p-8 transition-all duration-300 hover:border-border"
                   style={{ background: `radial-gradient(circle at top left, ${f.glow}, transparent 60%)` }}
                 >
-                  <div className="mb-5 flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/60 bg-bg shadow-sm">
+                  <Box className="mb-5 flex items-center gap-3">
+                    <Box className="flex h-10 w-10 items-center justify-center rounded-xl border border-border/60 bg-bg shadow-sm">
                       <f.icon className={`h-5 w-5 ${f.color}`} />
-                    </div>
+                    </Box>
                     <span className="rounded-full border border-border/60 bg-muted/30 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
                       {f.pill}
                     </span>
-                  </div>
-                  <h3 className="mb-2 text-lg font-semibold">{f.title}</h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">{f.body}</p>
+                  </Box>
+                  <Typography as="h3" variant="h3" className="mb-2 text-lg font-semibold">{f.title}</Typography>
+                  <Typography as="p" variant="body2" className="text-sm leading-relaxed text-muted-foreground">{f.body}</Typography>
                   <Link
                     href="/docs/getting-started"
                     className="mt-5 inline-flex items-center gap-1 text-xs font-medium text-muted-foreground transition-colors hover:text-fg"
                   >
                     Learn more <ChevronRight className="h-3.5 w-3.5" />
                   </Link>
-                </div>
+                </Box>
               </FadeIn>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </section>
 
       {/* ── Comparison ───────────────────────────────────────────────────── */}
       <section className="border-y border-border/50 bg-muted/20 py-28">
-        <div className="mx-auto max-w-6xl px-6">
+        <Box className="mx-auto max-w-6xl px-6">
           <FadeIn className="mb-12 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">How it compares</p>
-            <h2 className="text-4xl font-bold tracking-tight">The gaps other libraries leave open.</h2>
+            <Typography as="p" variant="body2" className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">How it compares</Typography>
+            <Typography as="h2" variant="h2" className="text-4xl font-bold tracking-tight">The gaps other libraries leave open.</Typography>
           </FadeIn>
 
           <FadeIn>
-            <div className="overflow-hidden rounded-2xl border border-border/60">
+            <Box className="overflow-hidden rounded-2xl border border-border/60">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-border/60 bg-muted/40">
@@ -660,9 +668,9 @@ export default function Page() {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </Box>
           </FadeIn>
-        </div>
+        </Box>
       </section>
 
       {/* ── Theme presets ────────────────────────────────────────────────── */}
@@ -670,13 +678,13 @@ export default function Page() {
 
       {/* ── Getting started ──────────────────────────────────────────────── */}
       <section className="py-28">
-        <div className="mx-auto max-w-6xl px-6">
+        <Box className="mx-auto max-w-6xl px-6">
           <FadeIn className="mb-14 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Get started</p>
-            <h2 className="text-4xl font-bold tracking-tight">Up and running in minutes.</h2>
+            <Typography as="p" variant="body2" className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Get started</Typography>
+            <Typography as="h2" variant="h2" className="text-4xl font-bold tracking-tight">Up and running in minutes.</Typography>
           </FadeIn>
 
-          <div className="grid gap-6 md:grid-cols-3">
+          <Box className="grid gap-6 md:grid-cols-3">
             {[
               {
                 step: '01',
@@ -696,23 +704,18 @@ export default function Page() {
                 lang: 'tsx',
                 code: `import { Button } from '@structyl/styled';\n\nexport default function Page() {\n  return (\n    <Button variant="outline">\n      Hello, structyl\n    </Button>\n  );\n}`,
               },
-            ].map(({ step, title, code }) => (
+            ].map(({ step, title, lang, code }) => (
               <FadeIn key={step}>
-                <div className="h-full rounded-2xl border border-border/60 bg-muted/20 overflow-hidden">
-                  <div className="flex items-center justify-between border-b border-border/50 bg-muted/40 px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs font-bold text-muted-foreground/50">{step}</span>
-                      <span className="text-sm font-medium">{title}</span>
-                    </div>
-                    <CopyButton text={code} className="text-muted-foreground" />
-                  </div>
-                  <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed text-muted-foreground">
-                    <code>{code}</code>
-                  </pre>
-                </div>
+                <Box className="h-full overflow-hidden rounded-2xl border border-border/60">
+                  <Box className="flex items-center gap-2 border-b border-border/50 bg-muted/30 px-4 py-2.5">
+                    <span className="font-mono text-xs font-bold text-muted-foreground/50">{step}</span>
+                    <span className="text-sm font-medium">{title}</span>
+                  </Box>
+                  <CodeBlock code={code} lang={lang} rounded="none" className="border-0" />
+                </Box>
               </FadeIn>
             ))}
-          </div>
+          </Box>
 
           <FadeIn className="mt-10 text-center">
             <Button size="lg" asChild>
@@ -721,21 +724,21 @@ export default function Page() {
               </Link>
             </Button>
           </FadeIn>
-        </div>
+        </Box>
       </section>
 
       {/* ── Packages ─────────────────────────────────────────────────────── */}
       <section className="border-t border-border/50 bg-muted/20 py-28">
-        <div className="mx-auto max-w-6xl px-6">
+        <Box className="mx-auto max-w-6xl px-6">
           <FadeIn className="mb-14 text-center">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Architecture</p>
-            <h2 className="text-4xl font-bold tracking-tight">Nine focused, tree-shakeable packages.</h2>
-            <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm font-semibold uppercase tracking-widest text-muted-foreground">Architecture</Typography>
+            <Typography as="h2" variant="h2" className="text-4xl font-bold tracking-tight">Nine focused, tree-shakeable packages.</Typography>
+            <Typography as="p" variant="body2" className="mx-auto mt-4 max-w-xl text-muted-foreground">
               Install only what you use. Each package is independently versioned, fully typed, and ships both ESM and CJS.
-            </p>
+            </Typography>
           </FadeIn>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <Box className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[
               { name: '@structyl/primitives', desc: 'Headless WAI-ARIA primitives',             icon: Accessibility, color: 'text-[#4DF6C9]', glow: 'rgba(77,246,201,0.08)'   },
               { name: '@structyl/styled',     desc: 'Tailwind-styled component layer',          icon: Layers,        color: 'text-[#6E8BFF]', glow: 'rgba(110,139,255,0.08)' },
@@ -748,37 +751,37 @@ export default function Page() {
               { name: '@structyl/cli',        desc: 'shadcn-style component installer',         icon: Database,      color: 'text-[#fb7185]', glow: 'rgba(251,113,133,0.08)' },
             ].map((pkg, i) => (
               <FadeIn key={pkg.name} delay={i * 50}>
-                <div
+                <Box
                   className="group flex items-start gap-3 rounded-xl border border-border/60 p-4 transition-all duration-300 hover:border-border"
                   style={{ background: `radial-gradient(circle at top left, ${pkg.glow}, transparent 70%)` }}
                 >
-                  <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-bg">
+                  <Box className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-border/60 bg-bg">
                     <pkg.icon className={`h-4 w-4 ${pkg.color}`} />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate font-mono text-xs font-semibold">{pkg.name}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">{pkg.desc}</p>
-                  </div>
-                </div>
+                  </Box>
+                  <Box className="min-w-0">
+                    <Typography as="p" variant="body2" className="truncate font-mono text-xs font-semibold">{pkg.name}</Typography>
+                    <Typography as="p" variant="body2" className="mt-0.5 text-xs text-muted-foreground">{pkg.desc}</Typography>
+                  </Box>
+                </Box>
               </FadeIn>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden py-32 text-center">
-        <div
+        <Box
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{ background: 'radial-gradient(ellipse 70% 60% at 50% 50%, rgba(77,246,201,0.07) 0%, transparent 70%)' }}
         />
         <FadeIn className="relative mx-auto max-w-2xl px-6">
-          <h2 className="text-4xl font-bold tracking-tight md:text-5xl">Start building today.</h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <Typography as="h2" variant="h2" className="text-4xl font-bold tracking-tight md:text-5xl">Start building today.</Typography>
+          <Typography as="p" variant="body2" className="mt-4 text-lg text-muted-foreground">
             Free, open-source, MIT licensed. No hidden costs, no vendor lock-in.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          </Typography>
+          <Box className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <Button size="lg" asChild>
               <Link href="/docs/getting-started">
                 Get started <ChevronRight className="h-4 w-4" />
@@ -787,19 +790,19 @@ export default function Page() {
             <Button size="lg" variant="outline" asChild>
               <Link href="/docs">Browse components</Link>
             </Button>
-          </div>
+          </Box>
         </FadeIn>
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <footer className="border-t border-border/50">
-        <div className="mx-auto max-w-6xl px-6 py-10">
-          <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
-            <div className="flex items-center gap-3">
+        <Box className="mx-auto max-w-6xl px-6 py-10">
+          <Box className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
+            <Box className="flex items-center gap-3">
               <img src="/logo.svg"       alt="structyl" className="hidden h-6 w-auto dark:block" />
               <img src="/logo-light.svg" alt="structyl" className="block  h-6 w-auto dark:hidden" />
               <span className="text-xs text-muted-foreground">MIT © 2025 structyl contributors</span>
-            </div>
+            </Box>
             <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
               <Link href="/docs" className="transition-colors hover:text-fg">Docs</Link>
               <Link href="/docs/getting-started" className="transition-colors hover:text-fg">Getting started</Link>
@@ -809,9 +812,9 @@ export default function Page() {
                 GitHub <ArrowUpRight className="h-3 w-3" />
               </Link>
             </nav>
-          </div>
-        </div>
+          </Box>
+        </Box>
       </footer>
-    </div>
+    </Box>
   );
 }

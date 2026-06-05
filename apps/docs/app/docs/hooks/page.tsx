@@ -2,7 +2,8 @@
 
 import * as React from 'react';
 import { Copy, Check, Search, X } from '@structyl/icons';
-import { Button } from '@structyl/styled';
+import { Box, Button, Input, Typography } from '@structyl/styled';
+import { CodeBlock } from '../../../components/code-block';
 import {
   useBoolean, useToggle, useCounter, usePrevious,
   useDebounce, useThrottle, useLocalStorage, useCopyToClipboard,
@@ -34,52 +35,53 @@ interface HookDef {
 function UseBooleanDemo() {
   const { value, on, off, toggle } = useBoolean(false);
   return (
-    <div className="flex flex-col items-center gap-5">
-      <div className={`flex h-14 w-14 items-center justify-center rounded-2xl text-xs font-bold tracking-widest transition-all duration-200 ${value ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20' : 'bg-muted text-muted-foreground'}`}>
+    <Box className="flex flex-col items-center gap-5">
+      <Box className={`flex h-14 w-14 items-center justify-center rounded-2xl text-xs font-bold tracking-widest transition-all duration-200 ${value ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20' : 'bg-muted text-muted-foreground'}`}>
         {value ? 'ON' : 'OFF'}
-      </div>
-      <div className="flex gap-2">
+      </Box>
+      <Box className="flex gap-2">
         <DemoBtn variant="ghost" onClick={on}>on()</DemoBtn>
         <DemoBtn variant="ghost" onClick={off}>off()</DemoBtn>
         <DemoBtn onClick={toggle}>toggle()</DemoBtn>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
 function UseToggleDemo() {
   const [value, toggle] = useToggle(false);
   return (
-    <div className="flex flex-col items-center gap-4">
-      <button
+    <Box className="flex flex-col items-center gap-4">
+      <Button
+        variant="ghost"
         onClick={toggle}
         className={`relative h-8 w-14 rounded-full border-2 transition-all duration-200 ${value ? 'border-primary bg-primary' : 'border-border bg-muted'}`}
         role="switch"
         aria-checked={value}
       >
         <span className={`absolute top-0.5 h-6 w-6 rounded-full bg-bg shadow transition-transform duration-200 ${value ? 'translate-x-6' : 'translate-x-0'}`} />
-      </button>
+      </Button>
       <Code>value: {String(value)}</Code>
-    </div>
+    </Box>
   );
 }
 
 function UseCounterDemo() {
   const { count, increment, decrement, reset } = useCounter(0);
   return (
-    <div className="flex flex-col items-center gap-5">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-muted/30 font-mono text-3xl font-bold tabular-nums">
+    <Box className="flex flex-col items-center gap-5">
+      <Box className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-muted/30 font-mono text-3xl font-bold tabular-nums">
         {count}
-      </div>
-      <div className="flex gap-2">
+      </Box>
+      <Box className="flex gap-2">
         <DemoBtn variant="ghost" onClick={() => decrement()}>−1</DemoBtn>
         <DemoBtn variant="ghost" onClick={reset}>reset</DemoBtn>
         <DemoBtn onClick={() => increment()}>+1</DemoBtn>
-      </div>
-      <button onClick={() => increment(10)} className="text-[11px] text-muted-foreground transition-colors hover:text-fg">
+      </Box>
+      <Button variant="ghost" onClick={() => increment(10)} className="text-[11px] text-muted-foreground transition-colors hover:text-fg">
         increment(10)
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 }
 
@@ -87,22 +89,22 @@ function UsePreviousDemo() {
   const { count, increment, decrement } = useCounter(0);
   const prev = usePrevious(count);
   return (
-    <div className="flex flex-col items-center gap-5">
-      <div className="grid grid-cols-2 gap-3 text-center">
-        <div className="rounded-xl border border-border bg-muted/20 px-5 py-3">
-          <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">Previous</p>
-          <p className="font-mono text-2xl font-bold text-muted-foreground">{prev ?? '—'}</p>
-        </div>
-        <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-3">
-          <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">Current</p>
-          <p className="font-mono text-2xl font-bold">{count}</p>
-        </div>
-      </div>
-      <div className="flex gap-2">
+    <Box className="flex flex-col items-center gap-5">
+      <Box className="grid grid-cols-2 gap-3 text-center">
+        <Box className="rounded-xl border border-border bg-muted/20 px-5 py-3">
+          <Typography as="p" variant="body2" className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">Previous</Typography>
+          <Typography as="p" variant="body2" className="font-mono text-2xl font-bold text-muted-foreground">{prev ?? '—'}</Typography>
+        </Box>
+        <Box className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-3">
+          <Typography as="p" variant="body2" className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">Current</Typography>
+          <Typography as="p" variant="body2" className="font-mono text-2xl font-bold">{count}</Typography>
+        </Box>
+      </Box>
+      <Box className="flex gap-2">
         <DemoBtn variant="ghost" onClick={() => decrement()}>−1</DemoBtn>
         <DemoBtn onClick={() => increment()}>+1</DemoBtn>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -110,13 +112,13 @@ function UseDebounceDemo() {
   const [input, setInput] = React.useState('');
   const debounced = useDebounce(input, 500);
   return (
-    <div className="w-full max-w-xs space-y-3">
+    <Box className="w-full max-w-xs space-y-3">
       <DemoInput value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type quickly…" />
-      <div className="space-y-1.5 rounded-xl border border-border bg-muted/10 p-3 font-mono text-xs">
+      <Box className="space-y-1.5 rounded-xl border border-border bg-muted/10 p-3 font-mono text-xs">
         <Row label="raw" value={input || '""'} />
         <Row label="debounced (500ms)" value={debounced || '""'} accent />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -124,26 +126,26 @@ function UseThrottleDemo() {
   const [raw, setRaw] = React.useState(50);
   const throttled = useThrottle(raw, 400);
   return (
-    <div className="w-full max-w-xs space-y-4">
+    <Box className="w-full max-w-xs space-y-4">
       <input type="range" min={0} max={100} value={raw} onChange={(e) => setRaw(Number(e.target.value))} className="w-full accent-primary" />
-      <div className="space-y-1.5 rounded-xl border border-border bg-muted/10 p-3 font-mono text-xs">
+      <Box className="space-y-1.5 rounded-xl border border-border bg-muted/10 p-3 font-mono text-xs">
         <Row label="raw" value={String(raw)} />
         <Row label="throttled (400ms)" value={String(throttled)} accent />
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
 function UseLocalStorageDemo() {
   const [name, setName, remove] = useLocalStorage('structyl-hooks-demo', '');
   return (
-    <div className="w-full max-w-xs space-y-3">
+    <Box className="w-full max-w-xs space-y-3">
       <DemoInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Type — it persists on refresh" />
-      <div className="flex items-center gap-2">
+      <Box className="flex items-center gap-2">
         <Code className="flex-1 truncate">&quot;structyl-hooks-demo&quot;: {name ? `"${name}"` : 'null'}</Code>
-        <button onClick={remove} className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">clear</button>
-      </div>
-    </div>
+        <Button variant="ghost" onClick={remove} className="shrink-0 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">clear</Button>
+      </Box>
+    </Box>
   );
 }
 
@@ -151,13 +153,13 @@ function UseCopyToClipboardDemo() {
   const { copy, copied } = useCopyToClipboard();
   const text = `import { useCopyToClipboard } from '@structyl/hooks';`;
   return (
-    <div className="w-full max-w-sm space-y-3">
+    <Box className="w-full max-w-sm space-y-3">
       <Code className="truncate text-[10px]">{text}</Code>
       <Button onClick={() => copy(text)} className="w-full gap-2">
         {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
         {copied ? 'Copied to clipboard!' : 'Copy to clipboard'}
       </Button>
-    </div>
+    </Box>
   );
 }
 
@@ -167,45 +169,45 @@ function UseMediaQueryDemo() {
   const lg  = useMediaQuery('(min-width: 1024px)');
   const rm  = useMediaQuery('(prefers-reduced-motion: reduce)');
   return (
-    <div className="w-full max-w-xs space-y-1.5">
+    <Box className="w-full max-w-xs space-y-1.5">
       {([['sm ≥640px', sm], ['md ≥768px', md], ['lg ≥1024px', lg], ['reduced-motion', rm]] as [string, boolean][]).map(([label, match]) => (
-        <div key={label} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
+        <Box key={label} className="flex items-center justify-between rounded-lg border border-border px-3 py-2">
           <Code>{label}</Code>
           <Badge active={match}>{match ? 'true' : 'false'}</Badge>
-        </div>
+        </Box>
       ))}
-    </div>
+    </Box>
   );
 }
 
 function UseDarkModeDemo() {
   const dark = useDarkMode();
   return (
-    <div className="flex flex-col items-center gap-3">
-      <div className={`flex h-16 w-16 items-center justify-center rounded-2xl text-3xl transition-colors ${dark ? 'bg-slate-800' : 'bg-amber-50 border border-amber-200'}`}>
+    <Box className="flex flex-col items-center gap-3">
+      <Box className={`flex h-16 w-16 items-center justify-center rounded-2xl text-3xl transition-colors ${dark ? 'bg-slate-800' : 'bg-amber-50 border border-amber-200'}`}>
         {dark ? '🌙' : '☀️'}
-      </div>
+      </Box>
       <Code>isDark: {String(dark)}</Code>
-      <p className="text-center text-[11px] text-muted-foreground">Change your OS color scheme to update</p>
-    </div>
+      <Typography as="p" variant="body2" className="text-center text-[11px] text-muted-foreground">Change your OS color scheme to update</Typography>
+    </Box>
   );
 }
 
 function UseWindowSizeDemo() {
   const { width, height } = useWindowSize();
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="grid grid-cols-2 gap-3">
+    <Box className="flex flex-col items-center gap-4">
+      <Box className="grid grid-cols-2 gap-3">
         {[['Width', width], ['Height', height]].map(([label, val]) => (
-          <div key={String(label)} className="rounded-xl border border-border bg-muted/20 px-6 py-4 text-center">
-            <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">{label}</p>
-            <p className="font-mono text-2xl font-bold tabular-nums">{val}</p>
-            <p className="text-[10px] text-muted-foreground">px</p>
-          </div>
+          <Box key={String(label)} className="rounded-xl border border-border bg-muted/20 px-6 py-4 text-center">
+            <Typography as="p" variant="body2" className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">{label}</Typography>
+            <Typography as="p" variant="body2" className="font-mono text-2xl font-bold tabular-nums">{val}</Typography>
+            <Typography as="p" variant="body2" className="text-[10px] text-muted-foreground">px</Typography>
+          </Box>
         ))}
-      </div>
-      <p className="text-[11px] text-muted-foreground">Resize the window to see it update</p>
-    </div>
+      </Box>
+      <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">Resize the window to see it update</Typography>
+    </Box>
   );
 }
 
@@ -215,17 +217,17 @@ function UseClickOutsideDemo() {
   const ref = React.useRef<HTMLDivElement>(null);
   useClickOutside(ref, () => { if (active) setClicks((c) => c + 1); });
   return (
-    <div className="flex flex-col items-center gap-4">
+    <Box className="flex flex-col items-center gap-4">
       <Button size="sm" variant={active ? 'default' : 'outline'} onClick={() => setActive((v) => !v)}>
         {active ? 'Watching…' : 'Start watching'}
       </Button>
       {active && (
-        <div ref={ref} className="flex h-24 w-48 items-center justify-center rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 text-sm text-muted-foreground">
+        <Box ref={ref} className="flex h-24 w-48 items-center justify-center rounded-xl border-2 border-dashed border-primary/40 bg-primary/5 text-sm text-muted-foreground">
           Click outside me
-        </div>
+        </Box>
       )}
       {clicks > 0 && <Code>outside clicks: <span className="text-primary">{clicks}</span></Code>}
-    </div>
+    </Box>
   );
 }
 
@@ -238,21 +240,21 @@ function UseHotkeysDemo() {
   useHotkeys('ctrl+k', () => push('Ctrl + K'));
   useHotkeys('mod+shift+p', () => push('Mod + Shift + P'));
   return (
-    <div className="w-full max-w-xs space-y-3">
-      <div className="flex flex-wrap gap-1.5">
+    <Box className="w-full max-w-xs space-y-3">
+      <Box className="flex flex-wrap gap-1.5">
         {['Shift + A', 'Ctrl + K', 'Mod + Shift + P'].map((k) => (
           <kbd key={k} className="rounded-md border border-border bg-muted px-2 py-0.5 font-mono text-[11px]">{k}</kbd>
         ))}
-      </div>
-      <div className="min-h-[72px] rounded-xl border border-border bg-muted/10 p-3">
+      </Box>
+      <Box className="min-h-[72px] rounded-xl border border-border bg-muted/10 p-3">
         {log.length === 0
-          ? <p className="text-[11px] italic text-muted-foreground">Press a combo above…</p>
+          ? <Typography as="p" variant="body2" className="text-[11px] italic text-muted-foreground">Press a combo above…</Typography>
           : log.map((e, i) => (
-              <p key={i} className={`font-mono text-[11px] ${i === 0 ? 'text-primary' : 'text-muted-foreground'}`}>{e}</p>
+              <Typography as="p" variant="body2" key={i} className={`font-mono text-[11px] ${i === 0 ? 'text-primary' : 'text-muted-foreground'}`}>{e}</Typography>
             ))
         }
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -264,12 +266,12 @@ function UseMountDemo() {
     return <Code>mounted at {time}</Code>;
   }
   return (
-    <div className="flex flex-col items-center gap-3">
+    <Box className="flex flex-col items-center gap-3">
       <Button size="sm" variant={mounted ? 'outline' : 'default'} onClick={() => setMounted((v) => !v)}>
         {mounted ? 'Unmount' : 'Mount'} component
       </Button>
       {mounted && <Inner />}
-    </div>
+    </Box>
   );
 }
 
@@ -278,16 +280,16 @@ function UseUnmountDemo() {
   const [last, setLast] = React.useState<string | null>(null);
   function Child() {
     useUnmount(() => setLast(new Date().toLocaleTimeString()));
-    return <div className="rounded-xl border border-border bg-muted/20 px-4 py-3 text-sm text-muted-foreground">Mounted — press Unmount</div>;
+    return <Box className="rounded-xl border border-border bg-muted/20 px-4 py-3 text-sm text-muted-foreground">Mounted — press Unmount</Box>;
   }
   return (
-    <div className="flex flex-col items-center gap-3">
+    <Box className="flex flex-col items-center gap-3">
       <Button size="sm" onClick={() => setShow((v) => !v)} variant={show ? 'outline' : 'default'}>
         {show ? 'Unmount' : 'Mount'} component
       </Button>
       {show && <Child />}
       {last && <Code>last unmount: <span className="text-primary">{last}</span></Code>}
-    </div>
+    </Box>
   );
 }
 
@@ -296,13 +298,13 @@ function UseUpdateEffectDemo() {
   const [count, setCount] = React.useState(0);
   useUpdateEffect(() => { setCount((c) => c + 1); }, [input]);
   return (
-    <div className="w-full max-w-xs space-y-3">
+    <Box className="w-full max-w-xs space-y-3">
       <DemoInput value={input} onChange={(e) => setInput(e.target.value)} placeholder="Type to trigger updates…" />
-      <div className="flex items-center justify-between rounded-xl border border-border bg-muted/10 px-4 py-2.5">
+      <Box className="flex items-center justify-between rounded-xl border border-border bg-muted/10 px-4 py-2.5">
         <span className="text-[12px] text-muted-foreground">Updates fired (mount skipped)</span>
         <span className="font-mono font-bold text-primary">{count}</span>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -311,15 +313,15 @@ function UseIdDemo() {
   const b = useId('label');
   const c = useId();
   return (
-    <div className="w-full max-w-xs space-y-2">
+    <Box className="w-full max-w-xs space-y-2">
       {[['useId("input")', a], ['useId("label")', b], ['useId()', c]].map(([label, val]) => (
-        <div key={String(label)} className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
+        <Box key={String(label)} className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2">
           <Code>{label}</Code>
           <span className="font-mono text-[11px] text-primary">{val}</span>
-        </div>
+        </Box>
       ))}
-      <p className="text-[11px] text-muted-foreground">Stable across re-renders · SSR-safe</p>
-    </div>
+      <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">Stable across re-renders · SSR-safe</Typography>
+    </Box>
   );
 }
 
@@ -332,16 +334,16 @@ function UseControllableStateDemo() {
     onChange: setExternal,
   });
   return (
-    <div className="flex w-full max-w-xs flex-col gap-4">
-      <div className="flex items-center gap-2 text-[11px]">
+    <Box className="flex w-full max-w-xs flex-col gap-4">
+      <Box className="flex items-center gap-2 text-[11px]">
         <span className={`rounded-full px-2 py-0.5 font-semibold ${!controlled ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>Uncontrolled</span>
         <span className="text-muted-foreground">vs</span>
         <span className={`rounded-full px-2 py-0.5 font-semibold ${controlled ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>Controlled</span>
-        <button onClick={() => setControlled(c => !c)} className="ml-auto text-[10px] text-primary hover:underline underline-offset-2">Switch</button>
-      </div>
+        <Button variant="ghost" onClick={() => setControlled(c => !c)} className="ml-auto text-[10px] text-primary hover:underline underline-offset-2">Switch</Button>
+      </Box>
       <DemoInput value={val ?? ''} onChange={e => setVal(e.target.value)} placeholder="Type something…" />
       <Code>value = &quot;{val}&quot;</Code>
-    </div>
+    </Box>
   );
 }
 
@@ -351,20 +353,20 @@ function UseComposedRefsDemo() {
   const composed = useComposedRefs(ref1, ref2);
   const [clicks, setClicks] = React.useState(0);
   return (
-    <div className="flex w-full max-w-xs flex-col items-center gap-4">
-      <div
+    <Box className="flex w-full max-w-xs flex-col items-center gap-4">
+      <Box
         ref={composed}
         onClick={() => setClicks(c => c + 1)}
         className="w-full cursor-pointer rounded-xl border-2 border-dashed border-border bg-muted/20 px-4 py-5 text-center text-sm text-muted-foreground transition-colors hover:border-primary/50"
       >
         Click me — two refs composed here
-      </div>
-      <div className="w-full space-y-1">
+      </Box>
+      <Box className="w-full space-y-1">
         <Code>ref1 attached: {String(ref1.current !== null)}</Code>
         <Code>ref2 attached: {String(ref2.current !== null)}</Code>
         <Code>Same node: {String(ref1.current === ref2.current)} · clicks: {clicks}</Code>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -376,15 +378,15 @@ function UseCallbackRefDemo() {
     setLog(prev => [`count was ${count}`, ...prev].slice(0, 3));
   });
   return (
-    <div className="flex w-full max-w-xs flex-col gap-3">
-      <div className="flex items-center gap-2">
+    <Box className="flex w-full max-w-xs flex-col gap-3">
+      <Box className="flex items-center gap-2">
         <DemoBtn onClick={() => setCount(c => c + 1)}>Increment ({count})</DemoBtn>
         <DemoBtn onClick={() => stableLog()} variant="ghost">Log count</DemoBtn>
-      </div>
+      </Box>
       {log.length === 0
-        ? <p className="text-[11px] text-muted-foreground">Increment then log — always sees the latest count</p>
-        : <div className="space-y-1">{log.map((l, i) => <Code key={i}>{l}</Code>)}</div>}
-    </div>
+        ? <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">Increment then log — always sees the latest count</Typography>
+        : <Box className="space-y-1">{log.map((l, i) => <Code key={i}>{l}</Code>)}</Box>}
+    </Box>
   );
 }
 
@@ -393,17 +395,17 @@ function UseLatestDemo() {
   const [msg, setMsg] = React.useState('Press "Read ref" to see the latest value');
   const latestCount = useLatest(count);
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex items-center gap-3">
+    <Box className="flex flex-col items-center gap-4">
+      <Box className="flex items-center gap-3">
         <DemoBtn onClick={() => setCount(c => c - 1)}>−</DemoBtn>
         <span className="w-10 text-center font-mono text-xl font-semibold">{count}</span>
         <DemoBtn onClick={() => setCount(c => c + 1)}>+</DemoBtn>
-      </div>
+      </Box>
       <DemoBtn onClick={() => setMsg(`latestCount.current = ${latestCount.current}`)} variant="ghost">
         Read ref
       </DemoBtn>
       <Code>{msg}</Code>
-    </div>
+    </Box>
   );
 }
 
@@ -415,16 +417,16 @@ function UseEventListenerDemo() {
     }
   });
   return (
-    <div className="flex flex-col items-center gap-4">
-      <p className="text-[11px] text-muted-foreground">Press any letter key on your keyboard</p>
-      <div className="flex min-h-[36px] flex-wrap justify-center gap-1.5">
+    <Box className="flex flex-col items-center gap-4">
+      <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">Press any letter key on your keyboard</Typography>
+      <Box className="flex min-h-[36px] flex-wrap justify-center gap-1.5">
         {keys.length === 0
           ? <Code>waiting…</Code>
           : keys.map((k, i) => (
             <kbd key={i} className="rounded-md border border-border bg-muted px-2.5 py-1 font-mono text-sm font-semibold">{k}</kbd>
           ))}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -439,16 +441,16 @@ function UseKeyPressDemo() {
   useKeyPress('ArrowUp', () => trigger('up'));
   useKeyPress('ArrowDown', () => trigger('down'));
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className={`flex h-20 w-20 items-center justify-center rounded-2xl border-2 font-mono text-3xl font-bold transition-all duration-150 ${
+    <Box className="flex flex-col items-center gap-4">
+      <Box className={`flex h-20 w-20 items-center justify-center rounded-2xl border-2 font-mono text-3xl font-bold transition-all duration-150 ${
         flash === 'up' ? 'scale-110 border-emerald-400 bg-emerald-400/10 text-emerald-500'
         : flash === 'down' ? 'scale-110 border-red-400 bg-red-400/10 text-red-500'
         : 'border-border text-fg'
       }`}>
         {count}
-      </div>
-      <p className="text-[11px] text-muted-foreground">Press ↑ or ↓ arrow keys</p>
-    </div>
+      </Box>
+      <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">Press ↑ or ↓ arrow keys</Typography>
+    </Box>
   );
 }
 
@@ -461,13 +463,13 @@ function UseIsomorphicLayoutEffectDemo() {
     setSize({ w: Math.round(width), h: Math.round(height) });
   }, []);
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div ref={ref} className="rounded-xl border border-border bg-muted/30 px-8 py-5 text-sm text-muted-foreground">
+    <Box className="flex flex-col items-center gap-4">
+      <Box ref={ref} className="rounded-xl border border-border bg-muted/30 px-8 py-5 text-sm text-muted-foreground">
         Measured element
-      </div>
+      </Box>
       <Code>{size.w} × {size.h}px — read before first paint</Code>
-      <p className="text-[11px] text-muted-foreground">useLayoutEffect on client · useEffect on server</p>
-    </div>
+      <Typography as="p" variant="body2" className="text-[11px] text-muted-foreground">useLayoutEffect on client · useEffect on server</Typography>
+    </Box>
   );
 }
 
@@ -477,7 +479,8 @@ function UseIsomorphicLayoutEffectDemo() {
 
 function DemoBtn({ children, onClick, variant = 'default' }: { children: React.ReactNode; onClick?: () => void; variant?: 'default' | 'ghost' }) {
   return (
-    <button
+    <Button
+      variant="ghost"
       onClick={onClick}
       className={`rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors ${
         variant === 'ghost'
@@ -486,13 +489,14 @@ function DemoBtn({ children, onClick, variant = 'default' }: { children: React.R
       }`}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
-function DemoInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
+// Omit native `size` (number) — the styled Input's `size` is a variant union.
+function DemoInput(props: Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>) {
   return (
-    <input
+    <Input
       {...props}
       className="h-9 w-full rounded-xl border border-border/70 bg-muted/20 px-3 text-sm outline-none placeholder:text-muted-foreground/50 focus-visible:border-ring/50 focus-visible:ring-2 focus-visible:ring-ring/20 transition-shadow"
     />
@@ -505,10 +509,10 @@ function Code({ children, className = '' }: { children: React.ReactNode; classNa
 
 function Row({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className="flex items-center justify-between">
+    <Box className="flex items-center justify-between">
       <span className="text-muted-foreground">{label}</span>
       <span className={accent ? 'text-primary' : 'text-fg'}>{value}</span>
-    </div>
+    </Box>
   );
 }
 
@@ -784,31 +788,6 @@ const HOOKS: HookDef[] = [
 const CATS = ['All', ...new Set(HOOKS.map((h) => h.category))];
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Code block
-───────────────────────────────────────────────────────────────────────────── */
-
-function CodeBlock({ code }: { code: string }) {
-  const [copied, setCopied] = React.useState(false);
-  const copy = async () => {
-    try { await navigator.clipboard.writeText(code); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch { /* */ }
-  };
-  return (
-    <div className="overflow-hidden rounded-xl border border-border">
-      <div className="flex items-center justify-between border-b border-border/50 bg-muted/20 px-3.5 py-2">
-        <span className="font-mono text-[11px] font-medium text-muted-foreground">tsx</span>
-        <button onClick={copy} className="flex items-center gap-1 text-[11px] text-muted-foreground transition-colors hover:text-fg">
-          {copied ? <Check className="h-3 w-3 text-emerald-500" /> : <Copy className="h-3 w-3" />}
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
-      <pre className="overflow-x-auto bg-muted/10 px-4 py-3.5 font-mono text-[12px] leading-relaxed text-fg">
-        <code>{code}</code>
-      </pre>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────────────────
    Hook card
 ───────────────────────────────────────────────────────────────────────────── */
 
@@ -819,28 +798,29 @@ function HookCard({ hook }: { hook: HookDef }) {
   return (
     <article className="overflow-hidden rounded-2xl border border-border bg-bg transition-shadow hover:shadow-sm">
       {/* Header */}
-      <div className="px-5 pt-5 pb-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0 flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className="font-mono text-[15px] font-semibold tracking-tight">{hook.name}</h2>
+      <Box className="px-5 pt-5 pb-4">
+        <Box className="flex items-start justify-between gap-4">
+          <Box className="min-w-0 flex-1">
+            <Box className="flex flex-wrap items-center gap-2">
+              <Typography as="h2" variant="h2" className="font-mono text-[15px] font-semibold tracking-tight">{hook.name}</Typography>
               <span className="rounded-full border border-border/60 bg-muted/40 px-2.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                 {hook.category}
               </span>
-            </div>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{hook.description}</p>
-          </div>
-        </div>
+            </Box>
+            <Typography as="p" variant="body2" className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">{hook.description}</Typography>
+          </Box>
+        </Box>
         {/* Signature */}
-        <div className="mt-3 overflow-x-auto rounded-lg border border-border/50 bg-muted/20 px-3.5 py-2">
+        <Box className="mt-3 overflow-x-auto rounded-lg border border-border/50 bg-muted/20 px-3.5 py-2">
           <code className="whitespace-nowrap font-mono text-[12px] text-fg">{hook.signature}</code>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Tab bar */}
-      <div className="flex border-y border-border/50 bg-muted/10">
+      <Box className="flex border-y border-border/50 bg-muted/10">
         {(['preview', 'code'] as const).map((t) => (
-          <button
+          <Button
+            variant="ghost"
             key={t}
             onClick={() => setTab(t)}
             className={`relative px-5 py-2.5 text-[12px] font-medium capitalize transition-colors ${
@@ -849,45 +829,45 @@ function HookCard({ hook }: { hook: HookDef }) {
           >
             {tab === t && <span className="absolute bottom-0 left-3 right-3 h-px rounded-full bg-primary" />}
             {t}
-          </button>
+          </Button>
         ))}
-      </div>
+      </Box>
 
       {/* Tab body */}
       {tab === 'preview' ? (
-        <div className="flex min-h-[180px] items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#374151_1px,transparent_1px)] bg-[size:16px_16px] p-8">
-          <div className="rounded-2xl border border-border bg-bg px-8 py-6 shadow-sm">
+        <Box className="flex min-h-[180px] items-center justify-center bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#374151_1px,transparent_1px)] bg-[size:16px_16px] p-8">
+          <Box className="rounded-2xl border border-border bg-bg px-8 py-6 shadow-sm">
             <Demo />
-          </div>
-        </div>
+          </Box>
+        </Box>
       ) : (
-        <div className="p-4">
+        <Box className="p-4">
           <CodeBlock code={hook.code} />
-        </div>
+        </Box>
       )}
 
       {/* Params */}
       {hook.params.length > 0 && (
-        <div className="border-t border-border/50 px-5 py-4">
-          <p className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
+        <Box className="border-t border-border/50 px-5 py-4">
+          <Typography as="p" variant="body2" className="mb-2.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">
             Parameters
-          </p>
-          <div className="overflow-hidden rounded-xl border border-border/60 divide-y divide-border/40">
+          </Typography>
+          <Box className="overflow-hidden rounded-xl border border-border/60 divide-y divide-border/40">
             {hook.params.map((p) => (
-              <div key={p.name} className="grid grid-cols-[auto_1fr] gap-x-4 px-4 py-2.5">
+              <Box key={p.name} className="grid grid-cols-[auto_1fr] gap-x-4 px-4 py-2.5">
                 <code className="font-mono text-[12px] font-medium text-primary">{p.name}</code>
                 <span className="text-[12px] text-muted-foreground">{p.description}</span>
-              </div>
+              </Box>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
       )}
 
       {/* Returns */}
-      <div className="border-t border-border/50 bg-muted/10 px-5 py-3">
+      <Box className="border-t border-border/50 bg-muted/10 px-5 py-3">
         <span className="text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">Returns </span>
         <code className="ml-1 font-mono text-[11px] text-fg">{hook.returns}</code>
-      </div>
+      </Box>
     </article>
   );
 }
@@ -916,46 +896,47 @@ export default function HooksPage() {
   );
 
   return (
-    <div className="mx-auto max-w-3xl">
+    <Box className="mx-auto max-w-3xl">
 
       {/* Page header */}
-      <div className="mb-8 border-b border-border/40 pb-6">
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@structyl/hooks</p>
-        <h1 className="text-[28px] font-semibold tracking-tight">Hooks</h1>
-        <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+      <Box className="mb-8 border-b border-border/40 pb-6">
+        <Typography as="p" variant="body2" className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary">@structyl/hooks</Typography>
+        <Typography as="h1" variant="h1" className="text-[28px] font-semibold tracking-tight">Hooks</Typography>
+        <Typography as="p" variant="body2" className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
           {HOOKS.length} reusable, SSR-safe, tree-shakeable React hooks. Zero dependencies. Import only what you use.
-        </p>
-        <div className="mt-4 flex items-center gap-2">
+        </Typography>
+        <Box className="mt-4 flex items-center gap-2">
           <code className="rounded-lg border border-border bg-muted/30 px-3 py-1.5 font-mono text-[12px] text-muted-foreground">
             pnpm add @structyl/hooks
           </code>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* ── Sticky filters ──────────────────────────────────────────────── */}
-      <div className="sticky top-[52px] z-20 -mx-6 mb-6 border-b border-border/50 bg-bg/95 px-6 pb-3 pt-3 backdrop-blur-md md:-mx-10 md:px-10 lg:-mx-14 lg:px-14">
+      <Box className="sticky top-[52px] z-20 -mx-6 mb-6 border-b border-border/50 bg-bg/95 px-6 pb-3 pt-3 backdrop-blur-md md:-mx-10 md:px-10 lg:-mx-14 lg:px-14">
         {/* Search */}
-        <div className="relative mb-2.5">
+        <Box className="relative mb-2.5">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground/60" />
-          <input
+          <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={`Search ${HOOKS.length} hooks…`}
             className="h-9 w-full max-w-xs rounded-xl border border-border/70 bg-muted/20 pl-9 pr-8 text-sm outline-none placeholder:text-muted-foreground/50 focus-visible:border-ring/50 focus-visible:ring-2 focus-visible:ring-ring/20 transition-shadow"
           />
           {query && (
-            <button onClick={() => setQuery('')} className="absolute left-[calc(16.5rem-1.75rem)] top-1/2 -translate-y-1/2 text-muted-foreground hover:text-fg">
+            <Button variant="ghost" onClick={() => setQuery('')} className="absolute left-[calc(16.5rem-1.75rem)] top-1/2 -translate-y-1/2 text-muted-foreground hover:text-fg">
               <X className="h-3.5 w-3.5" />
-            </button>
+            </Button>
           )}
-        </div>
+        </Box>
 
         {/* Category chips */}
-        <div className="flex flex-wrap gap-1.5">
+        <Box className="flex flex-wrap gap-1.5">
           {CATS.map((c) => {
             const count = c === 'All' ? HOOKS.length : HOOKS.filter((h) => h.category === c).length;
             return (
-              <button
+              <Button
+                variant="ghost"
                 key={c}
                 onClick={() => setCat(c)}
                 className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-medium transition-colors ${
@@ -968,25 +949,25 @@ export default function HooksPage() {
                 <span className={`rounded-full px-1 text-[9px] font-semibold ${cat === c ? 'bg-white/20' : 'bg-muted text-muted-foreground'}`}>
                   {count}
                 </span>
-              </button>
+              </Button>
             );
           })}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Hook cards */}
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center py-20 text-center">
-          <p className="text-sm font-medium">No hooks found</p>
+        <Box className="flex flex-col items-center py-20 text-center">
+          <Typography as="p" variant="body2" className="text-sm font-medium">No hooks found</Typography>
           <Button variant="ghost" size="sm" className="mt-3" onClick={() => { setQuery(''); setCat('All'); }}>
             Clear filters
           </Button>
-        </div>
+        </Box>
       ) : (
-        <div className="space-y-5">
+        <Box className="space-y-5">
           {filtered.map((h) => <HookCard key={h.name} hook={h} />)}
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }

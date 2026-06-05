@@ -15,9 +15,31 @@
   to   { background-position: -200% center; }
 }
 
+/* Error-page motion: a gently floating ghost (404) and a jittering bug (500). */
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-12px) rotate(2deg); }
+}
+@keyframes buzz {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  20%      { transform: translate(-2px, 1px) rotate(-4deg); }
+  40%      { transform: translate(2px, -1px) rotate(4deg); }
+  60%      { transform: translate(-1px, 2px) rotate(-2deg); }
+  80%      { transform: translate(1px, -2px) rotate(2deg); }
+}
+
 .animate-fade-up { animation: fade-up 0.65s ease-out both; }
 .animate-fade-in { animation: fade-in 0.65s ease-out both; }
 .animate-shimmer { animation: shimmer 3s linear infinite; background-size: 200% auto; }
+.animate-float   { animation: float 4s ease-in-out infinite; }
+.animate-buzz    { animation: buzz 0.6s ease-in-out infinite; }
+
+/* Respect users who prefer reduced motion — keep these subtle/static. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer,
+  .animate-float,
+  .animate-buzz { animation: none; }
+}
 .delay-100 { animation-delay: 100ms; }
 .delay-200 { animation-delay: 200ms; }
 .delay-300 { animation-delay: 300ms; }
@@ -49,4 +71,46 @@
       'rlig' 1,
       'calt' 1;
   }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Syntax highlighting (sugar-high)
+   sugar-high emits <span> tokens with the `--sh-*` CSS custom properties as
+   defaults. We override them with a GitHub-Dark-derived palette so the code
+   blocks read like a real editor. The code surface is always dark (#0d1117),
+   so a single palette works in both light and dark site modes.
+   ────────────────────────────────────────────────────────────────────────── */
+:root {
+  --sh-class: #79c0ff;       /* class / type names         */
+  --sh-identifier: #c9d1d9;  /* plain identifiers          */
+  --sh-sign: #8b949e;        /* punctuation / operators    */
+  --sh-property: #79c0ff;    /* object props / attributes  */
+  --sh-entity: #d2a8ff;      /* function / component names */
+  --sh-jsxliterals: #7ee787; /* JSX tag names              */
+  --sh-string: #a5d6ff;      /* strings                    */
+  --sh-keyword: #ff7b72;     /* keywords (import, const…)  */
+  --sh-comment: #8b949e;     /* comments                   */
+}
+
+.sh-code {
+  color: #c9d1d9;
+  font-family: var(--font-mono);
+}
+.sh-code .sh__line {
+  display: inline-block;
+  width: 100%;
+}
+/* Line-number gutter — counter driven so it survives copy/paste cleanly. */
+.sh-code[data-line-numbers='true'] {
+  counter-reset: sh-line;
+}
+.sh-code[data-line-numbers='true'] .sh__line::before {
+  counter-increment: sh-line;
+  content: counter(sh-line);
+  display: inline-block;
+  width: 1.75rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: #6e7681;
+  user-select: none;
 }

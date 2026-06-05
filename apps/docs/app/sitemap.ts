@@ -3,8 +3,17 @@ import { SITE_URL, COMPONENT_SLUGS, STATIC_DOC_SLUGS } from '../lib/site-config'
 
 export const dynamic = 'force-static';
 
+// Slugs present in COMPONENT_SLUGS (used for the catalogue/SEO) that do NOT have
+// a corresponding registry entry, so /docs/<slug> and /docs/api/<slug> both 404.
+// Excluded here so the sitemap only advertises pages that actually resolve.
+const MISSING_FROM_REGISTRY = new Set(['label', 'modal']);
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
+
+  const componentSlugs = COMPONENT_SLUGS.filter(
+    ({ slug }) => !MISSING_FROM_REGISTRY.has(slug),
+  );
 
   const entries: MetadataRoute.Sitemap = [
     { url: SITE_URL,                          lastModified: now, changeFrequency: 'monthly', priority: 1.0 },
@@ -19,11 +28,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.7,
     })),
-    ...COMPONENT_SLUGS.map(({ slug }) => ({
+    ...componentSlugs.map(({ slug }) => ({
       url: `${SITE_URL}/docs/${slug}`,
       lastModified: now,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
+    })),
+    // Dedicated per-component API reference pages (/docs/api/<slug>).
+    ...componentSlugs.map(({ slug }) => ({
+      url: `${SITE_URL}/docs/api/${slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.5,
     })),
   ];
 

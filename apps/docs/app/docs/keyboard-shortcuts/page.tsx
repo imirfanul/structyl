@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import { Box, Typography } from '@structyl/styled';
+
 /* ── Shortcut data ───────────────────────────────────────────────────── */
 
 type ShortcutGroup = {
@@ -72,9 +74,9 @@ function KeyCap({ label }: { label: string }) {
 export default function KeyboardShortcutsPage() {
   return (
     <article className="mx-auto max-w-3xl">
-      <p className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</p>
-      <h1 className="mt-2 text-4xl font-semibold tracking-tight">Keyboard shortcuts</h1>
-      <p className="mt-3 text-base text-muted-foreground">
+      <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">Resources</Typography>
+      <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Keyboard shortcuts</Typography>
+      <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
         structyl components are fully keyboard-navigable. Every interactive pattern follows the{' '}
         <a
           href="https://www.w3.org/WAI/ARIA/apg/"
@@ -85,13 +87,13 @@ export default function KeyboardShortcutsPage() {
           WAI-ARIA Authoring Practices Guide
         </a>
         .
-      </p>
+      </Typography>
 
-      <div className="mt-10 space-y-10">
+      <Box className="mt-10 space-y-10">
         {SHORTCUT_GROUPS.map((group) => (
           <section key={group.label}>
-            <h2 className="mb-4 text-xl font-semibold tracking-tight">{group.label}</h2>
-            <div className="overflow-hidden rounded-xl border border-border">
+            <Typography as="h2" variant="h2" className="mb-4 text-xl font-semibold tracking-tight">{group.label}</Typography>
+            <Box className="overflow-hidden rounded-xl border border-border">
               <table className="w-full text-left text-sm">
                 <thead className="bg-muted/50 text-xs text-muted-foreground">
                   <tr>
@@ -103,7 +105,7 @@ export default function KeyboardShortcutsPage() {
                   {group.shortcuts.map((shortcut, i) => (
                     <tr key={i} className="border-t border-border/60">
                       <td className="px-4 py-3">
-                        <div className="flex flex-wrap items-center gap-1.5">
+                        <Box className="flex flex-wrap items-center gap-1.5">
                           {shortcut.keys.map((key, j) => (
                             <React.Fragment key={j}>
                               <KeyCap label={key} />
@@ -112,22 +114,22 @@ export default function KeyboardShortcutsPage() {
                               )}
                             </React.Fragment>
                           ))}
-                        </div>
+                        </Box>
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">{shortcut.description}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
+            </Box>
           </section>
         ))}
-      </div>
+      </Box>
 
       {/* A11y note */}
-      <div className="mt-10 rounded-xl border border-border bg-muted/20 p-5">
-        <h3 className="text-sm font-semibold">Testing keyboard accessibility</h3>
-        <p className="mt-1.5 text-sm text-muted-foreground">
+      <Box className="mt-10 rounded-xl border border-border bg-muted/20 p-5">
+        <Typography as="h3" variant="h3" className="text-sm font-semibold">Testing keyboard accessibility</Typography>
+        <Typography as="p" variant="body2" className="mt-1.5 text-sm text-muted-foreground">
           All components are tested with axe-core in CI. For manual testing, use{' '}
           <a
             href="https://www.nvaccess.org"
@@ -147,8 +149,8 @@ export default function KeyboardShortcutsPage() {
             VoiceOver
           </a>{' '}
           on macOS / iOS. Components ship with correct ARIA roles, states, and properties.
-        </p>
-      </div>
+        </Typography>
+      </Box>
     </article>
   );
 }

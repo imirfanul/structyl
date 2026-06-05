@@ -45,3 +45,11 @@ pnpm-debug.log*
 .cache/
 .eslintcache
 .vercel
+
+# AI agent / internal tooling (kept local, not published)
+.claude/
+.qodo/
+SKILL.md
+HANDOFF.md
+CLAUDE.md
+AGENTS.md

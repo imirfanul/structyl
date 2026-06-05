@@ -1,42 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Copy, ChevronRight, ArrowUpRight, AlertCircle } from '@structyl/icons';
+import { Check, ChevronRight, ArrowUpRight, AlertCircle } from '@structyl/icons';
+import { Box, Button, Input, Typography } from '@structyl/styled';
+import { CodeBlock } from '../../../components/code-block';
 
 /* ── Shared primitives ───────────────────────────────────────────────────── */
-
-function CodeBlock({
-  code,
-  lang,
-  rounded = 'all',
-}: {
-  code: string;
-  lang: string;
-  rounded?: 'all' | 'bottom';
-}) {
-  const [copied, setCopied] = React.useState(false);
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch { /* ignore */ }
-  };
-  return (
-    <div className={`relative border border-border bg-[#0d1117] ${rounded === 'bottom' ? 'rounded-b-xl border-t-0' : 'rounded-lg'}`}>
-      <div className="flex items-center justify-between border-b border-white/10 px-3 py-1.5">
-        <span className="font-mono text-[11px] text-white/40">{lang}</span>
-        <button onClick={copy} className="flex items-center gap-1 rounded px-1.5 py-0.5 text-[11px] text-white/50 hover:bg-white/10 hover:text-white/90 transition-colors">
-          {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-          {copied ? 'Copied' : 'Copy'}
-        </button>
-      </div>
-      <pre className="overflow-x-auto p-4 text-[12px] leading-relaxed">
-        <code className="font-mono text-[#c9d1d9]">{code}</code>
-      </pre>
-    </div>
-  );
-}
 
 function PreviewBlock({ title, description, children, code, lang = 'tsx' }: {
   title?: string;
@@ -47,33 +16,33 @@ function PreviewBlock({ title, description, children, code, lang = 'tsx' }: {
 }) {
   const [tab, setTab] = React.useState<'preview' | 'code'>('preview');
   return (
-    <div className="mt-4">
-      {title && <h4 className="mb-2 text-sm font-semibold">{title}</h4>}
-      {description && <p className="mb-3 text-sm text-muted-foreground">{description}</p>}
-      <div className="flex items-center border-b border-border">
+    <Box className="mt-4">
+      {title && <Typography as="h4" variant="h4" className="mb-2 text-sm font-semibold">{title}</Typography>}
+      {description && <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">{description}</Typography>}
+      <Box className="flex items-center border-b border-border">
         {(['preview', 'code'] as const).map(t => (
-          <button key={t} onClick={() => setTab(t)}
+          <Button variant="ghost" key={t} onClick={() => setTab(t)}
             className={`relative px-3 py-2 text-sm font-medium capitalize transition-colors ${tab === t ? 'text-fg' : 'text-muted-foreground hover:text-fg'}`}>
             {t}
             {tab === t && <span className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary" />}
-          </button>
+          </Button>
         ))}
-      </div>
+      </Box>
       {tab === 'preview' ? (
-        <div className="min-h-[180px] overflow-hidden rounded-b-xl border border-t-0 border-border bg-gradient-to-br from-accent/20 to-transparent p-8 flex items-center justify-center">
+        <Box className="min-h-[180px] overflow-hidden rounded-b-xl border border-t-0 border-border bg-gradient-to-br from-accent/20 to-transparent p-8 flex items-center justify-center">
           {children}
-        </div>
+        </Box>
       ) : (
         <CodeBlock code={code} lang={lang} rounded="bottom" />
       )}
-    </div>
+    </Box>
   );
 }
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
     <section id={id} className="mt-12 scroll-mt-24">
-      <h2 className="mb-4 text-2xl font-semibold tracking-tight">{title}</h2>
+      <Typography as="h2" variant="h2" className="mb-4 text-2xl font-semibold tracking-tight">{title}</Typography>
       {children}
     </section>
   );
@@ -81,10 +50,10 @@ function Section({ id, title, children }: { id: string; title: string; children:
 
 function SubSection({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <div id={id} className="mt-8 scroll-mt-24">
-      <h3 className="mb-3 text-lg font-semibold">{title}</h3>
+    <Box id={id} className="mt-8 scroll-mt-24">
+      <Typography as="h3" variant="h3" className="mb-3 text-lg font-semibold">{title}</Typography>
       {children}
-    </div>
+    </Box>
   );
 }
 
@@ -96,16 +65,16 @@ function Callout({ variant = 'info', children }: { variant?: 'info' | 'warning' 
   };
   const labels = { info: 'NOTE', warning: 'WARNING', tip: 'TIP' };
   return (
-    <div className={`my-4 rounded-lg border px-4 py-3 text-sm ${styles[variant]}`}>
+    <Box className={`my-4 rounded-lg border px-4 py-3 text-sm ${styles[variant]}`}>
       <span className="font-bold mr-2">{labels[variant]}:</span>
       {children}
-    </div>
+    </Box>
   );
 }
 
 function PropsTable({ rows }: { rows: { prop: string; type: string; default?: string; description: string }[] }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-border">
+    <Box className="overflow-hidden rounded-lg border border-border">
       <table className="w-full text-left text-xs">
         <thead className="bg-muted/50 text-muted-foreground">
           <tr>
@@ -126,13 +95,13 @@ function PropsTable({ rows }: { rows: { prop: string; type: string; default?: st
           ))}
         </tbody>
       </table>
-    </div>
+    </Box>
   );
 }
 
 function ReturnsTable({ rows }: { rows: { field: string; type: string; description: string }[] }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-border">
+    <Box className="overflow-hidden rounded-lg border border-border">
       <table className="w-full text-left text-xs">
         <thead className="bg-muted/50 text-muted-foreground">
           <tr>
@@ -151,7 +120,7 @@ function ReturnsTable({ rows }: { rows: { field: string; type: string; descripti
           ))}
         </tbody>
       </table>
-    </div>
+    </Box>
   );
 }
 
@@ -200,10 +169,10 @@ function QueryDemo() {
     : '';
 
   return (
-    <div className="w-full max-w-md space-y-3 font-sans text-sm">
+    <Box className="w-full max-w-md space-y-3 font-sans text-sm">
       {/* Status bar */}
-      <div className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-2">
-        <div className="flex items-center gap-2 min-w-0">
+      <Box className="flex items-center justify-between rounded-lg border border-border/60 bg-muted/30 px-3 py-2">
+        <Box className="flex items-center gap-2 min-w-0">
           <span className={`h-2 w-2 shrink-0 rounded-full transition-colors ${
             status === 'loading' ? 'animate-pulse bg-amber-400' :
             status === 'success' ? isStale ? 'bg-amber-400' : 'bg-emerald-400' :
@@ -214,56 +183,56 @@ function QueryDemo() {
              status === 'success' ? `useApiQuery › status: success` :
              status === 'error' ? 'useApiQuery › status: error' : 'useApiQuery › idle'}
           </span>
-        </div>
-        <button onClick={() => loadUsers(true)} disabled={status === 'loading'}
+        </Box>
+        <Button variant="ghost" onClick={() => loadUsers(true)} disabled={status === 'loading'}
           className="ml-2 shrink-0 rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-fg disabled:opacity-40">
           refetch()
-        </button>
-      </div>
+        </Button>
+      </Box>
 
       {/* Cache info */}
       {cacheInfo && (
-        <div className="flex items-center gap-2 rounded-md bg-muted/40 px-3 py-1.5">
+        <Box className="flex items-center gap-2 rounded-md bg-muted/40 px-3 py-1.5">
           <span className="font-mono text-[10px] text-muted-foreground">{cacheInfo}</span>
-        </div>
+        </Box>
       )}
 
       {/* Data */}
-      <div className="overflow-hidden rounded-lg border border-border">
+      <Box className="overflow-hidden rounded-lg border border-border">
         {status === 'loading' ? (
-          <div className="divide-y divide-border/60">
+          <Box className="divide-y divide-border/60">
             {[1,2,3].map(i => (
-              <div key={i} className="flex items-center gap-3 p-3">
-                <div className="h-7 w-7 animate-pulse rounded-full bg-muted" />
-                <div className="flex-1 space-y-1.5">
-                  <div className="h-2.5 w-24 animate-pulse rounded bg-muted" />
-                  <div className="h-2 w-36 animate-pulse rounded bg-muted" />
-                </div>
-              </div>
+              <Box key={i} className="flex items-center gap-3 p-3">
+                <Box className="h-7 w-7 animate-pulse rounded-full bg-muted" />
+                <Box className="flex-1 space-y-1.5">
+                  <Box className="h-2.5 w-24 animate-pulse rounded bg-muted" />
+                  <Box className="h-2 w-36 animate-pulse rounded bg-muted" />
+                </Box>
+              </Box>
             ))}
-          </div>
+          </Box>
         ) : status === 'error' ? (
-          <div className="flex items-center gap-2 p-4 text-red-500 text-sm">
+          <Box className="flex items-center gap-2 p-4 text-red-500 text-sm">
             <AlertCircle className="h-4 w-4" /> Failed to load users
-          </div>
+          </Box>
         ) : (
-          <div className="divide-y divide-border/60">
+          <Box className="divide-y divide-border/60">
             {users.map(u => (
-              <div key={u.id} className="flex items-center gap-3 p-3">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
+              <Box key={u.id} className="flex items-center gap-3 p-3">
+                <Box className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[11px] font-semibold text-primary">
                   {u.name[0]}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium leading-none text-[13px]">{u.name}</p>
-                  <p className="mt-0.5 text-[11px] text-muted-foreground">{u.email}</p>
-                </div>
+                </Box>
+                <Box className="flex-1 min-w-0">
+                  <Typography as="p" variant="body2" className="font-medium leading-none text-[13px]">{u.name}</Typography>
+                  <Typography as="p" variant="body2" className="mt-0.5 text-[11px] text-muted-foreground">{u.email}</Typography>
+                </Box>
                 <span className="text-[11px] text-muted-foreground">{u.role}</span>
-              </div>
+              </Box>
             ))}
-          </div>
+          </Box>
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 
@@ -296,47 +265,47 @@ function MutationDemo() {
   };
 
   return (
-    <div className="w-full max-w-md space-y-3 font-sans text-sm">
+    <Box className="w-full max-w-md space-y-3 font-sans text-sm">
       {/* Mutation form */}
       <form onSubmit={submit} className="rounded-lg border border-border bg-card p-4 space-y-3">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">useApiMutation — POST /users</p>
-        <input value={form.name} onChange={e => setForm(f => ({...f, name: e.target.value}))}
+        <Typography as="p" variant="body2" className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">useApiMutation — POST /users</Typography>
+        <Input value={form.name} onChange={e => setForm(f => ({...f, name: e.target.value}))}
           placeholder="Name" className="w-full rounded-md border border-border bg-muted/30 px-2.5 py-1.5 text-[12px] outline-none focus:border-ring/40 focus:ring-2 focus:ring-ring/20" />
-        <input value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))}
+        <Input value={form.email} onChange={e => setForm(f => ({...f, email: e.target.value}))}
           placeholder="Email" className="w-full rounded-md border border-border bg-muted/30 px-2.5 py-1.5 text-[12px] outline-none focus:border-ring/40 focus:ring-2 focus:ring-ring/20" />
-        <div className="flex items-center gap-2">
+        <Box className="flex items-center gap-2">
           <select value={form.role} onChange={e => setForm(f => ({...f, role: e.target.value}))}
             className="flex-1 rounded-md border border-border bg-muted/30 px-2.5 py-1.5 text-[12px] outline-none">
             {['Engineer','Designer','Product','QA'].map(r => <option key={r}>{r}</option>)}
           </select>
-          <button type="submit" disabled={mutStatus === 'pending'}
+          <Button variant="ghost" type="submit" disabled={mutStatus === 'pending'}
             className="rounded-lg bg-primary px-3 py-1.5 text-[12px] font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60">
             {mutStatus === 'pending' ? 'Adding…' : 'Add user'}
-          </button>
-        </div>
+          </Button>
+        </Box>
         {mutStatus === 'success' && (
-          <p className="flex items-center gap-1.5 text-[11px] text-emerald-600"><Check className="h-3 w-3" /> User created — cache invalidated → /users refetching</p>
+          <Typography as="p" variant="body2" className="flex items-center gap-1.5 text-[11px] text-emerald-600"><Check className="h-3 w-3" /> User created — cache invalidated → /users refetching</Typography>
         )}
       </form>
 
       {/* List */}
-      <div className="overflow-hidden rounded-lg border border-border">
-        <div className="divide-y divide-border/60">
+      <Box className="overflow-hidden rounded-lg border border-border">
+        <Box className="divide-y divide-border/60">
           {users.map(u => (
-            <div key={u.id} className={`flex items-center gap-3 p-2.5 transition-opacity ${deleteId === u.id ? 'opacity-30' : ''}`}>
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">{u.name[0]}</div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium leading-none text-[12px]">{u.name}</p>
-                <p className="mt-0.5 text-[10px] text-muted-foreground">{u.role}</p>
-              </div>
-              <button onClick={() => remove(u.id)} className="rounded px-1.5 py-0.5 text-[11px] text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-colors">
+            <Box key={u.id} className={`flex items-center gap-3 p-2.5 transition-opacity ${deleteId === u.id ? 'opacity-30' : ''}`}>
+              <Box className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">{u.name[0]}</Box>
+              <Box className="flex-1 min-w-0">
+                <Typography as="p" variant="body2" className="font-medium leading-none text-[12px]">{u.name}</Typography>
+                <Typography as="p" variant="body2" className="mt-0.5 text-[10px] text-muted-foreground">{u.role}</Typography>
+              </Box>
+              <Button variant="ghost" onClick={() => remove(u.id)} className="rounded px-1.5 py-0.5 text-[11px] text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-colors">
                 ×
-              </button>
-            </div>
+              </Button>
+            </Box>
           ))}
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
@@ -355,22 +324,22 @@ function InfiniteDemo() {
   };
 
   return (
-    <div className="w-full max-w-xs space-y-2 font-sans text-sm">
-      <p className="font-mono text-[10px] text-muted-foreground">useInfiniteApiQuery — GET /items?cursor=…</p>
-      <div className="overflow-hidden rounded-lg border border-border divide-y divide-border/60">
+    <Box className="w-full max-w-xs space-y-2 font-sans text-sm">
+      <Typography as="p" variant="body2" className="font-mono text-[10px] text-muted-foreground">useInfiniteApiQuery — GET /items?cursor=…</Typography>
+      <Box className="overflow-hidden rounded-lg border border-border divide-y divide-border/60">
         {items.map(item => (
-          <div key={item} className="px-3 py-2 text-[13px]">{item}</div>
+          <Box key={item} className="px-3 py-2 text-[13px]">{item}</Box>
         ))}
-        {loading && <div className="px-3 py-2 text-[12px] text-muted-foreground animate-pulse">Loading page {page + 1}…</div>}
-      </div>
-      <button onClick={loadMore} disabled={!hasMore || loading}
+        {loading && <Box className="px-3 py-2 text-[12px] text-muted-foreground animate-pulse">Loading page {page + 1}…</Box>}
+      </Box>
+      <Button variant="ghost" onClick={loadMore} disabled={!hasMore || loading}
         className="w-full rounded-lg border border-border py-2 text-[12px] font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-fg disabled:opacity-40">
         {hasMore ? 'fetchNextPage()' : 'No more pages'}
-      </button>
-      <p className="text-center font-mono text-[10px] text-muted-foreground">
+      </Button>
+      <Typography as="p" variant="body2" className="text-center font-mono text-[10px] text-muted-foreground">
         {items.length} / {ALL_ITEMS.length} items · page {page}
-      </p>
-    </div>
+      </Typography>
+    </Box>
   );
 }
 
@@ -395,20 +364,20 @@ function OptimisticDemo() {
   };
 
   return (
-    <div className="w-full max-w-sm space-y-2 font-sans text-sm">
-      <p className="font-mono text-[10px] text-muted-foreground mb-3">optimistic — PATCH /posts/:id/like</p>
+    <Box className="w-full max-w-sm space-y-2 font-sans text-sm">
+      <Typography as="p" variant="body2" className="font-mono text-[10px] text-muted-foreground mb-3">optimistic — PATCH /posts/:id/like</Typography>
       {posts.map(p => (
-        <div key={p.id} className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2.5">
-          <p className="flex-1 text-[12px]">{p.text}</p>
-          <button onClick={() => like(p.id)} className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium transition-all ${
+        <Box key={p.id} className="flex items-center gap-3 rounded-lg border border-border bg-card px-3 py-2.5">
+          <Typography as="p" variant="body2" className="flex-1 text-[12px]">{p.text}</Typography>
+          <Button variant="ghost" onClick={() => like(p.id)} className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-medium transition-all ${
             liked.has(p.id) ? 'bg-red-500/10 text-red-500' : 'text-muted-foreground hover:bg-accent hover:text-fg'
           } ${pending.has(p.id) ? 'opacity-60' : ''}`}>
             {liked.has(p.id) ? '♥' : '♡'} {p.likes + (liked.has(p.id) ? 1 : 0)}
-          </button>
-        </div>
+          </Button>
+        </Box>
       ))}
-      <p className="text-[10px] text-muted-foreground text-center">UI updates instantly; server syncs in background</p>
-    </div>
+      <Typography as="p" variant="body2" className="text-[10px] text-muted-foreground text-center">UI updates instantly; server syncs in background</Typography>
+    </Box>
   );
 }
 
@@ -428,16 +397,16 @@ function CacheDemo() {
   };
 
   return (
-    <div className="w-full max-w-sm space-y-2 font-sans">
-      <p className="font-mono text-[10px] text-muted-foreground">QueryCache visualization</p>
-      <div className="overflow-hidden rounded-lg border border-border">
-        <div className="flex border-b border-border bg-muted/40 px-3 py-1.5">
-          {['Key', 'Status', 'Age', ''].map(h => <div key={h} className="flex-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{h}</div>)}
-        </div>
+    <Box className="w-full max-w-sm space-y-2 font-sans">
+      <Typography as="p" variant="body2" className="font-mono text-[10px] text-muted-foreground">QueryCache visualization</Typography>
+      <Box className="overflow-hidden rounded-lg border border-border">
+        <Box className="flex border-b border-border bg-muted/40 px-3 py-1.5">
+          {['Key', 'Status', 'Age', ''].map(h => <Box key={h} className="flex-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{h}</Box>)}
+        </Box>
         {entries.map(e => (
-          <div key={e.key} className="flex items-center border-t border-border/60 px-3 py-2">
-            <div className="flex-1 font-mono text-[11px]">{e.key}</div>
-            <div className="flex-1">
+          <Box key={e.key} className="flex items-center border-t border-border/60 px-3 py-2">
+            <Box className="flex-1 font-mono text-[11px]">{e.key}</Box>
+            <Box className="flex-1">
               <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold ${
                 e.status === 'success' ? 'bg-emerald-500/10 text-emerald-600' :
                 e.status === 'stale' ? 'bg-amber-500/10 text-amber-600' :
@@ -445,17 +414,17 @@ function CacheDemo() {
               }`}>
                 {e.status === 'loading' ? '⟳ loading' : e.status}
               </span>
-            </div>
-            <div className="flex-1 font-mono text-[11px] text-muted-foreground">{e.age}s</div>
-            <button onClick={() => invalidate(e.key)}
+            </Box>
+            <Box className="flex-1 font-mono text-[11px] text-muted-foreground">{e.age}s</Box>
+            <Button variant="ghost" onClick={() => invalidate(e.key)}
               className="rounded px-1.5 py-0.5 text-[10px] text-muted-foreground hover:bg-accent hover:text-fg transition-colors">
               invalidate
-            </button>
-          </div>
+            </Button>
+          </Box>
         ))}
-      </div>
-      <p className="text-[10px] text-muted-foreground">staleTime: 60 000ms — entries older than 60s are stale</p>
-    </div>
+      </Box>
+      <Typography as="p" variant="body2" className="text-[10px] text-muted-foreground">staleTime: 60 000ms — entries older than 60s are stale</Typography>
+    </Box>
   );
 }
 
@@ -495,7 +464,7 @@ export default function ApiClientPage() {
   }, []);
 
   return (
-    <div className="flex gap-12">
+    <Box className="flex gap-12">
       {/* ── Main ──────────────────────────────────────────────────────── */}
       <article className="min-w-0 flex-1">
 
@@ -508,18 +477,18 @@ export default function ApiClientPage() {
           <span className="font-medium text-fg">@structyl/api-client</span>
         </nav>
 
-        <div id="overview" className="scroll-mt-20">
-          <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-4xl font-semibold tracking-tight">@structyl/api-client</h1>
+        <Box id="overview" className="scroll-mt-20">
+          <Box className="flex flex-wrap items-center gap-3">
+            <Typography as="h1" variant="h1" className="text-4xl font-semibold tracking-tight">@structyl/api-client</Typography>
             <span className="inline-flex items-center rounded-full bg-blue-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-blue-500">beta</span>
-          </div>
-          <p className="mt-3 text-base text-muted-foreground">
+          </Box>
+          <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
             Lightweight data-fetching for React 18. Axios-powered with a built-in cache, automatic deduplication,
             retries, polling, optimistic mutations, infinite scroll, and SSR support — all without TanStack Query.
-          </p>
+          </Typography>
 
           {/* Feature grid */}
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <Box className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[
               ['useSyncExternalStore cache', 'React 18 concurrent-safe, no context thrash'],
               ['Request deduplication', 'One in-flight request per cache key'],
@@ -528,25 +497,25 @@ export default function ApiClientPage() {
               ['SSR dehydrate/hydrate', 'Prefetch on server, reuse on client'],
               ['Zero extra deps', 'Only axios + react as peer dependencies'],
             ].map(([title, desc]) => (
-              <div key={title} className="rounded-lg border border-border p-3">
-                <div className="flex items-start gap-2">
+              <Box key={title} className="rounded-lg border border-border p-3">
+                <Box className="flex items-start gap-2">
                   <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
                     <Check className="h-3 w-3" />
                   </span>
-                  <div>
-                    <p className="text-[13px] font-medium">{title}</p>
-                    <p className="mt-0.5 text-[12px] text-muted-foreground">{desc}</p>
-                  </div>
-                </div>
-              </div>
+                  <Box>
+                    <Typography as="p" variant="body2" className="text-[13px] font-medium">{title}</Typography>
+                    <Typography as="p" variant="body2" className="mt-0.5 text-[12px] text-muted-foreground">{desc}</Typography>
+                  </Box>
+                </Box>
+              </Box>
             ))}
-          </div>
+          </Box>
 
           {/* Comparison table */}
-          <div className="mt-6 overflow-hidden rounded-lg border border-border">
-            <div className="border-b border-border bg-muted/30 px-4 py-2">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">vs other libraries</p>
-            </div>
+          <Box className="mt-6 overflow-hidden rounded-lg border border-border">
+            <Box className="border-b border-border bg-muted/30 px-4 py-2">
+              <Typography as="p" variant="body2" className="text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/70">vs other libraries</Typography>
+            </Box>
             <table className="w-full text-left text-xs">
               <thead className="bg-muted/50 text-muted-foreground">
                 <tr>
@@ -577,8 +546,8 @@ export default function ApiClientPage() {
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* ── Quick Start ──────────────────────────────────────────────── */}
         <Section id="quick-start" title="Quick Start">
@@ -587,10 +556,10 @@ export default function ApiClientPage() {
           </SubSection>
 
           <SubSection id="create-client" title="2. Create a client">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
               Call <code className="rounded bg-muted px-1 text-[12px]">createApiClient</code> once — typically in <code className="rounded bg-muted px-1 text-[12px]">lib/api.ts</code>.
               The client handles Axios instance creation, auth headers, and token refresh automatically.
-            </p>
+            </Typography>
             <CodeBlock lang="ts" code={`// lib/api.ts
 import { createApiClient, QueryClient } from '@structyl/api-client';
 
@@ -661,11 +630,11 @@ export function UserList() {
 
         {/* ── Queries ──────────────────────────────────────────────────── */}
         <Section id="queries" title="Queries">
-          <p className="text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="text-sm text-muted-foreground">
             <code className="rounded bg-muted px-1 text-[12px]">useApiQuery</code> fetches data,
             caches it with a configurable <code className="rounded bg-muted px-1 text-[12px]">staleTime</code>,
             and subscribes your component to cache updates via <code className="rounded bg-muted px-1 text-[12px]">useSyncExternalStore</code>.
-          </p>
+          </Typography>
 
           <SubSection id="query-overloads" title="Overloads">
             <CodeBlock lang="tsx" code={`// Overload 1 — URL is both key and fetcher (most common)
@@ -713,9 +682,9 @@ const { data } = useApiQuery<User>(
           </SubSection>
 
           <SubSection id="query-patterns" title="Common patterns">
-            <div className="space-y-4">
-              <div>
-                <p className="mb-2 text-sm font-medium">Conditional query (dependent on another)</p>
+            <Box className="space-y-4">
+              <Box>
+                <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">Conditional query (dependent on another)</Typography>
                 <CodeBlock lang="tsx" code={`const { data: user } = useApiQuery('/me');
 
 // Only runs when user is loaded
@@ -724,9 +693,9 @@ const { data: posts } = useApiQuery(
   \`/users/\${user?.id}/posts\`,
   { enabled: !!user?.id },
 );`} />
-              </div>
-              <div>
-                <p className="mb-2 text-sm font-medium">Select transform — shape data per component</p>
+              </Box>
+              <Box>
+                <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">Select transform — shape data per component</Typography>
                 <CodeBlock lang="tsx" code={`// Raw type: { users: User[]; total: number }
 // Transformed: User[]
 const { data: activeUsers } = useApiQuery<ApiResponse, User[]>(
@@ -735,9 +704,9 @@ const { data: activeUsers } = useApiQuery<ApiResponse, User[]>(
     select: (res) => res.users.filter(u => u.active),
   }
 );`} />
-              </div>
-              <div>
-                <p className="mb-2 text-sm font-medium">Search-as-you-type with debounce</p>
+              </Box>
+              <Box>
+                <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">Search-as-you-type with debounce</Typography>
                 <CodeBlock lang="tsx" code={`function Search({ query }: { query: string }) {
   const { data } = useApiQuery<Result[]>(
     ['/search', query],
@@ -750,16 +719,16 @@ const { data: activeUsers } = useApiQuery<ApiResponse, User[]>(
   );
   // ...
 }`} />
-              </div>
-              <div>
-                <p className="mb-2 text-sm font-medium">Polling — live data without WebSockets</p>
+              </Box>
+              <Box>
+                <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">Polling — live data without WebSockets</Typography>
                 <CodeBlock lang="tsx" code={`const { data: jobStatus } = useApiQuery('/jobs/123/status', {
   pollInterval: 3_000, // poll every 3 seconds
   enabled: jobStatus?.state !== 'done', // stop when complete
 });`} />
-              </div>
-              <div>
-                <p className="mb-2 text-sm font-medium">Pagination with keepPreviousData</p>
+              </Box>
+              <Box>
+                <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">Pagination with keepPreviousData</Typography>
                 <CodeBlock lang="tsx" code={`function UserTable({ page }: { page: number }) {
   const { data, isPlaceholderData } = useApiQuery<User[]>(
     ['/users', page],
@@ -773,18 +742,18 @@ const { data: activeUsers } = useApiQuery<ApiResponse, User[]>(
     </div>
   );
 }`} />
-              </div>
-            </div>
+              </Box>
+            </Box>
           </SubSection>
         </Section>
 
         {/* ── Mutations ────────────────────────────────────────────────── */}
         <Section id="mutations" title="Mutations">
-          <p className="text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="text-sm text-muted-foreground">
             <code className="rounded bg-muted px-1 text-[12px]">useApiMutation</code> wraps POST/PUT/PATCH/DELETE
             requests with status tracking, cache invalidation, and optimistic updates.
             It does not touch the cache until <code className="rounded bg-muted px-1 text-[12px]">mutate()</code> is called.
-          </p>
+          </Typography>
 
           <SubSection id="basic-mutation" title="Basic usage">
             <CodeBlock lang="tsx" code={`import { useApiMutation } from '@structyl/api-client';
@@ -855,11 +824,11 @@ function CreateUserForm() {
           </SubSection>
 
           <SubSection id="optimistic" title="Optimistic updates">
-            <p className="mb-3 text-sm text-muted-foreground">
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">
               Pass an <code className="rounded bg-muted px-1 text-[12px]">optimistic</code> config to
               apply a UI update instantly while the request is in flight.
               If the request fails, the original data is restored automatically.
-            </p>
+            </Typography>
             <CodeBlock lang="tsx" code={`const { mutate } = useApiMutation<Post, { id: number; liked: boolean }>(
   '/posts/like',
   {
@@ -914,38 +883,38 @@ mutate({ id: post.id, liked: !post.liked });`} />
 
         {/* ── Cache ────────────────────────────────────────────────────── */}
         <Section id="cache" title="Cache behavior">
-          <p className="text-sm text-muted-foreground mb-4">
+          <Typography as="p" variant="body2" className="text-sm text-muted-foreground mb-4">
             The cache is a simple in-memory key→value store. Each entry has a status
             (<code className="rounded bg-muted px-1 text-[12px]">idle | loading | success | error</code>),
             a <code className="rounded bg-muted px-1 text-[12px]">updatedAt</code> timestamp, and a generation counter
             that prevents stale in-flight writes from landing.
-          </p>
+          </Typography>
 
           <CacheDemo />
 
-          <div className="mt-6 space-y-4">
-            <div>
-              <p className="mb-2 text-sm font-medium">Staleness</p>
-              <p className="mb-2 text-sm text-muted-foreground">
+          <Box className="mt-6 space-y-4">
+            <Box>
+              <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">Staleness</Typography>
+              <Typography as="p" variant="body2" className="mb-2 text-sm text-muted-foreground">
                 Data is <em>fresh</em> for <code className="rounded bg-muted px-1 text-[12px]">staleTime</code> ms after it was last fetched.
                 A stale entry is served immediately and refetched in the background on the next component mount or window focus.
                 Setting <code className="rounded bg-muted px-1 text-[12px]">staleTime: Infinity</code> effectively disables background refetching.
-              </p>
+              </Typography>
               <CodeBlock lang="ts" code={`// Never stale — fetch once and cache forever (per session)
 const { data } = useApiQuery('/config', { staleTime: Infinity });
 
 // Always stale — always refetch on mount
 const { data } = useApiQuery('/live-prices', { staleTime: 0 });`} />
-            </div>
+            </Box>
 
-            <div>
-              <p className="mb-2 text-sm font-medium">External invalidation</p>
-              <p className="mb-2 text-sm text-muted-foreground">
+            <Box>
+              <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">External invalidation</Typography>
+              <Typography as="p" variant="body2" className="mb-2 text-sm text-muted-foreground">
                 Mutations call <code className="rounded bg-muted px-1 text-[12px]">queryClient.invalidateQueries</code> which sets
                 a sentinel (<code className="rounded bg-muted px-1 text-[12px]">updatedAt = 0</code>) on the entry.
                 Active query hooks watching that key detect the sentinel and trigger a fresh fetch,
                 <em>without</em> triggering an infinite loop when <code className="rounded bg-muted px-1 text-[12px]">staleTime: 0</code>.
-              </p>
+              </Typography>
               <CodeBlock lang="ts" code={`// Manually invalidate any key from anywhere
 import { queryClient } from '@/lib/api';
 
@@ -959,24 +928,24 @@ const user = queryClient.getQueryData<User>(['/users', 1]);
 
 // Cancel in-flight request for a key (e.g. before optimistic update)
 await queryClient.cancelQueries({ queryKey: ['/users', 1] });`} />
-            </div>
+            </Box>
 
-            <div>
-              <p className="mb-2 text-sm font-medium">Garbage collection</p>
-              <p className="text-sm text-muted-foreground">
+            <Box>
+              <Typography as="p" variant="body2" className="mb-2 text-sm font-medium">Garbage collection</Typography>
+              <Typography as="p" variant="body2" className="text-sm text-muted-foreground">
                 Unused cache entries (no active subscribers) are removed after <code className="rounded bg-muted px-1 text-[12px]">gcTime</code> ms
                 (default 5 min). Configure it in <code className="rounded bg-muted px-1 text-[12px]">new QueryClient({"{ gcTime: ... }"})</code>.
-              </p>
-            </div>
-          </div>
+              </Typography>
+            </Box>
+          </Box>
         </Section>
 
         {/* ── Parallel queries ──────────────────────────────────────────── */}
         <Section id="parallel" title="Parallel Queries">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             <code className="rounded bg-muted px-1 text-[12px]">useApiQueries</code> runs multiple queries
             in parallel and returns a stable-snapshot array — updating only when at least one entry changes.
-          </p>
+          </Typography>
           <CodeBlock lang="tsx" code={`import { useApiQueries } from '@structyl/api-client';
 
 function Dashboard({ userId }: { userId: string }) {
@@ -1015,12 +984,12 @@ function Dashboard({ userId }: { userId: string }) {
 
         {/* ── Infinite scroll ───────────────────────────────────────────── */}
         <Section id="infinite" title="Infinite Scroll">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             <code className="rounded bg-muted px-1 text-[12px]">useInfiniteApiQuery</code> manages paginated data
             as a list of pages. By default it appends <code className="rounded bg-muted px-1 text-[12px]">?cursor=</code> to
             the URL for each page. Pass a custom <code className="rounded bg-muted px-1 text-[12px]">fetchPage</code> for
             offset/page-number pagination.
-          </p>
+          </Typography>
           <CodeBlock lang="tsx" code={`import { useInfiniteApiQuery } from '@structyl/api-client';
 
 interface PostsPage { posts: Post[]; nextCursor: string | null }
@@ -1078,13 +1047,13 @@ function Feed() {
 
         {/* ── Suspense ─────────────────────────────────────────────────── */}
         <Section id="suspense" title="Suspense">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             <code className="rounded bg-muted px-1 text-[12px]">useSuspenseApiQuery</code> integrates with
             React Suspense. It throws a Promise on the initial load (caught by the nearest{' '}
             <code className="rounded bg-muted px-1 text-[12px]">{'<Suspense>'}</code> boundary) and throws an
             ApiError on failure (caught by an <code className="rounded bg-muted px-1 text-[12px]">ErrorBoundary</code>).
             Background refetches never suspend — they run silently.
-          </p>
+          </Typography>
 
           <Callout variant="info">
             Unlike <code className="rounded bg-muted px-1 text-[12px]">useApiQuery</code>, the returned{' '}
@@ -1138,10 +1107,10 @@ function UserPage({ id }: { id: string }) {
 
         {/* ── SSR ──────────────────────────────────────────────────────── */}
         <Section id="ssr" title="SSR / Server Rendering">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             Prefetch queries on the server, dehydrate the cache to JSON, send it to the client,
             and rehydrate before React renders — eliminating the initial loading spinner for server-rendered pages.
-          </p>
+          </Typography>
 
           <SubSection id="ssr-nextjs" title="Next.js App Router">
             <CodeBlock lang="tsx" code={`// app/users/page.tsx  (Server Component)
@@ -1192,11 +1161,11 @@ export default function UsersPage({ dehydratedState }) {
 
         {/* ── Persistence ──────────────────────────────────────────────── */}
         <Section id="persistence" title="Cache Persistence">
-          <p className="mb-4 text-sm text-muted-foreground">
+          <Typography as="p" variant="body2" className="mb-4 text-sm text-muted-foreground">
             Persist the cache to localStorage (or any storage implementing{' '}
             <code className="rounded bg-muted px-1 text-[12px]">getItem/setItem/removeItem</code>)
             so data survives page refreshes.
-          </p>
+          </Typography>
 
           <CodeBlock lang="tsx" code={`import { persistCache } from '@structyl/api-client';
 import { queryClient } from '@/lib/api';
@@ -1221,7 +1190,7 @@ await persistCache(queryClient, {
         <Section id="api-reference" title="API Reference">
 
           <SubSection id="ref-create-client" title="createApiClient(config)">
-            <p className="mb-3 text-sm text-muted-foreground">Creates the Axios-based API client. Returns an <code className="rounded bg-muted px-1 text-[12px]">ApiClient</code> instance.</p>
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">Creates the Axios-based API client. Returns an <code className="rounded bg-muted px-1 text-[12px]">ApiClient</code> instance.</Typography>
             <PropsTable rows={[
               { prop: 'baseURL', type: 'string', description: 'Base URL prepended to every request.' },
               { prop: 'headers', type: 'Record<string, string>', description: 'Static headers sent on every request.' },
@@ -1249,7 +1218,7 @@ await persistCache(queryClient, {
           </SubSection>
 
           <SubSection id="ref-use-api-client" title="useApiClient()">
-            <p className="mb-3 text-sm text-muted-foreground">Returns the raw Axios instance for one-off requests or non-hook usage.</p>
+            <Typography as="p" variant="body2" className="mb-3 text-sm text-muted-foreground">Returns the raw Axios instance for one-off requests or non-hook usage.</Typography>
             <CodeBlock lang="tsx" code={`const { instance } = useApiClient();
 const res = await instance.get('/download', { responseType: 'blob' });`} />
           </SubSection>
@@ -1275,18 +1244,18 @@ const res = await instance.get('/download', { responseType: 'blob' });`} />
         </Section>
 
         {/* Footer */}
-        <div className="mt-14 flex justify-end">
+        <Box className="mt-14 flex justify-end">
           <a href="https://github.com/imirfanul/structyl" target="_blank" rel="noreferrer"
             className="flex items-center gap-1.5 text-[12px] text-muted-foreground transition-colors hover:text-fg">
             Edit on GitHub <ArrowUpRight className="h-3 w-3" />
           </a>
-        </div>
+        </Box>
       </article>
 
       {/* ── TOC ───────────────────────────────────────────────────────── */}
       <aside className="hidden w-[180px] shrink-0 xl:block">
-        <div className="sticky top-[76px]">
-          <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">On this page</p>
+        <Box className="sticky top-[76px]">
+          <Typography as="p" variant="body2" className="mb-3 text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground/60">On this page</Typography>
           <nav className="space-y-0.5">
             {TOC.map(({ id, title }) => (
               <a key={id} href={`#${id}`}
@@ -1299,8 +1268,8 @@ const res = await instance.get('/download', { responseType: 'blob' });`} />
               </a>
             ))}
           </nav>
-        </div>
+        </Box>
       </aside>
-    </div>
+    </Box>
   );
 }
