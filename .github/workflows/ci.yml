@@ -90,6 +90,7 @@ jobs:
           npm whoami
 
       - name: Create Release PR or publish
+        id: changesets
         uses: changesets/action@v1
         with:
           publish: pnpm release
@@ -101,3 +102,29 @@ jobs:
           # Publish with npm provenance (uses the job's id-token: write +
           # the repository field now present in every package.json).
           NPM_CONFIG_PROVENANCE: 'true'
+
+      # Announce to the #announcements channel ONLY when packages were actually
+      # published to npm (not when changesets just opens a "version packages" PR).
+      - name: Announce release on Discord
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          PUBLISHED_PACKAGES: ${{ steps.changesets.outputs.publishedPackages }}
+        run: |
+          node -e '
+            const https = require("https");
+            const webhook = process.env.DISCORD_WEBHOOK_URL;
+            if (!webhook) { console.log("No DISCORD_WEBHOOK_URL secret set — skipping."); process.exit(0); }
+            const pkgs = JSON.parse(process.env.PUBLISHED_PACKAGES || "[]");
+            const lines = pkgs.map(p => "• `" + p.name + "@" + p.version + "`").join("\n");
+            const content = "🚀 **New release published to npm**\n" + lines +
+              "\n\n📦 https://www.npmjs.com/org/structyl";
+            const body = JSON.stringify({ username: "structyl releases", content });
+            const u = new URL(webhook);
+            const req = https.request(u, { method: "POST", headers: {
+              "Content-Type": "application/json",
+              "Content-Length": Buffer.byteLength(body),
+            }}, res => { res.resume(); res.on("end", () => process.exit(res.statusCode < 300 ? 0 : 1)); });
+            req.on("error", e => { console.error(e); process.exit(1); });
+            req.write(body); req.end();
+          '

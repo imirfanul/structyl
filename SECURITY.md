@@ -19,7 +19,7 @@ scope. "Latest" means the most recent release of the affected package on npm.
 ## Reporting a Vulnerability
 
 **Please do not report security vulnerabilities through public GitHub issues,
-discussions, or pull requests.**
+discussions, pull requests, or our Discord server.**
 
 Instead, report them privately through GitHub's private vulnerability reporting:
 

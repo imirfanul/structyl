@@ -21,11 +21,12 @@ The full component catalogue, live examples, and API reference live at
 [accessibility](https://www.structyl.com/docs/accessibility), and
 [design tokens](https://www.structyl.com/docs/design-tokens).
 
-## Contributing
+## Community & contributing
 
+- **[Discord](https://discord.gg/structyl)** — chat with maintainers and other users
+- **[Discussions](https://github.com/imirfanul/structyl/discussions)** — ask questions, share ideas
 - **[Contributing](https://github.com/imirfanul/structyl/blob/master/.github/CONTRIBUTING.md)**
 - **[Code of Conduct](https://github.com/imirfanul/structyl/blob/master/CODE_OF_CONDUCT.md)**
-- **[Discussions](https://github.com/imirfanul/structyl/discussions)** — ask questions, share ideas
 
 ---
 

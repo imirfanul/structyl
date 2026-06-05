@@ -22,10 +22,13 @@ import {
   Clock,
   Database,
   Paintbrush,
+  MessageCircle,
+  Github,
 } from '@structyl/icons';
 import { useTheme } from '@structyl/themes';
 import { Box, Button, Input, InputGroup, Typography } from '@structyl/styled';
 import { COMPONENTS, HOOKS } from '../../lib/registry';
+import { GITHUB_URL, DISCORD_URL } from '../../lib/site-config';
 import { useNoAutofill } from '../../lib/use-no-autofill';
 import { ThemePresetPicker } from '../../components/theme-preset-picker';
 
@@ -199,6 +202,26 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             >
               {resolvedMode === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
+            {/* Discord */}
+            <Link
+              href={DISCORD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Join our Discord"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg"
+            >
+              <MessageCircle className="h-4 w-4" />
+            </Link>
+            {/* GitHub */}
+            <Link
+              href={GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub repository"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-fg"
+            >
+              <Github className="h-4 w-4" />
+            </Link>
           </Box>
         </Box>
       </header>

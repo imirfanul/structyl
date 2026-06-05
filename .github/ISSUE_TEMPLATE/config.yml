@@ -3,6 +3,9 @@ contact_links:
   - name: 💬 Questions & Discussions
     url: https://github.com/imirfanul/structyl/discussions
     about: Have a question, idea, or want to show what you built? Start a discussion.
+  - name: 🎮 Discord community
+    url: https://discord.gg/structyl
+    about: Chat with the maintainers and other users in real time.
   - name: 📚 Documentation
     url: https://www.structyl.com/docs
     about: Browse components, examples, and the full API reference before filing an issue.

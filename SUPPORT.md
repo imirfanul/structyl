@@ -13,9 +13,12 @@ Most questions are answered in the documentation:
 
 ## 💬 Questions & usage help
 
-For "how do I…" questions, usage help, or to share what you built, use
-**[GitHub Discussions](https://github.com/imirfanul/structyl/discussions)**.
-If Discussions isn't available, open a regular issue and we'll help.
+For "how do I…" questions, usage help, or to share what you built:
+
+- 🎮 **[Discord community](https://discord.gg/structyl)** — chat with the maintainers and other users in real time
+- 💬 **[GitHub Discussions](https://github.com/imirfanul/structyl/discussions)** — message-board style Q&A
+
+If neither is available, open a regular issue and we'll help.
 
 Please don't open a bug issue for usage questions — Discussions get answered
 faster and stay searchable for the next person.

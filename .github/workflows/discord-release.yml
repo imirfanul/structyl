@@ -1,0 +1,53 @@
+name: Discord — GitHub Release
+
+# Posts to the #announcements channel whenever a GitHub Release is published.
+# Uses the same DISCORD_WEBHOOK_URL secret as npm releases (both are "official"
+# announcements). Docs deploys use a separate DISCORD_DOCS_WEBHOOK_URL → #dev-log.
+# If the secret is unset, the step no-ops cleanly.
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  announce:
+    name: Announce release on Discord
+    runs-on: ubuntu-latest
+    steps:
+      - name: Post release to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_URL: ${{ github.event.release.html_url }}
+          RELEASE_BODY: ${{ github.event.release.body }}
+          IS_PRERELEASE: ${{ github.event.release.prerelease }}
+        run: |
+          node -e '
+            const https = require("https");
+            const webhook = process.env.DISCORD_WEBHOOK_URL;
+            if (!webhook) { console.log("No DISCORD_WEBHOOK_URL secret set — skipping."); process.exit(0); }
+            const title = process.env.RELEASE_NAME || process.env.RELEASE_TAG;
+            const pre = process.env.IS_PRERELEASE === "true" ? " (pre-release)" : "";
+            // Discord embed description caps at 4096 chars; keep notes well under.
+            let notes = (process.env.RELEASE_BODY || "").trim();
+            if (notes.length > 1500) notes = notes.slice(0, 1500) + "\n…";
+            const embed = {
+              title: "🏷️ " + title + pre,
+              url: process.env.RELEASE_URL,
+              description: notes || "A new release is available.",
+              color: 0x5754a3,
+            };
+            const body = JSON.stringify({
+              username: "structyl releases",
+              content: "📣 **New GitHub Release**",
+              embeds: [embed],
+            });
+            const u = new URL(webhook);
+            const req = https.request(u, { method: "POST", headers: {
+              "Content-Type": "application/json",
+              "Content-Length": Buffer.byteLength(body),
+            }}, res => { res.resume(); res.on("end", () => process.exit(res.statusCode < 300 ? 0 : 1)); });
+            req.on("error", e => { console.error(e); process.exit(1); });
+            req.write(body); req.end();
+          '
