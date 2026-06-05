@@ -1,1 +1,1 @@
-[Docs](https://www.structyl.com/docs) · [GitHub](https://github.com/imirfanul/structyl) · [Discord](https://discord.gg/structyl) · [Discussions](https://github.com/imirfanul/structyl/discussions) · MIT © structyl contributors
+[Docs](https://www.structyl.com/docs) · [GitHub](https://github.com/imirfanul/structyl) · [Discord](https://discord.gg/mEUEUfTfgX) · [Discussions](https://github.com/imirfanul/structyl/discussions) · MIT © structyl contributors
