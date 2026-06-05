@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: 'If you use structyl in your work, please cite it using this metadata.'
+title: structyl
+abstract: >-
+  An open-source, accessible, themable React component library combining
+  WAI-ARIA headless primitives, a Tailwind-styled component layer, a runtime
+  theming system, and a first-class DataTable.
+type: software
+authors:
+  - given-names: Mohammed Irfanul Alam
+    family-names: Tanveer
+    website: 'https://www.imirfanul.com'
+repository-code: 'https://github.com/imirfanul/structyl'
+url: 'https://www.structyl.com'
+license: MIT
+keywords:
+  - react
+  - component-library
+  - ui
+  - tailwindcss
+  - accessibility
+  - wai-aria
+  - headless-ui
+  - design-system
+  - typescript
+  - data-table

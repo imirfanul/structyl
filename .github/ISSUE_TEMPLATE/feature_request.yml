@@ -1,0 +1,109 @@
+name: ✨ Feature request
+description: Suggest a new component, prop, hook, or improvement for structyl.
+title: '[Feature]: '
+labels: ['enhancement', 'needs triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing an idea! 💡
+
+        Please [search existing issues and discussions](https://github.com/imirfanul/structyl/issues?q=is%3Aissue) first — your idea may already be proposed.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: What kind of request is this?
+      options:
+        - New component
+        - New prop / API on an existing component
+        - New hook
+        - New utility
+        - Theming / design tokens
+        - DataTable feature
+        - Accessibility improvement
+        - Developer experience / tooling
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What problem are you trying to solve? Why is the current behavior insufficient?
+      placeholder: I'm always frustrated when ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe the API or behavior you'd like. Code samples of the ideal usage are very welcome.
+      placeholder: |
+        ```tsx
+        <Component newProp="..." />
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you've thought about, or how you work around this today.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Relevant package(s)
+      description: Which package would this most likely belong to?
+      multiple: true
+      options:
+        - '@structyl/styled'
+        - '@structyl/primitives'
+        - '@structyl/themes'
+        - '@structyl/data-table'
+        - '@structyl/hooks'
+        - '@structyl/icons'
+        - '@structyl/utils'
+        - '@structyl/core'
+        - '@structyl/api-client'
+        - '@structyl/video-player'
+        - '@structyl/cli'
+        - 'Not sure / new package'
+    validations:
+      required: false
+
+  - type: input
+    id: prior-art
+    attributes:
+      label: Prior art
+      description: Links to how Radix, shadcn/ui, MUI, the WAI-ARIA APG, or others handle this.
+      placeholder: 'https://www.w3.org/WAI/ARIA/apg/patterns/...'
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Mockups, screenshots, or anything else that helps.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and discussions and this is not a duplicate.
+          required: true
+        - label: This request fits structyl's scope (accessible, headless-first, themable React components).
+          required: true
+        - label: I would be willing to help implement this.
+          required: false

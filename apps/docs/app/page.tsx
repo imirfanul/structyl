@@ -7,10 +7,10 @@ import {
   ArrowUpRight, Sun, Moon, Copy, Check,
   Layers, Palette, Table2, Zap, Shield, Code2,
   ChevronRight, ChevronDown, ChevronUp,
-  Accessibility, Package, Database,
+  Accessibility, Package, Database, MessageCircle,
 } from '@structyl/icons';
 import { Box, Button, Switch, Input, Select, Typography } from '@structyl/styled';
-import { GITHUB_URL } from '../lib/site-config';
+import { GITHUB_URL, DISCORD_URL } from '../lib/site-config';
 import { ThemePresetPicker, COLOR_PRESETS, applyColorPreset, clearColorPreset, type PresetId } from '../components/theme-preset-picker';
 import { CodeBlock } from '../components/code-block';
 
@@ -451,6 +451,15 @@ export default function Page() {
             >
               GitHub <ArrowUpRight className="h-3.5 w-3.5" />
             </Link>
+            <Link
+              href={DISCORD_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Join our Discord"
+              className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:bg-accent/60 hover:text-fg"
+            >
+              <MessageCircle className="h-4 w-4" /> Discord
+            </Link>
             <ThemePresetPicker />
             <Button
               variant="ghost"
@@ -810,6 +819,9 @@ export default function Page() {
               <Link href="/docs/changelog" className="transition-colors hover:text-fg">Changelog</Link>
               <Link href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 transition-colors hover:text-fg">
                 GitHub <ArrowUpRight className="h-3 w-3" />
+              </Link>
+              <Link href={DISCORD_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 transition-colors hover:text-fg">
+                <MessageCircle className="h-3 w-3" /> Discord
               </Link>
             </nav>
           </Box>

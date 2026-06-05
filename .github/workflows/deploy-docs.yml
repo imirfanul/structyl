@@ -33,3 +33,29 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      # Announce the docs deploy in the #dev-log channel (separate webhook from
+      # releases). No-op if the secret is unset.
+      - name: Announce docs update on Discord
+        if: success()
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_DOCS_WEBHOOK_URL }}
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+        run: |
+          node -e '
+            const https = require("https");
+            const webhook = process.env.DISCORD_WEBHOOK_URL;
+            if (!webhook) { console.log("No DISCORD_WEBHOOK_URL secret set — skipping."); process.exit(0); }
+            const msg = (process.env.COMMIT_MSG || "").split("\n")[0];
+            const content = "📚 **Docs updated & deployed** → https://www.structyl.com/docs\n" +
+              "> " + msg + (process.env.COMMIT_URL ? "\n" + process.env.COMMIT_URL : "");
+            const body = JSON.stringify({ username: "structyl docs", content });
+            const u = new URL(webhook);
+            const req = https.request(u, { method: "POST", headers: {
+              "Content-Type": "application/json",
+              "Content-Length": Buffer.byteLength(body),
+            }}, res => { res.resume(); res.on("end", () => process.exit(res.statusCode < 300 ? 0 : 1)); });
+            req.on("error", e => { console.error(e); process.exit(1); });
+            req.write(body); req.end();
+          '

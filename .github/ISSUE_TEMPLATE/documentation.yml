@@ -1,0 +1,61 @@
+name: 📚 Documentation issue
+description: Report something unclear, missing, or wrong in the docs.
+title: '[Docs]: '
+labels: ['documentation', 'needs triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the structyl docs! 📝
+
+        For broad "how do I…" questions, [Discussions](https://github.com/imirfanul/structyl/discussions) are usually a better fit.
+
+  - type: input
+    id: page
+    attributes:
+      label: Affected page or URL
+      description: Link to the docs page (or the file under `apps/docs/` or `docs/`).
+      placeholder: 'https://www.structyl.com/docs/dialog'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What's the problem?
+      options:
+        - Information is incorrect
+        - Information is missing
+        - Example doesn't work
+        - Confusing / unclear wording
+        - Broken link or image
+        - Typo / formatting
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: Describe the issue
+      description: What's wrong, and what would make it clearer or correct?
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix
+      description: If you have wording or a code sample in mind, share it here.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I would be willing to open a PR to fix this.
+          required: false

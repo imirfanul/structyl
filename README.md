@@ -12,8 +12,9 @@ Accessible headless primitives, a Tailwind CSS v4 styled layer, runtime theming,
 
 [![npm version](https://img.shields.io/npm/v/@structyl/styled.svg?label=%40structyl%2Fstyled&color=cb3837)](https://www.npmjs.com/package/@structyl/styled)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./docs/CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./.github/CONTRIBUTING.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Discord](https://img.shields.io/badge/Discord-join%20chat-5865F2.svg?logo=discord&logoColor=white)](https://discord.gg/structyl)
 
 [Documentation](https://www.structyl.com) · [Components](https://www.structyl.com/docs) · [GitHub](https://github.com/imirfanul/structyl)
 
@@ -189,11 +190,13 @@ pnpm changeset      # Add a changeset for your PR
 
 Contributions are welcome — issues, discussions, and PRs alike. Before opening a PR, please read:
 
-- [CONTRIBUTING.md](./docs/CONTRIBUTING.md) — how to contribute, branch, and submit changes
+- [CONTRIBUTING.md](./.github/CONTRIBUTING.md) — how to contribute, branch, and submit changes
 - [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — why the codebase is shaped this way
 - [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) — community guidelines
 
-User-visible changes should include a changeset (`pnpm changeset`). If you are an AI coding agent, start with [AGENTS.md](./AGENTS.md) and [CLAUDE.md](./CLAUDE.md).
+User-visible changes should include a changeset (`pnpm changeset`).
+
+Have a question or want to chat? Join us on [Discord](https://discord.gg/structyl) or in [GitHub Discussions](https://github.com/imirfanul/structyl/discussions).
 
 ---
 
