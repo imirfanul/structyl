@@ -1,0 +1,131 @@
+name: 🐞 Bug report
+description: Report a reproducible bug or unexpected behavior in structyl.
+title: '[Bug]: '
+labels: ['bug', 'needs triage']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug report! 🙏
+
+        Before submitting, please [search existing issues](https://github.com/imirfanul/structyl/issues?q=is%3Aissue) to avoid duplicates.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: When I do X, Y happens instead of Z.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected package(s)
+      description: Which package(s) does this affect? Select all that apply.
+      multiple: true
+      options:
+        - '@structyl/styled'
+        - '@structyl/primitives'
+        - '@structyl/themes'
+        - '@structyl/data-table'
+        - '@structyl/hooks'
+        - '@structyl/icons'
+        - '@structyl/utils'
+        - '@structyl/core'
+        - '@structyl/api-client'
+        - '@structyl/video-player'
+        - '@structyl/cli'
+        - 'Not sure / other'
+    validations:
+      required: true
+
+  - type: input
+    id: reproduction-link
+    attributes:
+      label: Minimal reproduction link
+      description: 'A link to a minimal repro (StackBlitz, CodeSandbox, or a small public repo). This is REQUIRED — issues without a reproduction are very hard to act on and may be closed. Starter: https://stackblitz.com/edit/react-ts'
+      placeholder: 'https://stackblitz.com/edit/...'
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: The exact steps to trigger the bug in the reproduction above.
+      placeholder: |
+        1. Render `<Dialog.Root>` with ...
+        2. Click the trigger
+        3. See the error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened? Include any error messages or stack traces.
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version(s)
+      description: The version(s) of the affected structyl package(s).
+      placeholder: '@structyl/styled@1.1.0'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: framework
+    attributes:
+      label: Framework
+      options:
+        - Next.js (App Router)
+        - Next.js (Pages Router)
+        - Vite + React
+        - Remix
+        - Plain React
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: React version, Node version, browser, and OS.
+      placeholder: 'React 19, Node 20, Chrome 125, macOS 14'
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, related issues, or anything else that might help.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I am using the latest version of the affected package(s).
+          required: true
+        - label: I have provided a minimal reproduction link above.
+          required: true

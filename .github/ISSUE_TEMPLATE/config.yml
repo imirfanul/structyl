@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Questions & Discussions
+    url: https://github.com/imirfanul/structyl/discussions
+    about: Have a question, idea, or want to show what you built? Start a discussion.
+  - name: 📚 Documentation
+    url: https://www.structyl.com/docs
+    about: Browse components, examples, and the full API reference before filing an issue.
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/imirfanul/structyl/security/advisories/new
+    about: Please report security issues privately, never as a public issue.

@@ -12,7 +12,7 @@ Accessible headless primitives, a Tailwind CSS v4 styled layer, runtime theming,
 
 [![npm version](https://img.shields.io/npm/v/@structyl/styled.svg?label=%40structyl%2Fstyled&color=cb3837)](https://www.npmjs.com/package/@structyl/styled)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./docs/CONTRIBUTING.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./.github/CONTRIBUTING.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 
 [Documentation](https://www.structyl.com) · [Components](https://www.structyl.com/docs) · [GitHub](https://github.com/imirfanul/structyl)
@@ -189,7 +189,7 @@ pnpm changeset      # Add a changeset for your PR
 
 Contributions are welcome — issues, discussions, and PRs alike. Before opening a PR, please read:
 
-- [CONTRIBUTING.md](./docs/CONTRIBUTING.md) — how to contribute, branch, and submit changes
+- [CONTRIBUTING.md](./.github/CONTRIBUTING.md) — how to contribute, branch, and submit changes
 - [ARCHITECTURE.md](./docs/ARCHITECTURE.md) — why the codebase is shaped this way
 - [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md) — community guidelines
 
