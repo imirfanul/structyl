@@ -14,7 +14,7 @@ Accessible headless primitives, a Tailwind CSS v4 styled layer, runtime theming,
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./.github/CONTRIBUTING.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Discord](https://img.shields.io/badge/Discord-join%20chat-5865F2.svg?logo=discord&logoColor=white)](https://discord.gg/structyl)
+[![Discord](https://img.shields.io/badge/Discord-join%20chat-5865F2.svg?logo=discord&logoColor=white)](https://discord.gg/mEUEUfTfgX)
 
 [Documentation](https://www.structyl.com) · [Components](https://www.structyl.com/docs) · [GitHub](https://github.com/imirfanul/structyl)
 
@@ -196,7 +196,7 @@ Contributions are welcome — issues, discussions, and PRs alike. Before opening
 
 User-visible changes should include a changeset (`pnpm changeset`).
 
-Have a question or want to chat? Join us on [Discord](https://discord.gg/structyl) or in [GitHub Discussions](https://github.com/imirfanul/structyl/discussions).
+Have a question or want to chat? Join us on [Discord](https://discord.gg/mEUEUfTfgX) or in [GitHub Discussions](https://github.com/imirfanul/structyl/discussions).
 
 ---
 

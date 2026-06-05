@@ -23,7 +23,7 @@ The full component catalogue, live examples, and API reference live at
 
 ## Community & contributing
 
-- **[Discord](https://discord.gg/structyl)** — chat with maintainers and other users
+- **[Discord](https://discord.gg/mEUEUfTfgX)** — chat with maintainers and other users
 - **[Discussions](https://github.com/imirfanul/structyl/discussions)** — ask questions, share ideas
 - **[Contributing](https://github.com/imirfanul/structyl/blob/master/.github/CONTRIBUTING.md)**
 - **[Code of Conduct](https://github.com/imirfanul/structyl/blob/master/CODE_OF_CONDUCT.md)**

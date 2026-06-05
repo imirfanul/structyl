@@ -8,5 +8,5 @@
 **Project**
 - [Docs site ↗](https://www.structyl.com/docs)
 - [Contributing ↗](https://github.com/imirfanul/structyl/blob/master/.github/CONTRIBUTING.md)
-- [Discord ↗](https://discord.gg/structyl)
+- [Discord ↗](https://discord.gg/mEUEUfTfgX)
 - [Discussions ↗](https://github.com/imirfanul/structyl/discussions)

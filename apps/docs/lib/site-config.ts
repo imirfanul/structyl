@@ -15,8 +15,7 @@ export const SITE_DESCRIPTION =
 
 export const GITHUB_URL = 'https://github.com/imirfanul/structyl';
 export const NPM_URL    = 'https://www.npmjs.com/org/structyl';
-// TODO(discord): replace with the real invite once the community server exists.
-export const DISCORD_URL = 'https://discord.gg/structyl';
+export const DISCORD_URL = 'https://discord.gg/mEUEUfTfgX';
 
 /** Library author — used for metadata authors/creator and JSON-LD. */
 export const SITE_AUTHOR = {

@@ -15,7 +15,7 @@ Most questions are answered in the documentation:
 
 For "how do I…" questions, usage help, or to share what you built:
 
-- 🎮 **[Discord community](https://discord.gg/structyl)** — chat with the maintainers and other users in real time
+- 🎮 **[Discord community](https://discord.gg/mEUEUfTfgX)** — chat with the maintainers and other users in real time
 - 💬 **[GitHub Discussions](https://github.com/imirfanul/structyl/discussions)** — message-board style Q&A
 
 If neither is available, open a regular issue and we'll help.
