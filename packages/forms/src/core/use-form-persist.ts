@@ -97,7 +97,8 @@ export function useFormPersist<T extends FormValues>(
     });
     return () => {
       unsubscribe();
-      clearTimeout(timer.current);
+      if (timer.current !== undefined) clearTimeout(timer.current);
+      timer.current = undefined;
     };
   }, [enabled, key, storage, debounce, store, filterValues]);
 
