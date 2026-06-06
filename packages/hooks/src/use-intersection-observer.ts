@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 
 export interface UseIntersectionObserverOptions extends IntersectionObserverInit {
   /** Freeze the observer once the element has become visible (useful for lazy-load). */
@@ -9,7 +9,7 @@ export interface UseIntersectionObserverOptions extends IntersectionObserverInit
 
 export interface UseIntersectionObserverReturn<T extends Element> {
   /** Attach to the element you want to observe. */
-  ref: React.RefObject<T | null>;
+  ref: RefObject<T | null>;
   /** The latest IntersectionObserverEntry, or null before the first callback. */
   entry: IntersectionObserverEntry | null;
   /** Convenience flag derived from `entry.isIntersecting`. */
