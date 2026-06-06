@@ -1,5 +1,13 @@
 # @structyl/utils
 
+## 1.1.0
+
+### Minor Changes
+
+- 0722e30: Add two new utility modules:
+  - `color` — `hexToRgb`, `rgbToHex`, `rgbToHsl`, `hslToRgb`, `parseColor`, `withAlpha`, `luminance`, and `getContrastColor` (WCAG relative luminance).
+  - `format` — `formatBytes`, `formatRelativeTime`, `formatList`, and `pluralize` (built on `Intl`, no dependencies).
+
 ## 1.0.1
 
 ### Patch Changes

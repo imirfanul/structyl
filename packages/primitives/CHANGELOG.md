@@ -1,5 +1,14 @@
 # @structyl/primitives
 
+## 1.1.1
+
+### Patch Changes
+
+- Updated dependencies [0722e30]
+- Updated dependencies [0722e30]
+  - @structyl/hooks@1.1.0
+  - @structyl/utils@1.1.0
+
 ## 1.1.0
 
 ### Minor Changes
