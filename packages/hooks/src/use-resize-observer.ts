@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 
 export interface Size {
   width: number;
@@ -7,7 +7,7 @@ export interface Size {
 
 export interface UseResizeObserverReturn<T extends Element> {
   /** Attach to the element you want to measure. */
-  ref: React.RefObject<T | null>;
+  ref: RefObject<T | null>;
   /** The element's current content-box size; `{ width: 0, height: 0 }` before first measure. */
   size: Size;
 }
@@ -20,7 +20,7 @@ export interface UseResizeObserverReturn<T extends Element> {
  * return <div ref={ref}>{size.width}×{size.height}</div>;
  */
 export function useResizeObserver<T extends Element = Element>(): UseResizeObserverReturn<T> {
-  const ref = useRef<T>(null);
+  const ref = useRef<T | null>(null);
   const [size, setSize] = useState<Size>({ width: 0, height: 0 });
 
   useEffect(() => {
