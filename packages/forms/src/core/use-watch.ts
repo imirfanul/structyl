@@ -20,9 +20,12 @@ export function useWatch<V = unknown, T extends FormValues = FormValues>(name?: 
   const getSnapshot = React.useCallback(() => {
     const values = store.getState().values;
     const slice = name ? getPath(values, name) : values;
-    return JSON.stringify(slice ?? null);
+    return slice === undefined ? '__structyl__undefined__' : JSON.stringify(slice);
   }, [store, name]);
 
   const serialized = React.useSyncExternalStore(store.subscribe, getSnapshot, getSnapshot);
-  return React.useMemo(() => JSON.parse(serialized) as V, [serialized]);
+  return React.useMemo(
+    () => (serialized === '__structyl__undefined__' ? (undefined as V) : (JSON.parse(serialized) as V)),
+    [serialized],
+  );
 }
