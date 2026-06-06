@@ -1,5 +1,17 @@
 # @structyl/data-table
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependencies [0722e30]
+- Updated dependencies [0722e30]
+- Updated dependencies [0722e30]
+  - @structyl/hooks@1.1.0
+  - @structyl/utils@1.1.0
+  - @structyl/styled@1.2.0
+  - @structyl/primitives@1.1.1
+
 ## 1.0.2
 
 ### Patch Changes
