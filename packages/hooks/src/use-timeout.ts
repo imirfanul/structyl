@@ -17,7 +17,7 @@ export interface UseTimeoutReturn {
  */
 export function useTimeout(callback: () => void, delay: number | null): UseTimeoutReturn {
   const savedCallback = useCallbackRef(callback);
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const clear = useCallback(() => {
     if (timeoutRef.current !== undefined) {
