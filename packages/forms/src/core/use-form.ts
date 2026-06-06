@@ -76,7 +76,7 @@ export function useForm<T extends FormValues = FormValues>(
   const refs = React.useRef(
     new Map<string, HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(),
   );
-  const debounceTimer = React.useRef<ReturnType<typeof setTimeout>>(undefined);
+  const debounceTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   // Stable references to the latest config for use inside callbacks.
   const latest = React.useRef({ resolver, coercer, mode, reValidateMode, validateDebounce, onSubmit, onError });
   latest.current = { resolver, coercer, mode, reValidateMode, validateDebounce, onSubmit, onError };
