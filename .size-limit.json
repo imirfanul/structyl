@@ -30,6 +30,12 @@
     "limit": "300 KB"
   },
   {
+    "name": "@structyl/forms",
+    "path": "packages/forms/dist/index.mjs",
+    "limit": "150 KB",
+    "ignore": ["@structyl/styled", "@structyl/primitives", "@structyl/core"]
+  },
+  {
     "name": "@structyl/data-table",
     "path": "packages/data-table/dist/index.mjs",
     "limit": "500 KB"

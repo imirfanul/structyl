@@ -12,3 +12,5 @@ export * from './object';
 export * from './string';
 export * from './number';
 export * from './dom';
+export * from './color';
+export * from './format';

@@ -167,8 +167,16 @@ export type {
   SwipeDirection,
 } from '@structyl/primitives';
 // Imperative toast API — importable directly from @structyl/styled
-export { toast, useToast, Toaster } from './toast';
-export type { ToastOptions, ToastItem, ToastVariant, ToastHorizontal, ToastVertical, ToasterProps } from './toast';
+export { toast, useToast, Toaster, splitPosition } from './toast';
+export type {
+  ToastOptions,
+  ToastItem,
+  ToastVariant,
+  ToastHorizontal,
+  ToastVertical,
+  ToastPosition,
+  ToasterProps,
+} from './toast';
 
 // Phase F: complex compound
 export * as DropdownMenu from './dropdown-menu';
@@ -313,14 +321,35 @@ export * as Chart from './chart';
 export * as Table from './table';
 export type { TableProps, TableRowProps, TableHeadProps } from './table';
 
+export { Banner, bannerVariants } from './banner';
+export type { BannerProps } from './banner';
+
 export { Callout } from './callout';
 export type { CalloutProps } from './callout';
+
+export { CodeBlock } from './code-block';
+export type { CodeBlockProps } from './code-block';
+
+export {
+  DescriptionList,
+  DescriptionTerm,
+  DescriptionDetails,
+  descriptionListVariants,
+} from './description-list';
+export type {
+  DescriptionListProps,
+  DescriptionTermProps,
+  DescriptionDetailsProps,
+} from './description-list';
 
 export { EmptyState } from './empty-state';
 export type { EmptyStateProps } from './empty-state';
 
 export { Kbd, KeyCombo } from './kbd';
 export type { KbdProps, KeyComboProps } from './kbd';
+
+export { Marquee } from './marquee';
+export type { MarqueeProps } from './marquee';
 
 export { Stat, StatGroup, TrendBadge } from './stat';
 export type { StatProps, StatGroupProps, TrendDirection } from './stat';

@@ -1,0 +1,17 @@
+{
+  "name": "@structyl/tailwind-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./preset": "./preset.ts"
+  },
+  "files": ["preset.ts"],
+  "dependencies": {
+    "@structyl/styled": "workspace:*"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^3.4.0 || ^4.0.0"
+  }
+}

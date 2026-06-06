@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -8,6 +8,24 @@ export type ToastVariant = 'default' | 'success' | 'error' | 'warning' | 'info' 
 
 export type ToastHorizontal = 'left' | 'center' | 'right';
 export type ToastVertical = 'top' | 'bottom';
+
+/** Unified placement, e.g. `'bottom-right'`. Decomposed into horizontal + vertical. */
+export type ToastPosition =
+  | 'top-left'
+  | 'top-center'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'bottom-right';
+
+/** Split a unified `ToastPosition` into its horizontal + vertical parts. */
+export function splitPosition(position: ToastPosition): {
+  horizontal: ToastHorizontal;
+  vertical: ToastVertical;
+} {
+  const [vertical, horizontal] = position.split('-') as [ToastVertical, ToastHorizontal];
+  return { horizontal, vertical };
+}
 
 export interface ToastOptions {
   /** Reuse / update an existing toast when the same ID is fired again. */
@@ -17,6 +35,8 @@ export interface ToastOptions {
   variant?: ToastVariant;
   /** Auto-dismiss in ms. Pass `Infinity` to keep until manually dismissed. */
   duration?: number;
+  /** Unified placement, e.g. `'bottom-right'`. Takes priority over horizontal/vertical. */
+  position?: ToastPosition;
   /** Horizontal placement of the toast. */
   horizontal?: ToastHorizontal;
   /** Vertical placement of the toast. */
@@ -35,6 +55,7 @@ export interface ToastOptions {
 export interface ToastItem extends Required<Pick<ToastOptions, 'id' | 'variant' | 'duration'>> {
   title?: string;
   description?: string;
+  position?: ToastPosition;
   horizontal?: ToastHorizontal;
   vertical?: ToastVertical;
   retry?: () => void;
@@ -46,28 +67,54 @@ export interface ToastItem extends Required<Pick<ToastOptions, 'id' | 'variant' 
 
 // ── Global singleton store ────────────────────────────────────────────────────
 
-type Listener = (toasts: ToastItem[]) => void;
+type Listener = () => void;
 
+// `store` is reassigned to a NEW array on every mutation so useSyncExternalStore's
+// getSnapshot returns a referentially-stable value between unchanged renders.
 let store: ToastItem[] = [];
 const listeners = new Set<Listener>();
 let counter = 0;
+
+// Stable empty snapshot for SSR — avoids hydration mismatch loops.
+const SERVER_SNAPSHOT: ToastItem[] = [];
 
 function genId() {
   return `t-${++counter}-${Math.random().toString(36).slice(2, 6)}`;
 }
 
 function emit() {
-  const snapshot = [...store];
-  listeners.forEach((l) => l(snapshot));
+  listeners.forEach((l) => l());
+}
+
+/** External-store contract consumed by `useSyncExternalStore`. */
+const toastStore = {
+  subscribe(listener: Listener): () => void {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+  },
+  getSnapshot: (): ToastItem[] => store,
+  getServerSnapshot: (): ToastItem[] => SERVER_SNAPSHOT,
+};
+
+/** Resolve `position` (if given) into horizontal/vertical, preferring it over the split props. */
+function resolvePlacement(opts: ToastOptions): {
+  horizontal?: ToastHorizontal;
+  vertical?: ToastVertical;
+} {
+  if (opts.position) return splitPosition(opts.position);
+  return { horizontal: opts.horizontal, vertical: opts.vertical };
 }
 
 function add(opts: ToastOptions): string {
   const id = opts.id ?? genId();
   const exists = store.find((t) => t.id === id);
+  const placement = resolvePlacement(opts);
 
   if (exists) {
     store = store.map((t) =>
-      t.id === id ? { ...t, ...opts, id, open: true, createdAt: Date.now() } : t,
+      t.id === id
+        ? { ...t, ...opts, ...placement, id, open: true, createdAt: Date.now() }
+        : t,
     );
   } else {
     store = [
@@ -78,8 +125,9 @@ function add(opts: ToastOptions): string {
         description: opts.description,
         variant: opts.variant ?? 'default',
         duration: opts.duration ?? 4000,
-        horizontal: opts.horizontal,
-        vertical: opts.vertical,
+        position: opts.position,
+        horizontal: placement.horizontal,
+        vertical: placement.vertical,
         retry: opts.retry,
         action: opts.action,
         onDismiss: opts.onDismiss,
@@ -179,29 +227,21 @@ export const toast = {
 /**
  * Subscribe to the toast store inside a React component.
  * Returns the current list of toasts plus the imperative `toast` API.
+ *
+ * Backed by `useSyncExternalStore`, so it reads the live snapshot on first render
+ * (no "fired-before-mount" gap) and is concurrent-safe.
  */
 export function useToast() {
-  const [toasts, setToasts] = useState<ToastItem[]>([...store]);
-  const mounted = useRef(true);
-
-  useEffect(() => {
-    mounted.current = true;
-    const listener: Listener = (items) => {
-      if (mounted.current) setToasts(items);
-    };
-    listeners.add(listener);
-    // Sync any toasts that fired before this component mounted
-    setToasts([...store]);
-    return () => {
-      mounted.current = false;
-      listeners.delete(listener);
-    };
-  }, []);
+  const toasts = useSyncExternalStore(
+    toastStore.subscribe,
+    toastStore.getSnapshot,
+    toastStore.getServerSnapshot,
+  );
 
   return {
     toasts,
     toast,
-    dismiss: useCallback((id?: string) => dismiss(id), []),
-    remove: useCallback((id: string) => remove(id), []),
+    dismiss,
+    remove,
   };
 }

@@ -1,0 +1,67 @@
+---
+title: Banner
+description: A full-width, site-level announcement bar.
+---
+
+# Banner
+
+A full-width announcement bar for site- or page-level messages — distinct from the inline [Callout](/docs/callout) and [Alert](/docs/alert) cards, which sit within content. Banner spans edge-to-edge.
+
+## Installation
+
+```bash
+npx structyl add banner
+```
+
+## Usage
+
+```tsx
+import { Banner, Button } from '@structyl/styled';
+
+export function Example() {
+  return (
+    <Banner
+      variant="info"
+      dismissible
+      onDismiss={() => {}}
+      action={<Button variant="ghost" size="sm">Learn more</Button>}
+    >
+      structyl v1.2 is out — new forms, toast, and tooling packages.
+    </Banner>
+  );
+}
+```
+
+## Variants
+
+`variant` accepts `default`, `info`, `success`, `warning`, `error`, and `brand` (a primary-colored fill). Use `align="center"` to center the content for promotional bars.
+
+```tsx
+<Banner variant="success">Saved successfully.</Banner>
+<Banner variant="warning">Your trial ends in 3 days.</Banner>
+<Banner variant="error">We couldn’t reach the server.</Banner>
+<Banner variant="brand" align="center">✨ Black Friday — 50% off.</Banner>
+```
+
+## API Reference
+
+### Banner
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `'default' \| 'info' \| 'success' \| 'warning' \| 'error' \| 'brand'` | `'default'` | Visual tone. |
+| `align` | `'start' \| 'center'` | `'start'` | Content alignment. |
+| `icon` | `ReactNode` | — | Leading icon. |
+| `action` | `ReactNode` | — | Trailing action (link or button). |
+| `dismissible` | `boolean` | `false` | Show a dismiss button. |
+| `onDismiss` | `() => void` | — | Called when dismissed. |
+
+Plus all standard `<div>` attributes.
+
+## Accessibility
+
+The banner renders with `role="region"` and an accessible label. The dismiss button has an `aria-label` of "Dismiss" and is keyboard-focusable.
+
+## Theming
+
+Styles consume CSS variables from `@structyl/themes` (`--bg`, `--fg`, `--primary`, `--info`, `--success`, `--warning`, `--destructive`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

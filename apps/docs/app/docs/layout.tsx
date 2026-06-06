@@ -24,6 +24,7 @@ import {
   Paintbrush,
   MessageCircle,
   Github,
+  ClipboardList,
 } from '@structyl/icons';
 import { useTheme } from '@structyl/themes';
 import { Box, Button, Input, InputGroup, Typography } from '@structyl/styled';
@@ -43,6 +44,7 @@ const OVERVIEW = [
   { slug: 'packages',        title: 'Packages',        href: '/docs/packages',        icon: Package },
   { slug: 'themes-docs',    title: 'Themes',           href: '/docs/themes',          icon: Paintbrush },
   { slug: 'api-client',     title: 'API Client',       href: '/docs/api-client',      icon: Database },
+  { slug: 'forms',          title: 'Forms',            href: '/docs/forms',           icon: ClipboardList },
 ];
 
 const RESOURCES = [
@@ -387,6 +389,7 @@ const QUICK_LINKS = [
   { label: 'Hooks',              href: '/docs/hooks',                tag: 'hooks' },
   { label: 'Themes',             href: '/docs/themes',               tag: 'docs' },
   { label: 'API Client',         href: '/docs/api-client',           tag: 'package' },
+  { label: 'Forms',              href: '/docs/forms',                tag: 'package' },
   { label: 'Design tokens',      href: '/docs/design-tokens',        tag: 'docs' },
   { label: 'Themes playground',  href: '/themes',                    tag: 'themes' },
 ];
@@ -395,8 +398,9 @@ const QUICK_LINKS = [
 const STATIC_PAGES = [
   { name: 'Themes',           sub: 'Runtime theming, dark mode, custom themes, CSS token reference',       href: '/docs/themes',          keywords: ['theme', 'dark', 'light', 'color', 'mode', 'css', 'variable', 'token', 'custom', 'palette', 'brand', 'ssr', 'flash'] },
   { name: 'API Client',       sub: 'Axios wrapper with React 18 cache, retries, mutations, SSR',          href: '/docs/api-client',      keywords: ['api', 'client', 'axios', 'fetch', 'query', 'mutation', 'cache', 'infinite', 'suspense', 'ssr', 'data'] },
+  { name: 'Forms',            sub: 'Schema-driven forms: chainable validators, useForm, Form/Field',       href: '/docs/forms',           keywords: ['form', 'forms', 'validation', 'schema', 'useform', 'field', 'validator', 'zod', 'controller', 'input'] },
   { name: 'Getting started',  sub: 'Install structyl and render your first component',                     href: '/docs/getting-started', keywords: ['start', 'install', 'setup', 'begin'] },
-  { name: 'Hooks',            sub: '24 reusable, SSR-safe, tree-shakeable React hooks',                   href: '/docs/hooks',            keywords: ['hook', 'use', 'react'] },
+  { name: 'Hooks',            sub: '30 reusable, SSR-safe, tree-shakeable React hooks',                   href: '/docs/hooks',            keywords: ['hook', 'use', 'react'] },
   { name: 'Packages',         sub: 'Nine focused, independently-versioned packages',                      href: '/docs/packages',        keywords: ['package', 'monorepo', 'core', 'styled', 'themes', 'icons'] },
   { name: 'Accessibility',    sub: 'WAI-ARIA compliant keyboard navigation and screen reader support',    href: '/docs/accessibility',   keywords: ['a11y', 'aria', 'keyboard', 'screen reader', 'wcag'] },
   { name: 'Design tokens',    sub: 'CSS variables and Tailwind theme tokens',                             href: '/docs/design-tokens',   keywords: ['token', 'color', 'css', 'variable', 'tailwind'] },

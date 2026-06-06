@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "@structyl/tsconfig/nextjs",
+  "extends": "./react-library.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "incremental": true,
+    "noEmit": true,
+    "plugins": [{ "name": "next" }]
+  }
+}

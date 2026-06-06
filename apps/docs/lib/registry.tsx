@@ -98,6 +98,10 @@ import {
   Transition,
   CssBaseline,
   InitColorSchemeScript,
+  Banner,
+  CodeBlock,
+  DescriptionList,
+  Marquee,
 } from '@structyl/styled';
 import { DataTable, type DataTableColumnDef, type DataTableFilterGroup } from '@structyl/data-table';
 import { VideoPlayer } from '@structyl/video-player';
@@ -8280,6 +8284,185 @@ export default function Demo() {
       { key: ',',          description: 'Go back one frame (1/30 s).' },
     ],
   },
+  {
+    slug: 'banner',
+    name: 'Banner',
+    category: 'Feedback',
+    description: 'A full-width, site-level announcement bar with variants, an optional action, and a dismiss button.',
+    features: [
+      'Six tone variants including a brand fill.',
+      'Optional leading icon and trailing action.',
+      'Dismissible with an accessible close button.',
+      'Spans edge-to-edge — distinct from the inline Callout.',
+    ],
+    preview: () => (
+      <Banner
+        variant="info"
+        dismissible
+        action={
+          <Button variant="ghost" size="sm">
+            Learn more
+          </Button>
+        }
+        className="rounded-md"
+      >
+        <Typography as="span" className="font-medium">
+          structyl v1.2 is out — new forms, toast, and tooling packages.
+        </Typography>
+      </Banner>
+    ),
+    code: `import { Banner, Button } from '@structyl/styled';
+
+export default function Demo() {
+  return (
+    <Banner
+      variant="info"
+      dismissible
+      onDismiss={() => {}}
+      action={<Button variant="ghost" size="sm">Learn more</Button>}
+    >
+      structyl v1.2 is out — new forms, toast, and tooling packages.
+    </Banner>
+  );
+}`,
+    examples: [
+      {
+        title: 'Variants',
+        description: 'Each tone maps to a theme token; brand uses the primary fill.',
+        preview: () => (
+          <div className="flex w-full max-w-xl flex-col gap-2">
+            <Banner variant="success" className="rounded-md">Saved successfully.</Banner>
+            <Banner variant="warning" className="rounded-md">Your trial ends in 3 days.</Banner>
+            <Banner variant="error" className="rounded-md">We couldn’t reach the server.</Banner>
+            <Banner variant="brand" align="center" className="rounded-md">✨ Black Friday — 50% off.</Banner>
+          </div>
+        ),
+        code: `<Banner variant="success">Saved successfully.</Banner>
+<Banner variant="warning">Your trial ends in 3 days.</Banner>
+<Banner variant="error">We couldn’t reach the server.</Banner>
+<Banner variant="brand" align="center">✨ Black Friday — 50% off.</Banner>`,
+      },
+    ],
+  },
+  {
+    slug: 'code-block',
+    name: 'Code Block',
+    category: 'Data display',
+    description: 'A presentational code block with an optional filename header, line numbers, and a built-in copy button.',
+    features: [
+      'Optional filename / language header.',
+      'Toggleable line-number gutter.',
+      'Built-in copy-to-clipboard button.',
+      'Line highlighting via highlightLines.',
+    ],
+    preview: () => (
+      <CodeBlock
+        className="w-full max-w-md"
+        filename="example.ts"
+        showLineNumbers
+        highlightLines={[2]}
+        code={`const sum = (a: number, b: number) => a + b;\nconsole.log(sum(2, 3));`}
+      />
+    ),
+    code: `import { CodeBlock } from '@structyl/styled';
+
+export default function Demo() {
+  return (
+    <CodeBlock
+      filename="example.ts"
+      showLineNumbers
+      highlightLines={[2]}
+      code={\`const sum = (a, b) => a + b;\nconsole.log(sum(2, 3));\`}
+    />
+  );
+}`,
+  },
+  {
+    slug: 'description-list',
+    name: 'Description List',
+    category: 'Data display',
+    description: 'A semantic dl / dt / dd compound for key–value pairs, with horizontal or vertical layout.',
+    features: [
+      'Renders real dl/dt/dd elements.',
+      'Horizontal (two-column) or vertical layout.',
+      'Compound API: DescriptionList.Term / .Details.',
+      'Fully theme-token styled.',
+    ],
+    preview: () => (
+      <DescriptionList className="w-full max-w-sm">
+        <DescriptionList.Term>Name</DescriptionList.Term>
+        <DescriptionList.Details>Ada Lovelace</DescriptionList.Details>
+        <DescriptionList.Term>Role</DescriptionList.Term>
+        <DescriptionList.Details>Engineer</DescriptionList.Details>
+        <DescriptionList.Term>Status</DescriptionList.Term>
+        <DescriptionList.Details>Active</DescriptionList.Details>
+      </DescriptionList>
+    ),
+    code: `import { DescriptionList } from '@structyl/styled';
+
+export default function Demo() {
+  return (
+    <DescriptionList>
+      <DescriptionList.Term>Name</DescriptionList.Term>
+      <DescriptionList.Details>Ada Lovelace</DescriptionList.Details>
+      <DescriptionList.Term>Role</DescriptionList.Term>
+      <DescriptionList.Details>Engineer</DescriptionList.Details>
+    </DescriptionList>
+  );
+}`,
+    examples: [
+      {
+        title: 'Vertical layout',
+        description: 'Stack each term above its details.',
+        preview: () => (
+          <DescriptionList orientation="vertical" className="w-full max-w-sm">
+            <DescriptionList.Term>Plan</DescriptionList.Term>
+            <DescriptionList.Details>Pro — billed annually</DescriptionList.Details>
+            <DescriptionList.Term>Seats</DescriptionList.Term>
+            <DescriptionList.Details>12 of 20 used</DescriptionList.Details>
+          </DescriptionList>
+        ),
+        code: `<DescriptionList orientation="vertical">
+  <DescriptionList.Term>Plan</DescriptionList.Term>
+  <DescriptionList.Details>Pro — billed annually</DescriptionList.Details>
+</DescriptionList>`,
+      },
+    ],
+  },
+  {
+    slug: 'marquee',
+    name: 'Marquee',
+    category: 'Data display',
+    description: 'A CSS-only scrolling strip for logos, testimonials, or announcements. Respects reduced-motion.',
+    features: [
+      'Pure CSS animation — no JS animation loop.',
+      'Horizontal or vertical, forward or reverse.',
+      'Pause-on-hover and configurable speed.',
+      'Respects prefers-reduced-motion.',
+    ],
+    preview: () => (
+      <Marquee pauseOnHover duration="12s" className="w-full max-w-md py-2">
+        {['React', 'Next.js', 'Tailwind', 'TypeScript', 'Vite'].map((t) => (
+          <span key={t} className="mx-4 rounded-md border border-border bg-muted/40 px-3 py-1 text-sm">
+            {t}
+          </span>
+        ))}
+      </Marquee>
+    ),
+    code: `import { Marquee } from '@structyl/styled';
+
+export default function Demo() {
+  return (
+    <Marquee pauseOnHover duration="12s">
+      {['React', 'Next.js', 'Tailwind', 'TypeScript', 'Vite'].map((t) => (
+        <span key={t} className="mx-4 rounded-md border px-3 py-1 text-sm">
+          {t}
+        </span>
+      ))}
+    </Marquee>
+  );
+}`,
+  },
 ];
 
 for (const entry of COMPONENTS) {
@@ -8457,16 +8640,16 @@ export const PACKAGES: PackageEntry[] = [
   },
   {
     name: '@structyl/hooks',
-    description: '24 reusable, SSR-safe, tree-shakeable React hooks.',
+    description: '30 reusable, SSR-safe, tree-shakeable React hooks.',
     install: 'pnpm add @structyl/hooks',
-    highlights: ['State, refs, DOM, browser utilities', 'Zero dependencies', 'Fully typed'],
+    highlights: ['State, refs, DOM, browser utilities', 'Observers, timers & step machines', 'Zero dependencies'],
   },
   {
     name: '@structyl/utils',
     description:
-      'Pure utility functions: cn, composeEventHandlers, type guards, array/object/string helpers.',
+      'Pure utility functions: cn, composeEventHandlers, type guards, array/object/string/number helpers, plus color and format modules.',
     install: 'pnpm add @structyl/utils',
-    highlights: ['Tree-shakeable named exports', 'No side effects', '< 2 KB gzip'],
+    highlights: ['Tree-shakeable named exports', 'color: hex/rgb/hsl + contrast', 'format: bytes, relative time, lists'],
   },
   {
     name: '@structyl/themes',
@@ -8517,6 +8700,17 @@ export const PACKAGES: PackageEntry[] = [
       'No TanStack Query — custom useSyncExternalStore cache',
       'AbortController, polling, debounce, infinite scroll',
       'SSR dehydrate/hydrate + cache persistence',
+    ],
+  },
+  {
+    name: '@structyl/forms',
+    description:
+      'Headless, schema-driven forms: a from-scratch chainable validator, a useForm engine, and Form/Field components on the accessible primitives.',
+    install: 'pnpm add @structyl/forms',
+    highlights: [
+      'Chainable v.* validators — no zod',
+      'useForm with useSyncExternalStore slices',
+      'Form / Field / Controller / ErrorMessage',
     ],
   },
 ];

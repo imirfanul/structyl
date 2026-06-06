@@ -682,10 +682,10 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     exports: ['Slot', 'Primitive', 'Portal', 'Presence', 'FocusScope', 'DismissableLayer', 'RovingFocusGroup', 'Popper', 'createContext', 'composeRefs', 'useId', 'useControllableState'],
   },
   '@structyl/hooks': {
-    stats: [{ label: 'Bundle', value: '~3 kB' }, { label: 'Hooks', value: '24' }, { label: 'Deps', value: '0' }],
+    stats: [{ label: 'Bundle', value: '~3 kB' }, { label: 'Hooks', value: '30' }, { label: 'Deps', value: '0' }],
     code: `import { useBoolean, useDebounce, useHotkeys } from '@structyl/hooks';\n\nconst { value: open, on, off } = useBoolean(false);\nconst debouncedQuery = useDebounce(query, 300);\nuseHotkeys('mod+k', () => setOpen(true));`,
     lang: 'ts',
-    exports: ['useBoolean', 'useToggle', 'useCounter', 'usePrevious', 'useDebounce', 'useThrottle', 'useLocalStorage', 'useCopyToClipboard', 'useMediaQuery', 'useDarkMode', 'useWindowSize', 'useClickOutside', 'useEventListener', 'useKeyPress', 'useHotkeys', 'useMount', 'useUnmount', 'useUpdateEffect', 'useId', 'useLatest', 'useCallbackRef', 'useComposedRefs', 'useControllableState', 'useIsomorphicLayoutEffect'],
+    exports: ['useBoolean', 'useToggle', 'useCounter', 'usePrevious', 'useDebounce', 'useThrottle', 'useLocalStorage', 'useCopyToClipboard', 'useMediaQuery', 'useDarkMode', 'useWindowSize', 'useClickOutside', 'useEventListener', 'useKeyPress', 'useHotkeys', 'useMount', 'useUnmount', 'useUpdateEffect', 'useId', 'useLatest', 'useCallbackRef', 'useComposedRefs', 'useControllableState', 'useIsomorphicLayoutEffect', 'useIntersectionObserver', 'useResizeObserver', 'useScrollLock', 'useTimeout', 'useInterval', 'useStep'],
     preview: () => {
       function CounterDemo() {
         const [n, setN] = React.useState(0);
@@ -704,10 +704,10 @@ const PKG_EXTRA: Record<string, PkgExtra> = {
     },
   },
   '@structyl/utils': {
-    stats: [{ label: 'Bundle', value: '<1.5 kB' }, { label: 'Exports', value: '15' }, { label: 'Side effects', value: 'none' }],
-    code: `import { cn, composeEventHandlers } from '@structyl/utils';\n\n// Merge Tailwind classes safely\nconst cls = cn('px-4 py-2 rounded-lg', variant === 'ghost' && 'bg-transparent', className);\n\n// Compose multiple onClick handlers\nconst onClick = composeEventHandlers(userOnClick, internalOnClick);`,
+    stats: [{ label: 'Bundle', value: '<2 kB' }, { label: 'Exports', value: '25+' }, { label: 'Side effects', value: 'none' }],
+    code: `import { cn, formatBytes, getContrastColor } from '@structyl/utils';\n\n// Merge Tailwind classes safely\nconst cls = cn('px-4 py-2 rounded-lg', variant === 'ghost' && 'bg-transparent', className);\n\n// Format helpers\nformatBytes(1536);              // "1.5 KiB"\n\n// Color helpers — pick readable text for any background\nconst text = getContrastColor('#1e40af'); // "#ffffff"`,
     lang: 'ts',
-    exports: ['cn', 'composeEventHandlers', 'isFunction', 'isObject', 'isString', 'clamp', 'noop', 'pick', 'omit', 'chunk', 'uniq', 'groupBy', 'camelCase', 'kebabCase', 'capitalize'],
+    exports: ['cn', 'composeEventHandlers', 'isFunction', 'isObject', 'isString', 'clamp', 'pick', 'omit', 'chunk', 'uniq', 'groupBy', 'camelCase', 'kebabCase', 'capitalize', 'truncate', 'slugify', 'formatNumber', 'formatCurrency', 'formatBytes', 'formatRelativeTime', 'formatList', 'pluralize', 'hexToRgb', 'rgbToHex', 'rgbToHsl', 'hslToRgb', 'parseColor', 'withAlpha', 'getContrastColor'],
   },
   '@structyl/themes': {
     stats: [{ label: 'Bundle', value: '~2 kB' }, { label: 'Themes', value: '3' }, { label: 'Tokens', value: '30+' }],
@@ -1085,7 +1085,7 @@ function PackagesPage() {
       <Typography as="p" variant="body2" className="text-xs font-semibold uppercase tracking-widest text-primary">Monorepo</Typography>
       <Typography as="h1" variant="h1" className="mt-2 text-4xl font-semibold tracking-tight">Packages</Typography>
       <Typography as="p" variant="body2" className="mt-3 text-base text-muted-foreground">
-        Nine focused, independently-versioned packages. Use one, or all of them.
+        Eleven focused, independently-versioned packages. Use one, or all of them.
       </Typography>
 
       {/* Architecture layers */}

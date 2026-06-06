@@ -1,0 +1,66 @@
+---
+title: DescriptionList
+description: A semantic dl/dt/dd compound for key–value pairs.
+---
+
+# DescriptionList
+
+An accessible key–value display built on real `<dl>`, `<dt>`, and `<dd>` elements. Supports a horizontal two-column layout (default) or a vertical stacked layout.
+
+## Installation
+
+```bash
+npx structyl add description-list
+```
+
+## Usage
+
+```tsx
+import { DescriptionList } from '@structyl/styled';
+
+export function Example() {
+  return (
+    <DescriptionList>
+      <DescriptionList.Term>Name</DescriptionList.Term>
+      <DescriptionList.Details>Ada Lovelace</DescriptionList.Details>
+      <DescriptionList.Term>Role</DescriptionList.Term>
+      <DescriptionList.Details>Engineer</DescriptionList.Details>
+    </DescriptionList>
+  );
+}
+```
+
+## Vertical layout
+
+```tsx
+<DescriptionList orientation="vertical">
+  <DescriptionList.Term>Plan</DescriptionList.Term>
+  <DescriptionList.Details>Pro — billed annually</DescriptionList.Details>
+</DescriptionList>
+```
+
+## API Reference
+
+### DescriptionList
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orientation` | `'horizontal' \| 'vertical'` | `'horizontal'` | Two-column vs. stacked layout. |
+
+Renders a `<dl>` and accepts all of its attributes.
+
+### DescriptionList.Term
+
+Renders a `<dt>`. Accepts all standard attributes.
+
+### DescriptionList.Details
+
+Renders a `<dd>`. Accepts all standard attributes.
+
+## Accessibility
+
+Uses native `<dl>`/`<dt>`/`<dd>` semantics, which assistive technologies expose as a description list. No additional ARIA is required.
+
+## Theming
+
+Styles consume CSS variables from `@structyl/themes` (`--fg`, `--muted-foreground`). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

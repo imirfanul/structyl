@@ -1,0 +1,54 @@
+---
+title: CodeBlock
+description: A styled code block with filename header, line numbers, and a copy button.
+---
+
+# CodeBlock
+
+A presentational code block with an optional filename/language header, a line-number gutter, line highlighting, and a built-in copy button. It does not perform syntax highlighting — pair it with a highlighter downstream if you need colored tokens.
+
+## Installation
+
+```bash
+npx structyl add code-block
+```
+
+## Usage
+
+```tsx
+import { CodeBlock } from '@structyl/styled';
+
+export function Example() {
+  return (
+    <CodeBlock
+      filename="example.ts"
+      showLineNumbers
+      highlightLines={[2]}
+      code={`const sum = (a, b) => a + b;\nconsole.log(sum(2, 3));`}
+    />
+  );
+}
+```
+
+## API Reference
+
+### CodeBlock
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `code` | `string` | — | The raw source to display. **Required.** |
+| `language` | `string` | — | Language label shown in the header. |
+| `filename` | `string` | — | Filename shown in the header. |
+| `showLineNumbers` | `boolean` | `false` | Show a line-number gutter. |
+| `copyable` | `boolean` | `true` | Show the copy-to-clipboard button. |
+| `highlightLines` | `number[]` | `[]` | 1-based line numbers to highlight. |
+
+Plus all standard `<pre>` attributes.
+
+## Accessibility
+
+The copy button reuses [CopyButton](/docs/copy-button), which announces "Copy to clipboard" / "Copied". Line numbers are marked `aria-hidden` so screen readers read only the code.
+
+## Theming
+
+Styles consume CSS variables from `@structyl/themes` (`--muted`, `--border`, `--primary`, `--fg`). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.
