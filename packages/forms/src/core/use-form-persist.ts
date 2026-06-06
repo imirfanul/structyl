@@ -46,7 +46,7 @@ export function useFormPersist<T extends FormValues>(
   const optsRef = React.useRef({ include, exclude });
   optsRef.current = { include, exclude };
   const restored = React.useRef(false);
-  const timer = React.useRef<ReturnType<typeof setTimeout>>(undefined);
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const filterValues = React.useCallback((values: T): Partial<T> => {
     const { include: inc, exclude: exc } = optsRef.current;
