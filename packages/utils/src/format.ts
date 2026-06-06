@@ -14,7 +14,6 @@ export const formatBytes = (
 ): string => {
   const { decimals = 1, binary = true } = options;
   if (!Number.isFinite(bytes) || bytes <= 0) return '0 B';
-  if (bytes < 1) return '0 B';
   const base = binary ? 1024 : 1000;
   const units = binary
     ? ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB']
@@ -23,6 +22,7 @@ export const formatBytes = (
     Math.max(0, Math.floor(Math.log(bytes) / Math.log(base))),
     units.length - 1,
   );
+  const value = bytes / base ** i;
   const rounded = i === 0 ? Math.round(value) : Number(value.toFixed(decimals));
   return `${rounded} ${units[i]}`;
 };
