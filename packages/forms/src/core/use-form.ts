@@ -131,7 +131,13 @@ export function useForm<T extends FormValues = FormValues>(
     [runValidation],
   );
 
-  React.useEffect(() => () => clearTimeout(debounceTimer.current), []);
+  React.useEffect(
+    () => () => {
+      if (debounceTimer.current !== undefined) clearTimeout(debounceTimer.current);
+      debounceTimer.current = undefined;
+    },
+    [],
+  );
 
   const validate = React.useCallback(
     async (names?: FieldNames<T>): Promise<boolean> => {
