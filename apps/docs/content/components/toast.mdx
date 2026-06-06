@@ -1,11 +1,13 @@
 ---
 title: Toast
-description: Transient notification with swipe-to-dismiss and a queue.
+description: Transient notifications with an imperative API, a queue, and swipe-to-dismiss.
 ---
 
 # Toast
 
-Transient notification with swipe-to-dismiss and a queue.
+Transient notifications you fire imperatively from anywhere — event handlers, async functions, even outside React. Drop a single `<Toaster />` in your app root, then call `toast.success(...)`, `toast.error(...)`, and friends.
+
+The store is backed by React's `useSyncExternalStore`, so it's concurrent-safe, has a stable SSR snapshot, and never drops a toast fired before a component mounts.
 
 ## Installation
 
@@ -15,22 +17,89 @@ npx structyl add toast
 
 ## Usage
 
-```tsx
-import { Toast } from '@structyl/styled';
+Mount the `<Toaster />` once (e.g. in your root layout):
 
-export function Example() {
-  return <Toast />;
+```tsx
+// app/layout.tsx
+import { Toaster } from '@structyl/styled';
+
+export default function RootLayout({ children }) {
+  return (
+    <html>
+      <body>
+        {children}
+        <Toaster position="bottom-right" />
+      </body>
+    </html>
+  );
 }
 ```
 
-## API Reference
+Then fire toasts from anywhere:
 
-See the [primitive types](https://github.com/your-org/structyl/tree/main/packages/primitives/src/toast) for the full prop surface. Styled wrappers extend the primitive types with `className` and theme-aware styles.
+```tsx
+import { toast } from '@structyl/styled';
+
+toast.success('Saved!');
+toast.error('Failed to save', { retry: () => save() });
+toast.promise(fetchData(), {
+  loading: 'Loading…',
+  success: 'Done!',
+  error: 'Failed',
+});
+```
+
+## Imperative API
+
+| Method | Description |
+| --- | --- |
+| `toast.show(options)` | Full control — fire any variant with any options. |
+| `toast.success(title, options?)` | Success toast. |
+| `toast.error(title, options?)` | Error (destructive) toast. |
+| `toast.warning(title, options?)` | Warning toast. |
+| `toast.info(title, options?)` | Info toast. |
+| `toast.loading(title, options?)` | Loading toast (stays until dismissed). |
+| `toast.promise(promise, msgs, options?)` | Loading → success/error as a promise settles. |
+| `toast.dismiss(id?)` | Dismiss one toast, or all if `id` is omitted. |
+| `toast.remove(id)` | Remove instantly (no exit animation). |
+
+## Positioning
+
+Use the unified `position` prop on `<Toaster>` to set the default placement, and override per toast via options:
+
+```tsx
+<Toaster position="top-center" />
+
+toast.error('Top-right just this once', { position: 'top-right' });
+```
+
+`position` accepts: `top-left`, `top-center`, `top-right`, `bottom-left`, `bottom-center`, `bottom-right`. The legacy `horizontal` / `vertical` props still work for backward compatibility, and the exported `splitPosition` helper decomposes a unified position into the two.
+
+### ToastOptions
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `id` | `string` | auto | Reuse to update an existing toast in place. |
+| `title` | `string` | — | Main message. |
+| `description` | `string` | — | Secondary line. |
+| `variant` | `'default' \| 'success' \| 'error' \| 'warning' \| 'info' \| 'loading'` | `'default'` | Visual tone. |
+| `duration` | `number` | `4000` | Auto-dismiss in ms. `Infinity` keeps it open. |
+| `position` | `ToastPosition` | inherits `<Toaster>` | Unified placement override. |
+| `action` | `{ label, onClick }` | — | Action button. |
+| `retry` | `() => void` | — | Adds a "Retry" button. |
+| `onDismiss` | `(id) => void` | — | Called before dismissal. |
+
+### Toaster props
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `position` | `ToastPosition` | `'bottom-right'` | Default placement for all toasts. |
+| `maxToasts` | `number` | `5` | Maximum visible at once. |
 
 ## Accessibility
 
-Follows the relevant [WAI-ARIA APG pattern](https://www.w3.org/WAI/ARIA/apg/patterns/). All interactive controls are keyboard-navigable and screen-reader-friendly out of the box.
+Built on the [WAI-ARIA APG alert/status pattern](https://www.w3.org/WAI/ARIA/apg/). Toasts are announced to assistive technologies, dismissible by keyboard, and support swipe-to-dismiss.
 
 ## Theming
 
-Styles consume CSS variables from `@structyl/themes` (`--bg`, `--fg`, `--primary`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.
+Styles consume CSS variables from `@structyl/themes` (`--bg`, `--fg`, `--primary`, `--destructive`, `--border`, etc.). Wrap your app in `<ThemeProvider>` to enable runtime theme switching.

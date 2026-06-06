@@ -339,6 +339,8 @@ const preset = {
         shimmer: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100%)' } },
         'progress-stripes': { '0%': { backgroundPosition: '1rem 0' }, '100%': { backgroundPosition: '0 0' } },
         bars: { '0%': { transform: 'scaleY(0.4)' }, '100%': { transform: 'scaleY(1.0)' } },
+        marquee: { from: { transform: 'translateX(0)' }, to: { transform: 'translateX(calc(-100% - var(--marquee-gap, 1rem)))' } },
+        'marquee-vertical': { from: { transform: 'translateY(0)' }, to: { transform: 'translateY(calc(-100% - var(--marquee-gap, 1rem)))' } },
       },
 
       animation: {
@@ -356,6 +358,8 @@ const preset = {
         'toast-out': 'toast-out 180ms cubic-bezier(0.4, 0, 1, 1)',
         shimmer: 'shimmer 1.5s ease-in-out infinite',
         bars: 'bars 1s ease-in-out infinite alternate',
+        marquee: 'marquee var(--marquee-duration, 30s) linear infinite',
+        'marquee-vertical': 'marquee-vertical var(--marquee-duration, 30s) linear infinite',
       },
     },
   },

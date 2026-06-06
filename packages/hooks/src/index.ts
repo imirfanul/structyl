@@ -20,6 +20,9 @@ export * from './use-latest';
 export * from './use-click-outside';
 export * from './use-event-listener';
 export * from './use-key-press';
+export * from './use-intersection-observer';
+export * from './use-resize-observer';
+export * from './use-scroll-lock';
 
 // Browser
 export * from './use-media-query';
@@ -39,4 +42,7 @@ export * from './use-update-effect';
 export * from './use-isomorphic-layout-effect';
 export * from './use-window-size';
 export * from './use-hotkeys';
+export * from './use-timeout';
+export * from './use-interval';
+export * from './use-step';
 

@@ -11,6 +11,8 @@ import {
   useHotkeys, useMount, useUnmount, useUpdateEffect, useId,
   useControllableState, useComposedRefs, useCallbackRef, useLatest,
   useEventListener, useKeyPress, useIsomorphicLayoutEffect,
+  useIntersectionObserver, useResizeObserver, useScrollLock,
+  useTimeout, useInterval, useStep,
 } from '@structyl/hooks';
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -524,6 +526,113 @@ function Badge({ children, active }: { children: React.ReactNode; active: boolea
   );
 }
 
+function UseIntersectionObserverDemo() {
+  const { ref, isIntersecting } = useIntersectionObserver<HTMLDivElement>({ threshold: 0.5 });
+  return (
+    <Box className="flex flex-col items-center gap-3">
+      <Box className="h-24 w-full max-w-xs overflow-y-auto rounded-xl border border-border bg-muted/20 p-3">
+        <Box className="h-20" />
+        <Box
+          ref={ref}
+          className={`flex h-16 items-center justify-center rounded-lg text-xs font-semibold transition-colors ${
+            isIntersecting ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+          }`}
+        >
+          {isIntersecting ? 'In view' : 'Scroll me into view'}
+        </Box>
+        <Box className="h-20" />
+      </Box>
+      <Code>isIntersecting: {String(isIntersecting)}</Code>
+    </Box>
+  );
+}
+
+function UseResizeObserverDemo() {
+  const { ref, size } = useResizeObserver<HTMLTextAreaElement>();
+  return (
+    <Box className="flex flex-col items-center gap-3">
+      <textarea
+        ref={ref}
+        defaultValue="Drag my corner to resize…"
+        className="h-20 w-56 resize rounded-lg border border-border bg-muted/20 p-2 text-sm"
+      />
+      <Code>
+        {Math.round(size.width)} × {Math.round(size.height)} px
+      </Code>
+    </Box>
+  );
+}
+
+function UseScrollLockDemo() {
+  const [locked, setLocked] = React.useState(false);
+  useScrollLock({ enabled: locked });
+  return (
+    <Box className="flex flex-col items-center gap-3">
+      <DemoBtn onClick={() => setLocked((l) => !l)}>{locked ? 'Unlock body scroll' : 'Lock body scroll'}</DemoBtn>
+      <Code>body scroll: {locked ? 'locked' : 'free'}</Code>
+    </Box>
+  );
+}
+
+function UseTimeoutDemo() {
+  const [status, setStatus] = React.useState('idle');
+  const { reset, clear } = useTimeout(() => setStatus('fired ✅'), status === 'waiting' ? 1500 : null);
+  return (
+    <Box className="flex flex-col items-center gap-3">
+      <Box className="flex h-12 w-40 items-center justify-center rounded-xl border border-border bg-muted/30 font-mono text-sm">
+        {status}
+      </Box>
+      <Box className="flex gap-2">
+        <DemoBtn onClick={() => { setStatus('waiting'); reset(); }}>start</DemoBtn>
+        <DemoBtn variant="ghost" onClick={() => { setStatus('cleared'); clear(); }}>clear</DemoBtn>
+      </Box>
+    </Box>
+  );
+}
+
+function UseIntervalDemo() {
+  const [count, setCount] = React.useState(0);
+  const [running, setRunning] = React.useState(false);
+  useInterval(() => setCount((c) => c + 1), running ? 500 : null);
+  return (
+    <Box className="flex flex-col items-center gap-4">
+      <Box className="flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-muted/30 font-mono text-3xl font-bold tabular-nums">
+        {count}
+      </Box>
+      <Box className="flex gap-2">
+        <DemoBtn onClick={() => setRunning((r) => !r)}>{running ? 'pause' : 'start'}</DemoBtn>
+        <DemoBtn variant="ghost" onClick={() => setCount(0)}>reset</DemoBtn>
+      </Box>
+    </Box>
+  );
+}
+
+function UseStepDemo() {
+  const labels = ['Account', 'Profile', 'Review'];
+  const { currentStep, next, prev, canGoNext, canGoPrev, isLast } = useStep(labels.length);
+  return (
+    <Box className="flex flex-col items-center gap-4">
+      <Box className="flex items-center gap-2">
+        {labels.map((label, i) => (
+          <span
+            key={label}
+            className={`rounded-full px-3 py-1 text-xs font-medium ${
+              i === currentStep ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
+            }`}
+          >
+            {label}
+          </span>
+        ))}
+      </Box>
+      <Box className="flex gap-2">
+        <DemoBtn variant="ghost" onClick={prev}>{canGoPrev ? 'Back' : 'Back (off)'}</DemoBtn>
+        <DemoBtn onClick={next}>{isLast ? 'Done' : 'Next'}</DemoBtn>
+      </Box>
+      <Code>step {currentStep + 1} / {labels.length} · next: {String(canGoNext)}</Code>
+    </Box>
+  );
+}
+
 /* ─────────────────────────────────────────────────────────────────────────────
    Hook registry
 ───────────────────────────────────────────────────────────────────────────── */
@@ -782,6 +891,77 @@ const HOOKS: HookDef[] = [
     returns: 'void',
     demo: UseIsomorphicLayoutEffectDemo,
     code: `import { useIsomorphicLayoutEffect } from '@structyl/hooks';\n\nfunction Measured({ children }) {\n  const ref = useRef<HTMLDivElement>(null);\n  const [rect, setRect] = useState<DOMRect>();\n\n  // No SSR warning; synchronous on client\n  useIsomorphicLayoutEffect(() => {\n    setRect(ref.current?.getBoundingClientRect());\n  }, []);\n\n  return <div ref={ref}>{children}</div>;\n}`,
+  },
+  {
+    name: 'useIntersectionObserver', category: 'DOM',
+    description: 'Track an element’s visibility in the viewport (or a root). Ideal for lazy-loading, infinite scroll, and reveal-on-scroll. SSR-safe.',
+    signature: '<T>(options?) => { ref, entry, isIntersecting }',
+    params: [
+      { name: 'options.threshold', type: 'number | number[]', description: 'Visibility ratio(s) that trigger the callback.' },
+      { name: 'options.rootMargin', type: 'string', description: 'Margin around the root, e.g. "200px".' },
+      { name: 'options.freezeOnceVisible', type: 'boolean', description: 'Stop observing once visible (lazy-load).' },
+    ],
+    returns: '{ ref: RefObject<T>, entry: IntersectionObserverEntry | null, isIntersecting: boolean }',
+    demo: UseIntersectionObserverDemo,
+    code: `import { useIntersectionObserver } from '@structyl/hooks';\n\nfunction LazyImage({ src }) {\n  const { ref, isIntersecting } = useIntersectionObserver({ rootMargin: '200px', freezeOnceVisible: true });\n  return <div ref={ref}>{isIntersecting && <img src={src} />}</div>;\n}`,
+  },
+  {
+    name: 'useResizeObserver', category: 'DOM',
+    description: 'Track an element’s content-box size with ResizeObserver. Updates on mount and on every resize. SSR-safe.',
+    signature: '<T>() => { ref, size }',
+    params: [],
+    returns: '{ ref: RefObject<T>, size: { width: number, height: number } }',
+    demo: UseResizeObserverDemo,
+    code: `import { useResizeObserver } from '@structyl/hooks';\n\nfunction Measured() {\n  const { ref, size } = useResizeObserver<HTMLDivElement>();\n  return <div ref={ref}>{size.width} × {size.height}</div>;\n}`,
+  },
+  {
+    name: 'useScrollLock', category: 'DOM',
+    description: 'Lock body (or a target element) scroll while active — for dialogs, drawers, sheets. Compensates for scrollbar width to avoid layout shift, and restores prior styles on cleanup.',
+    signature: '(options?: { enabled?: boolean; target?: HTMLElement | null }) => void',
+    params: [
+      { name: 'options.enabled', type: 'boolean', description: 'Whether the lock is active. Defaults to true.' },
+      { name: 'options.target', type: 'HTMLElement | null', description: 'Element to lock. Defaults to document.body.' },
+    ],
+    returns: 'void',
+    demo: UseScrollLockDemo,
+    code: `import { useScrollLock } from '@structyl/hooks';\n\nfunction Dialog({ open }) {\n  useScrollLock({ enabled: open });\n  return open ? <div role="dialog">…</div> : null;\n}`,
+  },
+  {
+    name: 'useTimeout', category: 'Performance',
+    description: 'Declarative setTimeout. The callback always sees the latest closure, and the timer clears on unmount. Pass delay: null to pause; reset() restarts it.',
+    signature: '(callback: () => void, delay: number | null) => { reset, clear }',
+    params: [
+      { name: 'callback', type: '() => void', description: 'Runs when the timeout fires.' },
+      { name: 'delay', type: 'number | null', description: 'Delay in ms, or null to pause.' },
+    ],
+    returns: '{ reset: (delay?: number) => void, clear: () => void }',
+    demo: UseTimeoutDemo,
+    code: `import { useTimeout } from '@structyl/hooks';\n\nfunction AutoHide({ onHide }) {\n  useTimeout(onHide, 3000);\n  return <p>Disappears in 3s…</p>;\n}`,
+  },
+  {
+    name: 'useInterval', category: 'Performance',
+    description: 'Declarative setInterval (the classic Dan Abramov pattern). The callback always sees the latest closure, and the interval clears on unmount. Pass delay: null to pause.',
+    signature: '(callback: () => void, delay: number | null) => void',
+    params: [
+      { name: 'callback', type: '() => void', description: 'Runs on each tick.' },
+      { name: 'delay', type: 'number | null', description: 'Interval in ms, or null to pause.' },
+    ],
+    returns: 'void',
+    demo: UseIntervalDemo,
+    code: `import { useInterval } from '@structyl/hooks';\n\nfunction Clock() {\n  const [now, setNow] = useState(Date.now());\n  useInterval(() => setNow(Date.now()), 1000);\n  return <time>{new Date(now).toLocaleTimeString()}</time>;\n}`,
+  },
+  {
+    name: 'useStep', category: 'State',
+    description: 'A multi-step state machine for wizards, steppers, and carousels — next/prev/reset/setStep with canGoNext/canGoPrev and isFirst/isLast flags. Optional looping.',
+    signature: '(totalSteps: number, options?) => { currentStep, next, prev, setStep, reset, … }',
+    params: [
+      { name: 'totalSteps', type: 'number', description: 'Number of steps.' },
+      { name: 'options.initialStep', type: 'number', description: '0-based starting step. Defaults to 0.' },
+      { name: 'options.loop', type: 'boolean', description: 'Wrap around at the ends. Defaults to false.' },
+    ],
+    returns: '{ currentStep, totalSteps, isFirst, isLast, canGoNext, canGoPrev, next, prev, setStep, reset }',
+    demo: UseStepDemo,
+    code: `import { useStep } from '@structyl/hooks';\n\nfunction Wizard({ steps }) {\n  const { currentStep, next, prev, isLast } = useStep(steps.length);\n  return (\n    <>\n      {steps[currentStep]}\n      <button onClick={prev}>Back</button>\n      <button onClick={next}>{isLast ? 'Finish' : 'Next'}</button>\n    </>\n  );\n}`,
   },
 ];
 

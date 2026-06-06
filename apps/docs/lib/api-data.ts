@@ -16168,4 +16168,158 @@ export const API: Record<string, ApiPart[]> = {
       ],
     },
   ],
+
+  banner: [
+    {
+      name: 'Banner',
+      description: 'A full-width, site-level announcement bar with tone variants, an optional leading icon and trailing action, and a dismiss button. Extends the native div element.',
+      props: [
+        {
+          name: 'variant',
+          type: '\'default\' | \'info\' | \'success\' | \'warning\' | \'error\' | \'brand\'',
+          default: '\'default\'',
+          description: 'Visual tone. \'brand\' uses the primary color fill.',
+        },
+        {
+          name: 'align',
+          type: '\'start\' | \'center\'',
+          default: '\'start\'',
+          description: 'Content alignment within the bar.',
+        },
+        {
+          name: 'icon',
+          type: 'React.ReactNode',
+          description: 'Leading icon rendered before the content.',
+        },
+        {
+          name: 'action',
+          type: 'React.ReactNode',
+          description: 'Trailing action (e.g. a link or button) rendered after the content.',
+        },
+        {
+          name: 'dismissible',
+          type: 'boolean',
+          default: 'false',
+          description: 'Show an accessible dismiss button.',
+        },
+        {
+          name: 'onDismiss',
+          type: '(() => void) | undefined',
+          description: 'Called when the dismiss button is clicked.',
+        },
+      ],
+    },
+  ],
+
+  'code-block': [
+    {
+      name: 'CodeBlock',
+      description: 'A presentational code block with an optional filename/language header, a line-number gutter, line highlighting, and a built-in copy button. Does not perform syntax highlighting. Extends the native pre element.',
+      props: [
+        {
+          name: 'code',
+          type: 'string',
+          description: 'The raw source code to display. Required.',
+        },
+        {
+          name: 'language',
+          type: 'string | undefined',
+          description: 'Language label shown in the header.',
+        },
+        {
+          name: 'filename',
+          type: 'string | undefined',
+          description: 'Filename shown in the header.',
+        },
+        {
+          name: 'showLineNumbers',
+          type: 'boolean',
+          default: 'false',
+          description: 'Render a line-number gutter.',
+        },
+        {
+          name: 'copyable',
+          type: 'boolean',
+          default: 'true',
+          description: 'Show the copy-to-clipboard button.',
+        },
+        {
+          name: 'highlightLines',
+          type: 'number[]',
+          default: '[]',
+          description: '1-based line numbers to highlight.',
+        },
+      ],
+    },
+  ],
+
+  'description-list': [
+    {
+      name: 'DescriptionList',
+      description: 'A semantic dl element for key–value pairs. Compound component — use DescriptionList.Term and DescriptionList.Details. Extends the native dl element.',
+      props: [
+        {
+          name: 'orientation',
+          type: '\'horizontal\' | \'vertical\'',
+          default: '\'horizontal\'',
+          description: 'Two-column (horizontal) or stacked (vertical) layout.',
+        },
+      ],
+    },
+    {
+      name: 'DescriptionList.Term',
+      description: 'A term in the list. Renders a dt element. Accepts all standard HTML attributes.',
+      props: [],
+    },
+    {
+      name: 'DescriptionList.Details',
+      description: 'The details for a term. Renders a dd element. Accepts all standard HTML attributes.',
+      props: [],
+    },
+  ],
+
+  marquee: [
+    {
+      name: 'Marquee',
+      description: 'A CSS-only scrolling strip for logos, testimonials, or announcements. Children are repeated for a seamless loop and the animation respects prefers-reduced-motion. Extends the native div element.',
+      props: [
+        {
+          name: 'vertical',
+          type: 'boolean',
+          default: 'false',
+          description: 'Scroll vertically instead of horizontally.',
+        },
+        {
+          name: 'reverse',
+          type: 'boolean',
+          default: 'false',
+          description: 'Reverse the scroll direction.',
+        },
+        {
+          name: 'pauseOnHover',
+          type: 'boolean',
+          default: 'false',
+          description: 'Pause the animation while hovered.',
+        },
+        {
+          name: 'duration',
+          type: 'string',
+          default: '\'30s\'',
+          description: 'Animation duration (any CSS time value).',
+        },
+        {
+          name: 'gap',
+          type: 'string',
+          default: '\'1rem\'',
+          description: 'Gap between the repeated content.',
+        },
+        {
+          name: 'repeat',
+          type: 'number',
+          default: '2',
+          description: 'How many times children repeat for a seamless loop.',
+        },
+      ],
+    },
+  ],
 };

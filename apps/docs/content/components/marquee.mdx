@@ -1,0 +1,55 @@
+---
+title: Marquee
+description: A CSS-only scrolling strip for logos and announcements.
+---
+
+# Marquee
+
+A CSS-animation scrolling strip for logos, testimonials, or announcements. Children are repeated to create a seamless loop. There is no JavaScript animation loop, and the animation is disabled automatically for users who request reduced motion.
+
+## Installation
+
+```bash
+npx structyl add marquee
+```
+
+## Usage
+
+```tsx
+import { Marquee } from '@structyl/styled';
+
+export function Example() {
+  return (
+    <Marquee pauseOnHover duration="12s">
+      {['React', 'Next.js', 'Tailwind', 'TypeScript', 'Vite'].map((t) => (
+        <span key={t} className="mx-4 rounded-md border px-3 py-1 text-sm">
+          {t}
+        </span>
+      ))}
+    </Marquee>
+  );
+}
+```
+
+## API Reference
+
+### Marquee
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `vertical` | `boolean` | `false` | Scroll vertically instead of horizontally. |
+| `reverse` | `boolean` | `false` | Reverse the scroll direction. |
+| `pauseOnHover` | `boolean` | `false` | Pause the animation while hovered. |
+| `duration` | `string` | `'30s'` | Animation duration (any CSS time value). |
+| `gap` | `string` | `'1rem'` | Gap between repeated content. |
+| `repeat` | `number` | `2` | How many times children repeat for a seamless loop. |
+
+Plus all standard `<div>` attributes.
+
+## Accessibility
+
+Repeated copies after the first are marked `aria-hidden` so screen readers announce the content only once. The animation honors `prefers-reduced-motion: reduce` — motion is disabled and the strip becomes statically scrollable.
+
+## Theming
+
+The `marquee` and `marquee-vertical` keyframes ship in the structyl Tailwind preset; no theme tokens are required. Style your items with theme classes as usual.

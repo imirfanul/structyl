@@ -14,6 +14,7 @@
   "dependencies": {
     "@next/third-parties": "^15.0.3",
     "@structyl/data-table": "workspace:*",
+    "@structyl/forms": "workspace:*",
     "@structyl/hooks": "workspace:*",
     "@structyl/icons": "workspace:*",
     "@structyl/primitives": "workspace:*",

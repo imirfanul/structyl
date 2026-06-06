@@ -134,6 +134,9 @@ importers:
       '@structyl/data-table':
         specifier: workspace:*
         version: link:../../packages/data-table
+      '@structyl/forms':
+        specifier: workspace:*
+        version: link:../../packages/forms
       '@structyl/hooks':
         specifier: workspace:*
         version: link:../../packages/hooks
@@ -283,7 +286,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
 
   packages/data-table:
     dependencies:
@@ -335,20 +338,50 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
 
-  packages/hooks:
+  packages/forms:
     dependencies:
-      react-dom:
-        specifier: ^18.0.0 || ^19.0.0
-        version: 19.2.6(react@19.2.6)
+      '@structyl/core':
+        specifier: workspace:*
+        version: link:../core
+      '@structyl/hooks':
+        specifier: workspace:*
+        version: link:../hooks
+      '@structyl/primitives':
+        specifier: workspace:*
+        version: link:../primitives
+      '@structyl/styled':
+        specifier: workspace:*
+        version: link:../styled
+      '@structyl/utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
+      '@testing-library/jest-dom':
+        specifier: ^6.5.0
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: ^16.0.1
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@testing-library/user-event':
+        specifier: ^14.5.2
+        version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
         specifier: ^19.0.0
         version: 19.2.15
+      jest-axe:
+        specifier: ^9.0.0
+        version: 9.0.0
+      jsdom:
+        specifier: ^25.0.1
+        version: 25.0.1
       react:
         specifier: ^19.0.0
         version: 19.2.6
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.6(react@19.2.6)
       tsup:
         specifier: ^8.3.0
         version: 8.5.1(jiti@2.7.0)(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
@@ -357,7 +390,34 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+
+  packages/hooks:
+    devDependencies:
+      '@testing-library/react':
+        specifier: ^16.0.1
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.15))(@types/react@19.2.15)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.15
+      jsdom:
+        specifier: ^25.0.1
+        version: 25.0.1
+      react:
+        specifier: ^19.0.0
+        version: 19.2.6
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.6(react@19.2.6)
+      tsup:
+        specifier: ^8.3.0
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.2
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
 
   packages/icons:
     dependencies:
@@ -425,7 +485,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
 
   packages/styled:
     dependencies:
@@ -486,7 +546,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
 
   packages/themes:
     devDependencies:
@@ -504,7 +564,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
 
   packages/utils:
     dependencies:
@@ -523,7 +583,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: ^2.1.2
-        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+        version: 2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
 
   packages/video-player:
     dependencies:
@@ -555,6 +615,44 @@ importers:
       typescript:
         specifier: ^5.6.3
         version: 5.9.3
+
+  tooling/eslint-config:
+    dependencies:
+      '@eslint/js':
+        specifier: ^9.12.0
+        version: 9.39.4
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.8.1
+        version: 8.59.4(@typescript-eslint/parser@8.59.4(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
+      '@typescript-eslint/parser':
+        specifier: ^8.8.1
+        version: 8.59.4(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
+      eslint:
+        specifier: ^9.0.0
+        version: 9.39.4(jiti@2.7.0)
+      eslint-config-prettier:
+        specifier: ^9.1.0
+        version: 9.1.2(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-react:
+        specifier: ^7.37.1
+        version: 7.37.5(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-react-hooks:
+        specifier: ^5.0.0
+        version: 5.2.0(eslint@9.39.4(jiti@2.7.0))
+      eslint-plugin-storybook:
+        specifier: ^10.4.1
+        version: 10.4.1(eslint@9.39.4(jiti@2.7.0))(storybook@10.4.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@testing-library/dom@10.4.1)(@types/react@19.2.15)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@5.9.3)
+
+  tooling/tailwind-config:
+    dependencies:
+      '@structyl/styled':
+        specifier: workspace:*
+        version: link:../../packages/styled
+      tailwindcss:
+        specifier: ^3.4.0 || ^4.0.0
+        version: 3.4.19(yaml@2.9.0)
+
+  tooling/tsconfig: {}
 
 packages:
 
@@ -5851,6 +5949,13 @@ snapshots:
       outvariant: 1.4.3
       strict-event-emitter: 0.5.1
 
+  '@napi-rs/wasm-runtime@1.1.4(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)':
+    dependencies:
+      '@emnapi/core': 1.9.2
+      '@emnapi/runtime': 1.10.0
+      '@tybys/wasm-util': 0.10.2
+    optional: true
+
   '@napi-rs/wasm-runtime@1.1.4(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)':
     dependencies:
       '@emnapi/core': 1.9.2
@@ -6025,6 +6130,14 @@ snapshots:
     optional: true
 
   '@oxc-resolver/binding-openharmony-arm64@11.19.1':
+    optional: true
+
+  '@oxc-resolver/binding-wasm32-wasi@11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)':
+    dependencies:
+      '@napi-rs/wasm-runtime': 1.1.4(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
     optional: true
 
   '@oxc-resolver/binding-wasm32-wasi@11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)':
@@ -6527,6 +6640,26 @@ snapshots:
       - msw
       - utf-8-validate
       - vite
+
+  '@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.60.0)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4)':
+    dependencies:
+      '@testing-library/dom': 10.4.1
+      '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
+      '@vitest/mocker': 3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(vite@5.4.21(@types/node@22.19.19))
+      '@vitest/utils': 3.2.4
+      magic-string: 0.30.21
+      sirv: 3.0.2
+      tinyrainbow: 2.0.0
+      vitest: 3.2.4(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))
+      ws: 8.20.1
+    optionalDependencies:
+      playwright: 1.60.0
+    transitivePeerDependencies:
+      - bufferutil
+      - msw
+      - utf-8-validate
+      - vite
+    optional: true
 
   '@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4)':
     dependencies:
@@ -7350,6 +7483,15 @@ snapshots:
       semver: 6.3.1
       string.prototype.matchall: 4.0.12
       string.prototype.repeat: 1.0.0
+
+  eslint-plugin-storybook@10.4.1(eslint@9.39.4(jiti@2.7.0))(storybook@10.4.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@testing-library/dom@10.4.1)(@types/react@19.2.15)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@5.9.3):
+    dependencies:
+      '@typescript-eslint/utils': 8.59.4(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
+      eslint: 9.39.4(jiti@2.7.0)
+      storybook: 10.4.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@testing-library/dom@10.4.1)(@types/react@19.2.15)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   eslint-plugin-storybook@10.4.1(eslint@9.39.4(jiti@2.7.0))(storybook@10.4.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@testing-library/dom@10.4.1)(@types/react@19.2.15)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6))(typescript@5.9.3):
     dependencies:
@@ -8358,6 +8500,32 @@ snapshots:
       '@oxc-parser/binding-win32-ia32-msvc': 0.127.0
       '@oxc-parser/binding-win32-x64-msvc': 0.127.0
 
+  oxc-resolver@11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0):
+    optionalDependencies:
+      '@oxc-resolver/binding-android-arm-eabi': 11.19.1
+      '@oxc-resolver/binding-android-arm64': 11.19.1
+      '@oxc-resolver/binding-darwin-arm64': 11.19.1
+      '@oxc-resolver/binding-darwin-x64': 11.19.1
+      '@oxc-resolver/binding-freebsd-x64': 11.19.1
+      '@oxc-resolver/binding-linux-arm-gnueabihf': 11.19.1
+      '@oxc-resolver/binding-linux-arm-musleabihf': 11.19.1
+      '@oxc-resolver/binding-linux-arm64-gnu': 11.19.1
+      '@oxc-resolver/binding-linux-arm64-musl': 11.19.1
+      '@oxc-resolver/binding-linux-ppc64-gnu': 11.19.1
+      '@oxc-resolver/binding-linux-riscv64-gnu': 11.19.1
+      '@oxc-resolver/binding-linux-riscv64-musl': 11.19.1
+      '@oxc-resolver/binding-linux-s390x-gnu': 11.19.1
+      '@oxc-resolver/binding-linux-x64-gnu': 11.19.1
+      '@oxc-resolver/binding-linux-x64-musl': 11.19.1
+      '@oxc-resolver/binding-openharmony-arm64': 11.19.1
+      '@oxc-resolver/binding-wasm32-wasi': 11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)
+      '@oxc-resolver/binding-win32-arm64-msvc': 11.19.1
+      '@oxc-resolver/binding-win32-ia32-msvc': 11.19.1
+      '@oxc-resolver/binding-win32-x64-msvc': 11.19.1
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
+
   oxc-resolver@11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2):
     optionalDependencies:
       '@oxc-resolver/binding-android-arm-eabi': 11.19.1
@@ -8927,6 +9095,35 @@ snapshots:
       es-errors: 1.3.0
       internal-slot: 1.1.0
 
+  storybook@10.4.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)(@testing-library/dom@10.4.1)(@types/react@19.2.15)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@storybook/icons': 2.0.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
+      '@testing-library/jest-dom': 6.9.1
+      '@testing-library/user-event': 14.6.1(@testing-library/dom@10.4.1)
+      '@vitest/expect': 3.2.4
+      '@vitest/spy': 3.2.4
+      '@webcontainer/env': 1.1.1
+      esbuild: 0.27.7
+      open: 10.2.0
+      oxc-parser: 0.127.0
+      oxc-resolver: 11.19.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.10.0)
+      recast: 0.23.11
+      semver: 7.8.0
+      use-sync-external-store: 1.6.0(react@19.2.6)
+      ws: 8.20.1
+    optionalDependencies:
+      '@types/react': 19.2.15
+      prettier: 3.8.3
+    transitivePeerDependencies:
+      - '@emnapi/core'
+      - '@emnapi/runtime'
+      - '@testing-library/dom'
+      - bufferutil
+      - react
+      - react-dom
+      - utf-8-validate
+
   storybook@10.4.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@testing-library/dom@10.4.1)(@types/react@19.2.15)(prettier@3.8.3)(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
     dependencies:
       '@storybook/global': 5.0.0
@@ -9368,7 +9565,7 @@ snapshots:
       '@types/node': 22.19.19
       fsevents: 2.3.3
 
-  vitest@2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4))(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3)):
+  vitest@2.1.9(@types/node@22.19.19)(@vitest/browser@3.2.4)(jsdom@25.0.1)(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3)):
     dependencies:
       '@vitest/expect': 2.1.9
       '@vitest/mocker': 2.1.9(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(vite@5.4.21(@types/node@22.19.19))
@@ -9432,7 +9629,7 @@ snapshots:
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 22.19.19
-      '@vitest/browser': 3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.61.0-alpha-2026-05-27)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4)
+      '@vitest/browser': 3.2.4(msw@2.14.6(@types/node@22.19.19)(typescript@5.9.3))(playwright@1.60.0)(vite@5.4.21(@types/node@22.19.19))(vitest@3.2.4)
       jsdom: 25.0.1
     transitivePeerDependencies:
       - less

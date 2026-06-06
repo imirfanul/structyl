@@ -12,8 +12,8 @@ import {
 import { Toast as ToastPrimitive } from '@structyl/primitives';
 import { cn } from '@structyl/utils';
 import { Root, Action, Close, Title, Description } from './toast-root';
-import { useToast } from './use-toast';
-import type { ToastHorizontal, ToastVariant, ToastVertical } from './use-toast';
+import { useToast, splitPosition } from './use-toast';
+import type { ToastHorizontal, ToastPosition, ToastVariant, ToastVertical } from './use-toast';
 
 // ── Position helpers ──────────────────────────────────────────────────────────
 
@@ -54,12 +54,18 @@ function toStyleVariant(v: ToastVariant): StyledVariant {
 export interface ToasterProps
   extends Omit<React.ComponentPropsWithoutRef<typeof ToastPrimitive.Viewport>, 'children'> {
   /**
-   * Horizontal alignment of toasts.
+   * Default placement of toasts, e.g. `'bottom-right'`. Takes priority over
+   * `horizontal`/`vertical`. Individual toasts can override via their own options.
+   * @default 'bottom-right'
+   */
+  position?: ToastPosition;
+  /**
+   * Horizontal alignment of toasts (used when `position` is not set).
    * @default 'right'
    */
   horizontal?: ToastHorizontal;
   /**
-   * Vertical alignment of toasts.
+   * Vertical alignment of toasts (used when `position` is not set).
    * @default 'bottom'
    */
   vertical?: ToastVertical;
@@ -93,13 +99,20 @@ export interface ToasterProps
  * toast.error('Failed', { retry: () => save(), horizontal: 'right', vertical: 'top' });
  */
 export function Toaster({
-  horizontal: defaultH = 'right',
-  vertical: defaultV   = 'bottom',
+  position,
+  horizontal,
+  vertical,
   maxToasts = 5,
   className,
   ...props
 }: ToasterProps) {
   const { toasts, remove } = useToast();
+
+  // A unified `position` (e.g. 'bottom-right') wins; otherwise fall back to the
+  // split props, then to the bottom-right defaults.
+  const placement = position ? splitPosition(position) : { horizontal, vertical };
+  const defaultH: ToastHorizontal = placement.horizontal ?? 'right';
+  const defaultV: ToastVertical = placement.vertical ?? 'bottom';
 
   // Group toasts by their resolved (horizontal, vertical) combo
   const groups = React.useMemo(() => {
